@@ -9,7 +9,7 @@
 int main(int arc, char** argv)
 {
     
-    std::string name_path = argv[1];
+    std::string name_path = argv[0];
     std::string name_path_out = ".\\out";
     bool path_exists = std::filesystem::exists(name_path);
     if (path_exists)
