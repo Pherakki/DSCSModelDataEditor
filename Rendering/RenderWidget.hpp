@@ -112,43 +112,24 @@ namespace CustomWidgets
 
 		std::array<float, 16> m_mvp = make_MVP_float(this->width(), this->height(), m_cameraPosition, m_cameraTarget);
 
-
-		// Works
-		for (int i = 0; i < vbos.size(); i++)
+		for (int i = 0; i < models.size(); i++)
 		{
-			auto& vbo = vbos[i];
-			this->shader_object->bind();
-			this->shader_object->setMVP(m_mvp);
-			vbo.bind();
-			vbo.draw();
-			vbo.unbind();
-			this->shader_object->unbind();
+			auto& model = models["model"];
+			for (int j = 0; j < model.meshes.size(); j++)
+			{
+				auto& mesh = model.meshes[j];
+				mesh->material->bind();
+				mesh->material->shader->setMVP(m_mvp);
+				this->shader_backend->checkForCgError("Setting MVP...");
+				mesh->bind();
+				mesh->draw();
+				mesh->unbind();
+				mesh->material->unbind();
+
+				mesh->checkGLError();
+				this->shader_backend->checkForCgError("Finishing unbind...");
+			}
 		}
-
-		//// Doesn't work
-		//for (int i = 0; i < models.size(); i++)
-		//{
-		//	auto& model = models["model"];
-		//	for (int j = 0; j < model.meshes.size(); j++)
-		//	{
-		//		auto& mesh = model.meshes[i];
-		//		this->shader_object->bind();
-		//		//mesh->material->bind();
-		//		this->shader_object->setMVP(m_mvp);
-		//		//mesh->material->shader->setMVP(m_mvp);
-		//		this->shader_backend->checkForCgError("Setting MVP...");
-		//		mesh->bind();
-		//		mesh->draw();
-		//		mesh->unbind();
-		//		//mesh->material->unbind();
-
-		//		this->shader_object->unbind();
-		//		mesh->checkGLError();
-		//		this->shader_backend->checkForCgError("Finishing unbind...");
-		//	}
-		//}
-
-
 
 	}
 
