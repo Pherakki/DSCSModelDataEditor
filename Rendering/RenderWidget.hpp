@@ -57,9 +57,6 @@ namespace CustomWidgets
 		void teardownGL() {};
 	private:
 		std::unique_ptr<Rendering::ShaderBackends::cgGLShaderBackend> shader_backend;
-		std::shared_ptr<Rendering::ShaderObjects::cgGLShaderObject> shader_object;
-
-		std::vector<Rendering::DataObjects::BindableVertices> vbos;
 
 		// Change the key from a string to an int later
 		std::map<std::string, Rendering::DataObjects::OpenGLDSCSModel> models;
@@ -81,7 +78,6 @@ namespace CustomWidgets
 	void RenderWidget::initializeGL()
 	{
 		initializeOpenGLFunctions();
-		this->shader_object = this->shader_backend->createShaderProgram("shaders/red_vp.shad", "shaders/test_fp.shad");
 		std::filesystem::path filepath = path/to/test/model;
 
 		this->models["model"] = FileFormats::DSCS::DSCStoOpenGL(filepath,
@@ -91,18 +87,6 @@ namespace CustomWidgets
 		//glEnable(GL_DEPTH_TEST);
 		glDepthFunc(GL_LESS);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-
-		FileFormats::DSCS::GeomFile::GeomReadWrite reader;
-		reader.read(filepath.string() + ".geom");
-		auto meshes = reader.getMeshes();
-		for (int i = 0; i < meshes.size(); i++)
-		{
-			auto mesh = meshes[i];
-			this->vbos.push_back({ mesh });
-		}
-
-
 	}
 
 	void RenderWidget::paintGL()
