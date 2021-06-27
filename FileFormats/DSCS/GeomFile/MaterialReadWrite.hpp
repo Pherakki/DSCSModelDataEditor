@@ -1,6 +1,6 @@
 #pragma once
 
-#include <FileFormats/DSCS/GeomFile/ForwardDeclarations.hpp>
+#include <FileFormats/DSCS/GeomFile/GeomForwardDeclarations.hpp>
 #include <serialisation/ReadWriter.hpp>
 
 namespace FileFormats::DSCS::GeomFile
@@ -88,7 +88,7 @@ namespace FileFormats::DSCS::GeomFile
 	
 	class MaterialReadWrite
 	{
-	private:
+	public:
         // Header Variables
 		uint32_t                name_hash = 0;                   // 0x00
 		std::array<uint32_t, 4> shader_hash = {};                // 0x04
@@ -111,6 +111,7 @@ namespace FileFormats::DSCS::GeomFile
 
         // Friends
 		friend class GeomReadWrite;
+        friend class DSCStoOpenGL;
 	};
 
     // **************************************** //
