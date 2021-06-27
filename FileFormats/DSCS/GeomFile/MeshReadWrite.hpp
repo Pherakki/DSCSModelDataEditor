@@ -5,7 +5,7 @@
 #include <serialisation/Macros.hpp>
 #include <serialisation/ReadWriter.hpp>
 
-#include <FileFormats/DSCS/GeomFile/ForwardDeclarations.hpp>
+#include <FileFormats/DSCS/GeomFile/GeomForwardDeclarations.hpp>
 
 using namespace serialisation;
 
@@ -43,6 +43,17 @@ namespace FileFormats::DSCS::GeomFile
     class MeshReadWrite
     {
     private:
+        // RW Methods
+        template<std::ios_base::openmode openmode_flag> void initMemberVectorsIfRequired();
+        template<std::ios_base::openmode openmode_flag> void readWriteVertices(ReadWriter<openmode_flag>&);
+        template<std::ios_base::openmode openmode_flag> void readWriteSkinningIndices(ReadWriter<openmode_flag>&);
+        template<std::ios_base::openmode openmode_flag> void readWriteIndexBuffer(ReadWriter<openmode_flag>&);
+        template<std::ios_base::openmode openmode_flag> void readWriteVertexAttributes(ReadWriter<openmode_flag>&);
+
+        template<std::ios_base::openmode openmode_flag> void readWriteHeader(ReadWriter<openmode_flag>&);
+        template<std::ios_base::openmode openmode_flag> void readWriteBody(ReadWriter<openmode_flag>&);
+
+    public:
         // Header variables
         uint64_t vertex_data_ptr = 0;                   // 0x00
         uint64_t triangles_ptr = 0;                     // 0x08
@@ -76,15 +87,9 @@ namespace FileFormats::DSCS::GeomFile
         std::vector<uint16_t> index_buffer = {};
         std::vector<VertexAttribute> vertex_attributes = {};
 
-        // RW Methods
-        template<std::ios_base::openmode openmode_flag> void initMemberVectorsIfRequired();
-        template<std::ios_base::openmode openmode_flag> void readWriteVertices(ReadWriter<openmode_flag>&);
-        template<std::ios_base::openmode openmode_flag> void readWriteSkinningIndices(ReadWriter<openmode_flag>&);
-        template<std::ios_base::openmode openmode_flag> void readWriteIndexBuffer(ReadWriter<openmode_flag>&);
-        template<std::ios_base::openmode openmode_flag> void readWriteVertexAttributes(ReadWriter<openmode_flag>&);
-
-        template<std::ios_base::openmode openmode_flag> void readWriteHeader(ReadWriter<openmode_flag>&);
-        template<std::ios_base::openmode openmode_flag> void readWriteBody(ReadWriter<openmode_flag>&);
+        MeshReadWrite() {};
+        ~MeshReadWrite() {};
+        friend void swap(MeshReadWrite& first, MeshReadWrite& second);
 
         // Friends
         friend class GeomReadWrite;
