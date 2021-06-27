@@ -123,7 +123,7 @@ namespace Rendering::DataObjects
 				GL_FLOAT,                // type
 				GL_FALSE,                    // normalized
 				this->mesh.bytes_per_vertex, // stride
-				&va.vertex_struct_offset     // array buffer offset
+				(void*)va.vertex_struct_offset // array buffer offset
 			);
 			checkGLError();
 			glEnableVertexAttribArray((GLuint)va.attribute_type);
