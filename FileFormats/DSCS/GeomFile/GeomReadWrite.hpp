@@ -6,6 +6,7 @@
 #include <serialisation/ReadWriter.hpp>
 #include <serialisation/Macros.hpp>
 
+#include <FileFormats/DSCS/DSCSModelForwardDeclaration.hpp>
 #include <FileFormats/DSCS/GeomFile/MeshReadWrite.hpp>
 #include <FileFormats/DSCS/GeomFile/MaterialReadWrite.hpp>
 #include <FileFormats/DSCS/GeomFile/Section4ReadWrite.hpp>
@@ -17,7 +18,6 @@ namespace FileFormats::DSCS::GeomFile
 {
 	class GeomReadWrite
 	{
-	private:
     public:
         GeomReadWrite() {};
         ~GeomReadWrite() {};
