@@ -84,7 +84,7 @@ namespace CustomWidgets
 																this->shader_backend, material_library, shader_library);
 
 		glClearColor(0.4f, 0.4f, 0.4f, 1.0f);
-		//glEnable(GL_DEPTH_TEST);
+		glEnable(GL_DEPTH_TEST);
 		glDepthFunc(GL_LESS);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	}
