@@ -1,0 +1,4 @@
+void std_PS(in vec3 vColor : COLOR0, out vec4 fColor : COLOR)
+{
+   fColor = vec4(vColor, 1);
+}
