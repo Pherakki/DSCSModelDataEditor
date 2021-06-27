@@ -111,18 +111,16 @@ namespace Rendering::DataObjects
 		glBufferData(GL_ELEMENT_ARRAY_BUFFER, this->mesh.index_buffer.size() * sizeof(unsigned short), &this->mesh.index_buffer[0], GL_STATIC_DRAW);
 		this->checkGLError();
 
-		for (int i = 0; i < 2; i++)
+		for (int i = 0; i < vertex_attributes.size(); i++)
 		{
 			auto& va = this->vertex_attributes[i];
-			if (va.attribute_type != 0)
-				continue;
 			glVertexAttribPointer
 			(
-				(GLuint)va.attribute_type,   // attribute id
-				va.num_elements,             // size
-				GL_FLOAT,                // type
-				GL_FALSE,                    // normalized
-				this->mesh.bytes_per_vertex, // stride
+				(GLuint)va.attribute_type,     // attribute id
+				va.num_elements,               // size
+				va.data_type,                  // type
+				GL_FALSE,                      // normalized
+				this->mesh.bytes_per_vertex,   // stride
 				(void*)va.vertex_struct_offset // array buffer offset
 			);
 			checkGLError();
