@@ -53,7 +53,7 @@ namespace FileFormats::DSCS::GeomFile
         uint16_t num_skinning_indices = 0;              // 0x28
         uint16_t num_vertex_attributes = 0;             // 0x2A
         uint16_t bytes_per_vertex = 0;                  // 0x2C
-        const uint16_t always_5123 = 5123;              // 0x2E
+        const uint16_t index_buffer_datatype = 0x1403;  // 0x2E
 
         uint8_t max_skinning_indices_per_vertex = 0;    // 0x30
         uint8_t unknown_0x31 = 0;                       // 0x31 // !!!UNKNOWN!!! - May be related to the way vertices are skinned
@@ -65,7 +65,7 @@ namespace FileFormats::DSCS::GeomFile
         uint32_t num_elements_in_index_buffer = 0;      // 0x40
         const uint32_t padding_0x44 = 0;                // 0x44
         const uint32_t padding_0x48 = 0;                // 0x48
-        float unknown_0x4C = 0;                         // 0x4C // !!!UNKNOWN!!! - Related to bounding boxes
+        float bounding_box_diagonal = 0;                // 0x4C
 
         std::array<float, 3> mesh_centre = {};          // 0x50
         std::array<float, 3> bounding_box_lengths = {}; // 0x5C
@@ -109,7 +109,7 @@ namespace FileFormats::DSCS::GeomFile
         read_writer.ReadWriteData<uint16_t, LE>(this->num_skinning_indices);
         read_writer.ReadWriteData<uint16_t, LE>(this->num_vertex_attributes);
         read_writer.ReadWriteData<uint16_t, LE>(this->bytes_per_vertex);
-        read_writer.ReadWriteConstData<uint16_t, LE>(this->VALUE_AND_NAME_OF(always_5123));
+        read_writer.ReadWriteConstData<uint16_t, LE>(this->VALUE_AND_NAME_OF(index_buffer_datatype));
 
         read_writer.ReadWriteData<uint8_t, LE>(this->max_skinning_indices_per_vertex);
         read_writer.ReadWriteData<uint8_t, LE>(this->unknown_0x31);
@@ -121,7 +121,7 @@ namespace FileFormats::DSCS::GeomFile
         read_writer.ReadWriteData<uint32_t, LE>(this->num_elements_in_index_buffer);
         read_writer.ReadWriteConstData<uint32_t, LE>(this->VALUE_AND_NAME_OF(padding_0x44));
         read_writer.ReadWriteConstData<uint32_t, LE>(this->VALUE_AND_NAME_OF(padding_0x48));
-        read_writer.ReadWriteData<float, LE>(this->unknown_0x4C);
+        read_writer.ReadWriteData<float, LE>(this->bounding_box_diagonal);
 
         read_writer.ReadWriteData<std::array<float, 3>, LE>(this->mesh_centre);
         read_writer.ReadWriteData<std::array<float, 3>, LE>(this->bounding_box_lengths);
