@@ -73,10 +73,6 @@ namespace Rendering::DataObjects
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, this->index_buffer_id);
 		this->checkGLError();
 
-		glBufferData(GL_ARRAY_BUFFER, this->mesh.vertices.size(), &this->mesh.vertices[0], GL_STATIC_DRAW);
-		this->checkGLError();
-		glBufferData(GL_ELEMENT_ARRAY_BUFFER, this->mesh.index_buffer.size() * sizeof(unsigned short), &this->mesh.index_buffer[0], GL_STATIC_DRAW);
-
 		for (int i = 0; i < this->mesh.vertex_attributes.size(); i++)
 		{
 			// Commented out bit should split the 4-component position into a position + weight, when it's done
