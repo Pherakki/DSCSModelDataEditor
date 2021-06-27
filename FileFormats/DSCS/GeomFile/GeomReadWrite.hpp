@@ -18,6 +18,18 @@ namespace FileFormats::DSCS::GeomFile
 	class GeomReadWrite
 	{
 	private:
+    public:
+        GeomReadWrite() {};
+        ~GeomReadWrite() {};
+        void read(const std::string& filepath) { doReadWrite<readmode>(filepath); };
+        void write(const std::string& filepath) { doReadWrite<writemode>(filepath); };
+
+        std::vector<MeshReadWrite> getMeshes();
+        uint32_t getNumTextures() { return (uint32_t)(this->texture_names_section_bytecount / 32); };
+
+        // Friends
+        friend class DSCStoOpenGL;
+
         // Header Variables
         const uint32_t       magic_value = 100;                          // d000  // 0x00
         uint16_t             num_meshes = 0;                                      // 0x04
@@ -62,13 +74,7 @@ namespace FileFormats::DSCS::GeomFile
         template<std::ios_base::openmode openmode_flag> void readWriteFooterData(ReadWriter<openmode_flag>&);
 
         template<std::ios_base::openmode openmode_flag> void doReadWrite(const std::string&);
-    public:
-        GeomReadWrite() {};
-        ~GeomReadWrite() {};
-        void read(const std::string& filepath) { doReadWrite<readmode>(filepath); };
-        void write(const std::string& filepath) { doReadWrite<writemode>(filepath); };
 
-        uint32_t getNumTextures() { return (uint32_t)(this->texture_names_section_bytecount / 32); };
 
 	};
 
