@@ -13,4 +13,15 @@ namespace FileFormats::DSCS::NameFile
     }
     template<>
     void NameReadWrite::initMemberVectorsIfRequired<writemode>() {}
+
+
+    template<> 
+    void NameReadWrite::checkThatThisMightActuallyBeANameFileBecauseThereIsNoMagicValue<readmode>(const std::string& filepath)
+    {
+        size_t filesize = std::filesystem::file_size(filepath);
+        assert(filesize > (this->bone_name_count + this->material_name_count));
+    }
+    template<>
+    void NameReadWrite::checkThatThisMightActuallyBeANameFileBecauseThereIsNoMagicValue<writemode>(const std::string & filepath)
+    {}
 }

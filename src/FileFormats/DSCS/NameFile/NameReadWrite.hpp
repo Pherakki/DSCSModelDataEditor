@@ -1,5 +1,6 @@
 #pragma once
 
+#include <filesystem>
 #include <string>
 #include <vector>
 
@@ -21,6 +22,7 @@ namespace FileFormats::DSCS::NameFile
 
         template<std::ios_base::openmode openmode_flag> void doReadWrite(const std::string& filepath);
         template<std::ios_base::openmode openmode_flag> void initMemberVectorsIfRequired();
+        template<std::ios_base::openmode openmode_flag> void checkThatThisMightActuallyBeANameFileBecauseThereIsNoMagicValue(const std::string& filepath);
     public:
         NameReadWrite() {};
         ~NameReadWrite() {};
@@ -44,6 +46,7 @@ namespace FileFormats::DSCS::NameFile
         readWriter.assertFilePointerIsAt(0);
         readWriter.readWriteData<uint32_t, LE>(bone_name_count);
         readWriter.readWriteData<uint32_t, LE>(material_name_count);
+        this->checkThatThisMightActuallyBeANameFileBecauseThereIsNoMagicValue<openmode_flag>(filepath);
 
         // Gives the name vectors and pointer vectors a size if we're in read mode
         initMemberVectorsIfRequired<openmode_flag>();
