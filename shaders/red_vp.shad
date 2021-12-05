@@ -1,5 +1,0 @@
-void std_VS(uniform float4x4 ModelViewProjection, in vec3 position, out vec4 oPosition : POSITION, out vec3 oColor : COLOR0)
-{
-  oPosition = mul(ModelViewProjection, vec4(position, 1.0));
-  oColor = vec3(1.0, 0.0, 0.0);
-}
