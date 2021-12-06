@@ -4,3 +4,8 @@ DSCSModelDataEditor is a <b>C++20</b> program to edit and visualise the data and
 Assigning Cg shaders to DSCS models is not an easy or elegant task with Blender, and so a second tool would be helpful in this regard. The current plan is to develop a Qt5 application with OpenGL.
 
 **This program is currently under development and is not usable for any practical purposes at this current time.**
+
+Camera Controls:
+- Hold RMB to rotate camera
+- Scroll mouse wheel to zoom in/out
+- Hold SHIFT + RMB to move camera
