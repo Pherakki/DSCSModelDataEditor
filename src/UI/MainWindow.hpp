@@ -14,6 +14,7 @@
 #include "EditorTabs/AnimationEditor.hpp"
 #include "../Commands/CommandManager.hpp"
 #include "../Commands/ICommand.hpp"
+#include "EditorTabs/ShaderEditors/ShaderFactory.hpp"
 
 class DSCSModelDataEditorWindow : public QMainWindow
 {
