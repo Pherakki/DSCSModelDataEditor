@@ -53,7 +53,8 @@ namespace DataBlocks::Animation
 			this->skel = &skel;
 		};
 		void deactivate() { this->anim = nullptr; this->is_active = false; }
-		void sampleNextFrame(std::vector<std::array<float, 4>>& quats, std::vector<std::array<float, 3>>& locs, std::vector<std::array<float, 3>>& scales, std::array<float, 0xA0 * 16>& shader_channels);
+		void sampleCurrentFrame(std::vector<std::array<float, 4>>& quats, std::vector<std::array<float, 3>>& locs, std::vector<std::array<float, 3>>& scales);
+		void sampleCurrentFrameUniforms(DataBlocks::Skeleton::OBJHASH_t material_hash, std::array<float, 0xA0 * 16>& shader_channels);
 	private:
 		AnimationDataBlock* anim = nullptr;
 		Skeleton::SkeletonDataBlock* skel = nullptr;
@@ -71,7 +72,7 @@ namespace DataBlocks::Animation
 		{ 
 			this->skel = &skel;
 		};
-		void sampleNextFrame(std::vector<std::array<float, 4>>& quats, std::vector<std::array<float, 3>>& locs, std::vector<std::array<float, 3>>& scales, std::array<float, 0xA0 * 16>& shader_channels);
+		void sampleCurrentFrame(std::vector<std::array<float, 4>>& quats, std::vector<std::array<float, 3>>& locs, std::vector<std::array<float, 3>>& scales, std::array<float, 0xA0 * 16>& shader_channels);
 	private:
 		AnimationDataBlock* anim = nullptr;
 		Skeleton::SkeletonDataBlock* skel = nullptr;
