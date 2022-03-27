@@ -127,7 +127,7 @@ namespace FileFormats::DSCS
 
 			// Init Shader Uniforms handlers
 			material->initShaderUniforms(uniform_dispatch_buffer);
-
+			material->name_hash = geom_mat.name_hash;
 			// Copy shader uniform data into the material
 			for (int j = 0; j < geom_mat.shader_uniforms.size(); ++j)
 			{
