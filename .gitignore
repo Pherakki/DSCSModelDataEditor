@@ -25,3 +25,10 @@
 *.exe
 *.out
 *.app
+
+# DME Stuff
+.vs/*
+data/*
+lib/Qt5/*
+out/*
+shaders/*
