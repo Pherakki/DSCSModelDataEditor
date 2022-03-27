@@ -9,6 +9,7 @@
 #include <QtWidgets/QPlainTextEdit>
 #include <QtWidgets/QTextEdit>
 #include <QtWidgets/QTabWidget>
+#include <QScrollArea>
 
 
 
@@ -97,6 +98,11 @@ DSCSModelDataEditorWindow::DSCSModelDataEditorWindow(QWidget* parent = Q_NULLPTR
 
     material_info_tab->addWidget(shader_editor);
     material_info_tab->addWidget(shader_uniforms);
+
+    auto scroll = new QScrollArea(this);
+    scroll->setWidgetResizable(true);
+    scroll->setWidget(new ShaderFactory);
+    material_info_tab->addWidget(scroll);
 
     // Syntax highlighting for Cg
     auto cg_highlighter_v = new cgSyntaxHighlighter(vertex_shader_textedit->document());
