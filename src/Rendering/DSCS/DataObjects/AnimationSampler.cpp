@@ -73,9 +73,8 @@ namespace DataBlocks::Animation
 		//}
 	}
 
-		//quats[1];
-		//locs[1];
-		//scales[1];
+	void AnimationSampler::tick()
+	{
 		// Let's say that we want to sample 30 frames every second
 		// We increment the current frame by 1/30 to to know where we should sample in the animation
 		// But, the animation frames are stored as integers, not as times. So we multiply through by the animation's conversion factor
@@ -122,6 +121,8 @@ namespace DataBlocks::Animation
 		}
 	}
 
+	void BaseAnimationSampler::tick()
+	{
 		// Let's say that we want to sample 30 frames every second
 		// We increment the current frame by 1/30 to to know where we should sample in the animation
 		// But, the animation frames are stored as integers, not as times. So we multiply through by the animation's conversion factor
