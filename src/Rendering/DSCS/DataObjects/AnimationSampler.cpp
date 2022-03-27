@@ -19,7 +19,7 @@ namespace DataBlocks::Animation
 	}
 
 
-	void AnimationSampler::sampleNextFrame(std::vector<std::array<float, 4>>& quats, std::vector<std::array<float, 3>>& locs, std::vector<std::array<float, 3>>& scales, std::array<float, 0xA0 * 16>& shader_channels)
+	void AnimationSampler::sampleCurrentFrame(std::vector<std::array<float, 4>>& quats, std::vector<std::array<float, 3>>& locs, std::vector<std::array<float, 3>>& scales)
 	{
 		if (!is_active)
 			return;
@@ -85,7 +85,7 @@ namespace DataBlocks::Animation
 	}
 
 
-	void BaseAnimationSampler::sampleNextFrame(std::vector<std::array<float, 4>>& quats, std::vector<std::array<float, 3>>& locs, std::vector<std::array<float, 3>>& scales, std::array<float, 0xA0 * 16>& shader_channels)
+	void BaseAnimationSampler::sampleCurrentFrame(std::vector<std::array<float, 4>>& quats, std::vector<std::array<float, 3>>& locs, std::vector<std::array<float, 3>>& scales, std::array<float, 0xA0 * 16>& shader_channels)
 	{
 		for (auto& kv : this->skel->getBoneDataBlocks())
 		{
@@ -120,6 +120,7 @@ namespace DataBlocks::Animation
 			auto& id = this->skel->getShaderChannelDataBlocks().at(kv.first).shader_uniform_id;
 			shader_channels[id] = get_interpolated_framevalue<float, &lerp>(kv.second, this->current_frame);
 		}
+	}
 
 		// Let's say that we want to sample 30 frames every second
 		// We increment the current frame by 1/30 to to know where we should sample in the animation
