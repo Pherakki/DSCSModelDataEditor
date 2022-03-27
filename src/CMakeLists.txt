@@ -36,7 +36,7 @@ add_executable (${PROJECT_NAME}
                 "UI/RenderWidget.cpp"
                 "UI/EditorTabs/SkeletonEditor.hpp" 
                 "UI/EditorTabs/AnimationEditor.cpp"
-                "UI/CgSyntaxHighlighter.hpp")
+                "UI/CgSyntaxHighlighter.hpp" "UI/EditorTabs/ShaderEditors/ShaderFactory.cpp")
 
 # Allow CMake to build libraries
 cmake_policy(SET CMP0079 NEW)
