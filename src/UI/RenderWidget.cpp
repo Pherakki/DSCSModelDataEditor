@@ -148,6 +148,8 @@ namespace CustomWidgets
 				mesh->checkGLError();
 				this->shader_backend->checkBackendForCgError("Finishing unbind...");
 			}
+			model.base_anim_sampler.tick();
+			model.anim_sampler.tick();
 		}
 
 	}
