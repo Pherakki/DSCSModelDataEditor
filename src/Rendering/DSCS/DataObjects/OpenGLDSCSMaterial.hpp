@@ -53,9 +53,9 @@ namespace Rendering::DSCS::DataObjects
 		void setUniformValue(uint8_t uniform_type_id, const std::array<float, 4>& uniform_data);
 		void initShaderUniforms(const std::array<float*, 0xA0>& uniform_dispatch_buffer);
 		void addOpenGLSetting(uint8_t setting_id,  std::array<uint32_t, 4> inp);
+		std::array<std::array<float, 4>, 0xA0> uniform_values;
 
 	private:
-		std::array<std::array<float, 4>, 0xA0> uniform_values;
 		std::vector<std::unique_ptr<ShaderUniforms::AbstractcgGLShaderUniform>> world_uniforms;
 		std::vector<std::unique_ptr<ShaderUniforms::AbstractcgGLShaderUniform>> material_uniforms;
 		std::map<uint8_t, std::unique_ptr<ShaderUniforms::AbstractcgGLTextureReference>> texture_refs;
