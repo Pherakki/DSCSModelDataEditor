@@ -130,6 +130,8 @@ namespace CustomWidgets
 				mesh->material->syncAnimationBuffer();
 				// handle animation
 				(*this->animation_buffer.Time)[0] = this->increment_test / 10;
+				//model.base_anim_sampler.sampleCurrentFrameUniforms(mesh->material->name_hash, this->animation_buffer.shader_uniform_buffer);
+				model.anim_sampler.sampleCurrentFrameUniforms(mesh->material->name_hash, this->animation_buffer.shader_uniform_buffer);
 				// upload
 				mesh->material->bind();
 				mesh->checkGLError();
