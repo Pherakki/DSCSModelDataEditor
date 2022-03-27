@@ -39,6 +39,7 @@ namespace Rendering::DSCS::DataObjects
 		// Need to map uniform IDs and opengl IDs to parameter names and functions
 		// Lots of these should be private and have getters
 		std::string name;
+		uint32_t name_hash;
 		std::shared_ptr<ShaderObjects::cgGLShaderObject> shader;
 		OpenGLErrorChecker errorChecker;
 
