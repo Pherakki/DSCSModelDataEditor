@@ -108,8 +108,8 @@ namespace CustomWidgets
 		for (auto& kv: this->models)
 		{
 			auto& model = kv.second;
-			model.base_anim_sampler.sampleNextFrame(model.skeleton.quat_buffer, model.skeleton.loc_buffer, model.skeleton.scale_buffer, this->animation_buffer.shader_uniform_buffer);
-			model.anim_sampler.sampleNextFrame(model.skeleton.quat_buffer, model.skeleton.loc_buffer, model.skeleton.scale_buffer, this->animation_buffer.shader_uniform_buffer);
+			model.base_anim_sampler.sampleCurrentFrame(model.skeleton.quat_buffer, model.skeleton.loc_buffer, model.skeleton.scale_buffer, this->animation_buffer.shader_uniform_buffer);
+			model.anim_sampler.sampleCurrentFrame(model.skeleton.quat_buffer, model.skeleton.loc_buffer, model.skeleton.scale_buffer);
 			model.skeleton.computeTransformBuffer();
 			auto& bones = model.skeleton.getBoneDataBlocks();
 			for (int j = 0; j < model.meshes.size(); j++)
