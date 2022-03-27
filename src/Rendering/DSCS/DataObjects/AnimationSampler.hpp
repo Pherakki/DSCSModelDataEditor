@@ -47,6 +47,7 @@ namespace DataBlocks::Animation
 	class AnimationSampler
 	{
 	public:
+		void tick();
 		void setAnim(AnimationDataBlock& anim) { this->anim = &anim; this->current_frame = 0.f; this->is_active = true; };
 		void setSkel(Skeleton::SkeletonDataBlock& skel)
 		{
@@ -67,6 +68,7 @@ namespace DataBlocks::Animation
 	class BaseAnimationSampler
 	{
 	public:
+		void tick();
 		void setAnim(AnimationDataBlock& anim) { this->anim = &anim; };
 		void setSkel(Skeleton::SkeletonDataBlock& skel) 
 		{ 
