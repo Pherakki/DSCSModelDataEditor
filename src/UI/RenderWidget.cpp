@@ -147,16 +147,6 @@ namespace CustomWidgets
 
 				mesh->checkGLError();
 				this->shader_backend->checkBackendForCgError("Finishing unbind...");
-
-				// Remove later... for bugfixing...
-				for (uint16_t idx = 0; idx < this->animation_buffer.matrix_palette_buffer.size(); ++idx)
-					this->animation_buffer.matrix_palette_buffer[idx] = 0.f;
-				for (uint16_t idx = 0; idx < this->animation_buffer.matrix_palette_buffer.size(); idx += 12)
-				{
-					this->animation_buffer.matrix_palette_buffer[idx] = 1.f;
-					this->animation_buffer.matrix_palette_buffer[idx + 5] = 1.f;
-					this->animation_buffer.matrix_palette_buffer[idx + 10] = 1.f;
-				}
 			}
 		}
 
