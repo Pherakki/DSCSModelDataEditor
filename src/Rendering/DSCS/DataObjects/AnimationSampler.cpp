@@ -29,12 +29,7 @@ namespace DataBlocks::Animation
 		for (auto& kv : this->anim->getStaticLocations())
 			locs[kv.first] = sumVects(locs[kv.first], kv.second);
 		for (auto& kv : this->anim->getStaticScales())
-			scales[kv.first] = sumVects(scales[kv.first], kv.second);
-		for (auto& kv : this->anim->getStaticShaderChannels())
-		{
-			auto& id = this->skel->getShaderChannelDataBlocks().at(kv.first).shader_uniform_id;
-			shader_channels[id] = kv.second;
-		}
+			scales[kv.first] = mulVects(scales[kv.first], kv.second);
 
 		// Wouldn't it be nice if the template parameters could just be automatically deduced by passing the function as a parameter?
 		// Sigh...
@@ -43,7 +38,8 @@ namespace DataBlocks::Animation
 		for (auto& kv : this->anim->getAnimatedLocations())
 			locs[kv.first] = sumVects(locs[kv.first], get_interpolated_framevalue<std::array<float, 3>, &lerp>(kv.second, this->current_frame));
 		for (auto& kv : this->anim->getAnimatedScales())
-			scales[kv.first] = sumVects(scales[kv.first], get_interpolated_framevalue<std::array<float, 3>, &lerp>(kv.second, this->current_frame));
+			scales[kv.first] = mulVects(scales[kv.first], get_interpolated_framevalue<std::array<float, 3>, &lerp>(kv.second, this->current_frame));
+	}
 		for (auto& kv : this->anim->getAnimatedShaderChannels())
 		{
 			auto& id = this->skel->getShaderChannelDataBlocks().at(kv.first).shader_uniform_id;
