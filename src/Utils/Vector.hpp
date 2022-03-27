@@ -36,6 +36,15 @@ std::array<T, N> sumVects(const std::array<T, N>& vec_1, const std::array<T, N>&
 	return retval;
 }
 
+template<typename T, size_t N>
+std::array<T, N> mulVects(const std::array<T, N>& vec_1, const std::array<T, N>& vec_2)
+{
+	std::array<T, N> retval;
+	for (size_t i = 0; i < N; ++i)
+		retval[i] = vec_1[i] * vec_2[i];
+	return retval;
+}
+
 
 
 std::array<float, 3> cross(const std::array<float, 3>& vec_1, const std::array<float, 3>& vec_2);
