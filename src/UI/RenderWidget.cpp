@@ -49,6 +49,12 @@ namespace CustomWidgets
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 		glEnable(GL_CULL_FACE);
+		std::string test_path = "data/pc002";
+		std::string anim_path2 = test_path;
+		anim_path2 += "_bn01.anim";
+
+		this->loadModel(test_path);
+		this->loadAnim(anim_path2);
 	}
 
 	void RenderWidget::loadModel(const std::string& path)
