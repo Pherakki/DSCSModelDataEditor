@@ -25,7 +25,7 @@ namespace CustomWidgets
 {
 	class RenderWidget : public QOpenGLWidget, protected QOpenGLFunctions
 	{
-		// Q_OBJECT;
+		Q_OBJECT;
 	public:
 		RenderWidget(QWidget* parent);
 		~RenderWidget();

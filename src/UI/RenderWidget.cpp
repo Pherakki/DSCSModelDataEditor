@@ -159,4 +159,5 @@ namespace CustomWidgets
 		}
 
 	}
-}
+}}
+#include "moc_RenderWidget.cpp"
