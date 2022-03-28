@@ -64,6 +64,10 @@ namespace CustomWidgets
 		auto& model = models.at(0);
 		model.base_anim_sampler.setAnim(model.base_animation);
 		model.base_anim_sampler.setSkel(model.skeleton);
+
+		// This needs to go into a "material selected" function
+		emit this->vertexShaderTextChanged(QString::fromStdString(models.at(0).materials.at(0)->shader->vertex_source));
+		emit this->fragmentShaderTextChanged(QString::fromStdString(models.at(0).materials.at(0)->shader->fragment_source));
 	}
 
 
@@ -159,5 +163,6 @@ namespace CustomWidgets
 		}
 
 	}
-}}
+}
+
 #include "moc_RenderWidget.cpp"

@@ -72,10 +72,10 @@ DSCSModelDataEditorWindow::DSCSModelDataEditorWindow(QWidget* parent = Q_NULLPTR
     shader_editor_layout->setContentsMargins({ 0, 0, 0, 0 });
 
     auto shader_editor_textedits = new QTabWidget();
-    auto vertex_shader_textedit = new QPlainTextEdit();
-    vertex_shader_textedit->setLineWrapMode(QPlainTextEdit::LineWrapMode::NoWrap);
-    auto fragment_shader_textedit = new QPlainTextEdit();
-    fragment_shader_textedit->setLineWrapMode(QPlainTextEdit::LineWrapMode::NoWrap);
+    this->vertex_shader_textedit = new QPlainTextEdit();
+    this->vertex_shader_textedit->setLineWrapMode(QPlainTextEdit::LineWrapMode::NoWrap);
+    this->fragment_shader_textedit = new QPlainTextEdit();
+    this->fragment_shader_textedit->setLineWrapMode(QPlainTextEdit::LineWrapMode::NoWrap);
     auto compile_button = new QPushButton("Compile");
     shader_editor_textedits->addTab(vertex_shader_textedit, "Vertex");
     shader_editor_textedits->addTab(fragment_shader_textedit, "Fragment");
@@ -105,8 +105,8 @@ DSCSModelDataEditorWindow::DSCSModelDataEditorWindow(QWidget* parent = Q_NULLPTR
     material_info_tab->addWidget(scroll);
 
     // Syntax highlighting for Cg
-    auto cg_highlighter_v = new cgSyntaxHighlighter(vertex_shader_textedit->document());
-    auto cg_highlighter_f = new cgSyntaxHighlighter(fragment_shader_textedit->document());
+    auto cg_highlighter_v = new cgSyntaxHighlighter(this->vertex_shader_textedit->document());
+    auto cg_highlighter_f = new cgSyntaxHighlighter(this->fragment_shader_textedit->document());
 
     // Editor setup
     QFont font;
@@ -114,8 +114,8 @@ DSCSModelDataEditorWindow::DSCSModelDataEditorWindow(QWidget* parent = Q_NULLPTR
     font.setStyleHint(QFont::Monospace);
     font.setFixedPitch(true);
     font.setPointSize(10);
-    vertex_shader_textedit->setFont(font);
-    fragment_shader_textedit->setFont(font);
+    this->vertex_shader_textedit->setFont(font);
+    this->fragment_shader_textedit->setFont(font);
 
     // https://stackoverflow.com/a/54605709
     static constexpr int tab_width_char = 4;
@@ -143,6 +143,10 @@ DSCSModelDataEditorWindow::DSCSModelDataEditorWindow(QWidget* parent = Q_NULLPTR
     this->resize(QDesktopWidget().availableGeometry(this).size() * 0.7);
 
     this->initToolbar();
+
+    // Set up slots
+    connect(this->render_widget, &CustomWidgets::RenderWidget::vertexShaderTextChanged, this, &DSCSModelDataEditorWindow::setVertexShaderText);
+    connect(this->render_widget, &CustomWidgets::RenderWidget::fragmentShaderTextChanged, this, &DSCSModelDataEditorWindow::setFragmentShaderText);
 }
 
 void DSCSModelDataEditorWindow::openLoadModelDialog()
@@ -196,5 +200,14 @@ void DSCSModelDataEditorWindow::initToolbar()
     aboutQtAct->setStatusTip(tr("Show the Qt library's About box"));
 }
 
+void DSCSModelDataEditorWindow::setVertexShaderText(const QString& shader_text)
+{
+    this->vertex_shader_textedit->setPlainText(shader_text);
+}
+
+void DSCSModelDataEditorWindow::setFragmentShaderText(const QString& shader_text)
+{
+    this->fragment_shader_textedit->setPlainText(shader_text);
+}
 
 #include "moc_MainWindow.cpp"

@@ -32,6 +32,10 @@ namespace CustomWidgets
 		void loadModel(const std::string& path);
 		void loadAnim(const std::string& anim_path);
 		ModelList_t models;
+	signals:
+		void vertexShaderTextChanged(const QString& vertexShaderText);
+	signals:
+		void fragmentShaderTextChanged(const QString& fragmentShaderText);
 	private:
 		QTimer clock;
 		Camera camera;
@@ -46,7 +50,7 @@ namespace CustomWidgets
 		std::unordered_map<std::string, std::shared_ptr<Rendering::ShaderObjects::cgGLShaderObject>> shader_library;
 
 		
-	//protected slots:
+	protected slots:
 		void update();
 
 	protected:
