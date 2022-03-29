@@ -178,7 +178,7 @@ inline std::array<float, 12> invertRotationLocationMatrix(const std::array<float
 }
 
 // Matrix generators
-std::array<float, 9> makeRotationMatrix(std::array<float, 3> position, std::array<float, 3> target, std::array<float, 3> up)
+std::array<float, 9> makeRotationMatrix(const std::array<float, 3>& position, const std::array<float, 3>& target, const std::array<float, 3>& up)
 {
 	std::array<float, 3> z = normalise<3>({ position[0] - target[0], position[1] - target[1], position[2] - target[2] });
 	std::array<float, 3> x = normalise<3>(cross(up, z));
@@ -192,7 +192,7 @@ std::array<float, 9> makeRotationMatrix(std::array<float, 3> position, std::arra
 	};
 }
 
-std::array<float, 16> makeViewMatrix(std::array<float, 3> position, std::array<float, 3> target, std::array<float, 3> up)
+std::array<float, 16> makeViewMatrix(const std::array<float, 3>& position, const std::array<float, 3>& target, const std::array<float, 3>& up)
 {
 	std::array<float, 3> z = normalise<3>({ position[0] - target[0], position[1] - target[1], position[2] - target[2] });
 	std::array<float, 3> x = normalise<3>(cross(up, z));
