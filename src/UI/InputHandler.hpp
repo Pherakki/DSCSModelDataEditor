@@ -26,6 +26,7 @@ namespace Input
 		// Various actions - should make these configurable
 		bool shouldRotateCamera()    { return this->isKeyActive(Qt::RightButton); }
 		bool shouldTranslateCamera() { return (this->isKeyActive(Qt::Key_Shift) && this->isKeyActive(Qt::RightButton)); }
+		bool attemptedSelect()       { return this->isKeyActive(Qt::LeftButton); }
 	private:
 		QPoint mouse_delta;
 		QPoint mouse_position;
