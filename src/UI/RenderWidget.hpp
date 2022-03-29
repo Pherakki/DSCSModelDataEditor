@@ -12,7 +12,7 @@
 #include "Types.hpp"
 #include "../Rendering/DSCS/Renderer.hpp"
 #include "../FileFormats/DSCS/DSCStoOpenGL.hpp"
-#include "../Rendering/DSCS/DataObjects/OpenGLDSCSTexture.hpp"
+#include "../Rendering/DSCS/DataObjects/OpenGLDSCSModel.hpp"
 #include "../Rendering/DSCS/ShaderSystem/cgGL/cgGLShaderBackend.hpp"
 #include "../Rendering/DSCS/ShaderSystem/cgGL/cgGLShaderObject.hpp"
 #include "../Utils/Matrix.hpp"
@@ -32,6 +32,12 @@ namespace CustomWidgets
 		void loadModel(const std::string& path);
 		void loadAnim(const std::string& anim_path);
 		ModelList_t models;
+		std::shared_ptr<Rendering::DSCS::DataObjects::OpenGLDSCSModel> selected_model;
+		std::shared_ptr<Rendering::DSCS::DataObjects::OpenGLDSCSMesh> selected_mesh;
+		std::shared_ptr<Rendering::DSCS::DataObjects::OpenGLDSCSMaterial> selected_material;
+
+		void setSelectedMesh(std::shared_ptr<Rendering::DSCS::DataObjects::OpenGLDSCSMesh> mesh);
+		void setSelectedMaterial(std::shared_ptr<Rendering::DSCS::DataObjects::OpenGLDSCSMaterial> material);
 	signals:
 		void vertexShaderTextChanged(const QString& vertexShaderText);
 	signals:
