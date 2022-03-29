@@ -11,7 +11,8 @@ namespace Input
 	class InputHandler
 	{
 	public:
-		QPoint getMouseDelta() { return this->mouse_delta; }
+		const QPoint& getMouseDelta() { return this->mouse_delta; }
+		const QPoint& getMousePos()  { return this->mouse_position; }
 		void updateMousePosition(QPoint pos) { this->mouse_delta = pos - this->mouse_position; this->mouse_position = pos; };
 		void registerKey(int key_id) { this->active_keys.push_back(key_id); };
 		void unregisterKey(int key_id) { this->active_keys.erase(std::remove_if(this->active_keys.begin(), this->active_keys.end(), [key_id](int const& key) { return key == key_id; }), this->active_keys.end());; };

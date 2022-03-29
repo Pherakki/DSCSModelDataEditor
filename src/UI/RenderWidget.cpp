@@ -96,15 +96,18 @@ namespace CustomWidgets
 	void RenderWidget::update()
 	{
 		this->registerMousePosition();
-
-		if (this->input_handler.shouldTranslateCamera())
+		if (this->input_handler.attemptedSelect())
 		{
-			auto mdelta = this->input_handler.getMouseDelta();
+			auto& mouse_pos = this->input_handler.getMousePos();
+		}
+		else if (this->input_handler.shouldTranslateCamera())
+		{
+			auto& mdelta = this->input_handler.getMouseDelta();
 			this->camera.translate(mdelta.x(), mdelta.y());
 		}
 		else if (this->input_handler.shouldRotateCamera())
 		{
-			auto mdelta = this->input_handler.getMouseDelta();
+			auto& mdelta = this->input_handler.getMouseDelta();
 			this->camera.incAltAzi(mdelta.x(), mdelta.y());
 		}
 
