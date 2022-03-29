@@ -14,13 +14,6 @@ namespace CustomWidgets
 		// Set up camera
 		this->camera.setPosition({ 0.0f, 0.0f, 3.f });
 
-		// ViewInverse
-		this->animation_buffer.shader_uniform_buffer[0x40] = 1.f;
-		this->animation_buffer.shader_uniform_buffer[0x45] = 1.f;
-		this->animation_buffer.shader_uniform_buffer[0x47] = -1.f;
-		this->animation_buffer.shader_uniform_buffer[0x4A] = 1.f;
-		this->animation_buffer.shader_uniform_buffer[0x4A] = -3.f;
-
 		// DirLampDir01
 		this->animation_buffer.shader_uniform_buffer[0xB0] = 1.f;
 		this->animation_buffer.shader_uniform_buffer[0xB1] = 0.f;
@@ -118,10 +111,9 @@ namespace CustomWidgets
 		this->animation_buffer.View->set(view_matrix);
 		this->animation_buffer.ViewProj->set(viewproj);
 		this->animation_buffer.CameraPosition->set(this->camera.getPosition());
-		// Need to calculate ViewInverse here too
+		this->animation_buffer.ViewInverse->set(invertViewMatrix(view_matrix));
 
 		this->increment_test += targetFrameUpdateTime;
-		//this->paintGL();
 		this->repaint();
 	}
 
