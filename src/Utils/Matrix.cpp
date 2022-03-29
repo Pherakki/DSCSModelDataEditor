@@ -207,14 +207,14 @@ std::array<float, 16> makeViewMatrix(std::array<float, 3> position, std::array<f
 	};
 }
 
-std::array<float, 16> invertViewMatrix(const std::array<float, 16>& view)
+std::array<float, 16> invertViewMatrix(const std::array<float, 16>& view, const std::array<float, 3>& position)
 {
 	return
 	{
-		  view[0],   view[1],   view[2],  view[3],
-		  view[4],   view[5],   view[6],  view[7],
-		  view[8],   view[9],  view[10], view[11],
-		-view[12], -view[13], -view[14], view[15]
+		    view[0],     view[4],     view[8],  view[3],
+		    view[1],     view[5],     view[9],  view[7],
+		    view[2],     view[6],    view[10], view[11],
+	    position[0], position[1], position[2], view[15]
 	};
 }
 
