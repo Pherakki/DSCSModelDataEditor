@@ -92,6 +92,17 @@ namespace CustomWidgets
 		if (this->input_handler.attemptedSelect())
 		{
 			auto& mouse_pos = this->input_handler.getMousePos();
+			float x = (2.0f * mouse_pos.x()) / this->width() - 1.0f;
+			float y = 1.0f - (2.0f * mouse_pos.y()) / this->height();
+
+			auto homogeneous_clip_ray = std::array<float, 4>{x, y, -1.f, 1.f};
+			std::array<float, 16> view_inverse;
+
+			auto inv_proj_matrix = inversePerspectiveMatrix(this->camera.fov, this->aspect_ratio, this->camera.zNear, this->camera.zFar);
+			auto eye_ray = genericMatrixProduct<4, 4, 1>(inv_proj_matrix, homogeneous_clip_ray);
+
+			memcpy(view_inverse.data(), &(*this->animation_buffer.ViewInverse)[0], sizeof(float) * 16);
+			auto world_ray = genericMatrixProduct<4, 4, 1>(view_inverse, eye_ray);
 		}
 		else if (this->input_handler.shouldTranslateCamera())
 		{
