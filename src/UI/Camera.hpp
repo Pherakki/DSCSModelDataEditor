@@ -11,7 +11,7 @@ class Camera
 {
 public:
 	float cam_ang_speed = pi / 400;
-	float cam_cart_speed = 0.0005f;
+	float cam_cart_speed = 0.0005f; // Need a factor in here for the screen size
 	float fov = pi * 45.f / 180.f;
 	float zNear = 0.1f;
 	float zFar = 1000.f;
