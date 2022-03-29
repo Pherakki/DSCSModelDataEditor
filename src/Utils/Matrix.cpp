@@ -232,6 +232,23 @@ std::array<float, 16> perspectiveMatrix(float fov, float aspect, float zNear, fl
 	};
 }
 
+std::array<float, 16> inversePerspectiveMatrix(float fov, float aspect, float zNear, float zFar)
+{
+	float y_scale = cos(fov / 2) / sin(fov / 2);
+	float x_scale = y_scale / aspect;
+	float zSum = zNear - zFar;
+	float zDiff = zNear - zFar;
+	float zProd = (2 * zFar * zNear);
+	return
+	{
+		1/x_scale,          0,  0,             0,
+			     0, 1/y_scale,  0,             0,
+			     0,         0,  0, zDiff / zProd,
+			     0,         0, -1,  zSum / zProd
+	};
+}
+
+
 //template <typename valType>
 //GLM_FUNC_QUALIFIER detail::tmat4x4<valType> ortho
 //(

@@ -26,3 +26,4 @@ std::array<float, 9> makeRotationMatrix(std::array<float, 3> position, std::arra
 std::array<float, 16> makeViewMatrix(std::array<float, 3> position, std::array<float, 3> target, std::array<float, 3> up);
 std::array<float, 16> invertViewMatrix(const std::array<float, 16>& view);
 std::array<float, 16> perspectiveMatrix(float fov, float aspect, float zNear, float zFar);
+std::array<float, 16> inversePerspectiveMatrix(float fov, float aspect, float zNear, float zFar);
