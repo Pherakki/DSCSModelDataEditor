@@ -222,13 +222,15 @@ std::array<float, 16> perspectiveMatrix(float fov, float aspect, float zNear, fl
 {
 	float y_scale = cos(fov / 2) / sin(fov / 2);
 	float x_scale = y_scale / aspect;
+	float zSum = zNear - zFar;
 	float zDiff = zNear - zFar;
+	float zProd = (2 * zFar * zNear);
 	return
 	{
-		x_scale,       0,                        0,  0,
-			   0, y_scale,                        0,  0,
-			   0,       0,   (zFar + zNear) / zDiff, -1,
-			   0,       0, 2 * zFar * zNear / zDiff,  0
+		x_scale,       0,              0,  0,
+			   0, y_scale,             0,  0,
+			   0,       0,  zSum / zDiff, -1,
+			   0,       0, zProd / zDiff,  0
 	};
 }
 
