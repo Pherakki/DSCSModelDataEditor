@@ -111,7 +111,7 @@ namespace CustomWidgets
 		this->animation_buffer.View->set(view_matrix);
 		this->animation_buffer.ViewProj->set(viewproj);
 		this->animation_buffer.CameraPosition->set(this->camera.getPosition());
-		this->animation_buffer.ViewInverse->set(invertViewMatrix(view_matrix));
+		this->animation_buffer.ViewInverse->set(invertViewMatrix(view_matrix, this->camera.getPosition()));
 
 		this->increment_test += targetFrameUpdateTime;
 		this->repaint();
