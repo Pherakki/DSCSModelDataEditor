@@ -89,7 +89,7 @@ namespace CustomWidgets
 	void RenderWidget::update()
 	{
 		this->registerMousePosition();
-		if (this->input_handler.attemptedSelect())
+/*		if (this->input_handler.attemptedSelect())
 		{
 			auto& mouse_pos = this->input_handler.getMousePos();
 			float x = (2.0f * mouse_pos.x()) / this->width() - 1.0f;
@@ -104,7 +104,7 @@ namespace CustomWidgets
 			memcpy(view_inverse.data(), &(*this->animation_buffer.ViewInverse)[0], sizeof(float) * 16);
 			auto world_ray = genericMatrixProduct<4, 4, 1>(view_inverse, eye_ray);
 		}
-		else if (this->input_handler.shouldTranslateCamera())
+		else */if (this->input_handler.shouldTranslateCamera())
 		{
 			auto& mdelta = this->input_handler.getMouseDelta();
 			this->camera.translate(mdelta.x(), mdelta.y());
