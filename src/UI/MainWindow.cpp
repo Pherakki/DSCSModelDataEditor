@@ -42,8 +42,8 @@ DSCSModelDataEditorWindow::DSCSModelDataEditorWindow(QWidget* parent = Q_NULLPTR
     render_timeline_splitter->addWidget(render_widget);
     render_timeline_splitter->addWidget(animation_timeline);
     render_timeline_splitter->setOrientation(Qt::Vertical);
-    render_timeline_splitter->setSizes({ static_cast<int>(0.9*render_timeline_splitter->size().height()), 
-                                         static_cast<int>(0.1*render_timeline_splitter->size().height()) });
+    render_timeline_splitter->setSizes({ static_cast<int>(0.9f*render_timeline_splitter->size().height()), 
+                                         static_cast<int>(0.1f*render_timeline_splitter->size().height()) });
     left_pane_layout->addWidget(render_timeline_splitter);
     left_pane->setLayout(left_pane_layout);
 
