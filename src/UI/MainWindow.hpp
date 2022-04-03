@@ -13,6 +13,7 @@
 
 #include "RenderWidget.hpp"
 #include "EditorTabs/AnimationEditor.hpp"
+#include "EditorTabs/MeshEditor.hpp"
 #include "../Commands/CommandManager.hpp"
 #include "../Commands/ICommand.hpp"
 #include "EditorTabs/ShaderEditors/ShaderFactory.hpp"

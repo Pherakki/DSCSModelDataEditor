@@ -51,7 +51,7 @@ DSCSModelDataEditorWindow::DSCSModelDataEditorWindow(QWidget* parent = Q_NULLPTR
 
     // Create tabs for info view
     auto info_editor = new QTabWidget();
-    auto mesh_info_tab = new QWidget();
+    auto mesh_info_tab = new MeshEditorTab(this->render_widget->selected_model, this->render_widget->selected_mesh, this->render_widget->selected_material, this);
     auto skeleton_info_tab = new QWidget();
 
     auto material_info_tab = new QSplitter();
