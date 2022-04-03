@@ -32,9 +32,9 @@ namespace CustomWidgets
 		void loadModel(const std::string& path);
 		void loadAnim(const std::string& anim_path);
 		ModelList_t models;
-		std::shared_ptr<Rendering::DSCS::DataObjects::OpenGLDSCSModel> selected_model;
-		std::shared_ptr<Rendering::DSCS::DataObjects::OpenGLDSCSMesh> selected_mesh;
-		std::shared_ptr<Rendering::DSCS::DataObjects::OpenGLDSCSMaterial> selected_material;
+		std::shared_ptr<Rendering::DSCS::DataObjects::OpenGLDSCSModel> selected_model = nullptr;
+		std::shared_ptr<Rendering::DSCS::DataObjects::OpenGLDSCSMesh> selected_mesh = nullptr;
+		std::shared_ptr<Rendering::DSCS::DataObjects::OpenGLDSCSMaterial> selected_material = nullptr;
 
 		void setSelectedMesh(std::shared_ptr<Rendering::DSCS::DataObjects::OpenGLDSCSMesh> mesh);
 		void setSelectedMaterial(std::shared_ptr<Rendering::DSCS::DataObjects::OpenGLDSCSMaterial> material);
