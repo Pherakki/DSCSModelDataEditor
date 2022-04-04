@@ -17,16 +17,10 @@ private:
     typedef Rendering::DSCS::DataObjects::OpenGLDSCSMaterial Material;
     typedef std::shared_ptr<Material> MaterialPtr;
 
-    ModelPtr    selected_model;
-    MeshPtr     selected_mesh;
-    MaterialPtr selected_material;
+    ModelPtr    selected_model = nullptr;
 
 public:
-    MeshEditorTab(ModelPtr selected_model, MeshPtr selected_mesh, MaterialPtr selected_material, QWidget* parent = Q_NULLPTR)
-        : QWidget(parent)
-        , selected_model   { selected_model }
-        , selected_mesh    { selected_mesh }
-        , selected_material{ selected_material } 
+    MeshEditorTab(QWidget* parent = Q_NULLPTR) : QWidget(parent)
     {
         auto mesh_list = new QListWidget(this);
     };
