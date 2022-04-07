@@ -19,7 +19,7 @@
 
 
 // Need to move most of this into the Renderer at some point, and move the AnimationBuffer code from there into a proper place...
-
+// This might be useful for having the Renderer be independent of Qt5 code: https://stackoverflow.com/questions/33635001/qopenglwidget-with-shared-opengl-context
 
 namespace CustomWidgets
 {
