@@ -18,7 +18,7 @@ namespace Rendering::DSCS::DataObjects
 		OpenGLDSCSModel() {};
 
 		DataBlocks::Skeleton::SkeletonDataBlock skeleton;
-		std::vector<std::unique_ptr<OpenGLDSCSMesh>> meshes;
+		std::vector<std::shared_ptr<OpenGLDSCSMesh>> meshes;
 		std::vector<std::shared_ptr<OpenGLDSCSMaterial>> materials;
 
 		DataBlocks::Animation::AnimationDataBlock base_animation;
