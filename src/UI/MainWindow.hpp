@@ -39,6 +39,8 @@ private:
     void initToolbar();
     void loadModel(const QString& fileName);
     void loadAnim(const QString& fileName);
+signals:
+    void selectedModelUpdated(std::shared_ptr<Rendering::DSCS::DataObjects::OpenGLDSCSModel> model_ptr);
 
 };
 

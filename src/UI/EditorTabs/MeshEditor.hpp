@@ -18,10 +18,32 @@ private:
     typedef std::shared_ptr<Material> MaterialPtr;
 
     ModelPtr    selected_model = nullptr;
+    QListWidget* mesh_list;
 
 public:
     MeshEditorTab(QWidget* parent = Q_NULLPTR) : QWidget(parent)
     {
-        auto mesh_list = new QListWidget(this);
+        this->mesh_list = new QListWidget(this);
     };
+
+
+    void populateList()
+    {
+        this->mesh_list->clear();
+        if (this->selected_model)
+        {
+            for (size_t i = 0; i < this->selected_model->meshes.size(); ++i)
+            {
+                auto list_item = new QListWidgetItem();
+                list_item->setData(Qt::UserRole, i);
+                this->mesh_list->addItem(list_item);
+            }
+        }
+    }
+public slots:
+    void updateSelectedModel(ModelPtr model_ptr)
+    {
+        this->selected_model = model_ptr;
+        this->populateList();
+    }
 };

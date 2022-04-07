@@ -147,6 +147,7 @@ DSCSModelDataEditorWindow::DSCSModelDataEditorWindow(QWidget* parent = Q_NULLPTR
     // Set up slots
     connect(this->render_widget, &CustomWidgets::RenderWidget::vertexShaderTextChanged, this, &DSCSModelDataEditorWindow::setVertexShaderText);
     connect(this->render_widget, &CustomWidgets::RenderWidget::fragmentShaderTextChanged, this, &DSCSModelDataEditorWindow::setFragmentShaderText);
+    connect(this, &DSCSModelDataEditorWindow::selectedModelUpdated, mesh_info_tab, &MeshEditorTab::updateSelectedModel);
 }
 
 void DSCSModelDataEditorWindow::openLoadModelDialog()
@@ -180,6 +181,7 @@ void DSCSModelDataEditorWindow::loadModel(const QString& fileName)
 {
     auto model = this->render_widget->loadModel(fileName.toStdString());
     this->render_widget->selected_model = model;
+    emit this->selectedModelUpdated(model);
 }
 
 void DSCSModelDataEditorWindow::loadAnim(const QString& fileName)
