@@ -33,5 +33,5 @@ void AnimationEditorTab::setModel(ModelID_t id)
 void AnimationEditorTab::populateBoneViews()
 {
 	auto& model = this->models.at(this->id);
-	auto& bones = model.skeleton.getBoneDataBlocks();
+	auto& bones = model->skeleton.getBoneDataBlocks();
 }

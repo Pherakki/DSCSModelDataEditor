@@ -26,10 +26,11 @@ namespace CustomWidgets
 	class RenderWidget : public QOpenGLWidget, protected QOpenGLFunctions
 	{
 		Q_OBJECT;
+		typedef std::shared_ptr<Rendering::DSCS::DataObjects::OpenGLDSCSModel> ModelPtr;
 	public:
 		RenderWidget(QWidget* parent);
 		~RenderWidget();
-		void loadModel(const std::string& path);
+		ModelPtr loadModel(const std::string& path);
 		void loadAnim(const std::string& anim_path);
 		ModelList_t models;
 		std::shared_ptr<Rendering::DSCS::DataObjects::OpenGLDSCSModel> selected_model = nullptr;

@@ -178,7 +178,8 @@ void DSCSModelDataEditorWindow::openLoadModelDialog()
 
 void DSCSModelDataEditorWindow::loadModel(const QString& fileName)
 {
-    this->render_widget->loadModel(fileName.toStdString());
+    auto model = this->render_widget->loadModel(fileName.toStdString());
+    this->render_widget->selected_model = model;
 }
 
 void DSCSModelDataEditorWindow::loadAnim(const QString& fileName)

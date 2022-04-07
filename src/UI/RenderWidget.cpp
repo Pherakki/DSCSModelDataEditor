@@ -1,5 +1,8 @@
 #include "RenderWidget.hpp"
 
+typedef Rendering::DSCS::DataObjects::OpenGLDSCSModel Model;
+typedef std::shared_ptr<Model> ModelPtr;
+
 namespace CustomWidgets
 {
 	// Constructor
@@ -50,22 +53,23 @@ namespace CustomWidgets
 		this->loadAnim(anim_path2);
 	}
 
-	void RenderWidget::loadModel(const std::string& path)
+	ModelPtr RenderWidget::loadModel(const std::string& path)
 	{
 		this->models.clear();
-		models.emplace(0, FileFormats::DSCS::DSCStoOpenGL(path, this->shader_backend, this->animation_buffer.uniform_dispatch_buffer, this->texture_library, this->shader_library));
+		models.emplace(0, std::make_shared<Model>(FileFormats::DSCS::DSCStoOpenGL(path, this->shader_backend, this->animation_buffer.uniform_dispatch_buffer, this->texture_library, this->shader_library)));
 		auto& model = models.at(0);
-		model.base_anim_sampler.setAnim(model.base_animation);
-		model.base_anim_sampler.setSkel(model.skeleton);
+		model->base_anim_sampler.setAnim(model->base_animation);
+		model->base_anim_sampler.setSkel(model->skeleton);
+		return model;
 	}
 
 
 	void RenderWidget::loadAnim(const std::string& anim_path)
 	{
 		auto& model = this->models.at(0);
-		FileFormats::DSCS::loadAnimation<false>(model, model.skeleton.getShaderChannelDataBlocks().size(), anim_path);
-		model.anim_sampler.setAnim(model.animations[0]);
-		model.anim_sampler.setSkel(model.skeleton);
+		FileFormats::DSCS::loadAnimation<false>(*model, model->skeleton.getShaderChannelDataBlocks().size(), anim_path);
+		model->anim_sampler.setAnim(model->animations[0]);
+		model->anim_sampler.setSkel(model->skeleton);
 	}
 
 	RenderWidget::~RenderWidget()
@@ -133,13 +137,14 @@ namespace CustomWidgets
 		for (auto& kv: this->models)
 		{
 			auto& model = kv.second;
-			model.base_anim_sampler.sampleCurrentFrame(model.skeleton.quat_buffer, model.skeleton.loc_buffer, model.skeleton.scale_buffer, this->animation_buffer.shader_uniform_buffer);
-			model.anim_sampler.sampleCurrentFrame(model.skeleton.quat_buffer, model.skeleton.loc_buffer, model.skeleton.scale_buffer);
-			model.skeleton.computeTransformBuffer();
-			auto& bones = model.skeleton.getBoneDataBlocks();
-			for (int j = 0; j < model.meshes.size(); j++)
+			auto& skeleton = model->skeleton;
+			model->base_anim_sampler.sampleCurrentFrame(skeleton.quat_buffer, skeleton.loc_buffer, skeleton.scale_buffer, this->animation_buffer.shader_uniform_buffer);
+			model->anim_sampler.sampleCurrentFrame(skeleton.quat_buffer, skeleton.loc_buffer, skeleton.scale_buffer);
+			model->skeleton.computeTransformBuffer();
+			auto& bones = model->skeleton.getBoneDataBlocks();
+			for (int j = 0; j < model->meshes.size(); j++)
 			{
-				auto& mesh = model.meshes[j];
+				auto& mesh = model->meshes[j];
 				mesh->checkGLError();
 
 				// Set up matrix palette
@@ -147,7 +152,7 @@ namespace CustomWidgets
 				{
 					for (uint8_t k = 0; k < 12; ++k)
 					{
-						this->animation_buffer.matrix_palette_buffer[12 * idx + k] = model.skeleton.transform_buffer[mesh->used_bones[idx]][k];
+						this->animation_buffer.matrix_palette_buffer[12 * idx + k] = model->skeleton.transform_buffer[mesh->used_bones[idx]][k];
 					}
 				}
 
@@ -156,7 +161,7 @@ namespace CustomWidgets
 				// handle animation
 				(*this->animation_buffer.Time)[0] = this->increment_test / 10;
 				//model.base_anim_sampler.sampleCurrentFrameUniforms(mesh->material->name_hash, this->animation_buffer.shader_uniform_buffer);
-				model.anim_sampler.sampleCurrentFrameUniforms(mesh->material->name_hash, this->animation_buffer.shader_uniform_buffer);
+				model->anim_sampler.sampleCurrentFrameUniforms(mesh->material->name_hash, this->animation_buffer.shader_uniform_buffer);
 				// upload
 				mesh->material->bind();
 				mesh->checkGLError();
@@ -173,8 +178,8 @@ namespace CustomWidgets
 				mesh->checkGLError();
 				this->shader_backend->checkBackendForCgError("Finishing unbind...");
 			}
-			model.base_anim_sampler.tick();
-			model.anim_sampler.tick();
+			model->base_anim_sampler.tick();
+			model->anim_sampler.tick();
 		}
 
 	}
