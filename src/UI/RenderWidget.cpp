@@ -60,6 +60,10 @@ namespace CustomWidgets
 		auto& model = models.at(0);
 		model->base_anim_sampler.setAnim(model->base_animation);
 		model->base_anim_sampler.setSkel(model->skeleton);
+
+		if (model->meshes.size())
+			this->setSelectedMesh(model->meshes[0]);
+
 		return model;
 	}
 
