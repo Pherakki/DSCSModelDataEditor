@@ -27,7 +27,7 @@ public:
     };
 
 
-    void populateList()
+    void updateMeshList()
     {
         this->mesh_list->clear();
         if (this->selected_model)
@@ -43,6 +43,6 @@ public slots:
     void updateSelectedModel(ModelPtr model_ptr)
     {
         this->selected_model = model_ptr;
-        this->populateList();
+        this->updateMeshList();
     }
 };
