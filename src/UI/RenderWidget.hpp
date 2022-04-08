@@ -43,6 +43,8 @@ namespace CustomWidgets
 		void vertexShaderTextChanged(const QString& vertexShaderText);
 	signals:
 		void fragmentShaderTextChanged(const QString& fragmentShaderText);
+	signals:
+		void glInitialised();
 	private:
 		QTimer clock;
 		Camera camera;

@@ -145,9 +145,20 @@ DSCSModelDataEditorWindow::DSCSModelDataEditorWindow(QWidget* parent = Q_NULLPTR
     this->initToolbar();
 
     // Set up slots
+    connect(this->render_widget, &CustomWidgets::RenderWidget::glInitialised, this, &DSCSModelDataEditorWindow::testInit);
     connect(this->render_widget, &CustomWidgets::RenderWidget::vertexShaderTextChanged, this, &DSCSModelDataEditorWindow::setVertexShaderText);
     connect(this->render_widget, &CustomWidgets::RenderWidget::fragmentShaderTextChanged, this, &DSCSModelDataEditorWindow::setFragmentShaderText);
     connect(this, &DSCSModelDataEditorWindow::selectedModelUpdated, mesh_info_tab, &MeshEditorTab::updateSelectedModel);
+}
+
+void DSCSModelDataEditorWindow::testInit()
+{
+    std::string test_path = "data/pc002";
+    std::string anim_path2 = test_path;
+    anim_path2 += "_bn01.anim";
+
+    this->loadModel(QString::fromStdString(test_path));
+    this->loadAnim(QString::fromStdString(anim_path2));
 }
 
 void DSCSModelDataEditorWindow::openLoadModelDialog()

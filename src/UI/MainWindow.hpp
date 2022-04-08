@@ -27,6 +27,7 @@ public:
     DSCSModelDataEditorWindow(QWidget* parent);
     ~DSCSModelDataEditorWindow() { };
 private slots:
+    void testInit();
     void openLoadModelDialog();
     void setVertexShaderText(const QString& shader_text);
     void setFragmentShaderText(const QString& shader_text);
