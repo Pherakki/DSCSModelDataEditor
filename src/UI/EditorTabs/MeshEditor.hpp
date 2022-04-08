@@ -34,8 +34,7 @@ public:
         {
             for (size_t i = 0; i < this->selected_model->meshes.size(); ++i)
             {
-                auto list_item = new QListWidgetItem();
-                list_item->setData(Qt::UserRole, i);
+                auto list_item = new QListWidgetItem(QString::fromStdString("Mesh " + std::to_string(i)));
                 this->mesh_list->addItem(list_item);
             }
         }
