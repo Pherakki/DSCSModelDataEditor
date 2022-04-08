@@ -90,6 +90,7 @@ namespace FileFormats::DSCS
 
 		// Materials
 		model.materials = std::vector<std::shared_ptr<Rendering::DSCS::DataObjects::OpenGLDSCSMaterial>>(geom_file.materials.size());
+		auto& material_names = name_file.getMaterialNames();
 		for (int i = 0; i < geom_file.materials.size(); ++i)
 		{
 			auto& geom_mat = geom_file.materials[i];
@@ -128,6 +129,7 @@ namespace FileFormats::DSCS
 			// Init Shader Uniforms handlers
 			material->initShaderUniforms(uniform_dispatch_buffer);
 			material->name_hash = geom_mat.name_hash;
+			material->name = material_names[i];
 			// Copy shader uniform data into the material
 			for (int j = 0; j < geom_mat.shader_uniforms.size(); ++j)
 			{
