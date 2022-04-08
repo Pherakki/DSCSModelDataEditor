@@ -58,9 +58,6 @@ namespace CustomWidgets
 		model->base_anim_sampler.setAnim(model->base_animation);
 		model->base_anim_sampler.setSkel(model->skeleton);
 
-		if (model->meshes.size())
-			this->setSelectedMesh(model->meshes[0]);
-
 		return model;
 	}
 
@@ -78,18 +75,6 @@ namespace CustomWidgets
 
 	}
 
-	void RenderWidget::setSelectedMesh(std::shared_ptr<Rendering::DSCS::DataObjects::OpenGLDSCSMesh> mesh)
-	{
-		this->selected_mesh = mesh;
-		this->setSelectedMaterial(mesh->material);
-	}
-
-	void RenderWidget::setSelectedMaterial(std::shared_ptr<Rendering::DSCS::DataObjects::OpenGLDSCSMaterial> material)
-	{
-		this->selected_material = material;
-		emit this->vertexShaderTextChanged(QString::fromStdString(material->shader->vertex_source));
-		emit this->fragmentShaderTextChanged(QString::fromStdString(material->shader->fragment_source));
-	}
 
 	void RenderWidget::update()
 	{

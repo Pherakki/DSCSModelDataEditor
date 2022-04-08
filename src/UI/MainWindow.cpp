@@ -146,8 +146,6 @@ DSCSModelDataEditorWindow::DSCSModelDataEditorWindow(QWidget* parent = Q_NULLPTR
 
     // Set up slots
     connect(this->render_widget, &CustomWidgets::RenderWidget::glInitialised, this, &DSCSModelDataEditorWindow::testInit);
-    connect(this->render_widget, &CustomWidgets::RenderWidget::vertexShaderTextChanged, this, &DSCSModelDataEditorWindow::setVertexShaderText);
-    connect(this->render_widget, &CustomWidgets::RenderWidget::fragmentShaderTextChanged, this, &DSCSModelDataEditorWindow::setFragmentShaderText);
     connect(this, &DSCSModelDataEditorWindow::selectedModelUpdated, mesh_info_tab, &MeshEditorTab::updateSelectedModel);
 }
 
@@ -188,10 +186,41 @@ void DSCSModelDataEditorWindow::openLoadModelDialog()
     }
 }
 
+void DSCSModelDataEditorWindow::setSelectedModel(std::shared_ptr<Rendering::DSCS::DataObjects::OpenGLDSCSModel> model)
+{
+    this->selected_model = model;
+
+    if (model->meshes.size())
+        this->setSelectedMesh(model->meshes[0]);
+}
+
+void DSCSModelDataEditorWindow::setSelectedMesh(std::shared_ptr<Rendering::DSCS::DataObjects::OpenGLDSCSMesh> mesh)
+{
+    this->selected_mesh = mesh;
+    this->setSelectedMaterial(mesh->material);
+}
+
+void DSCSModelDataEditorWindow::setSelectedMaterial(std::shared_ptr<Rendering::DSCS::DataObjects::OpenGLDSCSMaterial> material)
+{
+    this->selected_material = material;
+    this->setVertexShaderText(QString::fromStdString(material->shader->vertex_source));
+    this->setFragmentShaderText(QString::fromStdString(material->shader->fragment_source));
+}
+
+void DSCSModelDataEditorWindow::setVertexShaderText(const QString& shader_text)
+{
+    this->vertex_shader_textedit->setPlainText(shader_text);
+}
+
+void DSCSModelDataEditorWindow::setFragmentShaderText(const QString& shader_text)
+{
+    this->fragment_shader_textedit->setPlainText(shader_text);
+}
+
 void DSCSModelDataEditorWindow::loadModel(const QString& fileName)
 {
     auto model = this->render_widget->loadModel(fileName.toStdString());
-    this->render_widget->selected_model = model;
+    this->setSelectedModel(model);
     emit this->selectedModelUpdated(model);
 }
 
@@ -214,14 +243,5 @@ void DSCSModelDataEditorWindow::initToolbar()
     aboutQtAct->setStatusTip(tr("Show the Qt library's About box"));
 }
 
-void DSCSModelDataEditorWindow::setVertexShaderText(const QString& shader_text)
-{
-    this->vertex_shader_textedit->setPlainText(shader_text);
-}
-
-void DSCSModelDataEditorWindow::setFragmentShaderText(const QString& shader_text)
-{
-    this->fragment_shader_textedit->setPlainText(shader_text);
-}
 
 #include "moc_MainWindow.cpp"

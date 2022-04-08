@@ -31,8 +31,15 @@ private slots:
     void openLoadModelDialog();
     void setVertexShaderText(const QString& shader_text);
     void setFragmentShaderText(const QString& shader_text);
+    void setSelectedModel(std::shared_ptr<Rendering::DSCS::DataObjects::OpenGLDSCSModel> model_ptr);
+    void setSelectedMesh(std::shared_ptr<Rendering::DSCS::DataObjects::OpenGLDSCSMesh> mesh);
+    void setSelectedMaterial(std::shared_ptr<Rendering::DSCS::DataObjects::OpenGLDSCSMaterial> material);
 
 private:
+    std::shared_ptr<Rendering::DSCS::DataObjects::OpenGLDSCSModel> selected_model = nullptr;
+    std::shared_ptr<Rendering::DSCS::DataObjects::OpenGLDSCSMesh> selected_mesh = nullptr;
+    std::shared_ptr<Rendering::DSCS::DataObjects::OpenGLDSCSMaterial> selected_material = nullptr;
+
     CustomWidgets::RenderWidget* render_widget;
     QPlainTextEdit* vertex_shader_textedit;
     QPlainTextEdit* fragment_shader_textedit;
@@ -42,7 +49,6 @@ private:
     void loadAnim(const QString& fileName);
 signals:
     void selectedModelUpdated(std::shared_ptr<Rendering::DSCS::DataObjects::OpenGLDSCSModel> model_ptr);
-
 };
 
 
