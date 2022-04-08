@@ -184,7 +184,7 @@ namespace FileFormats::DSCS
 		for (int i = 0; i < geom_file.meshes.size(); ++i)
 		{
 			auto& geom_mesh = geom_file.meshes[i];
-			model.meshes.emplace_back(std::make_unique<Rendering::DSCS::DataObjects::OpenGLDSCSMesh>(geom_mesh));
+			model.meshes.emplace_back(std::make_shared<Rendering::DSCS::DataObjects::OpenGLDSCSMesh>(geom_mesh));
 			auto& mesh = model.meshes[i];
 			mesh->material = model.materials[geom_mesh.material_id];
 			mesh->used_bones = geom_mesh.skinning_indices;
