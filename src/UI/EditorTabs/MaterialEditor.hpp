@@ -17,6 +17,7 @@ private:
     typedef std::shared_ptr<Model> ModelPtr;
     typedef Rendering::DSCS::DataObjects::OpenGLDSCSMaterial Material;
     typedef std::shared_ptr<Material> MaterialPtr;
+    typedef void(QComboBox::* CIC_t)(int);
 
     ModelPtr selected_model = nullptr;
     MaterialPtr selected_material = nullptr;
@@ -32,8 +33,7 @@ public:
         layout->addWidget(this->material_dropdown);
         this->setLayout(layout);
 
-        //connect(this->material_dropdown, &QComboBox::currentIndexChanged, this, &MaterialEditorTab::selectMaterial);
-        connect(this->material_dropdown, static_cast<void(QComboBox::*)(int)>(&QComboBox::currentIndexChanged), this, &MaterialEditorTab::selectMaterial);
+        connect(this->material_dropdown, static_cast<CIC_t>(&QComboBox::currentIndexChanged), this, &MaterialEditorTab::selectMaterial);
     };
 
     void updateDataList()
