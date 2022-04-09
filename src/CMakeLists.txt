@@ -79,7 +79,7 @@ endif (WIN32)
 if (APPLE)
     target_link_libraries(${PROJECT_NAME} 
         "${CMAKE_SOURCE_DIR}/Cg/mac/libCg.dylib")
-endif(UNIX)
+endif(APPLE)
 if (UNIX AND NOT APPLE)
     target_link_libraries(${PROJECT_NAME} 
         "${CMAKE_SOURCE_DIR}/Cg/linux64/libCg.so"
