@@ -88,13 +88,13 @@ namespace Rendering::DSCS::DataObjects
 		case CG_FLOAT2:
 		case CG_FLOAT3:
 		case CG_FLOAT4:
-			holder.emplace_back(std::make_unique<ShaderUniforms::VectorUniform>(param, this->uniform_values[id][0], *uniform_dispatch_buffer[id]));
+			holder.emplace_back(std::make_unique<ShaderUniforms::VectorUniform>(id, param, this->uniform_values[id][0], *uniform_dispatch_buffer[id]));
 			break;
 		case CG_FLOAT4x4:
-			holder.emplace_back(std::make_unique<ShaderUniforms::Float4x4MatrixUniform>(param, this->uniform_values[id][0], *uniform_dispatch_buffer[id]));
+			holder.emplace_back(std::make_unique<ShaderUniforms::Float4x4MatrixUniform>(id, param, this->uniform_values[id][0], *uniform_dispatch_buffer[id]));
 			break;
 		case CG_ARRAY:
-			holder.emplace_back(std::make_unique<ShaderUniforms::MatrixPaletteUniform>(param, this->uniform_values[id][0], *uniform_dispatch_buffer[id]));
+			holder.emplace_back(std::make_unique<ShaderUniforms::MatrixPaletteUniform>(id, param, this->uniform_values[id][0], *uniform_dispatch_buffer[id]));
 			break;
 		default:
 			std::string error_message = "Unhandled shader parameter type: ";
@@ -154,7 +154,7 @@ namespace Rendering::DSCS::DataObjects
 		{
 			uint8_t uniform_id = kv.first;
 			const CGparameter& param = kv.second;
-			this->material_uniforms.emplace_back(std::make_unique<ShaderUniforms::VectorUniform>(param, this->uniform_values[uniform_id][0], *uniform_dispatch_buffer[uniform_id]));
+			this->material_uniforms.emplace_back(std::make_unique<ShaderUniforms::VectorUniform>(uniform_id, param, this->uniform_values[uniform_id][0], *uniform_dispatch_buffer[uniform_id]));
 		}
 	}
 

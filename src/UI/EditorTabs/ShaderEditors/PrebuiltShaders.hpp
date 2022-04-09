@@ -54,9 +54,12 @@ public:
 
 	void updateDataList()
 	{
-		for (auto& uniform : this->selected_material->material_uniforms)
+		if (this->selected_material)
 		{
-			std::cout << uniform << std::endl;
+			for (auto& uniform : this->selected_material->material_uniforms)
+			{
+				std::cout << uniform->id << std::endl;
+			}
 		}
 	}
 
