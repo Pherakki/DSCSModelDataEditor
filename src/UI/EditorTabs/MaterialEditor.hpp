@@ -8,6 +8,8 @@
 
 #include "../Types.hpp"
 #include "../../Rendering/DSCS/DataObjects/OpenGLDSCSMaterial.hpp"
+#include "ShaderEditors/ShaderEditorTabs.hpp"
+
 
 class MaterialEditorTab : public QWidget
 {
@@ -21,7 +23,12 @@ private:
 
     ModelPtr selected_model = nullptr;
     MaterialPtr selected_material = nullptr;
+    // Widgets
     QComboBox* material_dropdown;
+    ShaderEditorTabs* shader_edit_modes;
+    // Third widget needs to be the OpenGL options
+
+    // Lookup dicts
     std::unordered_map<MaterialPtr, int> material_lookup;
     std::unordered_map<int, MaterialPtr> material_reverse_lookup;
 
@@ -30,7 +37,10 @@ public:
     {
         auto layout = new QVBoxLayout(this);
         this->material_dropdown = new QComboBox(this);
+        this->shader_edit_modes = new ShaderEditorTabs(this);
+
         layout->addWidget(this->material_dropdown);
+        layout->addWidget(this->shader_edit_modes);
         this->setLayout(layout);
 
         connect(this->material_dropdown, static_cast<CIC_t>(&QComboBox::currentIndexChanged), this, &MaterialEditorTab::selectMaterial);
