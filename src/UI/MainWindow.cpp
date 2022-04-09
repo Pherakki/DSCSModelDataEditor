@@ -1,6 +1,3 @@
-#include "MainWindow.hpp"
-#include "CgSyntaxHighlighter.hpp"
-
 #include <QtWidgets/QFileDialog>
 #include <QtWidgets/QBoxLayout>
 #include <QtWidgets/QLabel>
@@ -11,6 +8,8 @@
 #include <QtWidgets/QTabWidget>
 #include <QScrollArea>
 
+#include "MainWindow.hpp"
+#include "CgSyntaxHighlighter.hpp"
 
 
 DSCSModelDataEditorWindow::DSCSModelDataEditorWindow(QWidget* parent = Q_NULLPTR) : QMainWindow(parent)
@@ -54,15 +53,18 @@ DSCSModelDataEditorWindow::DSCSModelDataEditorWindow(QWidget* parent = Q_NULLPTR
     auto mesh_info_tab = new MeshEditorTab(this);
     auto skeleton_info_tab = new QWidget();
 
-    auto material_info_tab = new QSplitter();
-    material_info_tab->setContentsMargins({ 0, 0, 0, 0 });
-    material_info_tab->setOrientation(Qt::Vertical);
+    auto material_info_tab = new MaterialEditorTab(this);
+
+    auto old_material_info_tab = new QSplitter();
+    old_material_info_tab->setContentsMargins({ 0, 0, 0, 0 });
+    old_material_info_tab->setOrientation(Qt::Vertical);
 
     auto animation_info_tab = new AnimationEditorTab(render_widget->models);
 
     info_editor->addTab(animation_info_tab, "Animation");
     info_editor->addTab(mesh_info_tab, "Mesh");
     info_editor->addTab(material_info_tab, "Material");
+    info_editor->addTab(old_material_info_tab, "<OLD> Material");
     info_editor->addTab(skeleton_info_tab, "Skeleton");
 
     auto shader_editor = new QWidget;
@@ -96,13 +98,13 @@ DSCSModelDataEditorWindow::DSCSModelDataEditorWindow(QWidget* parent = Q_NULLPTR
     shader_uniforms_layout->addWidget(fragment_uniforms);
     shader_uniforms_layout->addWidget(texture_uniforms);
 
-    material_info_tab->addWidget(shader_editor);
-    material_info_tab->addWidget(shader_uniforms);
+    old_material_info_tab->addWidget(shader_editor);
+    old_material_info_tab->addWidget(shader_uniforms);
 
     auto scroll = new QScrollArea(this);
     scroll->setWidgetResizable(true);
     scroll->setWidget(new ShaderFactory);
-    material_info_tab->addWidget(scroll);
+    old_material_info_tab->addWidget(scroll);
 
     // Syntax highlighting for Cg
     auto cg_highlighter_v = new cgSyntaxHighlighter(this->vertex_shader_textedit->document());
