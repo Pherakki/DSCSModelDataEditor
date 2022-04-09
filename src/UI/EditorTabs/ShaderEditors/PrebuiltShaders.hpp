@@ -4,6 +4,10 @@
 #include <QtWidgets/QListWidget>
 #include <QtWidgets/QWidget>
 
+#include <QtWidgets/QLabel>
+#include <QtWidgets/QPushButton>
+#include <QtWidgets/QLineEdit>
+
 #include "Rendering/DSCS/DataObjects/OpenGLDSCSMaterial.hpp"
 
 class PrebuiltTab : public QWidget
@@ -15,7 +19,10 @@ private:
 
 	QListWidget* category_list = new QListWidget(this);
 	QListWidget* shader_list = new QListWidget(this);
+	QWidget* uniform_lists_widget = new QWidget(this);
+
 	QVBoxLayout* vertex_uniforms_layout = new QVBoxLayout;
+	QWidget* vertex_uniforms_widget = new QWidget(this->uniform_lists_widget);
 	QVBoxLayout* fragment_uniforms_layout = new QVBoxLayout;
 	QVBoxLayout* texture_uniforms_layout = new QVBoxLayout;
 
@@ -31,12 +38,10 @@ public:
 		lists_layout->addWidget(this->category_list);
 		lists_layout->addWidget(this->shader_list);
 
-		QWidget* uniform_lists_widget = new QWidget(this);
 		QHBoxLayout* uniform_lists_layout = new QHBoxLayout(uniform_lists_widget);
-		uniform_lists_widget->setLayout(uniform_lists_layout);
+		this->uniform_lists_widget->setLayout(uniform_lists_layout);
 
-		QWidget* vertex_uniforms_widget = new QWidget(uniform_lists_widget);
-		vertex_uniforms_widget->setLayout(this->vertex_uniforms_layout);
+		this->vertex_uniforms_widget->setLayout(this->vertex_uniforms_layout);
 		QWidget* fragment_uniforms_widget = new QWidget(uniform_lists_widget);
 		fragment_uniforms_widget->setLayout(this->fragment_uniforms_layout);
 		QWidget* texture_uniforms_widget = new QWidget(uniform_lists_widget);
@@ -54,10 +59,52 @@ public:
 
 	void updateDataList()
 	{
-		for (auto& uniform : this->selected_material->material_uniforms)
-		{
-			std::cout << uniform->id << std::endl;
+		QLayoutItem* child;
+		while ((child = this->vertex_uniforms_layout->takeAt(0)) != 0) {
+			delete child->widget();
+			delete child;
 		}
+
+		for (uint8_t i=0; i < this->selected_material->material_uniforms.size(); ++i)
+		{
+			auto& uniform = this->selected_material->material_uniforms[i];
+			uint8_t id = uniform->id;
+
+			QWidget* tmp_widget = new QWidget(vertex_uniforms_widget);
+			QHBoxLayout* tmp_layout = new QHBoxLayout();
+			tmp_widget->setLayout(tmp_layout);
+
+			QLabel* tmp_label = new QLabel(tmp_widget);
+			tmp_label->setText(QString::fromStdString(uniform->getName()));
+			tmp_layout->addWidget(tmp_label);
+
+			std::array<float, 4>& static_val = this->selected_material->uniform_values[id];
+
+			for (uint8_t j = 0; j < 4; ++j)
+			{
+				QLineEdit* tmp_line = new QLineEdit(tmp_widget);
+				tmp_line->setText(QString::fromStdString(std::to_string(static_val[j])));
+				tmp_layout->addWidget(tmp_line);
+				connect(tmp_line, &QLineEdit::textChanged, this, [this, id, j](const QString& value) { this->sanitiseTextChanged(id, j, value); });
+			}
+
+			this->vertex_uniforms_layout->addWidget(tmp_widget);
+		}
+	}
+
+	void sanitiseTextChanged(uint8_t id, uint8_t change_idx, const QString& value)
+	{
+		float f_value;
+		try
+		{
+			f_value = std::stof(value.toStdString());
+		}
+		catch (const std::exception& ex)
+		{
+			f_value = 0;
+		}
+		std::array<float, 4>& static_val = this->selected_material->uniform_values[id];
+		static_val[change_idx] = f_value;
 	}
 
 	/*
