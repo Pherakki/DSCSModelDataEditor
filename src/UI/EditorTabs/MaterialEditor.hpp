@@ -61,7 +61,6 @@ public:
                 this->material_reverse_lookup[i] = material;
             }
         }
-
     }
 
 signals:

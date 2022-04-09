@@ -125,7 +125,6 @@ public:
 		layout->addWidget(this->widget_offset);
 		layout->addWidget(this->widget_scale);
 
-
 		this->setLayout(layout);
 		this->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
 	}

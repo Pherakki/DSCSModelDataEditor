@@ -3,6 +3,7 @@
 #include <QtWidgets/QScrollArea>
 #include <QtWidgets/QTabWidget>
 
+#include <UI/EditorTabs/ShaderEditors/PrebuiltShaders.hpp>
 #include <UI/EditorTabs/ShaderEditors/ShaderFactory.hpp>
 #include <UI/EditorTabs/ShaderEditors/CodeEditor.hpp>
 
@@ -13,7 +14,7 @@ private:
     typedef Rendering::DSCS::DataObjects::OpenGLDSCSMaterial Material;
     typedef std::shared_ptr<Material> MaterialPtr;
 
-    QWidget* prebuilts_tab = new QWidget(this);
+    PrebuiltTab* prebuilts_tab = new PrebuiltTab(this);
     QScrollArea* shader_factory_scroll_area = new QScrollArea(this);
     ShaderFactory* factory_tab = new ShaderFactory(this);
     CodeEditor* code_tab = new CodeEditor(this);
@@ -26,11 +27,11 @@ public:
         this->addTab(this->prebuilts_tab, "Pre-Built");
         this->addTab(this->shader_factory_scroll_area, "Shader Factory");
         this->addTab(this->code_tab, "Code Editor");
-
     }
 public slots:
     void updateSelectedMaterial(MaterialPtr material_ptr)
     {
+        this->prebuilts_tab->updateSelectedMaterial(material_ptr);
         this->code_tab->updateSelectedMaterial(material_ptr);
     }
 
