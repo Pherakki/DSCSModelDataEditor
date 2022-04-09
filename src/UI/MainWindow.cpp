@@ -51,83 +51,14 @@ DSCSModelDataEditorWindow::DSCSModelDataEditorWindow(QWidget* parent = Q_NULLPTR
     // Create tabs for info view
     auto info_editor = new QTabWidget();
     auto mesh_info_tab = new MeshEditorTab(this);
-    auto skeleton_info_tab = new QWidget();
-
+    auto skeleton_info_tab = new QWidget(this);
     auto material_info_tab = new MaterialEditorTab(this);
-
-    auto old_material_info_tab = new QSplitter();
-    old_material_info_tab->setContentsMargins({ 0, 0, 0, 0 });
-    old_material_info_tab->setOrientation(Qt::Vertical);
-
     auto animation_info_tab = new AnimationEditorTab(render_widget->models);
 
     info_editor->addTab(animation_info_tab, "Animation");
     info_editor->addTab(mesh_info_tab, "Mesh");
     info_editor->addTab(material_info_tab, "Material");
-    info_editor->addTab(old_material_info_tab, "<OLD> Material");
     info_editor->addTab(skeleton_info_tab, "Skeleton");
-
-    // Need to remove most of this
-    auto shader_editor = new QWidget;
-    auto shader_editor_layout = new QVBoxLayout;
-    shader_editor->setLayout(shader_editor_layout);
-    shader_editor->setContentsMargins({ 0, 0, 0, 0 });
-    shader_editor_layout->setContentsMargins({ 0, 0, 0, 0 });
-
-    auto shader_editor_textedits = new QTabWidget();
-    this->vertex_shader_textedit = new QPlainTextEdit();
-    this->vertex_shader_textedit->setLineWrapMode(QPlainTextEdit::LineWrapMode::NoWrap);
-    this->fragment_shader_textedit = new QPlainTextEdit();
-    this->fragment_shader_textedit->setLineWrapMode(QPlainTextEdit::LineWrapMode::NoWrap);
-    auto compile_button = new QPushButton("Compile");
-    shader_editor_textedits->addTab(vertex_shader_textedit, "Vertex");
-    shader_editor_textedits->addTab(fragment_shader_textedit, "Fragment");
-    shader_editor_layout->addWidget(shader_editor_textedits);
-    shader_editor_layout->addWidget(compile_button);
-
-
-    auto shader_uniforms = new QWidget;
-    auto shader_uniforms_layout = new QHBoxLayout;
-    shader_uniforms->setLayout(shader_uniforms_layout);
-    shader_uniforms->setContentsMargins({ 0, 0, 0, 0 });
-    shader_uniforms_layout->setContentsMargins({ 0, 0, 0, 0 });
-
-    auto vertex_uniforms = new QLabel("Vertex Uniforms");
-    auto fragment_uniforms = new QLabel("Fragment Uniforms");
-    auto texture_uniforms = new QLabel("Textures");
-    shader_uniforms_layout->addWidget(vertex_uniforms);
-    shader_uniforms_layout->addWidget(fragment_uniforms);
-    shader_uniforms_layout->addWidget(texture_uniforms);
-
-    old_material_info_tab->addWidget(shader_editor);
-    old_material_info_tab->addWidget(shader_uniforms);
-
-    auto scroll = new QScrollArea(this);
-    scroll->setWidgetResizable(true);
-    scroll->setWidget(new ShaderFactory);
-    old_material_info_tab->addWidget(scroll);
-
-    // Syntax highlighting for Cg
-    auto cg_highlighter_v = new cgSyntaxHighlighter(this->vertex_shader_textedit->document());
-    auto cg_highlighter_f = new cgSyntaxHighlighter(this->fragment_shader_textedit->document());
-
-    // Editor setup
-    QFont font;
-    font.setFamily("Courier");
-    font.setStyleHint(QFont::Monospace);
-    font.setFixedPitch(true);
-    font.setPointSize(10);
-    this->vertex_shader_textedit->setFont(font);
-    this->fragment_shader_textedit->setFont(font);
-
-    // https://stackoverflow.com/a/54605709
-    static constexpr int tab_width_char = 4;
-    const auto font_metrics = vertex_shader_textedit->fontMetrics();
-
-
-    // set the tab stop with double precision
-    vertex_shader_textedit->setTabStopDistance(tab_width_char * font_metrics.width(' '));
-    fragment_shader_textedit->setTabStopDistance(tab_width_char* font_metrics.width(' '));
 
     // Now put that group in a splitter with the info window
     auto left_right_pane_splitter = new QSplitter;
@@ -231,22 +162,6 @@ void DSCSModelDataEditorWindow::setSelectedMaterial(std::shared_ptr<Rendering::D
 {
     this->selected_material = material;
     this->selectedMaterialUpdated(material);
-
-    this->setVertexShaderText(QString::fromStdString(material->shader->vertex_source));
-    this->setFragmentShaderText(QString::fromStdString(material->shader->fragment_source));
-}
-
-/*
-These methods should be re-assigned to the appropriate widgets
-*/
-void DSCSModelDataEditorWindow::setVertexShaderText(const QString& shader_text)
-{
-    this->vertex_shader_textedit->setPlainText(shader_text);
-}
-
-void DSCSModelDataEditorWindow::setFragmentShaderText(const QString& shader_text)
-{
-    this->fragment_shader_textedit->setPlainText(shader_text);
 }
 
 /*

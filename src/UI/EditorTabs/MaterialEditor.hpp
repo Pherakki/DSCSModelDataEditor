@@ -80,6 +80,7 @@ public slots:
     {
         this->material_dropdown->setCurrentIndex(this->material_lookup.at(material_ptr));
         this->selected_material = selected_material;
+        this->shader_edit_modes->updateSelectedMaterial(material_ptr);
     }
 
     /*

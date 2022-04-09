@@ -1,0 +1,72 @@
+#pragma once
+
+#include <QtWidgets/QBoxLayout>
+#include <QtWidgets/QPlainTextEdit>
+#include <QtWidgets/QPushButton>
+#include <QtWidgets/QWidget>
+
+#include <UI/CgSyntaxHighlighter.hpp>
+
+class CodeEditor : public QWidget
+{
+private:
+    typedef Rendering::DSCS::DataObjects::OpenGLDSCSMaterial Material;
+    typedef std::shared_ptr<Material> MaterialPtr;
+
+    QVBoxLayout* layout = new QVBoxLayout(this);
+    QTabWidget* code_tabs = new QTabWidget(this);
+    QPlainTextEdit* vertex_shader_textedit = new QPlainTextEdit(this);
+    QPlainTextEdit* fragment_shader_textedit = new QPlainTextEdit(this);
+    QPushButton* compile_button = new QPushButton("Compile", this);
+
+    MaterialPtr selected_material = nullptr;
+
+    void setSyntaxHighlighter(QPlainTextEdit* textbox)
+    {
+        auto cg_highlighter = new cgSyntaxHighlighter(textbox->document());
+
+        // Editor setup
+        QFont font;
+        font.setFamily("Courier");
+        font.setStyleHint(QFont::Monospace);
+        font.setFixedPitch(true);
+        font.setPointSize(10);
+        textbox->setFont(font);
+
+        // https://stackoverflow.com/a/54605709
+        static constexpr int tab_width_char = 4;
+        const auto font_metrics = textbox->fontMetrics();
+
+        // set the tab stop with double precision
+        textbox->setTabStopDistance(tab_width_char * font_metrics.width(' '));
+    }
+
+public:
+	CodeEditor(QWidget* parent=Q_NULLPTR) : QWidget(parent)
+	{
+        this->setLayout(this->layout);
+        this->setContentsMargins({ 0, 0, 0, 0 });
+        this->layout->setContentsMargins({ 0, 0, 0, 0 });
+
+        this->vertex_shader_textedit->setLineWrapMode(QPlainTextEdit::LineWrapMode::NoWrap);
+        this->setSyntaxHighlighter(this->vertex_shader_textedit);
+        this->fragment_shader_textedit->setLineWrapMode(QPlainTextEdit::LineWrapMode::NoWrap);
+        this->setSyntaxHighlighter(this->fragment_shader_textedit);
+
+        this->compile_button->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
+
+        this->code_tabs->addTab(this->vertex_shader_textedit, "Vertex");
+        this->code_tabs->addTab(this->fragment_shader_textedit, "Fragment");
+        this->layout->addWidget(this->code_tabs);
+        this->layout->addWidget(this->compile_button);
+	}
+public slots:
+    void updateSelectedMaterial(MaterialPtr material_ptr)
+    {
+        this->selected_material = material_ptr;
+        this->vertex_shader_textedit->setPlainText(QString::fromStdString(this->selected_material->shader->vertex_source));
+        this->fragment_shader_textedit->setPlainText(QString::fromStdString(this->selected_material->shader->fragment_source));
+    }
+
+
+};

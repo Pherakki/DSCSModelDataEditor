@@ -31,8 +31,6 @@ public:
 private slots:
     void testInit();
     void openLoadModelDialog();
-    void setVertexShaderText(const QString& shader_text);
-    void setFragmentShaderText(const QString& shader_text);
     void setSelectedModel(std::shared_ptr<Rendering::DSCS::DataObjects::OpenGLDSCSModel> model_ptr);
     void setSelectedMesh(std::shared_ptr<Rendering::DSCS::DataObjects::OpenGLDSCSMesh> mesh);
     void setSelectedMaterial(std::shared_ptr<Rendering::DSCS::DataObjects::OpenGLDSCSMaterial> material);
