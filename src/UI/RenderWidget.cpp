@@ -145,7 +145,6 @@ namespace CustomWidgets
 				// load base uniforms
 				mesh->material->syncAnimationBuffer();
 				// handle animation
-				(*this->animation_buffer.Time)[0] = this->increment_test / 10;
 				//model.base_anim_sampler.sampleCurrentFrameUniforms(mesh->material->name_hash, this->animation_buffer.shader_uniform_buffer);
 				model->anim_sampler.sampleCurrentFrameUniforms(mesh->material->name_hash, this->animation_buffer.shader_uniform_buffer);
 				// upload
@@ -164,8 +163,13 @@ namespace CustomWidgets
 				mesh->checkGLError();
 				this->shader_backend->checkBackendForCgError("Finishing unbind...");
 			}
+
+			// Advance animation time
 			model->base_anim_sampler.tick();
 			model->anim_sampler.tick();
+			
+			float whole_part;
+			(*this->animation_buffer.Time)[0] = std::modf(this->increment_test, &whole_part);
 		}
 
 	}
