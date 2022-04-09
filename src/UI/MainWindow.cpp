@@ -146,7 +146,22 @@ DSCSModelDataEditorWindow::DSCSModelDataEditorWindow(QWidget* parent = Q_NULLPTR
 
     // Set up slots
     connect(this->render_widget, &CustomWidgets::RenderWidget::glInitialised, this, &DSCSModelDataEditorWindow::testInit);
+
+    // Model updates
+    // -> Updated Widgets
     connect(this, &DSCSModelDataEditorWindow::selectedModelUpdated, mesh_info_tab, &MeshEditorTab::updateSelectedModel);
+
+    // Mesh updates
+    // -> Updating Widgets
+    connect(mesh_info_tab, &MeshEditorTab::meshSelectionUpdated, this, &DSCSModelDataEditorWindow::setSelectedMesh);
+    // -> Updated Widgets
+    connect(this, &DSCSModelDataEditorWindow::selectedMeshUpdated, mesh_info_tab, &MeshEditorTab::updateSelectedMesh);
+
+    // Material updates
+    // -> Updating Widgets
+    connect(mesh_info_tab, &MeshEditorTab::materialSelectionUpdated, this, &DSCSModelDataEditorWindow::setSelectedMaterial);
+    // -> Updated Widgets
+    connect(this, &DSCSModelDataEditorWindow::selectedMaterialUpdated, mesh_info_tab, &MeshEditorTab::updateSelectedMaterial);
 }
 
 void DSCSModelDataEditorWindow::testInit()
@@ -189,6 +204,7 @@ void DSCSModelDataEditorWindow::openLoadModelDialog()
 void DSCSModelDataEditorWindow::setSelectedModel(std::shared_ptr<Rendering::DSCS::DataObjects::OpenGLDSCSModel> model)
 {
     this->selected_model = model;
+    emit this->selectedModelUpdated(model);
 
     if (model->meshes.size())
         this->setSelectedMesh(model->meshes[0]);
@@ -197,12 +213,16 @@ void DSCSModelDataEditorWindow::setSelectedModel(std::shared_ptr<Rendering::DSCS
 void DSCSModelDataEditorWindow::setSelectedMesh(std::shared_ptr<Rendering::DSCS::DataObjects::OpenGLDSCSMesh> mesh)
 {
     this->selected_mesh = mesh;
+    emit this->selectedMeshUpdated(mesh);
+
     this->setSelectedMaterial(mesh->material);
 }
 
 void DSCSModelDataEditorWindow::setSelectedMaterial(std::shared_ptr<Rendering::DSCS::DataObjects::OpenGLDSCSMaterial> material)
 {
     this->selected_material = material;
+    this->selectedMaterialUpdated(material);
+
     this->setVertexShaderText(QString::fromStdString(material->shader->vertex_source));
     this->setFragmentShaderText(QString::fromStdString(material->shader->fragment_source));
 }
@@ -221,7 +241,6 @@ void DSCSModelDataEditorWindow::loadModel(const QString& fileName)
 {
     auto model = this->render_widget->loadModel(fileName.toStdString());
     this->setSelectedModel(model);
-    emit this->selectedModelUpdated(model);
 }
 
 void DSCSModelDataEditorWindow::loadAnim(const QString& fileName)

@@ -49,6 +49,8 @@ private:
     void loadAnim(const QString& fileName);
 signals:
     void selectedModelUpdated(std::shared_ptr<Rendering::DSCS::DataObjects::OpenGLDSCSModel> model_ptr);
+    void selectedMeshUpdated(std::shared_ptr<Rendering::DSCS::DataObjects::OpenGLDSCSMesh> mesh_ptr);
+    void selectedMaterialUpdated(std::shared_ptr<Rendering::DSCS::DataObjects::OpenGLDSCSMaterial> material_ptr);
 };
 
 
