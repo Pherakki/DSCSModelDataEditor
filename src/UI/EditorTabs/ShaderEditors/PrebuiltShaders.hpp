@@ -54,12 +54,9 @@ public:
 
 	void updateDataList()
 	{
-		if (this->selected_material)
+		for (auto& uniform : this->selected_material->material_uniforms)
 		{
-			for (auto& uniform : this->selected_material->material_uniforms)
-			{
-				std::cout << uniform->id << std::endl;
-			}
+			std::cout << uniform->id << std::endl;
 		}
 	}
 
@@ -68,7 +65,7 @@ public:
 	*/
 	void updateSelectedMaterial(MaterialPtr material_ptr)
 	{
-		this->selected_material = selected_material;
+		this->selected_material = material_ptr;
 		this->updateDataList();
 	}
 };
