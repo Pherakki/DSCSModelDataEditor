@@ -201,6 +201,9 @@ void DSCSModelDataEditorWindow::openLoadModelDialog()
     }
 }
 
+/*
+Global variable dispatchers
+*/
 void DSCSModelDataEditorWindow::setSelectedModel(std::shared_ptr<Rendering::DSCS::DataObjects::OpenGLDSCSModel> model)
 {
     this->selected_model = model;
@@ -227,6 +230,9 @@ void DSCSModelDataEditorWindow::setSelectedMaterial(std::shared_ptr<Rendering::D
     this->setFragmentShaderText(QString::fromStdString(material->shader->fragment_source));
 }
 
+/*
+These methods should be re-assigned to the appropriate widgets
+*/
 void DSCSModelDataEditorWindow::setVertexShaderText(const QString& shader_text)
 {
     this->vertex_shader_textedit->setPlainText(shader_text);
@@ -237,6 +243,9 @@ void DSCSModelDataEditorWindow::setFragmentShaderText(const QString& shader_text
     this->fragment_shader_textedit->setPlainText(shader_text);
 }
 
+/*
+Asset loaders
+*/
 void DSCSModelDataEditorWindow::loadModel(const QString& fileName)
 {
     auto model = this->render_widget->loadModel(fileName.toStdString());
@@ -248,6 +257,9 @@ void DSCSModelDataEditorWindow::loadAnim(const QString& fileName)
     this->render_widget->loadAnim(fileName.toStdString());
 }
 
+/*
+UI Init
+*/
 void DSCSModelDataEditorWindow::initToolbar()
 {
     QMenu* fileMenu = this->menuBar()->addMenu(tr("&File"));
