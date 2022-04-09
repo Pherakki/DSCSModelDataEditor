@@ -67,6 +67,7 @@ DSCSModelDataEditorWindow::DSCSModelDataEditorWindow(QWidget* parent = Q_NULLPTR
     info_editor->addTab(old_material_info_tab, "<OLD> Material");
     info_editor->addTab(skeleton_info_tab, "Skeleton");
 
+    // Need to remove most of this
     auto shader_editor = new QWidget;
     auto shader_editor_layout = new QVBoxLayout;
     shader_editor->setLayout(shader_editor_layout);
@@ -152,6 +153,7 @@ DSCSModelDataEditorWindow::DSCSModelDataEditorWindow(QWidget* parent = Q_NULLPTR
     // Model updates
     // -> Updated Widgets
     connect(this, &DSCSModelDataEditorWindow::selectedModelUpdated, mesh_info_tab, &MeshEditorTab::updateSelectedModel);
+    connect(this, &DSCSModelDataEditorWindow::selectedModelUpdated, material_info_tab, &MaterialEditorTab::updateSelectedModel);
 
     // Mesh updates
     // -> Updating Widgets
@@ -162,8 +164,10 @@ DSCSModelDataEditorWindow::DSCSModelDataEditorWindow(QWidget* parent = Q_NULLPTR
     // Material updates
     // -> Updating Widgets
     connect(mesh_info_tab, &MeshEditorTab::materialSelectionUpdated, this, &DSCSModelDataEditorWindow::setSelectedMaterial);
+    connect(material_info_tab, &MaterialEditorTab::materialSelectionUpdated, this, &DSCSModelDataEditorWindow::setSelectedMaterial);
     // -> Updated Widgets
     connect(this, &DSCSModelDataEditorWindow::selectedMaterialUpdated, mesh_info_tab, &MeshEditorTab::updateSelectedMaterial);
+    connect(this, &DSCSModelDataEditorWindow::selectedMaterialUpdated, material_info_tab, &MaterialEditorTab::updateSelectedMaterial);
 }
 
 void DSCSModelDataEditorWindow::testInit()

@@ -87,6 +87,8 @@ public slots:
     */
     void selectMaterial(int index)
     {
+        if (!this->material_reverse_lookup.contains(index))
+            return;
         auto& material = this->material_reverse_lookup.at(index);
         emit this->materialSelectionUpdated(material);
     }
