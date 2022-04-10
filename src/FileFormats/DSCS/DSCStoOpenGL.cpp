@@ -1,5 +1,5 @@
 #include "DSCStoOpenGL.hpp"
-
+#include "Utils/Hashing.hpp"
 
 // Init used textures
 // Wrong, wrong, so very wrong...
@@ -45,10 +45,10 @@ namespace FileFormats::DSCS
 
 	// Should convert all data structures in here to use the "Data Blocks" prescription
 	Rendering::DSCS::DataObjects::OpenGLDSCSModel DSCStoOpenGL(const std::filesystem::path& filepath,
-		                                                       std::unique_ptr<Rendering::ShaderBackends::cgGLShaderBackend>& shader_backend,
-		                                                       const std::array<float*, 0xA0>& uniform_dispatch_buffer,
-		                                                       std::unordered_map<std::string, std::shared_ptr<Rendering::DataObjects::OpenGLDSCSTexture>>& texture_library,
-		                                                       std::unordered_map<std::string, std::shared_ptr<Rendering::ShaderObjects::cgGLShaderObject>>& shader_library)
+		std::unique_ptr<Rendering::ShaderBackends::cgGLShaderBackend>& shader_backend,
+		const std::array<float*, 0xA0>& uniform_dispatch_buffer,
+		std::unordered_map<std::string, std::shared_ptr<Rendering::DataObjects::OpenGLDSCSTexture>>& texture_library,
+		std::unordered_map<std::string, std::shared_ptr<Rendering::ShaderObjects::cgGLShaderObject>>& shader_library)
 	{
 		NameFile::NameReadWrite name_file = NameFile::NameReadWrite();
 		SkelFile::SkelReadWrite skel_file = SkelFile::SkelReadWrite();
@@ -62,6 +62,8 @@ namespace FileFormats::DSCS
 		std::filesystem::path name_path = filepath;
 		name_path += ".name";
 		// TODO: Add check if filepaths exist
+		if (!std::filesystem::exists(name_path))
+			throw std::exception(("Path '" + name_path.string() + "' does not exist!").c_str());
 		name_file.read(name_path.string());
 
 		// Read skel
@@ -91,6 +93,12 @@ namespace FileFormats::DSCS
 		// Materials
 		model.materials = std::vector<std::shared_ptr<Rendering::DSCS::DataObjects::OpenGLDSCSMaterial>>(geom_file.materials.size());
 		auto& material_names = name_file.getMaterialNames();
+		std::unordered_map<uint32_t, std::string> material_name_lookup;
+		for (auto& material_name : material_names)
+		{
+			material_name_lookup[dscsNameHash(material_name)] = material_name;
+		}
+
 		for (int i = 0; i < geom_file.materials.size(); ++i)
 		{
 			auto& geom_mat = geom_file.materials[i];
@@ -129,7 +137,7 @@ namespace FileFormats::DSCS
 			// Init Shader Uniforms handlers
 			material->initShaderUniforms(uniform_dispatch_buffer);
 			material->name_hash = geom_mat.name_hash;
-			material->name = material_names[i];
+			material->name = material_name_lookup[geom_mat.name_hash];
 			// Copy shader uniform data into the material
 			for (int j = 0; j < geom_mat.shader_uniforms.size(); ++j)
 			{
