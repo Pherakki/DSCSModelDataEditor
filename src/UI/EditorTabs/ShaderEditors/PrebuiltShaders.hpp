@@ -72,8 +72,8 @@ public:
 			this->vector_uniforms_layout->addWidget(tmp_label, i, 0);
 
 			std::array<float, 4>& static_val = this->selected_material->uniform_values[id];
-
-			for (uint8_t j = 0; j < 4; ++j)
+		
+			for (uint8_t j = 0; j < uniform->getSize(); ++j)
 			{
 				QLineEdit* tmp_line = new QLineEdit(tmp_widget);
 				tmp_line->setText(QString::fromStdString(std::to_string(static_val[j])));

@@ -34,6 +34,10 @@ namespace Rendering::DSCS::DataObjects
 
 	class OpenGLDSCSMaterial
 	{
+	private:
+		typedef std::vector<std::unique_ptr<ShaderUniforms::AbstractcgGLShaderUniform>> ShaderUniformVec_t;
+		typedef std::vector<std::unique_ptr<ShaderUniforms::VectorUniform>> VectorUniformVec_t;
+		std::vector<std::unique_ptr<ShaderUniforms::AbstractcgGLShaderUniform>> world_uniforms;
 	public:
 		OpenGLDSCSMaterial(std::shared_ptr<ShaderObjects::cgGLShaderObject> shader);
 		// Need to map uniform IDs and opengl IDs to parameter names and functions
@@ -49,17 +53,16 @@ namespace Rendering::DSCS::DataObjects
 		uint16_t getTextureType(uint8_t id);
 		void setTextureBuffer(uint8_t id, uint16_t buffer_id);
 		void setTextureHandler(uint8_t id, const CGparameter& param, std::map<uint8_t, std::unique_ptr<ShaderUniforms::AbstractcgGLTextureReference>>& holder);
-		void setParamHandler(uint8_t id, const CGparameter& param, std::vector<std::unique_ptr<ShaderUniforms::AbstractcgGLShaderUniform>>& holder, const std::array<float*, 0xA0>& uniform_dispatch_buffer);
+		void setParamHandler(uint8_t id, const CGparameter& param, ShaderUniformVec_t& holder, const std::array<float*, 0xA0>& uniform_dispatch_buffer);
+		void setVectorParamHandler(uint8_t id, const CGparameter& param, VectorUniformVec_t& holder, const std::array<float*, 0xA0>& uniform_dispatch_buffer);
 		void setUniformValue(uint8_t uniform_type_id, const std::array<float, 4>& uniform_data);
 		void initShaderUniforms(const std::array<float*, 0xA0>& uniform_dispatch_buffer);
 		void addOpenGLSetting(uint8_t setting_id,  std::array<uint32_t, 4> inp);
 		std::array<std::array<float, 4>, 0xA0> uniform_values;
 
-		std::vector<std::unique_ptr<ShaderUniforms::AbstractcgGLShaderUniform>> material_uniforms;
+		std::vector<std::unique_ptr<ShaderUniforms::VectorUniform>> material_uniforms;
 		std::map<uint8_t, std::unique_ptr<ShaderUniforms::AbstractcgGLTextureReference>> texture_refs;
 		std::vector<std::shared_ptr<OpenGLSettings::OpenGLSetting>> opengl_settings;
-	private:
-		std::vector<std::unique_ptr<ShaderUniforms::AbstractcgGLShaderUniform>> world_uniforms;
 	};
 
 

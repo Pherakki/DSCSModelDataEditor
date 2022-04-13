@@ -40,9 +40,12 @@ namespace Rendering::DSCS::DataObjects::ShaderUniforms
 	// VectorUniform
 	class VectorUniform : public AbstractcgGLShaderUniform
 	{
+	private:
+		uint8_t size;
 	public:
-		VectorUniform(uint8_t id, const CGparameter& parameter, float& static_data, float& anim_data) : AbstractcgGLShaderUniform(id, parameter, static_data, anim_data) {};
+		VectorUniform(uint8_t id, uint8_t size, const CGparameter& parameter, float& static_data, float& anim_data) : AbstractcgGLShaderUniform(id, parameter, static_data, anim_data) { this->size = size; };
 		void attach() noexcept { cgGLSetParameter4fv(this->parameter, this->anim_data); }
+		uint8_t getSize() { return this->size; }
 	};
 	// Float4x4MatrixUniform
 	class Float4x4MatrixUniform : public AbstractcgGLShaderUniform
