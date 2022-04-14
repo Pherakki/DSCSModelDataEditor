@@ -125,7 +125,6 @@ namespace Rendering::DSCS::DataObjects
 			uint8_t uniform_id = kv.first;
 			const CGparameter& param = kv.second;
 			this->setParamHandler(uniform_id, param, this->material_uniforms, uniform_dispatch_buffer);
-			//this->material_uniforms.emplace_back(std::make_unique<ShaderUniforms::VectorUniform>(uniform_id, param, this->uniform_values[uniform_id][0], *uniform_dispatch_buffer[uniform_id]));
 		}
 	}
 
@@ -133,44 +132,44 @@ namespace Rendering::DSCS::DataObjects
 	{
 		switch (setting_id)
 		{
-		case 160: // glAlphaFunc
+		case 0xA0: // glAlphaFunc
 			float ref;
 			memcpy(&ref, &payload[1], sizeof(ref));
-			this->opengl_settings.emplace_back(std::make_shared<OpenGLSettings::OpenGLSettingGlAlphaFunc>(payload[0], ref));
+			this->opengl_settings.emplace_back(std::make_shared<OpenGLSettings::OpenGLSettingGlAlphaFunc>(0xA0, payload[0], ref));
 			return;
-		case 161: // GL_ALPHA_TEST
-			this->opengl_settings.emplace_back(std::make_shared<OpenGLSettings::OpenGLSettingGlEnable>(0x0BC0, payload[0], false));
+		case 0xA1: // GL_ALPHA_TEST
+			this->opengl_settings.emplace_back(std::make_shared<OpenGLSettings::OpenGLSettingGlEnable>(0xA1, 0x0BC0, payload[0], false));
 			return;
-		case 162: // glBlendFunc
-			this->opengl_settings.emplace_back(std::make_shared<OpenGLSettings::OpenGLSettingGlBlendFunc>(payload[0], payload[1]));
+		case 0xA2: // glBlendFunc
+			this->opengl_settings.emplace_back(std::make_shared<OpenGLSettings::OpenGLSettingGlBlendFunc>(0xA2, payload[0], payload[1]));
 			return;
-		case 163: // glBlendEquationSeparate
-			this->opengl_settings.emplace_back(std::make_shared<OpenGLSettings::OpenGLSettingGlBlendEquationSeparate>(payload[0]));
+		case 0xA3: // glBlendEquationSeparate
+			this->opengl_settings.emplace_back(std::make_shared<OpenGLSettings::OpenGLSettingGlBlendEquationSeparate>(0xA3, payload[0]));
 			return;
-		case 164: // GL_BLEND
-			this->opengl_settings.emplace_back(std::make_shared<OpenGLSettings::OpenGLSettingGlEnable>(0x0BE2, payload[0], false));
+		case 0xA4: // GL_BLEND
+			this->opengl_settings.emplace_back(std::make_shared<OpenGLSettings::OpenGLSettingGlEnable>(0xA4, 0x0BE2, payload[0], false));
 			return;
-		case 165: // glCullFace
-			this->opengl_settings.emplace_back(std::make_shared<OpenGLSettings::OpenGLSettingGlCullFace>(payload[0]));
+		case 0xA5: // glCullFace
+			this->opengl_settings.emplace_back(std::make_shared<OpenGLSettings::OpenGLSettingGlCullFace>(0xA5, payload[0]));
 			return;
-		case 166: // GL_CULL_FACE
-			//this->opengl_settings.emplace_back(std::make_shared<OpenGLSettings::OpenGLSettingGlEnable>(0x0B44, payload[0], true));
+		case 0xA6: // GL_CULL_FACE
+			//this->opengl_settings.emplace_back(std::make_shared<OpenGLSettings::OpenGLSettingGlEnable>(0xA6, 0x0B44, payload[0], true));
 			return;
-		case 167: // glDepthFunc
-			this->opengl_settings.emplace_back(std::make_shared<OpenGLSettings::OpenGLSettingGlDepthFunc>(payload[0]));
+		case 0xA7: // glDepthFunc
+			this->opengl_settings.emplace_back(std::make_shared<OpenGLSettings::OpenGLSettingGlDepthFunc>(0xA7, payload[0]));
 			return;
-		case 168: // glDepthMask
-			this->opengl_settings.emplace_back(std::make_shared<OpenGLSettings::OpenGLSettingGlDepthMask>(payload[0]));
+		case 0xA8: // glDepthMask
+			this->opengl_settings.emplace_back(std::make_shared<OpenGLSettings::OpenGLSettingGlDepthMask>(0xA8, payload[0]));
 			return;
-		case 169: // GL_DEPTH_TEST
-			this->opengl_settings.emplace_back(std::make_shared<OpenGLSettings::OpenGLSettingGlEnable>(0x0B71, payload[0], true));
+		case 0xA9: // GL_DEPTH_TEST
+			this->opengl_settings.emplace_back(std::make_shared<OpenGLSettings::OpenGLSettingGlEnable>(0xA9, 0x0B71, payload[0], true));
 			return;
-			// case 170:
+			// case 0xAA:
 			// 	return;
-			// case 171:
+			// case 0xAB:
 			// 	return;
-		case 172: // glColorMask
-			this->opengl_settings.emplace_back(std::make_shared<OpenGLSettings::OpenGLSettingGlColorMask>(payload[0], payload[1], payload[2], payload[3]));
+		case 0xAC: // glColorMask
+			this->opengl_settings.emplace_back(std::make_shared<OpenGLSettings::OpenGLSettingGlColorMask>(0xAC, payload[0], payload[1], payload[2], payload[3]));
 			return;
 		default:
 			return;
