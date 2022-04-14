@@ -53,8 +53,8 @@ namespace Rendering::DSCS::DataObjects
 		uint16_t getTextureType(uint8_t id);
 		void setTextureBuffer(uint8_t id, uint16_t buffer_id);
 		void setTextureHandler(uint8_t id, const CGparameter& param, std::map<uint8_t, std::unique_ptr<ShaderUniforms::AbstractcgGLTextureReference>>& holder);
-		void setParamHandler(uint8_t id, const CGparameter& param, ShaderUniformVec_t& holder, const std::array<float*, 0xA0>& uniform_dispatch_buffer);
-		void setVectorParamHandler(uint8_t id, const CGparameter& param, VectorUniformVec_t& holder, const std::array<float*, 0xA0>& uniform_dispatch_buffer);
+		template<typename T>
+		void setParamHandler(uint8_t id, const CGparameter& param, T& holder, const std::array<float*, 0xA0>& uniform_dispatch_buffer);
 		void setUniformValue(uint8_t uniform_type_id, const std::array<float, 4>& uniform_data);
 		void initShaderUniforms(const std::array<float*, 0xA0>& uniform_dispatch_buffer);
 		void addOpenGLSetting(uint8_t setting_id,  std::array<uint32_t, 4> inp);
@@ -65,5 +65,47 @@ namespace Rendering::DSCS::DataObjects
 		std::vector<std::shared_ptr<OpenGLSettings::OpenGLSetting>> opengl_settings;
 	};
 
-
+	template<typename T>
+	void OpenGLDSCSMaterial::setParamHandler(uint8_t id, const CGparameter& param, T& holder, const std::array<float*, 0xA0>& uniform_dispatch_buffer)
+	{
+		CGtype param_type = cgGetParameterType(param);
+		switch (param_type)
+		{
+		case CG_HALF:
+		case CG_FLOAT:
+		case CG_HALF1:
+		case CG_FLOAT1:
+			holder.emplace_back(std::make_unique<ShaderUniforms::VectorUniform>(id, 1, param, this->uniform_values[id][0], *uniform_dispatch_buffer[id]));
+			break;
+		case CG_HALF2:
+		case CG_FLOAT2:
+			holder.emplace_back(std::make_unique<ShaderUniforms::VectorUniform>(id, 2, param, this->uniform_values[id][0], *uniform_dispatch_buffer[id]));
+			break;
+		case CG_HALF3:
+		case CG_FLOAT3:
+			holder.emplace_back(std::make_unique<ShaderUniforms::VectorUniform>(id, 3, param, this->uniform_values[id][0], *uniform_dispatch_buffer[id]));
+			break;
+		case CG_HALF4:
+		case CG_FLOAT4:
+			holder.emplace_back(std::make_unique<ShaderUniforms::VectorUniform>(id, 4, param, this->uniform_values[id][0], *uniform_dispatch_buffer[id]));
+			break;
+		case CG_FLOAT4x4:
+			if constexpr (std::is_same<T, ShaderUniformVec_t>::value)
+			{
+				holder.emplace_back(std::make_unique<ShaderUniforms::Float4x4MatrixUniform>(id, param, this->uniform_values[id][0], *uniform_dispatch_buffer[id]));
+				break;
+			}
+		case CG_ARRAY:
+			if constexpr (std::is_same<T, ShaderUniformVec_t>::value)
+			{
+				holder.emplace_back(std::make_unique<ShaderUniforms::MatrixPaletteUniform>(id, param, this->uniform_values[id][0], *uniform_dispatch_buffer[id]));
+				break;
+			}
+		default:
+			std::string error_message = "Unhandled shader parameter type: ";
+			error_message += cgGetTypeString(cgGetParameterType(param));
+			throw std::exception(error_message.c_str());
+			break;
+		}
+	}
 }

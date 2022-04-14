@@ -74,74 +74,6 @@ namespace Rendering::DSCS::DataObjects
 		this->uniform_values[uniform_type_id] = uniform_data;
 	}
 
-	void OpenGLDSCSMaterial::setParamHandler(uint8_t id, const CGparameter& param, ShaderUniformVec_t& holder, const std::array<float*, 0xA0>& uniform_dispatch_buffer)
-	{
-		CGtype param_type = cgGetParameterType(param);
-		switch (param_type)
-		{
-		case CG_HALF:
-		case CG_FLOAT:
-		case CG_HALF1:
-		case CG_FLOAT1:
-			holder.emplace_back(std::make_unique<ShaderUniforms::VectorUniform>(id, 1, param, this->uniform_values[id][0], *uniform_dispatch_buffer[id]));
-			break;
-		case CG_HALF2:
-		case CG_FLOAT2:
-			holder.emplace_back(std::make_unique<ShaderUniforms::VectorUniform>(id, 2, param, this->uniform_values[id][0], *uniform_dispatch_buffer[id]));
-			break;
-		case CG_HALF3:
-		case CG_FLOAT3:
-			holder.emplace_back(std::make_unique<ShaderUniforms::VectorUniform>(id, 3, param, this->uniform_values[id][0], *uniform_dispatch_buffer[id]));
-			break;
-		case CG_HALF4:
-		case CG_FLOAT4:
-			holder.emplace_back(std::make_unique<ShaderUniforms::VectorUniform>(id, 4, param, this->uniform_values[id][0], *uniform_dispatch_buffer[id]));
-			break;
-		case CG_FLOAT4x4:
-			holder.emplace_back(std::make_unique<ShaderUniforms::Float4x4MatrixUniform>(id, param, this->uniform_values[id][0], *uniform_dispatch_buffer[id]));
-			break;
-		case CG_ARRAY:
-			holder.emplace_back(std::make_unique<ShaderUniforms::MatrixPaletteUniform>(id, param, this->uniform_values[id][0], *uniform_dispatch_buffer[id]));
-			break;
-		default:
-			std::string error_message = "Unhandled shader parameter type: ";
-			error_message += cgGetTypeString(cgGetParameterType(param));
-			throw std::exception(error_message.c_str());
-			break;
-		}
-	}
-
-	void OpenGLDSCSMaterial::setVectorParamHandler(uint8_t id, const CGparameter& param, VectorUniformVec_t& holder, const std::array<float*, 0xA0>& uniform_dispatch_buffer)
-	{
-		CGtype param_type = cgGetParameterType(param);
-		switch (param_type)
-		{
-		case CG_HALF:
-		case CG_FLOAT:
-		case CG_HALF1:
-		case CG_FLOAT1:
-			holder.emplace_back(std::make_unique<ShaderUniforms::VectorUniform>(id, 1, param, this->uniform_values[id][0], *uniform_dispatch_buffer[id]));
-			break;
-		case CG_HALF2:
-		case CG_FLOAT2:
-			holder.emplace_back(std::make_unique<ShaderUniforms::VectorUniform>(id, 2, param, this->uniform_values[id][0], *uniform_dispatch_buffer[id]));
-			break;
-		case CG_HALF3:
-		case CG_FLOAT3:
-			holder.emplace_back(std::make_unique<ShaderUniforms::VectorUniform>(id, 3, param, this->uniform_values[id][0], *uniform_dispatch_buffer[id]));
-			break;
-		case CG_HALF4:
-		case CG_FLOAT4:
-			holder.emplace_back(std::make_unique<ShaderUniforms::VectorUniform>(id, 4, param, this->uniform_values[id][0], *uniform_dispatch_buffer[id]));
-			break;
-		default:
-			std::string error_message = "Unhandled shader parameter type: ";
-			error_message += cgGetTypeString(cgGetParameterType(param));
-			throw std::exception(error_message.c_str());
-			break;
-		}
-	}
-
 	void OpenGLDSCSMaterial::setTextureHandler(uint8_t id, const CGparameter& param, std::map<uint8_t, std::unique_ptr<ShaderUniforms::AbstractcgGLTextureReference>>& holder)
 	{
 		CGtype param_type = cgGetParameterType(param);
@@ -192,7 +124,7 @@ namespace Rendering::DSCS::DataObjects
 		{
 			uint8_t uniform_id = kv.first;
 			const CGparameter& param = kv.second;
-			this->setVectorParamHandler(uniform_id, param, this->material_uniforms, uniform_dispatch_buffer);
+			this->setParamHandler(uniform_id, param, this->material_uniforms, uniform_dispatch_buffer);
 			//this->material_uniforms.emplace_back(std::make_unique<ShaderUniforms::VectorUniform>(uniform_id, param, this->uniform_values[uniform_id][0], *uniform_dispatch_buffer[uniform_id]));
 		}
 	}
