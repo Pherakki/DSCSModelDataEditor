@@ -13,6 +13,52 @@
 #include "../../Rendering/DSCS/DataObjects/OpenGLDSCSMaterial.hpp"
 #include "ShaderEditors/ShaderEditorTabs.hpp"
 
+enum class glBoolOptions
+{
+    enumGL_TRUE = GL_TRUE,
+    enumGL_FALSE = GL_FALSE
+};
+
+enum class glBlendFuncOptions
+{
+    enumGL_ZERO                = GL_ZERO,
+    enumGL_ONE                 = GL_ONE,
+    enumGL_SRC_COLOR           = GL_SRC_COLOR,
+    enumGL_ONE_MINUS_SRC_COLOR = GL_ONE_MINUS_SRC_COLOR,
+    enumGL_SRC_ALPHA           = GL_SRC_ALPHA,
+    enumGL_ONE_MINUS_SRC_ALPHA = GL_ONE_MINUS_SRC_ALPHA,
+    enumGL_DST_ALPHA           = GL_DST_ALPHA,
+    enumGL_ONE_MINUS_DST_ALPHA = GL_ONE_MINUS_DST_ALPHA
+};
+
+enum class glBlendEqOptions
+{
+    enumGL_FUNC_ADD              = GL_FUNC_ADD,
+    enumGL_MIN                   = GL_MIN,
+    enumGL_MAX                   = GL_MAX,
+    enumGL_FUNC_SUBTRACT         = GL_FUNC_SUBTRACT,
+    enumGL_FUNC_REVERSE_SUBTRACT = GL_FUNC_REVERSE_SUBTRACT
+};
+
+enum class glCullFaceOptions
+{
+    enumGL_FRONT          = GL_FRONT,
+    enumGL_BACK           = GL_BACK,
+    enumGL_FRONT_AND_BACK = GL_FRONT_AND_BACK
+};
+
+enum class glCompOptions
+{
+    enumGL_NEVER    = GL_NEVER,
+    enumGL_LESS     = GL_LESS,
+    enumGL_EQUAL    = GL_EQUAL,
+    enumGL_LEQUAL   = GL_LEQUAL,
+    enumGL_GREATER  = GL_GREATER,
+    enumGL_NOTEQUAL = GL_NOTEQUAL,
+    enumGL_GEQUAL   = GL_GEQUAL,
+    enumGL_ALWAYS   = GL_ALWAYS
+};
+
 class OpenGLSettingsWidget : public QWidget
 {
     Q_OBJECT
