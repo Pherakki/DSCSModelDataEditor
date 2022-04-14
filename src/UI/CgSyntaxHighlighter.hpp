@@ -11,8 +11,8 @@ class cgSyntaxHighlighter : QSyntaxHighlighter
 public:
     cgSyntaxHighlighter(QTextDocument* doc) : QSyntaxHighlighter(doc)
     {
-        this->std_PS_declaration = QRegularExpression(QStringLiteral("^void std_PS\\(.*\\)"));
-        this->std_VS_declaration = QRegularExpression(QStringLiteral("^void std_VS\\(.*\\)"));
+        this->std_PS_declaration = QRegularExpression(QStringLiteral("^void std_PS\\s*\\(.*\\)"));
+        this->std_VS_declaration = QRegularExpression(QStringLiteral("^void std_VS\\s*\\(.*\\)"));
 
         HighlightingRule rule;
 
@@ -59,7 +59,7 @@ public:
 
         // Functions
         functionFormat.setForeground(Qt::darkYellow);
-        rule.pattern = QRegularExpression(QStringLiteral("\\b[A-Za-z0-9_]+(?=\\()"));
+        rule.pattern = QRegularExpression(QStringLiteral("\\b[A-Za-z0-9_]+\\s*(?=\\()"));
         rule.format = functionFormat;
         highlightingRules.append(rule);
 
@@ -103,7 +103,7 @@ public:
 
         };
         for (const QString& pattern : intrinsicFunctionPatterns) {
-            rule.pattern = QRegularExpression(pattern + QStringLiteral("(?=\\()"));
+            rule.pattern = QRegularExpression(pattern + QStringLiteral("\\s*(?=\\()"));
             rule.format = intrinsicFunctionFormat;
             highlightingRules.append(rule);
         }
