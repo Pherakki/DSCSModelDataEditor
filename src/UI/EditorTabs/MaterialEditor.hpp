@@ -59,10 +59,19 @@ enum class glCompOptions
     enumGL_ALWAYS   = GL_ALWAYS
 };
 
+namespace MatEditTypedefs
+{
+    typedef std::shared_ptr<Rendering::DSCS::DataObjects::OpenGLDSCSMaterial> MaterialPtr;
+    typedef std::vector<std::shared_ptr<Rendering::DSCS::DataObjects::OpenGLSettings::OpenGLSetting>> OGLS_t;
+}
+
+
 class OpenGLSettingsWidget : public QWidget
 {
     Q_OBJECT
 private:
+    MatEditTypedefs::MaterialPtr selected_material = nullptr;
+
     QCheckBox* alphafunc_checkbox  = new QCheckBox(this);
     QCheckBox* alphatest_checkbox  = new QCheckBox(this);
     QCheckBox* blend_checkbox      = new QCheckBox(this);
@@ -85,6 +94,49 @@ private:
     QComboBox* colormask_combobox_g   = new QComboBox(this);
     QComboBox* colormask_combobox_b   = new QComboBox(this);
     QComboBox* colormask_combobox_a   = new QComboBox(this);
+
+    template<uint8_t setting_id, class FunctorT>
+    void handleCheckbox(int checkstate, uint32_t v1, uint32_t v2, uint32_t v3, uint32_t v4)
+    {
+        auto& material = this->selected_material;
+        if (!material)
+            return;
+        std::cout << "Checkbox ticked" << std::endl;
+        auto& settings = material->opengl_settings;
+        auto setting_idx = this->checkIfSettingExists(setting_id, settings);
+        std::cout << "Found setting at " << std::to_string(setting_idx) << std::endl;
+        // If ticked (or not ticked, depending on whether FunctorT is std::identity or std::logical_not)
+        if (FunctorT()(checkstate))
+        {
+            std::cout << "Trying to add..." << std::endl;
+            // If the setting doesn't exist...
+            if (setting_idx == -1)
+            {
+                std::cout << "Added." << std::endl;
+                material->addOpenGLSetting(setting_id, { v1, v2, v3, v4 });
+            }
+        }
+        else
+        {
+            std::cout << "Checking if should erase..." << std::endl;
+            if (setting_idx != -1)
+            {
+                std::cout << "Erased." << std::endl;
+                settings.erase(settings.begin() + setting_idx);
+            }
+        }
+    }
+
+    int8_t checkIfSettingExists(uint8_t setting_id, const MatEditTypedefs::OGLS_t& settings)
+    {
+        for (int8_t idx = 0; idx < settings.size(); ++idx)
+        {
+            if (settings[idx]->getID() == setting_id)
+                return idx;
+        }
+        return -1;
+    }
+
 public:
     OpenGLSettingsWidget(QWidget* parent = Q_NULLPTR) : QWidget(parent)
     {
