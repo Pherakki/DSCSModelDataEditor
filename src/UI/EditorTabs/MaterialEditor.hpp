@@ -73,7 +73,6 @@ private:
     MatEditTypedefs::MaterialPtr selected_material = nullptr;
 
     QCheckBox* alphafunc_checkbox  = new QCheckBox(this);
-    QCheckBox* alphatest_checkbox  = new QCheckBox(this);
     QCheckBox* blend_checkbox      = new QCheckBox(this);
     QCheckBox* depthtest_checkbox  = new QCheckBox(this);
     QCheckBox* blendfunc_checkbox  = new QCheckBox(this);
@@ -142,20 +141,22 @@ public:
     {
         auto layout = new QGridLayout(this);
 
-        // Alpha Test
-        auto alphatest_label = new QLabel("Alpha Test", this);
-        layout->addWidget(this->alphatest_checkbox, 0, 0);
-        layout->addWidget(alphatest_label, 0, 1);
-
         // Alpha Func
         auto alphafunc_label = new QLabel("Alpha Func", this);
         auto alphafunc_widget = new QWidget(this);
         auto alphafunc_layout = new QHBoxLayout;
         alphafunc_layout->addWidget(this->alphafunc_combobox);
         alphafunc_widget->setLayout(alphafunc_layout);
-        layout->addWidget(this->alphafunc_checkbox, 1, 0);
-        layout->addWidget(alphafunc_label, 1, 1);
-        layout->addWidget(alphafunc_widget, 1, 2);
+        layout->addWidget(this->alphafunc_checkbox, 0, 0);
+        layout->addWidget(alphafunc_label, 0, 1);
+        layout->addWidget(alphafunc_widget, 0, 2);
+        connect(this->alphafunc_checkbox, &QCheckBox::stateChanged, this, 
+            [this](int checkstate) 
+            { 
+                this->handleCheckbox<0xA1, std::identity>(checkstate, 1, 0, 0, 0);
+                this->handleCheckbox<0xA0, std::identity>(checkstate, GL_NEVER, 0, 0, 0); 
+            }
+        );
 
         // Blend Test
         auto blend_label = new QLabel("Blend", this);
