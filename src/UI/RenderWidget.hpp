@@ -3,7 +3,7 @@
 #include <QObject>
 #include <QTimer>
 #include <QOpenGLWidget>
-#include <QOpenGLFunctions>
+#include <QOpenGLFunctions_2_1>
 #include <QKeyEvent>
 #include <QCursor>
 
@@ -23,7 +23,7 @@
 
 namespace CustomWidgets
 {
-	class RenderWidget : public QOpenGLWidget, protected QOpenGLFunctions
+	class RenderWidget : public QOpenGLWidget, protected QOpenGLFunctions_2_1
 	{
 		Q_OBJECT;
 		typedef std::shared_ptr<Rendering::DSCS::DataObjects::OpenGLDSCSModel> ModelPtr;
@@ -47,6 +47,8 @@ namespace CustomWidgets
 
 		std::unordered_map<std::string, std::shared_ptr<Rendering::DataObjects::OpenGLDSCSTexture>> texture_library;
 		std::unordered_map<std::string, std::shared_ptr<Rendering::ShaderObjects::cgGLShaderObject>> shader_library;
+
+		void refreshRenderSettings();
 
 		
 	protected slots:

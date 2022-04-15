@@ -36,15 +36,22 @@ namespace CustomWidgets
 		this->animation_buffer.shader_uniform_buffer[0x2E3] = 0.5f;
 	}
 
-	void RenderWidget::initializeGL()
+	void RenderWidget::refreshRenderSettings()
 	{
-		initializeOpenGLFunctions();
-		glClearColor(0.4f, 0.4f, 0.4f, 1.0f);
 		glEnable(GL_DEPTH_TEST);
+		glDisable(GL_ALPHA_TEST);
+		glAlphaFunc(GL_ALWAYS, 0);
 		glDepthFunc(GL_LESS);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 		glEnable(GL_CULL_FACE);
+	}
+
+	void RenderWidget::initializeGL()
+	{
+		initializeOpenGLFunctions();
+		glClearColor(0.4f, 0.4f, 0.4f, 1.0f);
+		this->refreshRenderSettings();
 
 		std::cout << "Render Widget Init" << std::endl;
 		emit this->glInitialised();
@@ -120,6 +127,7 @@ namespace CustomWidgets
 
 	void RenderWidget::paintGL()
 	{
+		this->refreshRenderSettings();
 		for (auto& kv: this->models)
 		{
 			auto& model = kv.second;
