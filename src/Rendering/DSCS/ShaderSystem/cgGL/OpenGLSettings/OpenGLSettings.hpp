@@ -39,9 +39,9 @@ namespace Rendering::DSCS::DataObjects::OpenGLSettings
 	class OpenGLSettingGlEnable : public OpenGLSetting
 	{
 	public:
-		OpenGLSettingGlEnable(uint8_t id, uint16_t gl_flag, bool isEnabled, bool default_val) : OpenGLSetting(id) { this->gl_flag = gl_flag; setEnabledState(isEnabled); this->default_val = default_val; };
+		OpenGLSettingGlEnable(uint8_t id, uint16_t gl_flag, bool isEnabled, bool default_val) : OpenGLSetting(id) { this->gl_flag = gl_flag; this->default_val = default_val; setEnabledState(isEnabled); };
 		void set() override   { this->setFunc(); };
-		void unset() override { };
+		void unset() override { this->unsetFunc(); };
 		std::array<glFlagTypes, 4> getFlags() override { return { glFlagTypes::glBool, glFlagTypes::Null, glFlagTypes::Null, glFlagTypes::Null }; }
 		std::array<std::string, 4> getData()  override { return { std::to_string(this->isEnabled), "", "", "" }; }
 		void setData(const std::array<std::string, 4>& data) override { this->isEnabled = std::stoi(data[0]); }
@@ -64,7 +64,7 @@ namespace Rendering::DSCS::DataObjects::OpenGLSettings
 			{
 				this->setFunc = [this]() {this->OpenGLSettingGlEnable::disable_flag(); };
 			}
-			if (default_val)
+			if (this->default_val)
 				this->unsetFunc = [this]() {this->OpenGLSettingGlEnable::enable_flag(); };
 			else
 				this->unsetFunc = [this]() {this->OpenGLSettingGlEnable::disable_flag(); };
