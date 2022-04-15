@@ -58,7 +58,7 @@ namespace Rendering::DSCS::DataObjects
 		void setUniformValue(uint8_t uniform_type_id, const std::array<float, 4>& uniform_data);
 		void initShaderUniforms(const std::array<float*, 0xA0>& uniform_dispatch_buffer);
 		void addOpenGLSetting(uint8_t setting_id,  std::array<uint32_t, 4> inp);
-		std::array<std::array<float, 4>, 0xA0> uniform_values;
+		std::array<std::array<float, 4>, 0xA0> local_uniform_buffer;
 
 		std::vector<std::unique_ptr<ShaderUniforms::VectorUniform>> material_uniforms;
 		std::map<uint8_t, std::unique_ptr<ShaderUniforms::AbstractcgGLTextureReference>> texture_refs;
@@ -75,30 +75,30 @@ namespace Rendering::DSCS::DataObjects
 		case CG_FLOAT:
 		case CG_HALF1:
 		case CG_FLOAT1:
-			holder.emplace_back(std::make_unique<ShaderUniforms::VectorUniform>(id, 1, param, this->uniform_values[id][0], *uniform_dispatch_buffer[id]));
+			holder.emplace_back(std::make_unique<ShaderUniforms::VectorUniform>(id, 1, param, this->local_uniform_buffer[id][0], *uniform_dispatch_buffer[id]));
 			break;
 		case CG_HALF2:
 		case CG_FLOAT2:
-			holder.emplace_back(std::make_unique<ShaderUniforms::VectorUniform>(id, 2, param, this->uniform_values[id][0], *uniform_dispatch_buffer[id]));
+			holder.emplace_back(std::make_unique<ShaderUniforms::VectorUniform>(id, 2, param, this->local_uniform_buffer[id][0], *uniform_dispatch_buffer[id]));
 			break;
 		case CG_HALF3:
 		case CG_FLOAT3:
-			holder.emplace_back(std::make_unique<ShaderUniforms::VectorUniform>(id, 3, param, this->uniform_values[id][0], *uniform_dispatch_buffer[id]));
+			holder.emplace_back(std::make_unique<ShaderUniforms::VectorUniform>(id, 3, param, this->local_uniform_buffer[id][0], *uniform_dispatch_buffer[id]));
 			break;
 		case CG_HALF4:
 		case CG_FLOAT4:
-			holder.emplace_back(std::make_unique<ShaderUniforms::VectorUniform>(id, 4, param, this->uniform_values[id][0], *uniform_dispatch_buffer[id]));
+			holder.emplace_back(std::make_unique<ShaderUniforms::VectorUniform>(id, 4, param, this->local_uniform_buffer[id][0], *uniform_dispatch_buffer[id]));
 			break;
 		case CG_FLOAT4x4:
 			if constexpr (std::is_same<T, ShaderUniformVec_t>::value)
 			{
-				holder.emplace_back(std::make_unique<ShaderUniforms::Float4x4MatrixUniform>(id, param, this->uniform_values[id][0], *uniform_dispatch_buffer[id]));
+				holder.emplace_back(std::make_unique<ShaderUniforms::Float4x4MatrixUniform>(id, param, this->local_uniform_buffer[id][0], *uniform_dispatch_buffer[id]));
 				break;
 			}
 		case CG_ARRAY:
 			if constexpr (std::is_same<T, ShaderUniformVec_t>::value)
 			{
-				holder.emplace_back(std::make_unique<ShaderUniforms::MatrixPaletteUniform>(id, param, this->uniform_values[id][0], *uniform_dispatch_buffer[id]));
+				holder.emplace_back(std::make_unique<ShaderUniforms::MatrixPaletteUniform>(id, param, this->local_uniform_buffer[id][0], *uniform_dispatch_buffer[id]));
 				break;
 			}
 		default:

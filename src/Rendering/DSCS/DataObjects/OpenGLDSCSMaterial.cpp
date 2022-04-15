@@ -7,7 +7,7 @@ namespace Rendering::DSCS::DataObjects
 	// Constructor
 	OpenGLDSCSMaterial::OpenGLDSCSMaterial(std::shared_ptr<ShaderObjects::cgGLShaderObject> shader)
 	{
-		for (auto& val : this->uniform_values)
+		for (auto& val : this->local_uniform_buffer)
 			val = { 0., 0., 0., 0. };
 		this->shader = shader;
 		this->errorChecker = OpenGLErrorChecker();
@@ -71,7 +71,7 @@ namespace Rendering::DSCS::DataObjects
 
 	void OpenGLDSCSMaterial::setUniformValue(uint8_t uniform_type_id, const std::array<float, 4>& uniform_data)
 	{
-		this->uniform_values[uniform_type_id] = uniform_data;
+		this->local_uniform_buffer[uniform_type_id] = uniform_data;
 	}
 
 	void OpenGLDSCSMaterial::setTextureHandler(uint8_t id, const CGparameter& param, std::map<uint8_t, std::unique_ptr<ShaderUniforms::AbstractcgGLTextureReference>>& holder)

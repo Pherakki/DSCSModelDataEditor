@@ -71,7 +71,7 @@ public:
 			tmp_label->setText(QString::fromStdString(uniform->getName()));
 			this->vector_uniforms_layout->addWidget(tmp_label, i, 0);
 
-			std::array<float, 4>& static_val = this->selected_material->uniform_values[id];
+			std::array<float, 4>& static_val = this->selected_material->local_uniform_buffer[id];
 		
 			for (uint8_t j = 0; j < uniform->getSize(); ++j)
 			{
@@ -83,6 +83,7 @@ public:
 
 			this->vector_uniforms_layout->addWidget(tmp_widget, i, 1);
 		}
+
 	}
 
 	void sanitiseTextChanged(uint8_t id, uint8_t change_idx, const QString& value)
@@ -96,7 +97,7 @@ public:
 		{
 			f_value = 0;
 		}
-		std::array<float, 4>& static_val = this->selected_material->uniform_values[id];
+		std::array<float, 4>& static_val = this->selected_material->local_uniform_buffer[id];
 		static_val[change_idx] = f_value;
 	}
 
