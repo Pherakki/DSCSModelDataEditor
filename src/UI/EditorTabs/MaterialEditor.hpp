@@ -241,6 +241,11 @@ public:
         layout->setColumnStretch(2, 1);
         this->setLayout(layout);
     }
+
+    void updateSelectedMaterial(MatEditTypedefs::MaterialPtr material_ptr)
+    {
+        this->selected_material = material_ptr;
+    }
 };
 
 class MaterialEditorTab : public QWidget
@@ -314,6 +319,7 @@ public slots:
         this->material_dropdown->setCurrentIndex(this->material_lookup.at(material_ptr));
         this->selected_material = selected_material;
         this->shader_edit_modes->updateSelectedMaterial(material_ptr);
+        this->opengl_settings->updateSelectedMaterial(material_ptr);
     }
 
     /*
