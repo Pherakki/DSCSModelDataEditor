@@ -36,7 +36,7 @@ add_executable (${PROJECT_NAME}
                 "UI/RenderWidget.cpp"
                 "UI/EditorTabs/SkeletonEditor.hpp" 
                 "UI/EditorTabs/AnimationEditor.cpp"
-                "UI/CgSyntaxHighlighter.hpp" "UI/EditorTabs/ShaderEditors/ShaderFactory.cpp" "UI/EditorTabs/MeshEditor.hpp" "UI/EditorTabs/MaterialEditor.hpp"  "UI/EditorTabs/ShaderEditors/ShaderEditorTabs.hpp" "UI/EditorTabs/ShaderEditors/CodeEditor.hpp" "UI/EditorTabs/ShaderEditors/PrebuiltShaders.hpp")
+                "UI/CgSyntaxHighlighter.hpp" "UI/EditorTabs/ShaderEditors/ShaderFactory.cpp" "UI/EditorTabs/MeshEditor.hpp" "UI/EditorTabs/MaterialEditor.hpp"  "UI/EditorTabs/ShaderEditors/ShaderEditorTabs.hpp" "UI/EditorTabs/ShaderEditors/CodeEditor.hpp" "UI/EditorTabs/ShaderEditors/PrebuiltShaders.hpp" )
 
 # Allow CMake to build libraries
 cmake_policy(SET CMP0079 NEW)

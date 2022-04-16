@@ -13,50 +13,42 @@
 #include "../../Rendering/DSCS/DataObjects/OpenGLDSCSMaterial.hpp"
 #include "ShaderEditors/ShaderEditorTabs.hpp"
 
-enum class glBoolOptions
+struct glOptions
 {
-    enumGL_TRUE = GL_TRUE,
-    enumGL_FALSE = GL_FALSE
+    const static std::vector<std::string> names;
+    const static std::vector<uint16_t> options;
 };
 
-enum class glBlendFuncOptions
+struct glBoolOptions : public glOptions
 {
-    enumGL_ZERO                = GL_ZERO,
-    enumGL_ONE                 = GL_ONE,
-    enumGL_SRC_COLOR           = GL_SRC_COLOR,
-    enumGL_ONE_MINUS_SRC_COLOR = GL_ONE_MINUS_SRC_COLOR,
-    enumGL_SRC_ALPHA           = GL_SRC_ALPHA,
-    enumGL_ONE_MINUS_SRC_ALPHA = GL_ONE_MINUS_SRC_ALPHA,
-    enumGL_DST_ALPHA           = GL_DST_ALPHA,
-    enumGL_ONE_MINUS_DST_ALPHA = GL_ONE_MINUS_DST_ALPHA
+    inline const static std::vector<std::string> names   = { "GL_TRUE", "GL_FALSE" };
+    inline const static std::vector<uint16_t> options    = {  GL_TRUE ,  GL_FALSE  };
 };
 
-enum class glBlendEqOptions
+struct glBlendFuncOptions : public glOptions
 {
-    enumGL_FUNC_ADD              = GL_FUNC_ADD,
-    enumGL_MIN                   = GL_MIN,
-    enumGL_MAX                   = GL_MAX,
-    enumGL_FUNC_SUBTRACT         = GL_FUNC_SUBTRACT,
-    enumGL_FUNC_REVERSE_SUBTRACT = GL_FUNC_REVERSE_SUBTRACT
+    inline const static std::vector<std::string> names = { "GL_ZERO", "GL_ONE", "GL_SRC_COLOR", "GL_ONE_MINUS_SRC_COLOR", "GL_SRC_ALPHA", "GL_ONE_MINUS_SRC_ALPHA", "GL_DST_ALPHA", "GL_ONE_MINUS_DST_ALPHA" };
+    inline const static std::vector<uint16_t> options  = {  GL_ZERO ,  GL_ONE ,  GL_SRC_COLOR ,  GL_ONE_MINUS_SRC_COLOR ,  GL_SRC_ALPHA ,  GL_ONE_MINUS_SRC_ALPHA ,  GL_DST_ALPHA ,  GL_ONE_MINUS_DST_ALPHA  };
 };
 
-enum class glCullFaceOptions
+struct glBlendEqOptions : public glOptions
 {
-    enumGL_FRONT          = GL_FRONT,
-    enumGL_BACK           = GL_BACK,
-    enumGL_FRONT_AND_BACK = GL_FRONT_AND_BACK
+    inline const static std::vector<std::string> names = { "GL_FUNC_ADD", "GL_MIN", "GL_MAX", "GL_FUNC_SUBTRACT", "GL_FUNC_REVERSE_SUBTRACT" };
+    inline const static std::vector<uint16_t> options  = {  GL_FUNC_ADD ,  GL_MIN ,  GL_MAX ,  GL_FUNC_SUBTRACT ,  GL_FUNC_REVERSE_SUBTRACT  };
 };
 
-enum class glCompOptions
+
+struct glCullFaceOptions : public glOptions
 {
-    enumGL_NEVER    = GL_NEVER,
-    enumGL_LESS     = GL_LESS,
-    enumGL_EQUAL    = GL_EQUAL,
-    enumGL_LEQUAL   = GL_LEQUAL,
-    enumGL_GREATER  = GL_GREATER,
-    enumGL_NOTEQUAL = GL_NOTEQUAL,
-    enumGL_GEQUAL   = GL_GEQUAL,
-    enumGL_ALWAYS   = GL_ALWAYS
+    inline const static std::vector<std::string> names = { "GL_FRONT", "GL_BACK", "GL_FRONT_AND_BACK" };
+    inline const static std::vector<uint16_t> options  = {  GL_FRONT ,  GL_BACK ,  GL_FRONT_AND_BACK  };
+};
+
+struct glCompOptions : public glOptions
+{
+    inline const static std::vector<std::string> names = { "GL_NEVER", "GL_LESS", "GL_LEQUAL", "GL_EQUAL", "GL_NOTEQUAL", "GL_GEQUAL", "GL_GREATER", "GL_ALWAYS" };
+    inline const static std::vector<uint16_t> options  = {  GL_NEVER ,  GL_LESS ,  GL_LEQUAL ,  GL_EQUAL ,  GL_NOTEQUAL,   GL_GEQUAL ,  GL_GREATER ,  GL_ALWAYS  };
+
 };
 
 namespace MatEditTypedefs
@@ -152,6 +144,16 @@ private:
         return -1;
     }
 
+    template <typename option_pack>
+    requires std::is_base_of<glOptions, option_pack>::value
+    void initComboBox(QComboBox* combobox)
+    {
+        for (size_t i = 0; i < option_pack::names.size(); ++i)
+        {
+            combobox->addItem(QString::fromStdString(option_pack::names[i]), option_pack::options[i]);
+        }
+    }
+
 public:
     OpenGLSettingsWidget(QWidget* parent = Q_NULLPTR) : QWidget(parent)
     {
@@ -168,6 +170,8 @@ public:
         layout->addWidget(this->alphafunc_checkbox, curr_row, 0);
         layout->addWidget(alphafunc_label, curr_row, 1);
         layout->addWidget(alphafunc_widget, curr_row, 2);
+
+        this->initComboBox<glCompOptions>(this->alphafunc_combobox);
         connect(this->alphafunc_checkbox, &QCheckBox::stateChanged, this, 
             [this](int checkstate) 
             { 
@@ -187,6 +191,9 @@ public:
         layout->addWidget(this->blendfunc_checkbox, curr_row, 0);
         layout->addWidget(blendfunc_label, curr_row, 1);
         layout->addWidget(blendfunc_widget, curr_row, 2);
+
+        this->initComboBox<glBlendFuncOptions>(this->blendfunc_src_combobox);
+        this->initComboBox<glBlendFuncOptions>(this->blendfunc_dst_combobox);
         connect(this->blendfunc_checkbox, &QCheckBox::stateChanged, this,
             [this](int checkstate)
             {
@@ -205,6 +212,8 @@ public:
         layout->addWidget(this->blendeq_checkbox, curr_row, 0);
         layout->addWidget(blendeq_label, curr_row, 1);
         layout->addWidget(blendeq_widget, curr_row, 2);
+
+        this->initComboBox<glBlendEqOptions>(this->blendeq_combobox);
         connect(this->blendeq_checkbox, &QCheckBox::stateChanged, this,
             [this](int checkstate)
             {
@@ -224,6 +233,8 @@ public:
         layout->addWidget(this->faceculling_checkbox, curr_row, 0);
         layout->addWidget(faceculling_label, curr_row, 1);
         layout->addWidget(faceculling_widget, curr_row, 2);
+
+        this->initComboBox<glCullFaceOptions>(this->faceculling_combobox);
         connect(this->faceculling_checkbox, &QCheckBox::stateChanged, this,
             [this](int checkstate)
             {
@@ -247,6 +258,8 @@ public:
         layout->addWidget(this->depthfunc_checkbox, curr_row, 0);
         layout->addWidget(depthfunc_label, curr_row, 1);
         layout->addWidget(depthfunc_widget, curr_row, 2);
+
+        this->initComboBox<glCompOptions>(this->depthfunc_combobox);
         ++curr_row;
 
         // glDepthMask
@@ -258,6 +271,8 @@ public:
         layout->addWidget(this->depthmask_checkbox, curr_row, 0);
         layout->addWidget(depthmask_label, curr_row, 1);
         layout->addWidget(depthmask_widget, curr_row, 2);
+
+        this->initComboBox<glBoolOptions>(this->depthmask_combobox);
         ++curr_row;
 
         // glColorMask
@@ -272,6 +287,11 @@ public:
         layout->addWidget(this->colormask_checkbox, curr_row, 0);
         layout->addWidget(colormask_label, curr_row, 1);
         layout->addWidget(colormask_widget, curr_row, 2);
+
+        this->initComboBox<glBoolOptions>(this->colormask_combobox_r);
+        this->initComboBox<glBoolOptions>(this->colormask_combobox_g);
+        this->initComboBox<glBoolOptions>(this->colormask_combobox_b);
+        this->initComboBox<glBoolOptions>(this->colormask_combobox_a);
         ++curr_row;
 
         layout->setColumnStretch(0, 0);
