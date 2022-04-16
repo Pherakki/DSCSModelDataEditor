@@ -141,6 +141,8 @@ private:
     void updateSettingData(uint8_t setting_id, F1 f1, F2 f2, F3 f3, F4 f4)
     {
         auto& material = this->selected_material;
+        if (!material)
+            return
         auto& settings = material->opengl_settings;
         auto setting_idx = this->checkIfSettingExists(setting_id, settings);
         if (setting_idx != -1)
