@@ -216,14 +216,14 @@ public:
 
 
         // glCullFace
-        auto facerender_label = new QLabel("Face Culling", this);
-        auto facerender_widget = new QWidget(this);
-        auto facerender_layout = new QHBoxLayout;
-        facerender_layout->addWidget(this->faceculling_combobox);
-        facerender_widget->setLayout(facerender_layout);
+        auto faceculling_label = new QLabel("Face Culling", this);
+        auto faceculling_widget = new QWidget(this);
+        auto faceculling_layout = new QHBoxLayout;
+        faceculling_layout->addWidget(this->faceculling_combobox);
+        faceculling_widget->setLayout(faceculling_layout);
         layout->addWidget(this->faceculling_checkbox, curr_row, 0);
-        layout->addWidget(facerender_label, curr_row, 1);
-        layout->addWidget(facerender_widget, curr_row, 2);
+        layout->addWidget(faceculling_label, curr_row, 1);
+        layout->addWidget(faceculling_widget, curr_row, 2);
         connect(this->faceculling_checkbox, &QCheckBox::stateChanged, this,
             [this](int checkstate)
             {
