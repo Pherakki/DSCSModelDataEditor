@@ -28,8 +28,8 @@ struct glBoolOptions : public glOptions
 
 struct glBlendFuncOptions : public glOptions
 {
-    inline const static std::vector<std::string> names = { "GL_ZERO", "GL_ONE", "GL_SRC_COLOR", "GL_ONE_MINUS_SRC_COLOR", "GL_SRC_ALPHA", "GL_ONE_MINUS_SRC_ALPHA", "GL_DST_ALPHA", "GL_ONE_MINUS_DST_ALPHA" };
-    inline const static std::vector<uint16_t> options  = {  GL_ZERO ,  GL_ONE ,  GL_SRC_COLOR ,  GL_ONE_MINUS_SRC_COLOR ,  GL_SRC_ALPHA ,  GL_ONE_MINUS_SRC_ALPHA ,  GL_DST_ALPHA ,  GL_ONE_MINUS_DST_ALPHA  };
+    inline const static std::vector<std::string> names = { "GL_ZERO", "GL_ONE", "GL_SRC_COLOR", "GL_ONE_MINUS_SRC_COLOR", "GL_SRC_ALPHA", "GL_ONE_MINUS_SRC_ALPHA", "GL_DST_COLOR", "GL_ONE_MINUS_DST_COLOR", "GL_DST_ALPHA", "GL_ONE_MINUS_DST_ALPHA", "GL_SRC_ALPHA_SATURATE" };
+    inline const static std::vector<uint16_t> options  = {  GL_ZERO ,  GL_ONE ,  GL_SRC_COLOR ,  GL_ONE_MINUS_SRC_COLOR ,  GL_SRC_ALPHA ,  GL_ONE_MINUS_SRC_ALPHA ,  GL_DST_COLOR ,  GL_ONE_MINUS_DST_COLOR ,  GL_DST_ALPHA ,  GL_ONE_MINUS_DST_ALPHA ,  GL_SRC_ALPHA_SATURATE  };
 };
 
 struct glBlendEqOptions : public glOptions
@@ -187,6 +187,30 @@ private:
         );
     }
 
+    void updateBlendFunc()
+    {
+        this->updateSettingData
+        (
+            0xA2,
+            [this]() { return this->blendfunc_src_combobox->currentData().toString().toStdString(); },
+            [this]() { return this->blendfunc_dst_combobox->currentData().toString().toStdString(); },
+            []() { return std::string(""); },
+            []() { return std::string(""); }
+        );
+    }
+
+    void updateBlendEq()
+    {
+        this->updateSettingData
+        (
+            0xA3,
+            [this]() { return this->blendeq_combobox->currentData().toString().toStdString(); },
+            []() { return std::string(""); },
+            []() { return std::string(""); },
+            []() { return std::string(""); }
+        );
+    }
+
     template <typename option_pack>
     requires std::is_base_of<glOptions, option_pack>::value
     void initComboBox(QComboBox* combobox)
@@ -204,6 +228,8 @@ public:
         auto layout = new QGridLayout(this);
 
         auto curr_row = 0;
+
+        // Would probably be more readable to hide each chunk away in a constructor function
 
         // Alpha Func
         // -> Init UI
@@ -230,6 +256,7 @@ public:
         ++curr_row;
 
         // glBlendFunc
+        // -> Init UI
         auto blendfunc_label = new QLabel("Blend Func", this);
         auto blendfunc_widget = new QWidget(this);
         auto blendfunc_layout = new QHBoxLayout;
@@ -239,7 +266,7 @@ public:
         layout->addWidget(this->blendfunc_checkbox, curr_row, 0);
         layout->addWidget(blendfunc_label, curr_row, 1);
         layout->addWidget(blendfunc_widget, curr_row, 2);
-
+        // -> Init behaviour
         this->initComboBox<glBlendFuncOptions>(this->blendfunc_src_combobox);
         this->initComboBox<glBlendFuncOptions>(this->blendfunc_dst_combobox);
         connect(this->blendfunc_checkbox, &QCheckBox::stateChanged, this,
@@ -249,6 +276,8 @@ public:
                 this->handleCheckbox<0xA4, std::identity, 0xA2, 0xA3>(checkstate, 1, 0, 0, 0); // glEnable(GL_BLEND)
             }
         );
+        connect(this->blendfunc_src_combobox, static_cast<void(QComboBox::*)(int)>(&QComboBox::currentIndexChanged), this, [this]() {this->updateBlendFunc(); });
+        connect(this->blendfunc_dst_combobox, static_cast<void(QComboBox::*)(int)>(&QComboBox::currentIndexChanged), this, [this]() {this->updateBlendFunc(); });
         ++curr_row;
 
         // glBlendEquationSeparate
@@ -269,6 +298,7 @@ public:
                 this->handleCheckbox<0xA4, std::identity, 0xA2, 0xA3>(checkstate, 1, 0, 0, 0); // glEnable(GL_BLEND)
             }
         );
+        connect(this->blendeq_combobox, static_cast<void(QComboBox::*)(int)>(&QComboBox::currentIndexChanged), this, [this]() {this->updateBlendEq(); });
         ++curr_row;
 
 
