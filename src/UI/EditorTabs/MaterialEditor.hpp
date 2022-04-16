@@ -89,7 +89,7 @@ private:
     QLineEdit* alphafunc_textbox = new QLineEdit(this);
 
     template<uint8_t setting_id, class FunctorT, int... active_ids>
-    void handleCheckbox(int checkstate, uint32_t v1, uint32_t v2, uint32_t v3, uint32_t v4)
+    void handleCheckbox(int checkstate, uint32_t v1, uint32_t v2, uint32_t v3, uint32_t v4, QWidget* widget=Q_NULLPTR)
     {
         auto& material = this->selected_material;
         if (!material)
@@ -105,6 +105,8 @@ private:
             {
                 material->addOpenGLSetting(setting_id, { v1, v2, v3, v4 });
             }
+            if (widget)
+                widget->setEnabled(true);
         }
         else
         {
@@ -126,6 +128,8 @@ private:
             {
                 settings.erase(settings.begin() + setting_idx);
             }
+            if (widget)
+                widget->setEnabled(false);
         }
     }
 
@@ -286,9 +290,9 @@ public:
         // -> Init behaviour
         this->initComboBox<glCompOptions>(this->alphafunc_combobox);
         connect(this->alphafunc_checkbox, &QCheckBox::stateChanged, this, 
-            [this](int checkstate) 
+            [this, alphafunc_widget](int checkstate)
             { 
-                this->handleCheckbox<0xA0, std::identity>(checkstate, GL_NEVER, 0, 0, 0); // glAlphaFunc
+                this->handleCheckbox<0xA0, std::identity>(checkstate, this->alphafunc_combobox->currentData().toInt(), 0, 0, 0, alphafunc_widget); // glAlphaFunc
                 this->handleCheckbox<0xA1, std::identity>(checkstate,  GL_TRUE, 0, 0, 0); // glEnable(GL_ALPHA_TEST)
             }
         );
@@ -311,10 +315,10 @@ public:
         this->initComboBox<glBlendFuncOptions>(this->blendfunc_src_combobox);
         this->initComboBox<glBlendFuncOptions>(this->blendfunc_dst_combobox);
         connect(this->blendfunc_checkbox, &QCheckBox::stateChanged, this,
-            [this](int checkstate)
+            [this, blendfunc_widget](int checkstate)
             {
-                this->handleCheckbox<0xA2, std::identity>(checkstate, GL_ONE, GL_ZERO, 0, 0); // BlendFunc
-                this->handleCheckbox<0xA4, std::identity, 0xA2, 0xA3>(checkstate, 1, 0, 0, 0); // glEnable(GL_BLEND)
+                this->handleCheckbox<0xA2, std::identity>(checkstate, this->blendfunc_src_combobox->currentData().toInt(), this->blendfunc_dst_combobox->currentData().toInt(), 0, 0, blendfunc_widget); // BlendFunc GL_ONE, GL_ZERO
+                this->handleCheckbox<0xA4, std::identity, 0xA2, 0xA3>(checkstate, 1, 0, 0, 0); // glEnable(GL_BLEND) GL_TRUE
             }
         );
         connect(this->blendfunc_src_combobox, static_cast<void(QComboBox::*)(int)>(&QComboBox::currentIndexChanged), this, [this]() {this->updateBlendFunc(); });
@@ -334,9 +338,9 @@ public:
         // -> Init behaviour
         this->initComboBox<glBlendEqOptions>(this->blendeq_combobox);
         connect(this->blendeq_checkbox, &QCheckBox::stateChanged, this,
-            [this](int checkstate)
+            [this, blendeq_widget](int checkstate)
             {
-                this->handleCheckbox<0xA3, std::identity>(checkstate, GL_FUNC_ADD, 0, 0, 0); // BlendEquationSeparate
+                this->handleCheckbox<0xA3, std::identity>(checkstate, this->blendeq_combobox->currentData().toInt(), 0, 0, 0, blendeq_widget); // BlendEquationSeparate GL_FUNC_ADD (check)
                 this->handleCheckbox<0xA4, std::identity, 0xA2, 0xA3>(checkstate, 1, 0, 0, 0); // glEnable(GL_BLEND)
             }
         );
@@ -357,9 +361,9 @@ public:
         // -> Init behaviour
         this->initComboBox<glCullFaceOptions>(this->faceculling_combobox);
         connect(this->faceculling_checkbox, &QCheckBox::stateChanged, this,
-            [this](int checkstate)
+            [this, faceculling_widget](int checkstate)
             {
-                this->handleCheckbox<0xA5, std::identity>(checkstate, GL_BACK, 0, 0, 0); // glCullFace
+                this->handleCheckbox<0xA5, std::identity>(checkstate, this->faceculling_combobox->currentData().toInt(), 0, 0, 0, faceculling_widget); // glCullFace
             }
         );
         connect(this->faceculling_combobox, static_cast<void(QComboBox::*)(int)>(&QComboBox::currentIndexChanged), this, [this]() {this->updateCullFace(); });
@@ -378,9 +382,9 @@ public:
         // Init behaviour
         this->initComboBox<glCompOptions>(this->depthfunc_combobox);
         connect(this->depthfunc_checkbox, &QCheckBox::stateChanged, this,
-            [this](int checkstate)
+            [this, depthfunc_widget](int checkstate)
             {
-                this->handleCheckbox<0xA7, std::identity>(checkstate, GL_LESS, 0, 0, 0); // glDepthFunc
+                this->handleCheckbox<0xA7, std::identity>(checkstate, this->depthfunc_combobox->currentData().toInt(), 0, 0, 0, depthfunc_widget); // glDepthFunc
                 this->handleCheckbox<0xA9, std::logical_not<decltype(checkstate)>, 0xA7, 0xA8>(checkstate, 1, 0, 0, 0); // glDisable(GL_DEPTH_TEST)
             }
         );
@@ -400,9 +404,9 @@ public:
         // -> Init behaviour
         this->initComboBox<glBoolOptions>(this->depthmask_combobox);
         connect(this->depthmask_checkbox, &QCheckBox::stateChanged, this,
-            [this](int checkstate)
+            [this, depthmask_widget](int checkstate)
             {
-                this->handleCheckbox<0xA8, std::identity>(checkstate, GL_TRUE, 0, 0, 0); // glDepthMask
+                this->handleCheckbox<0xA8, std::identity>(checkstate, this->depthmask_combobox->currentData().toInt(), 0, 0, 0, depthmask_widget); // glDepthMask
                 this->handleCheckbox<0xA9, std::logical_not<decltype(checkstate)>, 0xA7, 0xA8>(checkstate, 1, 0, 0, 0); // glDisable(GL_DEPTH_TEST)
             }
         );
@@ -428,9 +432,16 @@ public:
         this->initComboBox<glBoolOptions>(this->colormask_combobox_b);
         this->initComboBox<glBoolOptions>(this->colormask_combobox_a);
         connect(this->colormask_checkbox, &QCheckBox::stateChanged, this,
-            [this](int checkstate)
+            [this, colormask_widget](int checkstate)
             {
-                this->handleCheckbox<0xAC, std::identity>(checkstate, GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE); // glColorMask
+                this->handleCheckbox<0xAC, std::identity>(
+                    checkstate, 
+                    this->colormask_combobox_r->currentData().toInt(),
+                    this->colormask_combobox_g->currentData().toInt(),
+                    this->colormask_combobox_b->currentData().toInt(),
+                    this->colormask_combobox_a->currentData().toInt(),
+                    colormask_widget
+                ); // glColorMask
             }
         );
         connect(this->colormask_combobox_r, static_cast<void(QComboBox::*)(int)>(&QComboBox::currentIndexChanged), this, [this]() {this->updateColorMask(); });
@@ -448,6 +459,149 @@ public:
     void updateSelectedMaterial(MatEditTypedefs::MaterialPtr material_ptr)
     {
         this->selected_material = material_ptr;
+
+        if (int idx = this->checkIfSettingExists(0xA1, this->selected_material->opengl_settings) != -1)
+        {
+            auto& setting = this->selected_material->opengl_settings[idx];
+            auto data = setting->getData();
+
+            auto begin = glCompOptions::options.begin();
+            auto end   = glCompOptions::options.end();
+            this->alphafunc_combobox->setCurrentIndex(std::find(begin, end, std::stoi(data[0])) - begin);
+            this->alphafunc_textbox->setText(QString::fromStdString(data[1]));
+            this->alphafunc_checkbox->setChecked(true);
+        }
+        else
+        {
+            auto begin = glCompOptions::options.begin();
+            auto end   = glCompOptions::options.end();
+            this->alphafunc_combobox->setCurrentIndex(std::find(begin, end, GL_LESS) - begin); // Should constexpr this
+            this->alphafunc_textbox->setText("1.0");
+            this->alphafunc_checkbox->setChecked(false);
+            emit this->alphafunc_checkbox->stateChanged(0);
+        }
+
+        if (int idx = this->checkIfSettingExists(0xA2, this->selected_material->opengl_settings) != -1)
+        {
+            auto& setting = this->selected_material->opengl_settings[idx];
+            auto data = setting->getData();
+
+            auto begin = glBlendFuncOptions::options.begin();
+            auto end   = glBlendFuncOptions::options.end();
+            this->blendfunc_src_combobox->setCurrentIndex(std::find(begin, end, std::stoi(data[0])) - begin);
+            this->blendfunc_dst_combobox->setCurrentIndex(std::find(begin, end, std::stoi(data[1])) - begin);
+            this->blendfunc_checkbox->setChecked(true);
+        }
+        else
+        {
+            auto begin = glBlendFuncOptions::options.begin();
+            auto end = glBlendFuncOptions::options.end();
+            this->blendfunc_src_combobox->setCurrentIndex(std::find(begin, end, GL_ONE) - begin); // Should constexpr this
+            this->blendfunc_dst_combobox->setCurrentIndex(std::find(begin, end, GL_ZERO) - begin); // Should constexpr this
+            this->blendfunc_checkbox->setChecked(false);
+            emit this->blendfunc_checkbox->stateChanged(0);
+        }
+
+        if (int idx = this->checkIfSettingExists(0xA3, this->selected_material->opengl_settings) != -1)
+        {
+            auto& setting = this->selected_material->opengl_settings[idx];
+            auto data = setting->getData();
+
+            auto begin = glBlendEqOptions::options.begin();
+            auto end   = glBlendEqOptions::options.end();
+            this->blendeq_combobox->setCurrentIndex(std::find(begin, end, std::stoi(data[0])) - begin);
+            this->blendeq_checkbox->setChecked(true);
+        }
+        else
+        {
+            auto begin = glBlendEqOptions::options.begin();
+            auto end   = glBlendEqOptions::options.end();
+            this->blendeq_combobox->setCurrentIndex(std::find(begin, end, GL_FUNC_ADD) - begin); // Should constexpr this
+            this->blendeq_checkbox->setChecked(false);
+            emit this->blendeq_checkbox->stateChanged(0);
+        }
+
+        if (int idx = this->checkIfSettingExists(0xA5, this->selected_material->opengl_settings) != -1)
+        {
+            auto& setting = this->selected_material->opengl_settings[idx];
+            auto data = setting->getData();
+
+            auto begin = glCullFaceOptions::options.begin();
+            auto end   = glCullFaceOptions::options.end();
+            this->faceculling_combobox->setCurrentIndex(std::find(begin, end, std::stoi(data[0])) - begin);
+            this->faceculling_checkbox->setChecked(true);
+        }
+        else
+        {
+            auto begin = glCullFaceOptions::options.begin();
+            auto end   = glCullFaceOptions::options.end();
+            this->faceculling_combobox->setCurrentIndex(std::find(begin, end, GL_BACK) - begin); // Should constexpr this
+            this->faceculling_checkbox->setChecked(false);
+            emit this->faceculling_checkbox->stateChanged(0);
+        }
+
+        if (int idx = this->checkIfSettingExists(0xA7, this->selected_material->opengl_settings) != -1)
+        {
+            auto& setting = this->selected_material->opengl_settings[idx];
+            auto data = setting->getData();
+
+            auto begin = glCompOptions::options.begin();
+            auto end   = glCompOptions::options.end();
+            this->depthfunc_combobox->setCurrentIndex(std::find(begin, end, std::stoi(data[0])) - begin);
+            this->depthfunc_checkbox->setChecked(true);
+        }
+        else
+        {
+            auto begin = glCompOptions::options.begin();
+            auto end   = glCompOptions::options.end();
+            this->depthfunc_combobox->setCurrentIndex(std::find(begin, end, GL_LESS) - begin); // Should constexpr this
+            this->depthfunc_checkbox->setChecked(false);
+            emit this->depthfunc_checkbox->stateChanged(0);
+        }
+
+        if (int idx = this->checkIfSettingExists(0xA8, this->selected_material->opengl_settings) != -1)
+        {
+            auto& setting = this->selected_material->opengl_settings[idx];
+            auto data = setting->getData();
+
+            auto begin = glBoolOptions::options.begin();
+            auto end   = glBoolOptions::options.end();
+            this->depthmask_combobox->setCurrentIndex(std::find(begin, end, std::stoi(data[0])) - begin);
+            this->depthmask_checkbox->setChecked(true);
+        }
+        else
+        {
+            auto begin = glBoolOptions::options.begin();
+            auto end   = glBoolOptions::options.end();
+            this->depthmask_combobox->setCurrentIndex(std::find(begin, end, GL_TRUE) - begin); // Should constexpr this
+            this->depthmask_checkbox->setChecked(false);
+            emit this->depthmask_checkbox->stateChanged(0);
+        }
+
+        if (int idx = this->checkIfSettingExists(0xAC, this->selected_material->opengl_settings) != -1)
+        {
+            auto& setting = this->selected_material->opengl_settings[idx];
+            auto data = setting->getData();
+
+            auto begin = glBoolOptions::options.begin();
+            auto end = glBoolOptions::options.end();
+            this->colormask_combobox_r->setCurrentIndex(std::find(begin, end, std::stoi(data[0])) - begin);
+            this->colormask_combobox_g->setCurrentIndex(std::find(begin, end, std::stoi(data[1])) - begin);
+            this->colormask_combobox_b->setCurrentIndex(std::find(begin, end, std::stoi(data[2])) - begin);
+            this->colormask_combobox_a->setCurrentIndex(std::find(begin, end, std::stoi(data[3])) - begin);
+            this->colormask_checkbox->setChecked(true);
+        }
+        else
+        {
+            auto begin = glBoolOptions::options.begin();
+            auto end   = glBoolOptions::options.end();
+            this->colormask_combobox_r->setCurrentIndex(std::find(begin, end, GL_TRUE) - begin); // Should constexpr this
+            this->colormask_combobox_g->setCurrentIndex(std::find(begin, end, GL_TRUE) - begin); // Should constexpr this
+            this->colormask_combobox_b->setCurrentIndex(std::find(begin, end, GL_TRUE) - begin); // Should constexpr this
+            this->colormask_combobox_a->setCurrentIndex(std::find(begin, end, GL_TRUE) - begin); // Should constexpr this
+            this->colormask_checkbox->setChecked(false);
+            emit this->colormask_checkbox->stateChanged(0);
+        }
     }
 };
 
