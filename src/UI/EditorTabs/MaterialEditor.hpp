@@ -475,8 +475,8 @@ public:
         {
             auto begin = glCompOptions::options.begin();
             auto end   = glCompOptions::options.end();
-            this->alphafunc_combobox->setCurrentIndex(std::find(begin, end, GL_LESS) - begin); // Should constexpr this
-            this->alphafunc_textbox->setText("1.0");
+            this->alphafunc_combobox->setCurrentIndex(std::find(begin, end, GL_ALWAYS) - begin); // Should constexpr this
+            this->alphafunc_textbox->setText("0.0");
             this->alphafunc_checkbox->setChecked(false);
             emit this->alphafunc_checkbox->stateChanged(0);
         }

@@ -38,13 +38,25 @@ namespace CustomWidgets
 
 	void RenderWidget::refreshRenderSettings()
 	{
-		glEnable(GL_DEPTH_TEST);
+		// Default settings
 		glDisable(GL_ALPHA_TEST);
 		glAlphaFunc(GL_ALWAYS, 0);
-		glDepthFunc(GL_LESS);
-		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+		glDisable(GL_BLEND);
+		glBlendFunc(GL_ONE, GL_ZERO);
+		glBlendEquationSeparate(GL_FUNC_ADD, GL_FUNC_ADD);
 
 		glEnable(GL_CULL_FACE);
+		glCullFace(GL_BACK);
+
+		glEnable(GL_DEPTH_TEST);
+		glDepthFunc(GL_LESS);
+		glDepthMask(GL_TRUE);
+
+		glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE);
+
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
 	}
 
 	void RenderWidget::initializeGL()
