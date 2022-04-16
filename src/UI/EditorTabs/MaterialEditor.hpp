@@ -7,6 +7,7 @@
 #include <QtWidgets/QComboBox>
 #include <QtWidgets/QGridLayout>
 #include <QtWidgets/QLabel>
+#include <QtWidgets/QLineEdit>
 #include <QtWidgets/QWidget>
 
 #include "../Types.hpp"
@@ -85,6 +86,9 @@ private:
     QComboBox* colormask_combobox_b   = new QComboBox(this);
     QComboBox* colormask_combobox_a   = new QComboBox(this);
 
+
+    QLineEdit* alphafunc_textbox = new QLineEdit(this);
+
     template<uint8_t setting_id, class FunctorT, int... active_ids>
     void handleCheckbox(int checkstate, uint32_t v1, uint32_t v2, uint32_t v3, uint32_t v4)
     {
@@ -134,6 +138,19 @@ private:
         }
     }
 
+    template<typename F1, typename F2, typename F3, typename F4>
+    void updateSettingData(uint8_t setting_id, F1 f1, F2 f2, F3 f3, F4 f4)
+    {
+        auto& material = this->selected_material;
+        auto& settings = material->opengl_settings;
+        auto setting_idx = this->checkIfSettingExists(setting_id, settings);
+        if (setting_idx != -1)
+        {
+            auto& setting = material->opengl_settings[setting_idx];
+            setting->setData({ f1(), f2(), f3(), f4() });
+        }
+    }
+
     int8_t checkIfSettingExists(uint8_t setting_id, const MatEditTypedefs::OGLS_t& settings)
     {
         for (int8_t idx = 0; idx < settings.size(); ++idx)
@@ -142,6 +159,32 @@ private:
                 return idx;
         }
         return -1;
+    }
+
+    std::string sanitiseFloatText(const QString& value)
+    {
+        float f_value;
+        try
+        {
+            f_value = std::stof(value.toStdString());
+            return value.toStdString();
+        }
+        catch (const std::exception& ex)
+        {
+            return std::string("0.");
+        }
+    }
+
+    void updateAlphaFunc()
+    {
+        this->updateSettingData
+        (
+            0xA0,
+            [this]() { return this->alphafunc_combobox->currentData().toString().toStdString(); },
+            [this]() { return this->sanitiseFloatText(this->alphafunc_textbox->text()); },
+            []() { return std::string(""); },
+            []() { return std::string(""); }
+        );
     }
 
     template <typename option_pack>
@@ -154,6 +197,7 @@ private:
         }
     }
 
+
 public:
     OpenGLSettingsWidget(QWidget* parent = Q_NULLPTR) : QWidget(parent)
     {
@@ -162,23 +206,27 @@ public:
         auto curr_row = 0;
 
         // Alpha Func
+        // -> Init UI
         auto alphafunc_label = new QLabel("Alpha Func", this);
         auto alphafunc_widget = new QWidget(this);
         auto alphafunc_layout = new QHBoxLayout;
         alphafunc_layout->addWidget(this->alphafunc_combobox);
+        alphafunc_layout->addWidget(this->alphafunc_textbox);
         alphafunc_widget->setLayout(alphafunc_layout);
         layout->addWidget(this->alphafunc_checkbox, curr_row, 0);
         layout->addWidget(alphafunc_label, curr_row, 1);
         layout->addWidget(alphafunc_widget, curr_row, 2);
-
+        // -> Init behaviour
         this->initComboBox<glCompOptions>(this->alphafunc_combobox);
         connect(this->alphafunc_checkbox, &QCheckBox::stateChanged, this, 
             [this](int checkstate) 
             { 
                 this->handleCheckbox<0xA0, std::identity>(checkstate, GL_NEVER, 0, 0, 0); // glAlphaFunc
-                this->handleCheckbox<0xA1, std::identity>(checkstate, 1, 0, 0, 0); // glEnable(GL_ALPHA_TEST)
+                this->handleCheckbox<0xA1, std::identity>(checkstate,  GL_TRUE, 0, 0, 0); // glEnable(GL_ALPHA_TEST)
             }
         );
+        connect(this->alphafunc_combobox, static_cast<void(QComboBox::*)(int)>(&QComboBox::currentIndexChanged), this, [this]() {this->updateAlphaFunc(); });
+        connect(this->alphafunc_textbox,  &QLineEdit::textChanged, this, [this]() {this->updateAlphaFunc(); });
         ++curr_row;
 
         // glBlendFunc
