@@ -175,15 +175,6 @@ public:
                 this->handleCheckbox<0xA1, std::identity>(checkstate, 1, 0, 0, 0); // glEnable(GL_ALPHA_TEST)
             }
         );
-
-        // Blend Test
-        auto blend_label = new QLabel("Blend", this);
-        auto blend_widget = new QWidget(this);
-        auto blend_layout = new QHBoxLayout;
-        blend_widget->setLayout(blend_layout);
-        layout->addWidget(this->blend_checkbox, 2, 0);
-        layout->addWidget(blend_label, 2, 1);
-        layout->addWidget(blend_widget, 2, 2);
         ++curr_row;
 
         // glBlendFunc
@@ -196,6 +187,13 @@ public:
         layout->addWidget(this->blendfunc_checkbox, curr_row, 0);
         layout->addWidget(blendfunc_label, curr_row, 1);
         layout->addWidget(blendfunc_widget, curr_row, 2);
+        connect(this->blendfunc_checkbox, &QCheckBox::stateChanged, this,
+            [this](int checkstate)
+            {
+                this->handleCheckbox<0xA2, std::identity>(checkstate, GL_ONE, GL_ZERO, 0, 0); // BlendFunc
+                this->handleCheckbox<0xA4, std::identity, 0xA2, 0xA3>(checkstate, 1, 0, 0, 0); // glEnable(GL_BLEND)
+            }
+        );
         ++curr_row;
 
         // glBlendEquationSeparate
@@ -207,6 +205,13 @@ public:
         layout->addWidget(this->blendeq_checkbox, curr_row, 0);
         layout->addWidget(blendeq_label, curr_row, 1);
         layout->addWidget(blendeq_widget, curr_row, 2);
+        connect(this->blendeq_checkbox, &QCheckBox::stateChanged, this,
+            [this](int checkstate)
+            {
+                this->handleCheckbox<0xA3, std::identity>(checkstate, GL_FUNC_ADD, 0, 0, 0); // BlendEquationSeparate
+                this->handleCheckbox<0xA4, std::identity, 0xA2, 0xA3>(checkstate, 1, 0, 0, 0); // glEnable(GL_BLEND)
+            }
+        );
         ++curr_row;
 
 
