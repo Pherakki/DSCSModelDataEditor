@@ -64,20 +64,20 @@ class OpenGLSettingsWidget : public QWidget
 private:
     MatEditTypedefs::MaterialPtr selected_material = nullptr;
 
-    QCheckBox* alphafunc_checkbox  = new QCheckBox(this);
-    QCheckBox* depthtest_checkbox  = new QCheckBox(this);
-    QCheckBox* blendfunc_checkbox  = new QCheckBox(this);
-    QCheckBox* blendeq_checkbox    = new QCheckBox(this);
+    QCheckBox* alphafunc_checkbox   = new QCheckBox(this);
+    QCheckBox* depthtest_checkbox   = new QCheckBox(this);
+    QCheckBox* blendfunc_checkbox   = new QCheckBox(this);
+    QCheckBox* blendeq_checkbox     = new QCheckBox(this);
     QCheckBox* faceculling_checkbox = new QCheckBox(this);
-    QCheckBox* depthfunc_checkbox  = new QCheckBox(this);
-    QCheckBox* depthmask_checkbox  = new QCheckBox(this);
-    QCheckBox* colormask_checkbox  = new QCheckBox(this);
+    QCheckBox* depthfunc_checkbox   = new QCheckBox(this);
+    QCheckBox* depthmask_checkbox   = new QCheckBox(this);
+    QCheckBox* colormask_checkbox   = new QCheckBox(this);
 
     QComboBox* alphafunc_combobox     = new QComboBox(this);
     QComboBox* blendfunc_src_combobox = new QComboBox(this);
     QComboBox* blendfunc_dst_combobox = new QComboBox(this);
     QComboBox* blendeq_combobox       = new QComboBox(this);
-    QComboBox* faceculling_combobox    = new QComboBox(this);
+    QComboBox* faceculling_combobox   = new QComboBox(this);
     QComboBox* depthfunc_combobox     = new QComboBox(this);
     QComboBox* depthmask_combobox     = new QComboBox(this);
     QComboBox* colormask_combobox_r   = new QComboBox(this);
