@@ -94,26 +94,20 @@ private:
         auto& material = this->selected_material;
         if (!material)
             return;
-        std::cout << "Checkbox ticked" << std::endl;
         auto& settings = material->opengl_settings;
         auto setting_idx = this->checkIfSettingExists(setting_id, settings);
-        std::cout << "Found setting at " << std::to_string(setting_idx) << std::endl;
 
         // If ticked (or not ticked, depending on whether FunctorT is std::identity or std::logical_not)
         if (FunctorT()(checkstate))
         {
-            std::cout << "Trying to add..." << std::endl;
             // If the setting doesn't exist...
             if (setting_idx == -1)
             {
-                std::cout << "Added." << std::endl;
                 material->addOpenGLSetting(setting_id, { v1, v2, v3, v4 });
             }
         }
         else
         {
-            std::cout << "Checking if should erase..." << std::endl;
-
             // If any of the dependencies exist, don't delete
             if constexpr (sizeof...(active_ids))
             {
@@ -122,7 +116,6 @@ private:
                     auto id_idx = this->checkIfSettingExists(id, settings);
                     if (id_idx != -1)
                     {
-                        std::cout << "Hit early exit condition!" << std::endl;
                         return;
                     }
                 }
@@ -131,7 +124,6 @@ private:
             // If no dependencies exist... check if it needs deleting
             if (setting_idx != -1)
             {
-                std::cout << "Erased." << std::endl;
                 settings.erase(settings.begin() + setting_idx);
             }
         }
