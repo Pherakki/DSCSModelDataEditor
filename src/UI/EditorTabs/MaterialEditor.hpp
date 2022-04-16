@@ -142,7 +142,7 @@ private:
     {
         auto& material = this->selected_material;
         if (!material)
-            return
+            return;
         auto& settings = material->opengl_settings;
         auto setting_idx = this->checkIfSettingExists(setting_id, settings);
         if (setting_idx != -1)
