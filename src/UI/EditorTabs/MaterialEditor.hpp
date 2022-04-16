@@ -94,7 +94,7 @@ private:
     QComboBox* colormask_combobox_b   = new QComboBox(this);
     QComboBox* colormask_combobox_a   = new QComboBox(this);
 
-    template<uint8_t setting_id, class FunctorT>
+    template<uint8_t setting_id, class FunctorT, int... active_ids>
     void handleCheckbox(int checkstate, uint32_t v1, uint32_t v2, uint32_t v3, uint32_t v4)
     {
         auto& material = this->selected_material;
@@ -104,6 +104,7 @@ private:
         auto& settings = material->opengl_settings;
         auto setting_idx = this->checkIfSettingExists(setting_id, settings);
         std::cout << "Found setting at " << std::to_string(setting_idx) << std::endl;
+
         // If ticked (or not ticked, depending on whether FunctorT is std::identity or std::logical_not)
         if (FunctorT()(checkstate))
         {
@@ -118,6 +119,22 @@ private:
         else
         {
             std::cout << "Checking if should erase..." << std::endl;
+
+            // If any of the dependencies exist, don't delete
+            if constexpr (sizeof...(active_ids))
+            {
+                for (const auto& id : { active_ids... })
+                {
+                    auto id_idx = this->checkIfSettingExists(id, settings);
+                    if (id_idx != -1)
+                    {
+                        std::cout << "Hit early exit condition!" << std::endl;
+                        return;
+                    }
+                }
+            }
+
+            // If no dependencies exist... check if it needs deleting
             if (setting_idx != -1)
             {
                 std::cout << "Erased." << std::endl;
