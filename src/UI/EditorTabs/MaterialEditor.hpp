@@ -171,8 +171,8 @@ public:
         connect(this->alphafunc_checkbox, &QCheckBox::stateChanged, this, 
             [this](int checkstate) 
             { 
-                this->handleCheckbox<0xA1, std::identity>(checkstate, 1, 0, 0, 0);
-                this->handleCheckbox<0xA0, std::identity>(checkstate, GL_NEVER, 0, 0, 0); 
+                this->handleCheckbox<0xA0, std::identity>(checkstate, GL_NEVER, 0, 0, 0); // glAlphaFunc
+                this->handleCheckbox<0xA1, std::identity>(checkstate, 1, 0, 0, 0); // glEnable(GL_ALPHA_TEST)
             }
         );
 
