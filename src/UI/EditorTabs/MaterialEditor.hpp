@@ -76,7 +76,7 @@ private:
     QCheckBox* depthtest_checkbox  = new QCheckBox(this);
     QCheckBox* blendfunc_checkbox  = new QCheckBox(this);
     QCheckBox* blendeq_checkbox    = new QCheckBox(this);
-    QCheckBox* facerender_checkbox = new QCheckBox(this);
+    QCheckBox* faceculling_checkbox = new QCheckBox(this);
     QCheckBox* depthfunc_checkbox  = new QCheckBox(this);
     QCheckBox* depthmask_checkbox  = new QCheckBox(this);
     QCheckBox* colormask_checkbox  = new QCheckBox(this);
@@ -85,7 +85,7 @@ private:
     QComboBox* blendfunc_src_combobox = new QComboBox(this);
     QComboBox* blendfunc_dst_combobox = new QComboBox(this);
     QComboBox* blendeq_combobox       = new QComboBox(this);
-    QComboBox* facerender_combobox    = new QComboBox(this);
+    QComboBox* faceculling_combobox    = new QComboBox(this);
     QComboBox* depthfunc_combobox     = new QComboBox(this);
     QComboBox* depthmask_combobox     = new QComboBox(this);
     QComboBox* colormask_combobox_r   = new QComboBox(this);
@@ -216,14 +216,20 @@ public:
 
 
         // glCullFace
-        auto facerender_label = new QLabel("Face Render", this);
+        auto facerender_label = new QLabel("Face Culling", this);
         auto facerender_widget = new QWidget(this);
         auto facerender_layout = new QHBoxLayout;
-        facerender_layout->addWidget(this->facerender_combobox);
+        facerender_layout->addWidget(this->faceculling_combobox);
         facerender_widget->setLayout(facerender_layout);
-        layout->addWidget(this->facerender_checkbox, curr_row, 0);
+        layout->addWidget(this->faceculling_checkbox, curr_row, 0);
         layout->addWidget(facerender_label, curr_row, 1);
         layout->addWidget(facerender_widget, curr_row, 2);
+        connect(this->faceculling_checkbox, &QCheckBox::stateChanged, this,
+            [this](int checkstate)
+            {
+                this->handleCheckbox<0xA5, std::identity>(checkstate, GL_BACK, 0, 0, 0); // glCullFace
+            }
+        );
         ++curr_row;
 
         // Depth Test
