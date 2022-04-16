@@ -73,7 +73,6 @@ private:
     MatEditTypedefs::MaterialPtr selected_material = nullptr;
 
     QCheckBox* alphafunc_checkbox  = new QCheckBox(this);
-    QCheckBox* blend_checkbox      = new QCheckBox(this);
     QCheckBox* depthtest_checkbox  = new QCheckBox(this);
     QCheckBox* blendfunc_checkbox  = new QCheckBox(this);
     QCheckBox* blendeq_checkbox    = new QCheckBox(this);
@@ -158,15 +157,17 @@ public:
     {
         auto layout = new QGridLayout(this);
 
+        auto curr_row = 0;
+
         // Alpha Func
         auto alphafunc_label = new QLabel("Alpha Func", this);
         auto alphafunc_widget = new QWidget(this);
         auto alphafunc_layout = new QHBoxLayout;
         alphafunc_layout->addWidget(this->alphafunc_combobox);
         alphafunc_widget->setLayout(alphafunc_layout);
-        layout->addWidget(this->alphafunc_checkbox, 0, 0);
-        layout->addWidget(alphafunc_label, 0, 1);
-        layout->addWidget(alphafunc_widget, 0, 2);
+        layout->addWidget(this->alphafunc_checkbox, curr_row, 0);
+        layout->addWidget(alphafunc_label, curr_row, 1);
+        layout->addWidget(alphafunc_widget, curr_row, 2);
         connect(this->alphafunc_checkbox, &QCheckBox::stateChanged, this, 
             [this](int checkstate) 
             { 
@@ -183,6 +184,7 @@ public:
         layout->addWidget(this->blend_checkbox, 2, 0);
         layout->addWidget(blend_label, 2, 1);
         layout->addWidget(blend_widget, 2, 2);
+        ++curr_row;
 
         // glBlendFunc
         auto blendfunc_label = new QLabel("Blend Func", this);
@@ -191,9 +193,10 @@ public:
         blendfunc_layout->addWidget(this->blendfunc_src_combobox);
         blendfunc_layout->addWidget(this->blendfunc_dst_combobox);
         blendfunc_widget->setLayout(blendfunc_layout);
-        layout->addWidget(this->blendfunc_checkbox, 3, 0);
-        layout->addWidget(blendfunc_label, 3, 1);
-        layout->addWidget(blendfunc_widget, 3, 2);
+        layout->addWidget(this->blendfunc_checkbox, curr_row, 0);
+        layout->addWidget(blendfunc_label, curr_row, 1);
+        layout->addWidget(blendfunc_widget, curr_row, 2);
+        ++curr_row;
 
         // glBlendEquationSeparate
         auto blendeq_label = new QLabel("Blend Equation", this);
@@ -201,9 +204,10 @@ public:
         auto blendeq_layout = new QHBoxLayout;
         blendeq_layout->addWidget(this->blendeq_combobox);
         blendeq_widget->setLayout(blendeq_layout);
-        layout->addWidget(this->blendeq_checkbox, 4, 0);
-        layout->addWidget(blendeq_label, 4, 1);
-        layout->addWidget(blendeq_widget, 4, 2);
+        layout->addWidget(this->blendeq_checkbox, curr_row, 0);
+        layout->addWidget(blendeq_label, curr_row, 1);
+        layout->addWidget(blendeq_widget, curr_row, 2);
+        ++curr_row;
 
 
         // glCullFace
@@ -212,14 +216,16 @@ public:
         auto facerender_layout = new QHBoxLayout;
         facerender_layout->addWidget(this->facerender_combobox);
         facerender_widget->setLayout(facerender_layout);
-        layout->addWidget(this->facerender_checkbox, 5, 0);
-        layout->addWidget(facerender_label, 5, 1);
-        layout->addWidget(facerender_widget, 5, 2);
+        layout->addWidget(this->facerender_checkbox, curr_row, 0);
+        layout->addWidget(facerender_label, curr_row, 1);
+        layout->addWidget(facerender_widget, curr_row, 2);
+        ++curr_row;
 
         // Depth Test
         auto depthtest_label = new QLabel("Depth Test", this);
-        layout->addWidget(this->depthtest_checkbox, 6, 0);
-        layout->addWidget(depthtest_label, 6, 1);
+        layout->addWidget(this->depthtest_checkbox, curr_row, 0);
+        layout->addWidget(depthtest_label, curr_row, 1);
+        ++curr_row;
 
         // glDepthFunc
         auto depthfunc_label = new QLabel("Depth Function", this);
@@ -227,9 +233,10 @@ public:
         auto depthfunc_layout = new QHBoxLayout;
         depthfunc_layout->addWidget(this->depthfunc_combobox);
         depthfunc_widget->setLayout(depthfunc_layout);
-        layout->addWidget(this->depthfunc_checkbox, 7, 0);
-        layout->addWidget(depthfunc_label, 7, 1);
-        layout->addWidget(depthfunc_widget, 7, 2);
+        layout->addWidget(this->depthfunc_checkbox, curr_row, 0);
+        layout->addWidget(depthfunc_label, curr_row, 1);
+        layout->addWidget(depthfunc_widget, curr_row, 2);
+        ++curr_row;
 
         // glDepthMask
         auto depthmask_label = new QLabel("Depth Mask", this);
@@ -237,9 +244,10 @@ public:
         auto depthmask_layout = new QHBoxLayout;
         depthmask_layout->addWidget(this->depthmask_combobox);
         depthmask_widget->setLayout(depthmask_layout);
-        layout->addWidget(this->depthmask_checkbox, 8, 0);
-        layout->addWidget(depthmask_label, 8, 1);
-        layout->addWidget(depthmask_widget, 8, 2);
+        layout->addWidget(this->depthmask_checkbox, curr_row, 0);
+        layout->addWidget(depthmask_label, curr_row, 1);
+        layout->addWidget(depthmask_widget, curr_row, 2);
+        ++curr_row;
 
         // glColorMask
         auto colormask_label = new QLabel("Color Mask", this);
@@ -250,9 +258,10 @@ public:
         colormask_layout->addWidget(this->colormask_combobox_b);
         colormask_layout->addWidget(this->colormask_combobox_a);
         colormask_widget->setLayout(colormask_layout);
-        layout->addWidget(this->colormask_checkbox, 9, 0);
-        layout->addWidget(colormask_label, 9, 1);
-        layout->addWidget(colormask_widget, 9, 2);
+        layout->addWidget(this->colormask_checkbox, curr_row, 0);
+        layout->addWidget(colormask_label, curr_row, 1);
+        layout->addWidget(colormask_widget, curr_row, 2);
+        ++curr_row;
 
         layout->setColumnStretch(0, 0);
         layout->setColumnStretch(1, 0);
