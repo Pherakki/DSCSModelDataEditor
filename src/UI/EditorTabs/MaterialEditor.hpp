@@ -66,7 +66,6 @@ private:
     MatEditTypedefs::MaterialPtr selected_material = nullptr;
 
     QCheckBox* alphafunc_checkbox   = new QCheckBox(this);
-    QCheckBox* depthtest_checkbox   = new QCheckBox(this);
     QCheckBox* blendfunc_checkbox   = new QCheckBox(this);
     QCheckBox* blendeq_checkbox     = new QCheckBox(this);
     QCheckBox* faceculling_checkbox = new QCheckBox(this);
@@ -211,6 +210,54 @@ private:
         );
     }
 
+    void updateCullFace()
+    {
+        this->updateSettingData
+        (
+            0xA5,
+            [this]() { return this->faceculling_combobox->currentData().toString().toStdString(); },
+            []() { return std::string(""); },
+            []() { return std::string(""); },
+            []() { return std::string(""); }
+        );
+    }
+
+    void updateDepthFunc()
+    {
+        this->updateSettingData
+        (
+            0xA7,
+            [this]() { return this->depthfunc_combobox->currentData().toString().toStdString(); },
+            []() { return std::string(""); },
+            []() { return std::string(""); },
+            []() { return std::string(""); }
+        );
+    }
+
+    void updateDepthMask()
+    {
+        this->updateSettingData
+        (
+            0xA8,
+            [this]() { return this->depthmask_combobox->currentData().toString().toStdString(); },
+            []() { return std::string(""); },
+            []() { return std::string(""); },
+            []() { return std::string(""); }
+        );
+    }
+
+    void updateColorMask()
+    {
+        this->updateSettingData
+        (
+            0xAC,
+            [this]() { return this->colormask_combobox_r->currentData().toString().toStdString(); },
+            [this]() { return this->colormask_combobox_g->currentData().toString().toStdString(); },
+            [this]() { return this->colormask_combobox_b->currentData().toString().toStdString(); },
+            [this]() { return this->colormask_combobox_a->currentData().toString().toStdString(); }
+        );
+    }
+
     template <typename option_pack>
     requires std::is_base_of<glOptions, option_pack>::value
     void initComboBox(QComboBox* combobox)
@@ -281,6 +328,7 @@ public:
         ++curr_row;
 
         // glBlendEquationSeparate
+        // -> Init UI
         auto blendeq_label = new QLabel("Blend Equation", this);
         auto blendeq_widget = new QWidget(this);
         auto blendeq_layout = new QHBoxLayout;
@@ -289,7 +337,7 @@ public:
         layout->addWidget(this->blendeq_checkbox, curr_row, 0);
         layout->addWidget(blendeq_label, curr_row, 1);
         layout->addWidget(blendeq_widget, curr_row, 2);
-
+        // -> Init behaviour
         this->initComboBox<glBlendEqOptions>(this->blendeq_combobox);
         connect(this->blendeq_checkbox, &QCheckBox::stateChanged, this,
             [this](int checkstate)
@@ -303,6 +351,7 @@ public:
 
 
         // glCullFace
+        // -> Init UI
         auto faceculling_label = new QLabel("Face Culling", this);
         auto faceculling_widget = new QWidget(this);
         auto faceculling_layout = new QHBoxLayout;
@@ -311,7 +360,7 @@ public:
         layout->addWidget(this->faceculling_checkbox, curr_row, 0);
         layout->addWidget(faceculling_label, curr_row, 1);
         layout->addWidget(faceculling_widget, curr_row, 2);
-
+        // -> Init behaviour
         this->initComboBox<glCullFaceOptions>(this->faceculling_combobox);
         connect(this->faceculling_checkbox, &QCheckBox::stateChanged, this,
             [this](int checkstate)
@@ -319,15 +368,11 @@ public:
                 this->handleCheckbox<0xA5, std::identity>(checkstate, GL_BACK, 0, 0, 0); // glCullFace
             }
         );
-        ++curr_row;
-
-        // Depth Test
-        auto depthtest_label = new QLabel("Depth Test", this);
-        layout->addWidget(this->depthtest_checkbox, curr_row, 0);
-        layout->addWidget(depthtest_label, curr_row, 1);
+        connect(this->faceculling_combobox, static_cast<void(QComboBox::*)(int)>(&QComboBox::currentIndexChanged), this, [this]() {this->updateCullFace(); });
         ++curr_row;
 
         // glDepthFunc
+        // -> Init UI
         auto depthfunc_label = new QLabel("Depth Function", this);
         auto depthfunc_widget = new QWidget(this);
         auto depthfunc_layout = new QHBoxLayout;
@@ -336,11 +381,20 @@ public:
         layout->addWidget(this->depthfunc_checkbox, curr_row, 0);
         layout->addWidget(depthfunc_label, curr_row, 1);
         layout->addWidget(depthfunc_widget, curr_row, 2);
-
+        // Init behaviour
         this->initComboBox<glCompOptions>(this->depthfunc_combobox);
+        connect(this->depthfunc_checkbox, &QCheckBox::stateChanged, this,
+            [this](int checkstate)
+            {
+                this->handleCheckbox<0xA7, std::identity>(checkstate, GL_LESS, 0, 0, 0); // glDepthFunc
+                this->handleCheckbox<0xA9, std::logical_not<decltype(checkstate)>, 0xA7, 0xA8>(checkstate, 1, 0, 0, 0); // glDisable(GL_DEPTH_TEST)
+            }
+        );
+        connect(this->depthfunc_combobox, static_cast<void(QComboBox::*)(int)>(&QComboBox::currentIndexChanged), this, [this]() {this->updateDepthFunc(); });
         ++curr_row;
 
         // glDepthMask
+        // -> Init UI
         auto depthmask_label = new QLabel("Depth Mask", this);
         auto depthmask_widget = new QWidget(this);
         auto depthmask_layout = new QHBoxLayout;
@@ -349,11 +403,20 @@ public:
         layout->addWidget(this->depthmask_checkbox, curr_row, 0);
         layout->addWidget(depthmask_label, curr_row, 1);
         layout->addWidget(depthmask_widget, curr_row, 2);
-
+        // -> Init behaviour
         this->initComboBox<glBoolOptions>(this->depthmask_combobox);
+        connect(this->depthmask_checkbox, &QCheckBox::stateChanged, this,
+            [this](int checkstate)
+            {
+                this->handleCheckbox<0xA8, std::identity>(checkstate, GL_TRUE, 0, 0, 0); // glDepthMask
+                this->handleCheckbox<0xA9, std::logical_not<decltype(checkstate)>, 0xA7, 0xA8>(checkstate, 1, 0, 0, 0); // glDisable(GL_DEPTH_TEST)
+            }
+        );
+        connect(this->depthmask_combobox, static_cast<void(QComboBox::*)(int)>(&QComboBox::currentIndexChanged), this, [this]() {this->updateDepthMask(); });
         ++curr_row;
 
         // glColorMask
+        // -> Init UI
         auto colormask_label = new QLabel("Color Mask", this);
         auto colormask_widget = new QWidget(this);
         auto colormask_layout = new QHBoxLayout;
@@ -365,11 +428,21 @@ public:
         layout->addWidget(this->colormask_checkbox, curr_row, 0);
         layout->addWidget(colormask_label, curr_row, 1);
         layout->addWidget(colormask_widget, curr_row, 2);
-
+        // -> Init behaviour
         this->initComboBox<glBoolOptions>(this->colormask_combobox_r);
         this->initComboBox<glBoolOptions>(this->colormask_combobox_g);
         this->initComboBox<glBoolOptions>(this->colormask_combobox_b);
         this->initComboBox<glBoolOptions>(this->colormask_combobox_a);
+        connect(this->colormask_checkbox, &QCheckBox::stateChanged, this,
+            [this](int checkstate)
+            {
+                this->handleCheckbox<0xAC, std::identity>(checkstate, GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE); // glColorMask
+            }
+        );
+        connect(this->colormask_combobox_r, static_cast<void(QComboBox::*)(int)>(&QComboBox::currentIndexChanged), this, [this]() {this->updateColorMask(); });
+        connect(this->colormask_combobox_g, static_cast<void(QComboBox::*)(int)>(&QComboBox::currentIndexChanged), this, [this]() {this->updateColorMask(); });
+        connect(this->colormask_combobox_b, static_cast<void(QComboBox::*)(int)>(&QComboBox::currentIndexChanged), this, [this]() {this->updateColorMask(); });
+        connect(this->colormask_combobox_a, static_cast<void(QComboBox::*)(int)>(&QComboBox::currentIndexChanged), this, [this]() {this->updateColorMask(); });
         ++curr_row;
 
         layout->setColumnStretch(0, 0);
