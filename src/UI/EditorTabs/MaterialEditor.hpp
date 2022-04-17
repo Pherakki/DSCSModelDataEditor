@@ -461,7 +461,7 @@ public:
     {
         this->selected_material = material_ptr;
 
-        if (int idx = this->checkIfSettingExists(0xA1, this->selected_material->opengl_settings) != -1)
+        if (int idx = this->checkIfSettingExists(0xA0, this->selected_material->opengl_settings) != -1)
         {
             auto& setting = this->selected_material->opengl_settings[idx];
             auto data = setting->getData();
@@ -639,7 +639,7 @@ public:
         this->opengl_settings = new OpenGLSettingsWidget(widget);
 
         w_layout->addWidget(this->shader_edit_modes); // use PutInSpoiler once the Spoiler class is fixed
-        w_layout->addWidget(this->opengl_settings);
+        w_layout->addWidget(this->opengl_settings);   // use PutInSpoiler once the Spoiler class is fixed
         widget->setLayout(w_layout);
         scrollarea->setWidget(widget);
 
