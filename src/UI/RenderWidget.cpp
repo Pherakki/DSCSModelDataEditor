@@ -133,7 +133,8 @@ namespace CustomWidgets
 		this->animation_buffer.CameraPosition->set(this->camera.getPosition());
 		this->animation_buffer.ViewInverse->set(invertViewMatrix(view_matrix, this->camera.getPosition()));
 
-		this->increment_test += targetFrameUpdateTime;
+		this->increment_test += 0.001*targetFrameUpdateTime; // convert to seconds
+		std::cout << this->increment_test << std::endl;
 		this->repaint();
 	}
 
@@ -189,7 +190,8 @@ namespace CustomWidgets
 			model->anim_sampler.tick();
 			
 			float whole_part;
-			(*this->animation_buffer.Time)[0] = std::modf(this->increment_test, &whole_part);
+			this->increment_test = std::modf(this->increment_test, &whole_part);
+			(*this->animation_buffer.Time)[0] = this->increment_test;
 		}
 
 	}
