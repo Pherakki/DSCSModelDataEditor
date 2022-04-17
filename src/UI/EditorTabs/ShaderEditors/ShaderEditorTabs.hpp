@@ -15,17 +15,17 @@ private:
     typedef std::shared_ptr<Material> MaterialPtr;
 
     PrebuiltTab* prebuilts_tab = new PrebuiltTab(this);
-    QScrollArea* shader_factory_scroll_area = new QScrollArea(this);
+    //QScrollArea* shader_factory_scroll_area = new QScrollArea(this);
     ShaderFactory* factory_tab = new ShaderFactory(this);
     CodeEditor* code_tab = new CodeEditor(this);
 public:
     ShaderEditorTabs(QWidget* parent = Q_NULLPTR) : QTabWidget(parent)
     {
-        this->shader_factory_scroll_area->setWidgetResizable(true);
-        this->shader_factory_scroll_area->setWidget(this->factory_tab);
+        //this->shader_factory_scroll_area->setWidgetResizable(true);
+        //this->shader_factory_scroll_area->setWidget(this->factory_tab);
 
         this->addTab(this->prebuilts_tab, "Pre-Built");
-        this->addTab(this->shader_factory_scroll_area, "Shader Factory");
+        this->addTab(this->factory_tab, "Shader Factory");
         this->addTab(this->code_tab, "Code Editor");
     }
 public slots:

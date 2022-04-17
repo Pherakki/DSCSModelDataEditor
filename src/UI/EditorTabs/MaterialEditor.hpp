@@ -11,6 +11,7 @@
 #include <QtWidgets/QWidget>
 
 #include "../Types.hpp"
+#include "../Spoiler/Spoiler.hpp"
 #include "../../Rendering/DSCS/DataObjects/OpenGLDSCSMaterial.hpp"
 #include "ShaderEditors/ShaderEditorTabs.hpp"
 
@@ -630,13 +631,20 @@ public:
     MaterialEditorTab(QWidget* parent = Q_NULLPTR) : QWidget(parent)
     {
         auto layout = new QVBoxLayout(this);
-        this->material_dropdown = new QComboBox(this);
-        this->shader_edit_modes = new ShaderEditorTabs(this);
-        this->opengl_settings = new OpenGLSettingsWidget(this);
+        auto scrollarea = new QScrollArea(this);
+        auto widget = new QWidget(this);
+        auto w_layout = new QVBoxLayout;
+        this->material_dropdown = new QComboBox(widget);
+        this->shader_edit_modes = new ShaderEditorTabs(widget);
+        this->opengl_settings = new OpenGLSettingsWidget(widget);
+
+        w_layout->addWidget(this->shader_edit_modes); // use PutInSpoiler once the Spoiler class is fixed
+        w_layout->addWidget(this->opengl_settings);
+        widget->setLayout(w_layout);
+        scrollarea->setWidget(widget);
 
         layout->addWidget(this->material_dropdown);
-        layout->addWidget(this->shader_edit_modes);
-        layout->addWidget(this->opengl_settings);
+        layout->addWidget(scrollarea);
         this->setLayout(layout);
 
         connect(this->material_dropdown, static_cast<CIC_t>(&QComboBox::currentIndexChanged), this, &MaterialEditorTab::selectMaterial);
@@ -657,6 +665,17 @@ public:
                 this->material_reverse_lookup[i] = material;
             }
         }
+    }
+
+    Spoiler* putInSpoiler(const QString&& name, QWidget* widget)
+    {
+        auto layout = new QVBoxLayout;
+        layout->addWidget(widget);
+
+        auto dropdown = new Spoiler(name, 300, this);
+        dropdown->setContentLayout(*layout);
+
+        return dropdown;
     }
 
 signals:
