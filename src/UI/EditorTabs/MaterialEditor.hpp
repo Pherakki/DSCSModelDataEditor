@@ -319,7 +319,7 @@ public:
             [this, blendfunc_widget](int checkstate)
             {
                 this->handleCheckbox<0xA2, std::identity>(checkstate, this->blendfunc_src_combobox->currentData().toInt(), this->blendfunc_dst_combobox->currentData().toInt(), 0, 0, blendfunc_widget); // BlendFunc GL_ONE, GL_ZERO
-                this->handleCheckbox<0xA4, std::identity, 0xA2, 0xA3>(checkstate, 1, 0, 0, 0); // glEnable(GL_BLEND) GL_TRUE
+                this->handleCheckbox<0xA4, std::identity, 0xA2, 0xA3>(checkstate, GL_TRUE, 0, 0, 0); // glEnable(GL_BLEND) GL_TRUE
             }
         );
         connect(this->blendfunc_src_combobox, static_cast<void(QComboBox::*)(int)>(&QComboBox::currentIndexChanged), this, [this]() {this->updateBlendFunc(); });
@@ -342,7 +342,7 @@ public:
             [this, blendeq_widget](int checkstate)
             {
                 this->handleCheckbox<0xA3, std::identity>(checkstate, this->blendeq_combobox->currentData().toInt(), 0, 0, 0, blendeq_widget); // BlendEquationSeparate GL_FUNC_ADD (check)
-                this->handleCheckbox<0xA4, std::identity, 0xA2, 0xA3>(checkstate, 1, 0, 0, 0); // glEnable(GL_BLEND)
+                this->handleCheckbox<0xA4, std::identity, 0xA2, 0xA3>(checkstate, GL_TRUE, 0, 0, 0); // glEnable(GL_BLEND)
             }
         );
         connect(this->blendeq_combobox, static_cast<void(QComboBox::*)(int)>(&QComboBox::currentIndexChanged), this, [this]() {this->updateBlendEq(); });
@@ -365,6 +365,7 @@ public:
             [this, faceculling_widget](int checkstate)
             {
                 this->handleCheckbox<0xA5, std::identity>(checkstate, this->faceculling_combobox->currentData().toInt(), 0, 0, 0, faceculling_widget); // glCullFace
+                this->handleCheckbox<0xA6, std::logical_not<decltype(checkstate)>, 0xA5>(checkstate, GL_TRUE, 0, 0, 0); // glDisable(GL_CULL_FACE)
             }
         );
         connect(this->faceculling_combobox, static_cast<void(QComboBox::*)(int)>(&QComboBox::currentIndexChanged), this, [this]() {this->updateCullFace(); });
@@ -386,7 +387,7 @@ public:
             [this, depthfunc_widget](int checkstate)
             {
                 this->handleCheckbox<0xA7, std::identity>(checkstate, this->depthfunc_combobox->currentData().toInt(), 0, 0, 0, depthfunc_widget); // glDepthFunc
-                this->handleCheckbox<0xA9, std::logical_not<decltype(checkstate)>, 0xA7, 0xA8>(checkstate, 1, 0, 0, 0); // glDisable(GL_DEPTH_TEST)
+                this->handleCheckbox<0xA9, std::logical_not<decltype(checkstate)>, 0xA7, 0xA8>(checkstate, GL_TRUE, 0, 0, 0); // glDisable(GL_DEPTH_TEST)
             }
         );
         connect(this->depthfunc_combobox, static_cast<void(QComboBox::*)(int)>(&QComboBox::currentIndexChanged), this, [this]() {this->updateDepthFunc(); });
@@ -408,7 +409,7 @@ public:
             [this, depthmask_widget](int checkstate)
             {
                 this->handleCheckbox<0xA8, std::identity>(checkstate, this->depthmask_combobox->currentData().toInt(), 0, 0, 0, depthmask_widget); // glDepthMask
-                this->handleCheckbox<0xA9, std::logical_not<decltype(checkstate)>, 0xA7, 0xA8>(checkstate, 1, 0, 0, 0); // glDisable(GL_DEPTH_TEST)
+                this->handleCheckbox<0xA9, std::logical_not<decltype(checkstate)>, 0xA7, 0xA8>(checkstate, GL_TRUE, 0, 0, 0); // glDisable(GL_DEPTH_TEST)
             }
         );
         connect(this->depthmask_combobox, static_cast<void(QComboBox::*)(int)>(&QComboBox::currentIndexChanged), this, [this]() {this->updateDepthMask(); });
