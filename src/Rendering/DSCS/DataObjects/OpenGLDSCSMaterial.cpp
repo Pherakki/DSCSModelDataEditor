@@ -153,7 +153,7 @@ namespace Rendering::DSCS::DataObjects
 			this->opengl_settings.emplace_back(std::make_shared<OpenGLSettings::OpenGLSettingGlCullFace>(0xA5, payload[0]));
 			return;
 		case 0xA6: // GL_CULL_FACE
-			//this->opengl_settings.emplace_back(std::make_shared<OpenGLSettings::OpenGLSettingGlEnable>(0xA6, 0x0B44, payload[0], true));
+			this->opengl_settings.emplace_back(std::make_shared<OpenGLSettings::OpenGLSettingGlEnable>(0xA6, 0x0B44, payload[0], true));
 			return;
 		case 0xA7: // glDepthFunc
 			this->opengl_settings.emplace_back(std::make_shared<OpenGLSettings::OpenGLSettingGlDepthFunc>(0xA7, payload[0]));
