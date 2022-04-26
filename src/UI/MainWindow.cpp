@@ -103,7 +103,7 @@ DSCSModelDataEditorWindow::DSCSModelDataEditorWindow(QWidget* parent = Q_NULLPTR
 
 void DSCSModelDataEditorWindow::testInit()
 {
-    std::string test_path = "data/pc002";
+    std::string test_path = "data/chr800";
     std::string anim_path2 = test_path;
     anim_path2 += "_bn01.anim";
 
