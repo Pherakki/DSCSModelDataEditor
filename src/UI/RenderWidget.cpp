@@ -134,7 +134,7 @@ namespace CustomWidgets
 		this->animation_buffer.ViewInverse->set(invertViewMatrix(view_matrix, this->camera.getPosition()));
 
 		this->increment_test += 0.001*targetFrameUpdateTime; // convert to seconds
-		std::cout << this->increment_test << std::endl;
+		//std::cout << this->increment_test << std::endl;
 		this->repaint();
 	}
 
