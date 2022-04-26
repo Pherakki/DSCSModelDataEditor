@@ -462,7 +462,7 @@ public:
     {
         this->selected_material = material_ptr;
 
-        if (int idx = this->checkIfSettingExists(0xA0, this->selected_material->opengl_settings) != -1)
+        if (int idx = this->checkIfSettingExists(0xA0, this->selected_material->opengl_settings); idx != -1)
         {
             auto& setting = this->selected_material->opengl_settings[idx];
             auto data = setting->getData();
@@ -483,7 +483,7 @@ public:
             emit this->alphafunc_checkbox->stateChanged(0);
         }
 
-        if (int idx = this->checkIfSettingExists(0xA2, this->selected_material->opengl_settings) != -1)
+        if (int idx = this->checkIfSettingExists(0xA2, this->selected_material->opengl_settings); idx != -1)
         {
             auto& setting = this->selected_material->opengl_settings[idx];
             auto data = setting->getData();
@@ -504,7 +504,7 @@ public:
             emit this->blendfunc_checkbox->stateChanged(0);
         }
 
-        if (int idx = this->checkIfSettingExists(0xA3, this->selected_material->opengl_settings) != -1)
+        if (int idx = this->checkIfSettingExists(0xA3, this->selected_material->opengl_settings); idx != -1)
         {
             auto& setting = this->selected_material->opengl_settings[idx];
             auto data = setting->getData();
@@ -523,7 +523,7 @@ public:
             emit this->blendeq_checkbox->stateChanged(0);
         }
 
-        if (int idx = this->checkIfSettingExists(0xA5, this->selected_material->opengl_settings) != -1)
+        if (int idx = this->checkIfSettingExists(0xA5, this->selected_material->opengl_settings); idx != -1)
         {
             auto& setting = this->selected_material->opengl_settings[idx];
             auto data = setting->getData();
@@ -542,7 +542,7 @@ public:
             emit this->faceculling_checkbox->stateChanged(0);
         }
 
-        if (int idx = this->checkIfSettingExists(0xA7, this->selected_material->opengl_settings) != -1)
+        if (int idx = this->checkIfSettingExists(0xA7, this->selected_material->opengl_settings); idx != -1)
         {
             auto& setting = this->selected_material->opengl_settings[idx];
             auto data = setting->getData();
@@ -561,7 +561,7 @@ public:
             emit this->depthfunc_checkbox->stateChanged(0);
         }
 
-        if (int idx = this->checkIfSettingExists(0xA8, this->selected_material->opengl_settings) != -1)
+        if (int idx = this->checkIfSettingExists(0xA8, this->selected_material->opengl_settings); idx != -1)
         {
             auto& setting = this->selected_material->opengl_settings[idx];
             auto data = setting->getData();
@@ -580,7 +580,7 @@ public:
             emit this->depthmask_checkbox->stateChanged(0);
         }
 
-        if (int idx = this->checkIfSettingExists(0xAC, this->selected_material->opengl_settings) != -1)
+        if (int idx = this->checkIfSettingExists(0xAC, this->selected_material->opengl_settings); idx != -1)
         {
             auto& setting = this->selected_material->opengl_settings[idx];
             auto data = setting->getData();
