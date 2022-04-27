@@ -12,27 +12,9 @@
 #include <QLineEdit>
 #include <QWidget>
 
+#include "ShaderGenerator/VertexShader.hpp"
+#include "ShaderGenerator/FragmentShader.hpp"
 
-//struct ShaderFactoryUVSettings
-//{
-//	bool projection;
-//	bool scroll_speed;
-//	bool rotation;
-//	bool offset;
-//	bool scale;
-//};
-//
-//struct ShaderFactoryTextureLayer1
-//{
-//	bool diffuse_texture;
-//};
-//
-//struct ShaderFactoryFlagTable
-//{
-//	ShaderFactoryUVSettings uv1;
-//	ShaderFactoryUVSettings uv2;
-//	ShaderFactoryUVSettings uv3;
-//};
 
 template <uint8_t n_boxes>
 class ToggleableTextboxesWidget : public QWidget
