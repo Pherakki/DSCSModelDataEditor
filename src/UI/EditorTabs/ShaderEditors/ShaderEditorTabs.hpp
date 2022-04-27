@@ -13,13 +13,14 @@ class ShaderEditorTabs : public QTabWidget
 private:
     typedef Rendering::DSCS::DataObjects::OpenGLDSCSMaterial Material;
     typedef std::shared_ptr<Material> MaterialPtr;
+    typedef std::unordered_map<std::string, std::shared_ptr<Rendering::DataObjects::OpenGLDSCSTexture>> TextureLibrary_t;
 
     PrebuiltTab* prebuilts_tab = new PrebuiltTab(this);
     //QScrollArea* shader_factory_scroll_area = new QScrollArea(this);
-    ShaderFactory* factory_tab = new ShaderFactory(this);
+    ShaderFactory* factory_tab;
     CodeEditor* code_tab = new CodeEditor(this);
 public:
-    ShaderEditorTabs(QWidget* parent = Q_NULLPTR) : QTabWidget(parent)
+    ShaderEditorTabs(TextureLibrary_t& texlib, QWidget* parent = Q_NULLPTR) : QTabWidget(parent), factory_tab{ new ShaderFactory(texlib, this) }
     {
         //this->shader_factory_scroll_area->setWidgetResizable(true);
         //this->shader_factory_scroll_area->setWidget(this->factory_tab);

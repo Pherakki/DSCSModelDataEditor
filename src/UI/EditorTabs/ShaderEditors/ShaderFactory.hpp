@@ -14,6 +14,7 @@
 
 #include "ShaderGenerator/VertexShader.hpp"
 #include "ShaderGenerator/FragmentShader.hpp"
+#include "../../../Rendering/DSCS/DataObjects/OpenGLDSCSMaterial.hpp"
 
 
 template <uint8_t n_boxes>
@@ -115,10 +116,10 @@ public:
 
 class FileComboBox : public QWidget
 {
-private:
+public:
 	QComboBox*   combobox;
 	QPushButton* open_file_button;
-public:
+
 	FileComboBox(QWidget* parent = nullptr) : QWidget(parent)
 	{
 		auto f_layout = new QHBoxLayout;
@@ -136,14 +137,13 @@ public:
 
 class ShaderFactoryTextureSlot : public QWidget
 {
-private:
+public:
 	QCheckBox* checkbox;
 	QLabel* texture_label;
 	FileComboBox* file_combo_box;
 	QLabel* uv_slot_label;
 	QComboBox* uv_slot_combobox;
 
-public:
 	ShaderFactoryTextureSlot(QString label_text, QWidget* parent = nullptr) : QWidget(parent)
 	{
 		auto _layout = new QHBoxLayout;
@@ -264,14 +264,13 @@ public:
 
 class ShaderFactoryTextureLayer1 : public QWidget
 {
-private:
-	TitleWidget*                          title_widget;
-	ShaderFactoryTextureSlot*             diffuse_texture_settings;
-	ShaderFactoryTextureSlot*             normal_texture_settings;
-	ShaderFactoryTextureLayerParallaxBox* parallax_settings;
-	ShaderFactoryTextureLayerBumpmapBox*  bumpmap_settings;
-
 public:
+	TitleWidget* title_widget;
+	ShaderFactoryTextureSlot* diffuse_texture_settings;
+	ShaderFactoryTextureSlot* normal_texture_settings;
+	ShaderFactoryTextureLayerParallaxBox* parallax_settings;
+	ShaderFactoryTextureLayerBumpmapBox* bumpmap_settings;
+
 	ShaderFactoryTextureLayer1(QString title_text, QWidget* parent = nullptr) : QWidget(parent)
 	{
 		auto _layout = new QVBoxLayout;
@@ -303,13 +302,14 @@ class ShaderFactory : public QWidget
 	Q_OBJECT;
 
 private:
+	typedef std::unordered_map<std::string, std::shared_ptr<Rendering::DataObjects::OpenGLDSCSTexture>> TextureLibrary_t;
 	ShaderFactoryTextureLayer1* texture_layer_1;
 	ShaderFactoryTextureLayer1* texture_layer_2;
 	ShaderFactoryUVSettingsWidget* uv_settings_1;
 	ShaderFactoryUVSettingsWidget* uv_settings_2;
 	ShaderFactoryUVSettingsWidget* uv_settings_3;
 public:
-	explicit ShaderFactory(QWidget* parent = nullptr) : QWidget(parent)
+	explicit ShaderFactory(TextureLibrary_t& texlib, QWidget* parent = nullptr) : QWidget(parent), texture_library{texlib}
 	{
 
 		auto _layout = new QVBoxLayout;
@@ -347,6 +347,8 @@ public:
 			_layout->addItem(misc_settings_layout);
 		}
 		this->setLayout(_layout);
+
+		this->updateAvailableTextures();
 	}
 
 };

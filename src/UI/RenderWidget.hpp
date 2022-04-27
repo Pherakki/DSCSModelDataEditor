@@ -27,12 +27,14 @@ namespace CustomWidgets
 	{
 		Q_OBJECT;
 		typedef std::shared_ptr<Rendering::DSCS::DataObjects::OpenGLDSCSModel> ModelPtr;
+		typedef std::unordered_map<std::string, std::shared_ptr<Rendering::DataObjects::OpenGLDSCSTexture>> TextureLibrary_t;
 	public:
 		RenderWidget(QWidget* parent);
 		~RenderWidget();
 		ModelPtr loadModel(const std::string& path);
 		void loadAnim(const std::string& anim_path);
 		ModelList_t models;
+		TextureLibrary_t texture_library;
 	signals:
 		void glInitialised();
 	private:
@@ -45,7 +47,6 @@ namespace CustomWidgets
 		float aspect_ratio;
 		Input::InputHandler input_handler;
 
-		std::unordered_map<std::string, std::shared_ptr<Rendering::DataObjects::OpenGLDSCSTexture>> texture_library;
 		std::unordered_map<std::string, std::shared_ptr<Rendering::ShaderObjects::cgGLShaderObject>> shader_library;
 
 		void refreshRenderSettings();
