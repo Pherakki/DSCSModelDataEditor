@@ -359,6 +359,8 @@ private:
 		emit this->materialSelectionUpdated(new_material);
 	}
 
+signals:
+	void materialSelectionUpdated(MaterialPtr material_ptr);
 public:
 	explicit ShaderFactory(TextureLibrary_t& texlib, ShaderBackend_t& shader_backend, QWidget* parent = nullptr) 
 		: QWidget(parent)
@@ -370,7 +372,9 @@ public:
 		{
 			// Put in the Position manip / Billboarding here
 
-
+			auto compile_button = new QPushButton("Compile");
+			_layout->addWidget(compile_button);
+			connect(compile_button, &QPushButton::clicked, this, &ShaderFactory::regenerateMaterial);
 			this->texture_layer_1 = new ShaderFactoryTextureLayer1("Texture Layer 1");
 			this->texture_layer_2 = new ShaderFactoryTextureLayer1("Texture Layer 2");
 

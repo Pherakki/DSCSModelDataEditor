@@ -20,6 +20,8 @@ private:
     //QScrollArea* shader_factory_scroll_area = new QScrollArea(this);
     ShaderFactory* factory_tab;
     CodeEditor* code_tab = new CodeEditor(this);
+signals:
+    void materialSelectionUpdated(MaterialPtr material_ptr);
 public:
     ShaderEditorTabs(TextureLibrary_t& texlib, ShaderBackend_t& backend, QWidget* parent = Q_NULLPTR) 
         : QTabWidget(parent)
@@ -31,6 +33,7 @@ public:
         this->addTab(this->prebuilts_tab, "Pre-Built");
         this->addTab(this->factory_tab, "Shader Factory");
         this->addTab(this->code_tab, "Code Editor");
+        connect(this->factory_tab, &ShaderFactory::materialSelectionUpdated, this, &ShaderEditorTabs::updateSelectedMaterial);
     }
 public slots:
     void updateSelectedMaterial(MaterialPtr material_ptr)

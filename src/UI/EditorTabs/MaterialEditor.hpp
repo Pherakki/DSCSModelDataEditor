@@ -651,6 +651,7 @@ public:
         this->setLayout(layout);
 
         connect(this->material_dropdown, static_cast<CIC_t>(&QComboBox::currentIndexChanged), this, &MaterialEditorTab::selectMaterial);
+        connect(this->shader_edit_modes, &ShaderEditorTabs::materialSelectionUpdated, this, &MaterialEditorTab::materialSelectionUpdated);
     };
 
     void updateDataList()
