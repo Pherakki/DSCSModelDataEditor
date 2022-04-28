@@ -22,16 +22,13 @@ namespace Rendering::ShaderBackends
 		cgDestroyContext(this->context);
 	}
 
-		const std::string& fragment_shader_path)
+	//createShaderProgram
+	std::shared_ptr<ShaderObjects::cgGLShaderObject> cgGLShaderBackend::createShaderProgram(const std::string& vertex_shader_text,
+		const std::string& fragment_shader_text)
 	{
-		std::string vertex_src;
-		this->readFile(vertex_shader_path, vertex_src);
-		std::string fragment_src;
-		this->readFile(fragment_shader_path, fragment_src);
-
 		this->checkBackendForCgError("Initialising shader...");
-		std::shared_ptr<ShaderObjects::cgGLShaderObject> shader_object = std::make_shared<ShaderObjects::cgGLShaderObject>(vertex_src, this->vertex_profile,
-			fragment_src, this->fragment_profile,
+		std::shared_ptr<ShaderObjects::cgGLShaderObject> shader_object = std::make_shared<ShaderObjects::cgGLShaderObject>(vertex_shader_text, this->vertex_profile,
+			fragment_shader_text, this->fragment_profile,
 			this->context);
 
 		shader_object->load();

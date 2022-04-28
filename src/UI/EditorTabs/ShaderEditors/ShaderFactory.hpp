@@ -15,6 +15,7 @@
 #include "ShaderGenerator/VertexShader.hpp"
 #include "ShaderGenerator/FragmentShader.hpp"
 #include "../../../Rendering/DSCS/DataObjects/OpenGLDSCSMaterial.hpp"
+#include "../../../Rendering/DSCS/ShaderSystem/cgGL/cgGLShaderBackend.hpp"
 
 
 template <uint8_t n_boxes>
@@ -303,13 +304,66 @@ class ShaderFactory : public QWidget
 
 private:
 	typedef std::unordered_map<std::string, std::shared_ptr<Rendering::DataObjects::OpenGLDSCSTexture>> TextureLibrary_t;
+	typedef Rendering::DSCS::DataObjects::OpenGLDSCSMaterial Material;
+	typedef std::shared_ptr<Material> MaterialPtr;
+	typedef std::unique_ptr<Rendering::ShaderBackends::cgGLShaderBackend> ShaderBackend_t;
+
 	ShaderFactoryTextureLayer1* texture_layer_1;
 	ShaderFactoryTextureLayer1* texture_layer_2;
 	ShaderFactoryUVSettingsWidget* uv_settings_1;
 	ShaderFactoryUVSettingsWidget* uv_settings_2;
 	ShaderFactoryUVSettingsWidget* uv_settings_3;
+
+	FactorySettings factory_settings;
+	MaterialPtr selected_material = nullptr;
+	MaterialPtr active_local_material = nullptr;
+	TextureLibrary_t& texture_library;
+	ShaderBackend_t& shader_backend;
+	std::unordered_map<std::string, MaterialPtr> local_material_cache;
+
+	void updateTexturesOn(QComboBox* combobox)
+	{
+		combobox->clear();
+		for (const auto& [texture_name, texture] : this->texture_library)
+		{
+			combobox->addItem(QString::fromStdString(texture_name), QString::fromStdString(texture_name));
+		}
+	}
+
+	void updateAvailableTextures()
+	{
+		this->updateTexturesOn(this->texture_layer_1->diffuse_texture_settings->file_combo_box->combobox);
+		this->updateTexturesOn(this->texture_layer_1->normal_texture_settings->file_combo_box->combobox);
+		this->updateTexturesOn(this->texture_layer_2->diffuse_texture_settings->file_combo_box->combobox);
+		this->updateTexturesOn(this->texture_layer_2->normal_texture_settings->file_combo_box->combobox);
+	}
+
+	void regenerateMaterial()
+	{
+		auto vshader_text = generateVertexShader(this->factory_settings);
+		auto fshader_text = generateFragmentShader(this->factory_settings);
+		auto shader = this->shader_backend->createShaderProgram(vshader_text, fshader_text);
+		try
+		{
+			this->shader_backend->checkBackendForCgError("Compiling shaders...");
+		}
+		catch (const std::exception& ex)
+		{
+			std::cout << ex.what() << std::endl;
+			return;
+		}
+		MaterialPtr new_material = std::make_shared<Material>(shader);
+
+		this->active_local_material = new_material;
+
+		emit this->materialSelectionUpdated(new_material);
+	}
+
 public:
-	explicit ShaderFactory(TextureLibrary_t& texlib, QWidget* parent = nullptr) : QWidget(parent), texture_library{texlib}
+	explicit ShaderFactory(TextureLibrary_t& texlib, ShaderBackend_t& shader_backend, QWidget* parent = nullptr) 
+		: QWidget(parent)
+		, texture_library{ texlib }
+		, shader_backend{ shader_backend }
 	{
 
 		auto _layout = new QVBoxLayout;

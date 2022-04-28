@@ -617,6 +617,7 @@ private:
     typedef std::shared_ptr<Material> MaterialPtr;
     typedef void(QComboBox::* CIC_t)(int);
     typedef std::unordered_map<std::string, std::shared_ptr<Rendering::DataObjects::OpenGLDSCSTexture>> TextureLibrary_t;
+    typedef std::unique_ptr<Rendering::ShaderBackends::cgGLShaderBackend> ShaderBackend_t;
 
     ModelPtr selected_model = nullptr;
     MaterialPtr selected_material = nullptr;
@@ -630,14 +631,14 @@ private:
     std::unordered_map<int, MaterialPtr> material_reverse_lookup;
 
 public:
-    MaterialEditorTab(TextureLibrary_t& texlib, QWidget* parent = Q_NULLPTR) : QWidget(parent)
+    MaterialEditorTab(TextureLibrary_t& texlib, ShaderBackend_t& backend, QWidget* parent = Q_NULLPTR) : QWidget(parent)
     {
         auto layout = new QVBoxLayout(this);
         auto scrollarea = new QScrollArea(this);
         auto widget = new QWidget(this);
         auto w_layout = new QVBoxLayout;
         this->material_dropdown = new QComboBox(widget);
-        this->shader_edit_modes = new ShaderEditorTabs(texlib, widget);
+        this->shader_edit_modes = new ShaderEditorTabs(texlib, backend, widget);
         this->opengl_settings = new OpenGLSettingsWidget(widget);
 
         w_layout->addWidget(this->shader_edit_modes); // use PutInSpoiler once the Spoiler class is fixed

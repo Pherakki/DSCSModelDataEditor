@@ -35,19 +35,19 @@ namespace CustomWidgets
 		void loadAnim(const std::string& anim_path);
 		ModelList_t models;
 		TextureLibrary_t texture_library;
+		std::unique_ptr<Rendering::ShaderBackends::cgGLShaderBackend> shader_backend;
+		std::unordered_map<std::string, std::shared_ptr<Rendering::ShaderObjects::cgGLShaderObject>> shader_library;
 	signals:
 		void glInitialised();
 	private:
 		QTimer clock;
 		Camera camera;
-		std::unique_ptr<Rendering::ShaderBackends::cgGLShaderBackend> shader_backend;
 		Rendering::DSCS::AnimationBuffer animation_buffer;
 		float targetFrameUpdateTime = 1000 / 30;
 		float increment_test = 0.f;
 		float aspect_ratio;
 		Input::InputHandler input_handler;
 
-		std::unordered_map<std::string, std::shared_ptr<Rendering::ShaderObjects::cgGLShaderObject>> shader_library;
 
 		void refreshRenderSettings();
 
