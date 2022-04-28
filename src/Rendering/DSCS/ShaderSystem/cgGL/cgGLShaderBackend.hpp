@@ -26,6 +26,6 @@ namespace Rendering::ShaderBackends
 		cgGLShaderBackend();
 		~cgGLShaderBackend();
 		const void checkBackendForCgError(const std::string& message);
-		std::shared_ptr<ShaderObjects::cgGLShaderObject> createShaderProgram(const std::string& vertex_shader_path, const std::string& fragment_shader_path);
+		std::shared_ptr<ShaderObjects::cgGLShaderObject> createShaderProgramFromFiles(const std::string& vertex_shader_path, const std::string& fragment_shader_path);
 	};
 }

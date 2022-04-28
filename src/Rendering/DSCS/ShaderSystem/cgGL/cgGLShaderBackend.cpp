@@ -22,9 +22,6 @@ namespace Rendering::ShaderBackends
 		cgDestroyContext(this->context);
 	}
 
-
-	// createShaderProgram
-	std::shared_ptr<ShaderObjects::cgGLShaderObject> cgGLShaderBackend::createShaderProgram(const std::string& vertex_shader_path,
 		const std::string& fragment_shader_path)
 	{
 		std::string vertex_src;
@@ -41,6 +38,18 @@ namespace Rendering::ShaderBackends
 		this->checkBackendForCgError("Loading program...");
 
 		return shader_object;
+	}
+
+	// createShaderProgramFromFiles
+	std::shared_ptr<ShaderObjects::cgGLShaderObject> cgGLShaderBackend::createShaderProgramFromFiles(const std::string& vertex_shader_path,
+		const std::string& fragment_shader_path)
+	{
+		std::string vertex_src;
+		this->readFile(vertex_shader_path, vertex_src);
+		std::string fragment_src;
+		this->readFile(fragment_shader_path, fragment_src);
+
+		return this->createShaderProgram(vertex_src, fragment_src);
 	}
 
 

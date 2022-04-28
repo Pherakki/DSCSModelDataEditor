@@ -127,7 +127,7 @@ namespace FileFormats::DSCS
 			else
 			{
 				// TODO: Add check if filepaths exist
-				shader = shader_backend->createShaderProgram(vp_path.string(), fp_path.string());
+				shader = shader_backend->createShaderProgramFromFiles(vp_path.string(), fp_path.string());
 				shader_library[shader_id] = shader;
 			}
 
