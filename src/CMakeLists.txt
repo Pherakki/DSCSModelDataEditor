@@ -44,7 +44,7 @@ add_executable (${PROJECT_NAME}
                 "UI/EditorTabs/ShaderEditors/CodeEditor.hpp"
                 "UI/EditorTabs/ShaderEditors/PrebuiltShaders.hpp"
                 "UI/Spoiler/Spoiler.hpp" 
-                "UI/Spoiler/Spoiler.cpp"  "UI/EditorTabs/ShaderEditors/ShaderGenerator/VertexShader.hpp" "UI/EditorTabs/ShaderEditors/ShaderGenerator/Utils.hpp" "UI/EditorTabs/ShaderEditors/ShaderGenerator/VertexShader.cpp" "UI/EditorTabs/ShaderEditors/ShaderGenerator/FragmentShader.hpp" "UI/EditorTabs/ShaderEditors/ShaderGenerator/FragmentShader.cpp")
+                "UI/Spoiler/Spoiler.cpp"  "UI/EditorTabs/ShaderEditors/ShaderGenerator/VertexShader.hpp" "UI/EditorTabs/ShaderEditors/ShaderGenerator/Utils.hpp" "UI/EditorTabs/ShaderEditors/ShaderGenerator/VertexShader.cpp" "UI/EditorTabs/ShaderEditors/ShaderGenerator/FragmentShader.hpp" "UI/EditorTabs/ShaderEditors/ShaderGenerator/FragmentShader.cpp" "UI/EditorTabs/ShaderEditors/ShaderGenerator/Utils.cpp")
 
 # Allow CMake to build libraries
 cmake_policy(SET CMP0079 NEW)

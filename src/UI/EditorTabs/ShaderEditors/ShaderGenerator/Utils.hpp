@@ -134,3 +134,4 @@ struct FactorySettings
 	TexMap ambient_occlusion;
 	Operation light_op = Operation::MUL;
 };
+
