@@ -135,3 +135,6 @@ struct FactorySettings
 	Operation light_op = Operation::MUL;
 };
 
+bool uvSlotInUse(const Sampler& sampler, size_t idx);
+void getUVSlot(FactorySettings& settings, size_t idx);
+void createSettingInputs(FactorySettings& settings);
