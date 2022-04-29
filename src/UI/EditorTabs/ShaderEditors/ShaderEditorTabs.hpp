@@ -15,17 +15,18 @@ private:
     typedef std::shared_ptr<Material> MaterialPtr;
     typedef std::unique_ptr<Rendering::ShaderBackends::cgGLShaderBackend> ShaderBackend_t;
     typedef std::unordered_map<std::string, std::shared_ptr<Rendering::DataObjects::OpenGLDSCSTexture>> TextureLibrary_t;
+    typedef Rendering::DSCS::AnimationBuffer AnimBuf_t;
 
     PrebuiltTab* prebuilts_tab = new PrebuiltTab(this);
     //QScrollArea* shader_factory_scroll_area = new QScrollArea(this);
     ShaderFactory* factory_tab;
     CodeEditor* code_tab = new CodeEditor(this);
 signals:
-    void materialSelectionUpdated(MaterialPtr material_ptr);
+    void overwriteCurrentMaterial(MaterialPtr material_ptr);
 public:
-    ShaderEditorTabs(TextureLibrary_t& texlib, ShaderBackend_t& backend, QWidget* parent = Q_NULLPTR) 
+    ShaderEditorTabs(TextureLibrary_t& texlib, ShaderBackend_t& backend, AnimBuf_t& animation_buffer, QWidget* parent = Q_NULLPTR) 
         : QTabWidget(parent)
-        , factory_tab{ new ShaderFactory(texlib, backend, this) }
+        , factory_tab{ new ShaderFactory(texlib, backend, animation_buffer, this) }
     {
         //this->shader_factory_scroll_area->setWidgetResizable(true);
         //this->shader_factory_scroll_area->setWidget(this->factory_tab);
@@ -33,12 +34,13 @@ public:
         this->addTab(this->prebuilts_tab, "Pre-Built");
         this->addTab(this->factory_tab, "Shader Factory");
         this->addTab(this->code_tab, "Code Editor");
-        connect(this->factory_tab, &ShaderFactory::materialSelectionUpdated, this, &ShaderEditorTabs::updateSelectedMaterial);
+        connect(this->factory_tab, &ShaderFactory::overwriteCurrentMaterial, this, &ShaderEditorTabs::overwriteCurrentMaterial);
     }
 public slots:
     void updateSelectedMaterial(MaterialPtr material_ptr)
     {
         this->prebuilts_tab->updateSelectedMaterial(material_ptr);
+        this->factory_tab->updateSelectedMaterial(material_ptr);
         this->code_tab->updateSelectedMaterial(material_ptr);
     }
 

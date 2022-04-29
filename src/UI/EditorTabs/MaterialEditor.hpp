@@ -618,6 +618,7 @@ private:
     typedef void(QComboBox::* CIC_t)(int);
     typedef std::unordered_map<std::string, std::shared_ptr<Rendering::DataObjects::OpenGLDSCSTexture>> TextureLibrary_t;
     typedef std::unique_ptr<Rendering::ShaderBackends::cgGLShaderBackend> ShaderBackend_t;
+    typedef Rendering::DSCS::AnimationBuffer AnimBuf_t;
 
     ModelPtr selected_model = nullptr;
     MaterialPtr selected_material = nullptr;
@@ -631,14 +632,14 @@ private:
     std::unordered_map<int, MaterialPtr> material_reverse_lookup;
 
 public:
-    MaterialEditorTab(TextureLibrary_t& texlib, ShaderBackend_t& backend, QWidget* parent = Q_NULLPTR) : QWidget(parent)
+    MaterialEditorTab(TextureLibrary_t& texlib, ShaderBackend_t& backend, AnimBuf_t& animation_buffer, QWidget* parent = Q_NULLPTR) : QWidget(parent)
     {
         auto layout = new QVBoxLayout(this);
         auto scrollarea = new QScrollArea(this);
         auto widget = new QWidget(this);
         auto w_layout = new QVBoxLayout;
         this->material_dropdown = new QComboBox(widget);
-        this->shader_edit_modes = new ShaderEditorTabs(texlib, backend, widget);
+        this->shader_edit_modes = new ShaderEditorTabs(texlib, backend, animation_buffer, widget);
         this->opengl_settings = new OpenGLSettingsWidget(widget);
 
         w_layout->addWidget(this->shader_edit_modes); // use PutInSpoiler once the Spoiler class is fixed
@@ -651,7 +652,7 @@ public:
         this->setLayout(layout);
 
         connect(this->material_dropdown, static_cast<CIC_t>(&QComboBox::currentIndexChanged), this, &MaterialEditorTab::selectMaterial);
-        connect(this->shader_edit_modes, &ShaderEditorTabs::materialSelectionUpdated, this, &MaterialEditorTab::materialSelectionUpdated);
+        connect(this->shader_edit_modes, &ShaderEditorTabs::overwriteCurrentMaterial, this, &MaterialEditorTab::overwriteCurrentMaterial);
     };
 
     void updateDataList()
@@ -684,6 +685,8 @@ public:
 
 signals:
     void materialSelectionUpdated(MaterialPtr material_ptr);
+signals:
+    void overwriteCurrentMaterial(MaterialPtr material_ptr);
 public slots:
     /*
     Update methods for the data on this widget
@@ -696,10 +699,17 @@ public slots:
 
     void updateSelectedMaterial(MaterialPtr material_ptr)
     {
-        this->material_dropdown->setCurrentIndex(this->material_lookup.at(material_ptr));
-        this->selected_material = selected_material;
-        this->shader_edit_modes->updateSelectedMaterial(material_ptr);
-        this->opengl_settings->updateSelectedMaterial(material_ptr);
+        try
+        {
+            this->material_dropdown->setCurrentIndex(this->material_lookup.at(material_ptr));
+            this->selected_material = selected_material;
+            this->shader_edit_modes->updateSelectedMaterial(material_ptr);
+            this->opengl_settings->updateSelectedMaterial(material_ptr);
+        }
+        catch (const std::exception& ex)
+        {
+            std::cout << "BAD LOOKUP IN SELECTED MATERIAL 2" << std::endl;
+        }
     }
 
     /*
@@ -708,7 +718,10 @@ public slots:
     void selectMaterial(int index)
     {
         if (!this->material_reverse_lookup.contains(index))
+        {
+            std::cout << "Did not contain index " << index << std::endl;
             return;
+        }
         auto& material = this->material_reverse_lookup.at(index);
         emit this->materialSelectionUpdated(material);
     }

@@ -16,6 +16,7 @@
 #include "ShaderGenerator/FragmentShader.hpp"
 #include "../../../Rendering/DSCS/DataObjects/OpenGLDSCSMaterial.hpp"
 #include "../../../Rendering/DSCS/ShaderSystem/cgGL/cgGLShaderBackend.hpp"
+#include "../../../Utils/Hashing.hpp"
 
 
 template <uint8_t n_boxes>
@@ -307,6 +308,7 @@ private:
 	typedef Rendering::DSCS::DataObjects::OpenGLDSCSMaterial Material;
 	typedef std::shared_ptr<Material> MaterialPtr;
 	typedef std::unique_ptr<Rendering::ShaderBackends::cgGLShaderBackend> ShaderBackend_t;
+	typedef Rendering::DSCS::AnimationBuffer AnimBuf_t;
 
 	ShaderFactoryTextureLayer1* texture_layer_1;
 	ShaderFactoryTextureLayer1* texture_layer_2;
@@ -315,6 +317,7 @@ private:
 	ShaderFactoryUVSettingsWidget* uv_settings_3;
 
 	FactorySettings factory_settings;
+	AnimBuf_t& animation_buffer;
 	MaterialPtr selected_material = nullptr;
 	MaterialPtr active_local_material = nullptr;
 	TextureLibrary_t& texture_library;
@@ -353,19 +356,30 @@ private:
 			return;
 		}
 		MaterialPtr new_material = std::make_shared<Material>(shader);
-
+		if (this->selected_material)
+		{
+			new_material->name = this->selected_material->name;
+			new_material->name_hash = this->selected_material->name_hash;
+			new_material->opengl_settings = this->selected_material->opengl_settings;
+		}
+		else
+		{
+			new_material->name = "New Material";
+			new_material->name_hash = dscsNameHash(new_material->name);
+		}
+		new_material->initShaderUniforms(this->animation_buffer.uniform_dispatch_buffer);
 		this->active_local_material = new_material;
-
-		emit this->materialSelectionUpdated(new_material);
+		emit this->overwriteCurrentMaterial(new_material);
 	}
 
 signals:
-	void materialSelectionUpdated(MaterialPtr material_ptr);
+	void overwriteCurrentMaterial(MaterialPtr material_ptr);
 public:
-	explicit ShaderFactory(TextureLibrary_t& texlib, ShaderBackend_t& shader_backend, QWidget* parent = nullptr) 
+	explicit ShaderFactory(TextureLibrary_t& texlib, ShaderBackend_t& shader_backend, Rendering::DSCS::AnimationBuffer& animation_buffer, QWidget* parent = nullptr)
 		: QWidget(parent)
 		, texture_library{ texlib }
 		, shader_backend{ shader_backend }
+		, animation_buffer{ animation_buffer }
 	{
 
 		auto _layout = new QVBoxLayout;
@@ -407,6 +421,14 @@ public:
 		this->setLayout(_layout);
 
 		this->updateAvailableTextures();
+	}
+
+	/*
+	Update methods for the data on this widget
+	*/
+	void updateSelectedMaterial(MaterialPtr material_ptr)
+	{
+		this->selected_material = material_ptr;
 	}
 
 };

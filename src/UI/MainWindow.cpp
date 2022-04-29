@@ -12,6 +12,8 @@
 #include "CgSyntaxHighlighter.hpp"
 
 
+typedef std::shared_ptr<Rendering::DSCS::DataObjects::OpenGLDSCSMaterial> MaterialPtr;
+
 DSCSModelDataEditorWindow::DSCSModelDataEditorWindow(QWidget* parent = Q_NULLPTR) : QMainWindow(parent)
 {
     // Qt5 takes ownership of raw pointers and handles destruction properly, 
@@ -52,7 +54,7 @@ DSCSModelDataEditorWindow::DSCSModelDataEditorWindow(QWidget* parent = Q_NULLPTR
     auto info_editor = new QTabWidget();
     auto mesh_info_tab = new MeshEditorTab(this);
     auto skeleton_info_tab = new QWidget(this);
-    auto material_info_tab = new MaterialEditorTab(render_widget->texture_library, render_widget->shader_backend, this);
+    auto material_info_tab = new MaterialEditorTab(render_widget->texture_library, render_widget->shader_backend, this->render_widget->animation_buffer, this);
     auto animation_info_tab = new AnimationEditorTab(render_widget->models);
 
     info_editor->addTab(animation_info_tab, "Animation");
@@ -96,9 +98,35 @@ DSCSModelDataEditorWindow::DSCSModelDataEditorWindow(QWidget* parent = Q_NULLPTR
     // -> Updating Widgets
     connect(mesh_info_tab, &MeshEditorTab::materialSelectionUpdated, this, &DSCSModelDataEditorWindow::setSelectedMaterial);
     connect(material_info_tab, &MaterialEditorTab::materialSelectionUpdated, this, &DSCSModelDataEditorWindow::setSelectedMaterial);
+    connect(material_info_tab, &MaterialEditorTab::overwriteCurrentMaterial, this, &DSCSModelDataEditorWindow::overwriteMaterial);
     // -> Updated Widgets
     connect(this, &DSCSModelDataEditorWindow::selectedMaterialUpdated, mesh_info_tab, &MeshEditorTab::updateSelectedMaterial);
     connect(this, &DSCSModelDataEditorWindow::selectedMaterialUpdated, material_info_tab, &MaterialEditorTab::updateSelectedMaterial);
+}
+
+void DSCSModelDataEditorWindow::overwriteMaterial(MaterialPtr material)
+{
+    auto idx = -1;
+    for (size_t i = 0; i < this->selected_model->materials.size(); ++i)
+    {
+        auto& s_material = this->selected_model->materials[i];
+        if (this->selected_material == s_material)
+        {
+            idx = i;
+            break;
+        }
+    }
+    if (idx == -1)
+    {
+        return;
+    }
+    else
+    {
+        auto& s_mesh = this->selected_mesh;
+        s_mesh->material = material;
+        this->selected_model->materials[idx] = material;
+        this->setSelectedModel(this->selected_model);
+    }
 }
 
 void DSCSModelDataEditorWindow::testInit()

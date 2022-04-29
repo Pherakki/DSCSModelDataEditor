@@ -29,6 +29,7 @@ public:
     DSCSModelDataEditorWindow(QWidget* parent);
     ~DSCSModelDataEditorWindow() { };
 private:
+    typedef std::shared_ptr<Rendering::DSCS::DataObjects::OpenGLDSCSMaterial> MaterialPtr;
     std::shared_ptr<Rendering::DSCS::DataObjects::OpenGLDSCSModel> selected_model = nullptr;
     std::shared_ptr<Rendering::DSCS::DataObjects::OpenGLDSCSMesh> selected_mesh = nullptr;
     std::shared_ptr<Rendering::DSCS::DataObjects::OpenGLDSCSMaterial> selected_material = nullptr;
@@ -52,6 +53,7 @@ private slots:
     void setSelectedMesh(std::shared_ptr<Rendering::DSCS::DataObjects::OpenGLDSCSMesh> mesh);
     void setSelectedMeshOnly(std::shared_ptr<Rendering::DSCS::DataObjects::OpenGLDSCSMesh> mesh);
     void setSelectedMaterial(MaterialPtr material);
+    void overwriteMaterial(MaterialPtr material);
 };
 
 
