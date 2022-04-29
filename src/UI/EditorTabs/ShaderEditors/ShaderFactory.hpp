@@ -357,6 +357,15 @@ private:
 		texture = this->texture_library.at(tex_ui.file_combo_box->combobox->currentText().toStdString());
 	}
 
+	void createUVSettings(TexSlot& uv_slot, const ShaderFactoryUVSettingsWidget& uv_ui)
+	{
+		uv_slot.is_projection = uv_ui.widget_projection->checkbox->isChecked();
+		uv_slot.scroll = uv_ui.widget_scrollspeed->checkbox->isChecked();
+		uv_slot.offset = uv_ui.widget_offset->checkbox->isChecked();
+		uv_slot.rotation = uv_ui.widget_rotation->checkbox->isChecked();
+		uv_slot.scale = uv_ui.widget_scale->checkbox->isChecked();
+	}
+
 	void createSettingsFromUI(FactorySettings& settings, TextureRefs& textures)
 	{
 		if (const auto& tex_ui = this->texture_layer_1->diffuse_texture_settings; tex_ui->checkbox->isChecked())
@@ -367,6 +376,12 @@ private:
 			this->createTexSettings(settings, settings.texlayer_2.colorsampler, textures.c2_texture, *tex_ui);
 		if (const auto& tex_ui = this->texture_layer_2->normal_texture_settings; tex_ui->checkbox->isChecked())
 			this->createTexSettings(settings, settings.texlayer_2.normalsampler, textures.n2_texture, *tex_ui);
+		// Handle UV adjustments
+		this->createUVSettings(settings.uv_slots[0], *this->uv_settings_1);
+		this->createUVSettings(settings.uv_slots[1], *this->uv_settings_2);
+		this->createUVSettings(settings.uv_slots[2], *this->uv_settings_3);
+	}
+
 	}
 
 	void regenerateMaterial()
