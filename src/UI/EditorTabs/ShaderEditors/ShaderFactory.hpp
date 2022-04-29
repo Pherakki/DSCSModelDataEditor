@@ -348,7 +348,7 @@ private:
 		this->updateTexturesOn(this->texture_layer_2->normal_texture_settings->file_combo_box->combobox);
 	}
 
-	void createTexSettings(FactorySettings& settings, Sampler& sampler, TexturePtr& texture, ShaderFactoryTextureSlot& tex_ui)
+	void createTexSettings(FactorySettings& settings, Sampler& sampler, TexturePtr& texture, const ShaderFactoryTextureSlot& tex_ui)
 	{
 		sampler.enabled = true;
 		sampler.uv_slot = tex_ui.uv_slot_combobox->currentIndex();
