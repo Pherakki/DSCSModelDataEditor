@@ -50,9 +50,6 @@ namespace FileFormats::DSCS::AnimFile
         {
             slot[i] = packUnpackQuaternion<readmode>(bitpacked_quats[i]);
         }
-
-        if (quats.size())
-            fixQuaternionSigns(quats);
     }
 
 

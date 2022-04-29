@@ -197,7 +197,8 @@ namespace FileFormats::DSCS
 			// +1 because the increment doesn't count the initial frame
 			frames_passed += num_contained_frames + 1;
 		}
-
+		
+		anim.fixQuaternions();
 		anim.registerUnusedBoneIdxs(anim_file.getUnusedBoneFlags(), anim_file.getNumBones());
 		anim.registerUnusedShaderChannelIdxs(anim_file.getUnusedShaderChannelFlags(), num_shader_channels);
 	}

@@ -5,6 +5,8 @@
 #include <unordered_map>
 #include <vector>
 
+#include "Utils/Vector.hpp"
+
 namespace DataBlocks::Animation
 {
 	template<typename T>
@@ -50,6 +52,11 @@ namespace DataBlocks::Animation
 		const auto& getAnimatedShaderChannels() const noexcept { return this->animated_shader_uniform_channels; };
 		const auto& getUnusedBoneIDs() const noexcept          { return this->unused_bone_ids; };
 		const auto& getUnusedShaderChannelIDs() const noexcept { return this->unused_shader_channel_ids; };
+		void fixQuaternions() noexcept            
+		{
+			for (auto& [key, quats] : this->animated_rotations)
+				fixQuaternionSigns(this->animated_rotations[key].values);
+		}
 
 
 		void addRotation(uint32_t bone_id, const std::array<float, 4>& value)
