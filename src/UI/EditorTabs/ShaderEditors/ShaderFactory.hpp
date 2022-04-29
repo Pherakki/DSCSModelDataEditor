@@ -368,6 +368,7 @@ private:
 
 	void createSettingsFromUI(FactorySettings& settings, TextureRefs& textures)
 	{
+		// Load textures
 		if (const auto& tex_ui = this->texture_layer_1->diffuse_texture_settings; tex_ui->checkbox->isChecked())
 			this->createTexSettings(settings, settings.texlayer_1.colorsampler, textures.c1_texture, *tex_ui);
 		if (const auto& tex_ui = this->texture_layer_1->normal_texture_settings; tex_ui->checkbox->isChecked())
@@ -382,6 +383,23 @@ private:
 		this->createUVSettings(settings.uv_slots[2], *this->uv_settings_3);
 	}
 
+	void assignTextureReferences(MaterialPtr& material, TextureRefs& textures)
+	{
+		if (textures.c1_texture)
+			material->setTextureBuffer(0x32, textures.c1_texture->getBufferID());
+		if (textures.n1_texture)
+			material->setTextureBuffer(0x35, textures.n1_texture->getBufferID());
+		if (textures.c2_texture)
+			material->setTextureBuffer(0x44, textures.c1_texture->getBufferID());
+		if (textures.n2_texture)
+			material->setTextureBuffer(0x45, textures.n1_texture->getBufferID());
+		if (textures.light_texture)
+			material->setTextureBuffer(0x43, textures.light_texture->getBufferID());
+	}
+
+	void assignDefaultValues(MaterialPtr& material)
+	{
+		material->setUniformValue(0x33, { 1.0f, 1.0f, 1.0f, 1.0f }); // DiffuseColor
 	}
 
 	void regenerateMaterial()
@@ -409,7 +427,6 @@ private:
 			}
 		}
 		createSettingInputs(settings);
-
 		auto vshader_text = generateVertexShader(settings);
 		auto fshader_text = generateFragmentShader(settings);
 		std::shared_ptr<Rendering::ShaderObjects::cgGLShaderObject> shader;
@@ -439,6 +456,9 @@ private:
 			new_material->name_hash = dscsNameHash(new_material->name);
 		}
 		new_material->initShaderUniforms(this->animation_buffer.uniform_dispatch_buffer);
+		this->assignTextureReferences(new_material, textures);
+		this->assignDefaultValues(new_material);
+
 		this->active_local_material = new_material;
 		emit this->overwriteCurrentMaterial(new_material);
 	}
