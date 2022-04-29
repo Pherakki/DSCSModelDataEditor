@@ -141,19 +141,28 @@ void DSCSModelDataEditorWindow::openLoadModelDialog()
 /*
 Global variable dispatchers
 */
-void DSCSModelDataEditorWindow::setSelectedModel(std::shared_ptr<Rendering::DSCS::DataObjects::OpenGLDSCSModel> model)
+void DSCSModelDataEditorWindow::setSelectedModelOnly(std::shared_ptr<Rendering::DSCS::DataObjects::OpenGLDSCSModel> model)
 {
     this->selected_model = model;
     emit this->selectedModelUpdated(model);
+}
 
+void DSCSModelDataEditorWindow::setSelectedModel(std::shared_ptr<Rendering::DSCS::DataObjects::OpenGLDSCSModel> model)
+{
+    this->setSelectedModelOnly(model);
     if (model->meshes.size())
         this->setSelectedMesh(model->meshes[0]);
 }
 
-void DSCSModelDataEditorWindow::setSelectedMesh(std::shared_ptr<Rendering::DSCS::DataObjects::OpenGLDSCSMesh> mesh)
+void DSCSModelDataEditorWindow::setSelectedMeshOnly(std::shared_ptr<Rendering::DSCS::DataObjects::OpenGLDSCSMesh> mesh)
 {
     this->selected_mesh = mesh;
     emit this->selectedMeshUpdated(mesh);
+}
+
+void DSCSModelDataEditorWindow::setSelectedMesh(std::shared_ptr<Rendering::DSCS::DataObjects::OpenGLDSCSMesh> mesh)
+{
+    this->setSelectedMeshOnly(mesh);
 
     this->setSelectedMaterial(mesh->material);
 }
@@ -161,7 +170,7 @@ void DSCSModelDataEditorWindow::setSelectedMesh(std::shared_ptr<Rendering::DSCS:
 void DSCSModelDataEditorWindow::setSelectedMaterial(std::shared_ptr<Rendering::DSCS::DataObjects::OpenGLDSCSMaterial> material)
 {
     this->selected_material = material;
-    this->selectedMaterialUpdated(material);
+    emit this->selectedMaterialUpdated(material);
 }
 
 /*
