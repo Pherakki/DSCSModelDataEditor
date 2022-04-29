@@ -24,12 +24,11 @@ template <uint8_t n_boxes>
 class ToggleableTextboxesWidget : public QWidget
 {
 
-private:
+public:
 	QCheckBox* checkbox;
 	QLabel* label;
 	std::array<QLineEdit*, n_boxes> textboxes;
 
-public:
 	explicit ToggleableTextboxesWidget(QString label_text, QWidget* parent = nullptr) : QWidget(parent)
 	{
 		auto layout = new QHBoxLayout;
@@ -59,10 +58,9 @@ public:
 
 class TitleWidget : public QWidget
 {
-private:
+public:
 	QLabel* label;
 
-public:
 	explicit TitleWidget(QString label_text, QWidget* parent = nullptr) : QWidget(parent)
 	{
 		auto layout = new QHBoxLayout;
@@ -82,7 +80,7 @@ class ShaderFactoryUVSettingsWidget : public QWidget
 {
 	Q_OBJECT;
 
-private:
+public:
 	TitleWidget* title;
 	ToggleableTextboxesWidget<0>* widget_projection;
 	ToggleableTextboxesWidget<2>* widget_scrollspeed;
@@ -90,7 +88,6 @@ private:
 	ToggleableTextboxesWidget<2>* widget_offset;
 	ToggleableTextboxesWidget<2>* widget_scale;
 
-public:
 	explicit ShaderFactoryUVSettingsWidget(QString label_text, QWidget* parent = nullptr) : QWidget(parent)
 	{
 		auto layout = new QVBoxLayout;
@@ -171,7 +168,7 @@ public:
 
 class ShaderFactoryTextureLayerParallaxBox : public QWidget
 {
-private:
+public:
 	QCheckBox* checkbox;
 	QLabel*    label;
 	QLabel*    bias_label;
@@ -180,19 +177,15 @@ private:
 	QLabel*    heightmap_label;
 	QComboBox* heightmap_combobox;
 
-public:
 	ShaderFactoryTextureLayerParallaxBox(QWidget* parent = nullptr) : QWidget(parent)
 	{
-		auto _layout = new QVBoxLayout;
+		auto _layout = new QGridLayout;
 		{
-			auto title_layout = new QHBoxLayout;
-			{
-				this->checkbox = new QCheckBox;
-				this->label = new QLabel("Parallax");
-				title_layout->addWidget(this->checkbox);
-				title_layout->addWidget(this->label);
-			}
-			_layout->addItem(title_layout);
+			this->checkbox = new QCheckBox;
+			this->label = new QLabel("Parallax");
+
+			_layout->addWidget(this->checkbox, 0, 0);
+			_layout->addWidget(this->label, 0, 1);
 
 			auto settings_layout = new QVBoxLayout;
 			{
@@ -213,12 +206,14 @@ public:
 				{
 					this->heightmap_label = new QLabel("Heightmap");
 					this->heightmap_combobox = new QComboBox;
+					this->heightmap_combobox->addItem("Diffuse Texture", "Diffuse Texture");
+					this->heightmap_combobox->addItem("Normal Texture", "Normal Texture");
 					heightmap_settings_layout->addWidget(this->heightmap_label);
 					heightmap_settings_layout->addWidget(this->heightmap_combobox);
 				}
 				settings_layout->addItem(heightmap_settings_layout);
 			}
-			_layout->addItem(settings_layout);
+			_layout->addLayout(settings_layout, 1, 1);
 		}
 		this->setLayout(_layout);
 	}
@@ -226,25 +221,21 @@ public:
 
 class ShaderFactoryTextureLayerBumpmapBox : public QWidget
 {
-private:
+public:
 	QCheckBox* checkbox;
 	QLabel* label;
 	QLabel* bump_label;
 	QLineEdit* bump_strength;
 
-public:
 	ShaderFactoryTextureLayerBumpmapBox(QWidget* parent = nullptr) : QWidget(parent)
 	{
-		auto _layout = new QVBoxLayout;
+		auto _layout = new QGridLayout;
 		{
-			auto title_layout = new QHBoxLayout;
-			{
-				this->checkbox = new QCheckBox;
-				this->label = new QLabel("Bump");
-				title_layout->addWidget(this->checkbox);
-				title_layout->addWidget(this->label);
-			}
-			_layout->addItem(title_layout);
+			this->checkbox = new QCheckBox;
+			this->label = new QLabel("Bump");
+			
+			_layout->addWidget(this->checkbox, 0, 0);
+			_layout->addWidget(this->label, 0, 1);
 
 			auto settings_layout = new QVBoxLayout;
 			{
@@ -259,7 +250,7 @@ public:
 				settings_layout->addItem(bump_settings_layout);
 
 			}
-			_layout->addItem(settings_layout);
+			_layout->addLayout(settings_layout, 1, 1);
 		}
 		this->setLayout(_layout);
 	}
@@ -300,6 +291,18 @@ public:
 	}
 };
 
+struct TextureRefs
+{
+	typedef std::shared_ptr<Rendering::DataObjects::OpenGLDSCSTexture> Texture;
+
+	Texture c1_texture = nullptr;
+	Texture n1_texture = nullptr;
+	Texture c2_texture = nullptr;
+	Texture n2_texture = nullptr;
+	Texture light_texture = nullptr;
+	Texture env_texture = nullptr;
+};
+
 class ShaderFactory : public QWidget
 {
 	Q_OBJECT;
@@ -307,7 +310,8 @@ class ShaderFactory : public QWidget
 private:
 	typedef Rendering::DSCS::DataObjects::OpenGLDSCSMesh Mesh;
 	typedef std::shared_ptr<Mesh> MeshPtr;
-	typedef std::unordered_map<std::string, std::shared_ptr<Rendering::DataObjects::OpenGLDSCSTexture>> TextureLibrary_t;
+	typedef std::shared_ptr<Rendering::DataObjects::OpenGLDSCSTexture> TexturePtr;
+	typedef std::unordered_map<std::string, TexturePtr> TextureLibrary_t;
 	typedef Rendering::DSCS::DataObjects::OpenGLDSCSMaterial Material;
 	typedef std::shared_ptr<Material> MaterialPtr;
 	typedef std::unique_ptr<Rendering::ShaderBackends::cgGLShaderBackend> ShaderBackend_t;
@@ -319,7 +323,6 @@ private:
 	ShaderFactoryUVSettingsWidget* uv_settings_2;
 	ShaderFactoryUVSettingsWidget* uv_settings_3;
 
-	FactorySettings factory_settings;
 	AnimBuf_t& animation_buffer;
 	MeshPtr selected_mesh = nullptr;
 	MaterialPtr selected_material = nullptr;
@@ -345,41 +348,67 @@ private:
 		this->updateTexturesOn(this->texture_layer_2->normal_texture_settings->file_combo_box->combobox);
 	}
 
+	void createTexSettings(FactorySettings& settings, Sampler& sampler, TexturePtr& texture, ShaderFactoryTextureSlot& tex_ui)
+	{
+		sampler.enabled = true;
+		sampler.uv_slot = tex_ui.uv_slot_combobox->currentIndex();
+		settings.uv_slots[sampler.uv_slot].enabled = true;
+		sampler.combined_channels = true; // Change later
+		texture = this->texture_library.at(tex_ui.file_combo_box->combobox->currentText().toStdString());
+	}
+
+	void createSettingsFromUI(FactorySettings& settings, TextureRefs& textures)
+	{
+		if (const auto& tex_ui = this->texture_layer_1->diffuse_texture_settings; tex_ui->checkbox->isChecked())
+			this->createTexSettings(settings, settings.texlayer_1.colorsampler, textures.c1_texture, *tex_ui);
+		if (const auto& tex_ui = this->texture_layer_1->normal_texture_settings; tex_ui->checkbox->isChecked())
+			this->createTexSettings(settings, settings.texlayer_1.normalsampler, textures.n1_texture, *tex_ui);
+		if (const auto& tex_ui = this->texture_layer_2->diffuse_texture_settings; tex_ui->checkbox->isChecked())
+			this->createTexSettings(settings, settings.texlayer_2.colorsampler, textures.c2_texture, *tex_ui);
+		if (const auto& tex_ui = this->texture_layer_2->normal_texture_settings; tex_ui->checkbox->isChecked())
+			this->createTexSettings(settings, settings.texlayer_2.normalsampler, textures.n2_texture, *tex_ui);
+	}
+
 	void regenerateMaterial()
 	{
-
-		// Hacks
+		FactorySettings settings;
+		TextureRefs textures;
+		this->createSettingsFromUI(settings, textures);
+		// Sort out remaining inputs to the factory
 		for (const auto& attr : this->selected_mesh->mesh.vertex_attributes)	
 		{
 			if (attr.attribute_type == FileFormats::DSCS::GeomFile::VertexAttributeType::WeightedBoneID)
 			{
 				const auto& num_idxs = attr.num_elements;
 				std::cout << "Num indices: " << num_idxs << std::endl;
-				this->factory_settings.num_vertex_weights = num_idxs;
-				if (num_idxs > 1)
+				settings.num_vertex_weights = num_idxs;
+				if (num_idxs > 0)
 				{
-					this->factory_settings.use_skeleton = true;
-					this->factory_settings.use_weights = true;
+					settings.use_skeleton = true;
+					settings.use_weights = true;
 				}
 				else
 				{
-					this->factory_settings.use_skeleton = true;
-					this->factory_settings.use_weights = false;
+					settings.use_skeleton = true;
+					settings.use_weights = false;
 				}
 			}
-		
 		}
+		createSettingInputs(settings);
 
-		auto vshader_text = generateVertexShader(this->factory_settings);
-		auto fshader_text = generateFragmentShader(this->factory_settings);
-		auto shader = this->shader_backend->createShaderProgram(vshader_text, fshader_text);
+		auto vshader_text = generateVertexShader(settings);
+		auto fshader_text = generateFragmentShader(settings);
+		std::shared_ptr<Rendering::ShaderObjects::cgGLShaderObject> shader;
 		try
 		{
+			shader = this->shader_backend->createShaderProgram(vshader_text, fshader_text);
 			this->shader_backend->checkBackendForCgError("Compiling shaders...");
 		}
 		catch (const std::exception& ex)
 		{
 			std::cout << ex.what() << std::endl;
+			std::cout << vshader_text << std::endl;
+			std::cout << fshader_text << std::endl;
 			return;
 		}
 		MaterialPtr new_material = std::make_shared<Material>(shader);
@@ -398,6 +427,7 @@ private:
 		this->active_local_material = new_material;
 		emit this->overwriteCurrentMaterial(new_material);
 	}
+
 
 signals:
 	void overwriteCurrentMaterial(MaterialPtr material_ptr);
@@ -461,6 +491,7 @@ public:
 	void updateSelectedMaterial(MaterialPtr material_ptr)
 	{
 		this->selected_material = material_ptr;
+		this->updateAvailableTextures();
 	}
 
 };

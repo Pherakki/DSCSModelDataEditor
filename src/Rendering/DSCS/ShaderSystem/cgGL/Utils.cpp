@@ -1,16 +1,21 @@
+#include <exception>
+#include <iostream>
+#include <sstream>
+
 #include "Utils.hpp"
 
 // checkForCgError
 const void checkForCgError(const CGcontext& context, const std::string& message)
 {
 	CGerror error;
+	std::stringstream ss;
 	const char* stringout = cgGetLastErrorString(&error);
 
 	if (error != CG_NO_ERROR)
 	{
-		std::cout << "ERROR: " << message << ' ' << stringout << '\n' << std::endl;
+		ss << "ERROR: " << message << ' ' << stringout << '\n';
 		if (error == CG_COMPILER_ERROR)
-			std::cout << cgGetLastListing(context) << '\n' << std::endl;
-		exit(1);
+			ss << cgGetLastListing(context) << '\n';
+		throw std::exception(ss.str().c_str());
 	}
 }
