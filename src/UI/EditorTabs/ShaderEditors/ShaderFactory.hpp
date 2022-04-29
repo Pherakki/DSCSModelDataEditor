@@ -380,7 +380,6 @@ private:
 			if (attr.attribute_type == FileFormats::DSCS::GeomFile::VertexAttributeType::WeightedBoneID)
 			{
 				const auto& num_idxs = attr.num_elements;
-				std::cout << "Num indices: " << num_idxs << std::endl;
 				settings.num_vertex_weights = num_idxs;
 				if (num_idxs > 0)
 				{
@@ -411,6 +410,7 @@ private:
 			std::cout << fshader_text << std::endl;
 			return;
 		}
+
 		MaterialPtr new_material = std::make_shared<Material>(shader);
 		if (this->selected_material)
 		{
