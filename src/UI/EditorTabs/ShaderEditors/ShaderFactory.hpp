@@ -14,6 +14,7 @@
 
 #include "ShaderGenerator/VertexShader.hpp"
 #include "ShaderGenerator/FragmentShader.hpp"
+#include "../../../Rendering/DSCS/DataObjects/OpenGLDSCSMesh.hpp"
 #include "../../../Rendering/DSCS/DataObjects/OpenGLDSCSMaterial.hpp"
 #include "../../../Rendering/DSCS/ShaderSystem/cgGL/cgGLShaderBackend.hpp"
 #include "../../../Utils/Hashing.hpp"
@@ -304,6 +305,8 @@ class ShaderFactory : public QWidget
 	Q_OBJECT;
 
 private:
+	typedef Rendering::DSCS::DataObjects::OpenGLDSCSMesh Mesh;
+	typedef std::shared_ptr<Mesh> MeshPtr;
 	typedef std::unordered_map<std::string, std::shared_ptr<Rendering::DataObjects::OpenGLDSCSTexture>> TextureLibrary_t;
 	typedef Rendering::DSCS::DataObjects::OpenGLDSCSMaterial Material;
 	typedef std::shared_ptr<Material> MaterialPtr;
@@ -318,6 +321,7 @@ private:
 
 	FactorySettings factory_settings;
 	AnimBuf_t& animation_buffer;
+	MeshPtr selected_mesh = nullptr;
 	MaterialPtr selected_material = nullptr;
 	MaterialPtr active_local_material = nullptr;
 	TextureLibrary_t& texture_library;
@@ -343,6 +347,29 @@ private:
 
 	void regenerateMaterial()
 	{
+
+		// Hacks
+		for (const auto& attr : this->selected_mesh->mesh.vertex_attributes)	
+		{
+			if (attr.attribute_type == FileFormats::DSCS::GeomFile::VertexAttributeType::WeightedBoneID)
+			{
+				const auto& num_idxs = attr.num_elements;
+				std::cout << "Num indices: " << num_idxs << std::endl;
+				this->factory_settings.num_vertex_weights = num_idxs;
+				if (num_idxs > 1)
+				{
+					this->factory_settings.use_skeleton = true;
+					this->factory_settings.use_weights = true;
+				}
+				else
+				{
+					this->factory_settings.use_skeleton = true;
+					this->factory_settings.use_weights = false;
+				}
+			}
+		
+		}
+
 		auto vshader_text = generateVertexShader(this->factory_settings);
 		auto fshader_text = generateFragmentShader(this->factory_settings);
 		auto shader = this->shader_backend->createShaderProgram(vshader_text, fshader_text);
@@ -426,6 +453,11 @@ public:
 	/*
 	Update methods for the data on this widget
 	*/
+	void updateSelectedMesh(MeshPtr mesh_ptr)
+	{
+		this->selected_mesh = mesh_ptr;
+	}
+
 	void updateSelectedMaterial(MaterialPtr material_ptr)
 	{
 		this->selected_material = material_ptr;

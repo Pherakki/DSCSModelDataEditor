@@ -93,6 +93,7 @@ DSCSModelDataEditorWindow::DSCSModelDataEditorWindow(QWidget* parent = Q_NULLPTR
     connect(mesh_info_tab, &MeshEditorTab::meshSelectionUpdated, this, &DSCSModelDataEditorWindow::setSelectedMesh);
     // -> Updated Widgets
     connect(this, &DSCSModelDataEditorWindow::selectedMeshUpdated, mesh_info_tab, &MeshEditorTab::updateSelectedMesh);
+    connect(this, &DSCSModelDataEditorWindow::selectedMeshUpdated, material_info_tab, &MaterialEditorTab::updateSelectedMesh);
 
     // Material updates
     // -> Updating Widgets

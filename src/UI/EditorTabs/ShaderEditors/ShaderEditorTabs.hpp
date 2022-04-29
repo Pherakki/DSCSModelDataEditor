@@ -11,6 +11,8 @@ class ShaderEditorTabs : public QTabWidget
 {
     Q_OBJECT
 private:
+    typedef Rendering::DSCS::DataObjects::OpenGLDSCSMesh Mesh;
+    typedef std::shared_ptr<Mesh> MeshPtr;
     typedef Rendering::DSCS::DataObjects::OpenGLDSCSMaterial Material;
     typedef std::shared_ptr<Material> MaterialPtr;
     typedef std::unique_ptr<Rendering::ShaderBackends::cgGLShaderBackend> ShaderBackend_t;
@@ -42,6 +44,11 @@ public slots:
         this->prebuilts_tab->updateSelectedMaterial(material_ptr);
         this->factory_tab->updateSelectedMaterial(material_ptr);
         this->code_tab->updateSelectedMaterial(material_ptr);
+    }
+
+    void updateSelectedMesh(MeshPtr mesh_ptr)
+    {
+        this->factory_tab->updateSelectedMesh(mesh_ptr);
     }
 
 

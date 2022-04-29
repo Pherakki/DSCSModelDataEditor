@@ -613,6 +613,8 @@ class MaterialEditorTab : public QWidget
 private:
     typedef Rendering::DSCS::DataObjects::OpenGLDSCSModel Model;
     typedef std::shared_ptr<Model> ModelPtr;
+    typedef Rendering::DSCS::DataObjects::OpenGLDSCSMesh Mesh;
+    typedef std::shared_ptr<Mesh> MeshPtr;
     typedef Rendering::DSCS::DataObjects::OpenGLDSCSMaterial Material;
     typedef std::shared_ptr<Material> MaterialPtr;
     typedef void(QComboBox::* CIC_t)(int);
@@ -621,6 +623,7 @@ private:
     typedef Rendering::DSCS::AnimationBuffer AnimBuf_t;
 
     ModelPtr selected_model = nullptr;
+    MeshPtr selected_mesh = nullptr;
     MaterialPtr selected_material = nullptr;
     // Widgets
     QComboBox* material_dropdown;
@@ -695,6 +698,12 @@ public slots:
     {
         this->selected_model = model_ptr;
         this->updateDataList();
+    }
+
+    void updateSelectedMesh(MeshPtr mesh_ptr)
+    {
+        this->selected_mesh = mesh_ptr;
+        this->shader_edit_modes->updateSelectedMesh(mesh_ptr);
     }
 
     void updateSelectedMaterial(MaterialPtr material_ptr)
