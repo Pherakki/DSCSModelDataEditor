@@ -23,7 +23,12 @@
 template <uint8_t n_boxes>
 class ToggleableTextboxesWidget : public QWidget
 {
-
+private:
+	void toggleTextboxes(bool state)
+	{
+		for (auto*& box : this->textboxes)
+			box->setEnabled(state);
+	}
 public:
 	QCheckBox* checkbox;
 	QLabel* label;
@@ -53,6 +58,8 @@ public:
 
 		this->setLayout(layout);
 		this->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
+		this->toggleTextboxes(false);
+		connect(this->checkbox, &QCheckBox::stateChanged, this, &ToggleableTextboxesWidget::toggleTextboxes);
 	}
 };
 
@@ -137,6 +144,12 @@ public:
 
 class ShaderFactoryTextureSlot : public QWidget
 {
+private:
+	void toggle(bool active)
+	{
+		this->file_combo_box->setEnabled(active);
+		this->uv_slot_combobox->setEnabled(active);
+	}
 public:
 	QCheckBox* checkbox;
 	QLabel* texture_label;
@@ -163,11 +176,21 @@ public:
 
 		this->setLayout(_layout);
 		this->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
+
+		this->toggle(false);
+		connect(this->checkbox, &QCheckBox::stateChanged, this, &ShaderFactoryTextureSlot::toggle);
 	}
 };
 
 class ShaderFactoryTextureLayerParallaxBox : public QWidget
 {
+private:
+	void toggle(bool active)
+	{
+		this->bias_x->setEnabled(active);
+		this->bias_y->setEnabled(active);
+		this->heightmap_combobox->setEnabled(active);
+	}
 public:
 	QCheckBox* checkbox;
 	QLabel*    label;
@@ -216,11 +239,19 @@ public:
 			_layout->addLayout(settings_layout, 1, 1);
 		}
 		this->setLayout(_layout);
+
+		this->toggle(false);
+		connect(this->checkbox, &QCheckBox::stateChanged, this, &ShaderFactoryTextureLayerParallaxBox::toggle);
 	}
 };
 
 class ShaderFactoryTextureLayerBumpmapBox : public QWidget
 {
+private:
+	void toggle(bool active)
+	{
+		this->bump_strength->setEnabled(active);
+	}
 public:
 	QCheckBox* checkbox;
 	QLabel* label;
@@ -253,11 +284,48 @@ public:
 			_layout->addLayout(settings_layout, 1, 1);
 		}
 		this->setLayout(_layout);
+
+		this->toggle(false);
+		connect(this->checkbox, &QCheckBox::stateChanged, this, &ShaderFactoryTextureLayerBumpmapBox::toggle);
 	}
 };
 
 class ShaderFactoryTextureLayer1 : public QWidget
 {
+private:
+	void toggleParallax()
+	{
+		QString ctex = "Diffuse Texture";
+		bool activate = false;
+		auto*& hbox = this->parallax_settings->heightmap_combobox;
+		if (this->diffuse_texture_settings->checkbox->isChecked())
+		{
+			activate = true;
+			if (int idx = hbox->findText(ctex); idx == -1)
+				hbox->insertItem(0, ctex, ctex);
+		}
+		else
+		{
+			this->parallax_settings->heightmap_combobox->removeItem(0);
+		}
+
+		QString ntex = "Normal Texture";
+		if (this->normal_texture_settings->checkbox->isChecked())
+		{
+			activate = true;
+			if (int idx = hbox->findText(ntex); idx == -1)
+				hbox->insertItem(1, ntex, ntex);
+		}
+		else
+		{
+			this->parallax_settings->heightmap_combobox->removeItem(hbox->findText(ntex));
+		}
+		this->parallax_settings->setEnabled(activate);
+	}
+	void toggleBump()
+	{
+		this->bumpmap_settings->setEnabled(this->normal_texture_settings->checkbox->isChecked());
+	}
 public:
 	TitleWidget* title_widget;
 	ShaderFactoryTextureSlot* diffuse_texture_settings;
@@ -288,6 +356,12 @@ public:
 
 		}
 		this->setLayout(_layout);
+		this->toggleParallax();
+		this->toggleBump();
+
+		connect(this->diffuse_texture_settings->checkbox, &QCheckBox::stateChanged, this, &ShaderFactoryTextureLayer1::toggleParallax);
+		connect(this->normal_texture_settings->checkbox, &QCheckBox::stateChanged, this, &ShaderFactoryTextureLayer1::toggleParallax);
+		connect(this->normal_texture_settings->checkbox, &QCheckBox::stateChanged, this, &ShaderFactoryTextureLayer1::toggleBump);
 	}
 };
 
