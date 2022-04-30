@@ -20,7 +20,7 @@ void getUVSlot(FactorySettings& settings, size_t idx)
 void createSettingInputs(FactorySettings& settings)
 {
 	settings.use_vertex_colors = settings.layer_1_vertex_rgb || settings.layer_1_vertex_alpha || settings.layer_2_vertex_alpha;
-	settings.use_tangents = settings.texlayer_1.normalsampler.enabled;
+	settings.use_tangents = settings.texlayer_1.normalsampler.enabled || settings.parallax;
 	settings.use_tangents_layer_2 = settings.texlayer_2.normalsampler.enabled;
 	settings.texlayer_1.normalsampler.enabled = settings.texlayer_1.normalsampler.enabled || settings.texlayer_1_distort || settings.layer_1_transparency_map == MapType::NORMAL;
 	settings.use_lightpower = settings.lightsampler.enabled;
@@ -35,7 +35,7 @@ void createSettingInputs(FactorySettings& settings)
 	settings.use_normals = settings.use_reflection || settings.dir_light_1 || settings.use_tangents;
 
 	settings.inverse_view_matrix = settings.is_billboard;
-	settings.view_matrix = settings.specular_input || settings.use_reflection || settings.use_velvet;
+	settings.view_matrix = settings.specular_input || settings.use_reflection || settings.use_velvet || settings.parallax;
 	settings.use_specular = settings.specular_input || settings.use_reflection;
 
 	if (settings.use_normals && settings.fog)
