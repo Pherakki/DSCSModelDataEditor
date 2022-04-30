@@ -22,9 +22,9 @@ void createSettingInputs(FactorySettings& settings)
 	settings.use_vertex_colors = settings.layer_1_vertex_rgb || settings.layer_1_vertex_alpha || settings.layer_2_vertex_alpha;
 	settings.use_tangents = settings.texlayer_1.normalsampler.enabled || settings.parallax;
 	settings.use_tangents_layer_2 = settings.texlayer_2.normalsampler.enabled;
-	settings.texlayer_1.normalsampler.enabled = settings.texlayer_1.normalsampler.enabled || settings.texlayer_1_distort || settings.layer_1_transparency_map == MapType::NORMAL;
+	settings.texlayer_1.normalsampler.enabled = settings.texlayer_1.normalsampler.enabled || settings.texlayer_1_distort || settings.transparency_map.type == MapType::NORMAL;
 	settings.use_lightpower = settings.lightsampler.enabled;
-	settings.lightsampler.enabled = settings.lightsampler.enabled || settings.layer_1_transparency_map == MapType::LIGHT;
+	settings.lightsampler.enabled = settings.lightsampler.enabled || settings.transparency_map.type == MapType::LIGHT;
 
 	getUVSlot(settings, 0);
 	getUVSlot(settings, 1);
