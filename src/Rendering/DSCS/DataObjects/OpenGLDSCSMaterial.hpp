@@ -51,6 +51,7 @@ namespace Rendering::DSCS::DataObjects
 		void unbind();
 		void syncAnimationBuffer();
 		uint16_t getTextureType(uint8_t id);
+		void setTextureName(uint8_t id, const std::string& img_name);
 		void setTextureBuffer(uint8_t id, uint16_t buffer_id);
 		void setTextureHandler(uint8_t id, const CGparameter& param, std::map<uint8_t, std::unique_ptr<ShaderUniforms::AbstractcgGLTextureReference>>& holder);
 		template<typename T>

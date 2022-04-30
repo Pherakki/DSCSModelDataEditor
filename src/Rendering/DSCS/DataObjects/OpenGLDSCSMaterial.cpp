@@ -63,6 +63,12 @@ namespace Rendering::DSCS::DataObjects
 		return this->texture_refs[id]->getTextureType();
 	}
 
+	// setTextureName
+	void OpenGLDSCSMaterial::setTextureName(uint8_t id, const std::string& img_name)
+	{
+		this->texture_refs[id]->setName(img_name);
+	}
+
 	// setTextureBuffer
 	void OpenGLDSCSMaterial::setTextureBuffer(uint8_t id, uint16_t buffer_id)
 	{

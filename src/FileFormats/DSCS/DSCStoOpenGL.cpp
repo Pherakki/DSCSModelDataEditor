@@ -149,6 +149,7 @@ namespace FileFormats::DSCS
 					memcpy(&data, &geom_mat_uniform.payload, sizeof(geom_mat_uniform.payload));
 					// TODO: Add check if filepaths exist
 					material->setTextureBuffer(geom_mat_uniform.shader_uniform_type, initTexture(texture_type, data, img_path, geom_file.texture_names, texture_library));
+					material->setTextureName(geom_mat_uniform.shader_uniform_type, &geom_file.texture_names[geom_mat_uniform.payload[0]][0]);
 				}
 				else
 					material->setUniformValue(geom_mat_uniform.shader_uniform_type, geom_mat_uniform.payload);
