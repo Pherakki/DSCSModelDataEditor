@@ -521,10 +521,10 @@ std::string calculateDiffuseContribution(const FactorySettings& settings)
     else
         text += "\thalf4 diffuseColor = DiffuseColor;\n";
 
-    if (settings.layer_1_transparency_map != MapType::NONE)
+    if (settings.transparency_map.type != MapType::NONE)
     {
         std::string transparency_src;
-        switch (settings.layer_1_transparency_map)
+        switch (settings.transparency_map.type)
         {
         case (MapType::DIFFUSE):
             transparency_src = "colorRGBA";
@@ -540,7 +540,7 @@ std::string calculateDiffuseContribution(const FactorySettings& settings)
         }
 
         std::string transparency_channel;
-        switch (settings.layer_1_transparency_map_channel)
+        switch (settings.transparency_map.channel)
         {
         case (RGBAChannel::R):
             transparency_channel = "r";

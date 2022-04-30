@@ -125,9 +125,8 @@ struct FactorySettings
 	bool layer_1_vertex_rgb = false;
 	bool layer_1_vertex_alpha = false;
 	bool layer_2_vertex_alpha = false;
-	MapType layer_1_transparency_map = MapType::NONE;
-	RGBAChannel layer_1_transparency_map_channel = RGBAChannel::A;
-	// TexMap transparency_map;
+
+	TexMap transparency_map;
 	TexMap diffuse_map;
 	TexMap specular_map;
 	TexMap layer_2_diffuse_map{ true, MapType::OLDIFFUSE, RGBAChannel::A };
