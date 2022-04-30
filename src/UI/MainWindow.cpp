@@ -123,10 +123,11 @@ void DSCSModelDataEditorWindow::overwriteMaterial(MaterialPtr material)
     }
     else
     {
-        auto& s_mesh = this->selected_mesh;
+        auto s_mesh = this->selected_mesh;
         s_mesh->material = material;
         this->selected_model->materials[idx] = material;
         this->setSelectedModel(this->selected_model);
+        this->setSelectedMesh(s_mesh);
     }
 }
 
