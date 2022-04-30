@@ -121,6 +121,37 @@ namespace DataBlocks::Animation
 		}
 	}
 
+
+	void BaseAnimationSampler::sampleCurrentFrameUniforms(DataBlocks::Skeleton::OBJHASH_t material_hash, std::array<float, 0xA0 * 16>& shader_channels)
+	{
+		if (!this->skel->getShaderChannelIDGroups().contains(material_hash))
+			return;
+
+		// static_shader_channels, animated_shader_channels, and unused_shader_channels all contain shader channel IDs
+		// Need to link up the ShaderChannelIDGroups to these three categories before proceeding here
+		// Should do this when initting the anims, and keep that info on the anim data block objects?
+		// Can then look up the id for the shader_channels from the Skel...
+		// ...and get the value from the anim
+		for (auto& kv : this->anim->getStaticShaderChannels())
+		{
+			auto& id = this->skel->getShaderChannelDataBlocks().at(kv.first).shader_uniform_id;
+			shader_channels[id] = kv.second;
+		}
+
+		for (auto& kv : this->anim->getAnimatedShaderChannels())
+		{
+			auto& id = this->skel->getShaderChannelDataBlocks().at(kv.first).shader_uniform_id;
+			shader_channels[id] = get_interpolated_framevalue<float, &lerp>(kv.second, this->current_frame);
+		}
+		//auto& animated_shader_channels = this->anim->getAnimatedShaderChannels();
+		//for (auto& sc_id : this->skel->getShaderChannelIDGroups().at(material_hash))
+		//{
+		//	auto& id = this->skel->getShaderChannelDataBlocks().at(sc_id).shader_uniform_id;
+		//	shader_channels[id] = get_interpolated_framevalue<float, &lerp>(animated_shader_channels.at(sc_id), this->current_frame);
+		//}
+	}
+
+
 	void BaseAnimationSampler::tick()
 	{
 		// Let's say that we want to sample 30 frames every second
