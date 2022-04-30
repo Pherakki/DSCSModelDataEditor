@@ -166,8 +166,8 @@ namespace CustomWidgets
 				// load base uniforms
 				mesh->material->syncAnimationBuffer();
 				// handle animation
-				model->anim_sampler.sampleCurrentFrameUniforms(mesh->material->name_hash, this->animation_buffer.shader_uniform_buffer);
 				model->base_anim_sampler.sampleCurrentFrameUniforms(mesh->material->name_hash, this->animation_buffer.shader_uniform_buffer);
+				model->anim_sampler.sampleCurrentFrameUniforms(mesh->material->name_hash, this->animation_buffer.shader_uniform_buffer);
 				// upload
 				mesh->material->bind();
 				mesh->checkGLError();
