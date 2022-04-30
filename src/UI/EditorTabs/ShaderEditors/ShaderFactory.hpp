@@ -300,7 +300,6 @@ private:
 		auto*& hbox = this->parallax_settings->heightmap_combobox;
 		if (this->diffuse_texture_settings->checkbox->isChecked())
 		{
-			activate = true;
 			if (int idx = hbox->findText(ctex); idx == -1)
 				hbox->insertItem(0, ctex, ctex);
 		}
@@ -454,8 +453,7 @@ private:
 
 	void createParallaxSettings(FactorySettings& settings)
 	{
-		bool diff_or_norm = this->texture_layer_1->diffuse_texture_settings->checkbox->isChecked() || this->texture_layer_1->normal_texture_settings->checkbox->isChecked();
-		if (this->texture_layer_1->parallax_settings->checkbox->isChecked() && diff_or_norm)
+		if (this->texture_layer_1->parallax_settings->checkbox->isChecked() && this->texture_layer_1->normal_texture_settings->checkbox->isChecked())
 		{
 			settings.parallax = true;
 			settings.view_matrix = true;
