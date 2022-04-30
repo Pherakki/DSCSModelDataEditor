@@ -295,11 +295,22 @@ struct TextureRefs
 {
 	typedef std::shared_ptr<Rendering::DataObjects::OpenGLDSCSTexture> Texture;
 
+	std::string c1_texture_name;
 	Texture c1_texture = nullptr;
+
+	std::string n1_texture_name;
 	Texture n1_texture = nullptr;
+
+	std::string c2_texture_name;
 	Texture c2_texture = nullptr;
+
+	std::string n2_texture_name;
 	Texture n2_texture = nullptr;
+
+	std::string light_texture_name;
 	Texture light_texture = nullptr;
+
+	std::string env_texture_name;
 	Texture env_texture = nullptr;
 };
 
@@ -348,13 +359,14 @@ private:
 		this->updateTexturesOn(this->texture_layer_2->normal_texture_settings->file_combo_box->combobox);
 	}
 
-	void createTexSettings(FactorySettings& settings, Sampler& sampler, TexturePtr& texture, const ShaderFactoryTextureSlot& tex_ui)
+	void createTexSettings(FactorySettings& settings, Sampler& sampler, std::string& texname, TexturePtr& texture, const ShaderFactoryTextureSlot& tex_ui)
 	{
 		sampler.enabled = true;
 		sampler.uv_slot = tex_ui.uv_slot_combobox->currentIndex();
 		settings.uv_slots[sampler.uv_slot].enabled = true;
 		sampler.combined_channels = true; // Change later
-		texture = this->texture_library.at(tex_ui.file_combo_box->combobox->currentText().toStdString());
+		texname = tex_ui.file_combo_box->combobox->currentText().toStdString();
+		texture = this->texture_library.at(texname);
 	}
 
 	void createUVSettings(TexSlot& uv_slot, const ShaderFactoryUVSettingsWidget& uv_ui)
@@ -370,13 +382,13 @@ private:
 	{
 		// Load textures
 		if (const auto& tex_ui = this->texture_layer_1->diffuse_texture_settings; tex_ui->checkbox->isChecked())
-			this->createTexSettings(settings, settings.texlayer_1.colorsampler, textures.c1_texture, *tex_ui);
+			this->createTexSettings(settings, settings.texlayer_1.colorsampler, textures.c1_texture_name, textures.c1_texture, *tex_ui);
 		if (const auto& tex_ui = this->texture_layer_1->normal_texture_settings; tex_ui->checkbox->isChecked())
-			this->createTexSettings(settings, settings.texlayer_1.normalsampler, textures.n1_texture, *tex_ui);
+			this->createTexSettings(settings, settings.texlayer_1.normalsampler, textures.n1_texture_name, textures.n1_texture, *tex_ui);
 		if (const auto& tex_ui = this->texture_layer_2->diffuse_texture_settings; tex_ui->checkbox->isChecked())
-			this->createTexSettings(settings, settings.texlayer_2.colorsampler, textures.c2_texture, *tex_ui);
+			this->createTexSettings(settings, settings.texlayer_2.colorsampler, textures.c2_texture_name, textures.c2_texture, *tex_ui);
 		if (const auto& tex_ui = this->texture_layer_2->normal_texture_settings; tex_ui->checkbox->isChecked())
-			this->createTexSettings(settings, settings.texlayer_2.normalsampler, textures.n2_texture, *tex_ui);
+			this->createTexSettings(settings, settings.texlayer_2.normalsampler, textures.n2_texture_name, textures.n2_texture, *tex_ui);
 		// Handle UV adjustments
 		this->createUVSettings(settings.uv_slots[0], *this->uv_settings_1);
 		this->createUVSettings(settings.uv_slots[1], *this->uv_settings_2);
@@ -386,20 +398,61 @@ private:
 	void assignTextureReferences(MaterialPtr& material, TextureRefs& textures)
 	{
 		if (textures.c1_texture)
+		{
 			material->setTextureBuffer(0x32, textures.c1_texture->getBufferID());
+			material->setTextureName(0x32, textures.c1_texture_name);
+		}
 		if (textures.n1_texture)
+		{
 			material->setTextureBuffer(0x35, textures.n1_texture->getBufferID());
+			material->setTextureName(0x35, textures.n1_texture_name);
+		}
 		if (textures.c2_texture)
-			material->setTextureBuffer(0x44, textures.c1_texture->getBufferID());
+		{
+			material->setTextureBuffer(0x44, textures.c2_texture->getBufferID());
+			material->setTextureName(0x44, textures.c2_texture_name);
+		}
 		if (textures.n2_texture)
-			material->setTextureBuffer(0x45, textures.n1_texture->getBufferID());
+		{
+			material->setTextureBuffer(0x45, textures.n2_texture->getBufferID());
+			material->setTextureName(0x45, textures.n2_texture_name);
+		}
 		if (textures.light_texture)
+		{
 			material->setTextureBuffer(0x43, textures.light_texture->getBufferID());
+			material->setTextureName(0x43, textures.light_texture_name);
+		}
 	}
 
 	void assignDefaultValues(MaterialPtr& material)
 	{
 		material->setUniformValue(0x33, { 1.0f, 1.0f, 1.0f, 1.0f }); // DiffuseColor
+	}
+
+	void readbackUISettings()
+	{
+		for (const auto& [id, texture] : this->selected_material->texture_refs)
+		{
+			QComboBox* cbox = nullptr;
+			switch (id)
+			{
+			case 0x32:
+				cbox = this->texture_layer_1->diffuse_texture_settings->file_combo_box->combobox;
+				break;
+			case 0x35:
+				cbox = this->texture_layer_1->normal_texture_settings->file_combo_box->combobox;
+				break;
+			case 0x44:
+				cbox = this->texture_layer_2->diffuse_texture_settings->file_combo_box->combobox;
+				break;
+			case 0x45:
+				cbox = this->texture_layer_2->normal_texture_settings->file_combo_box->combobox;
+				break;
+			default:
+				return;
+			}
+			cbox->setCurrentText(QString::fromStdString(texture->img_name));
+		}
 	}
 
 	void regenerateMaterial()
@@ -526,7 +579,8 @@ public:
 	void updateSelectedMaterial(MaterialPtr material_ptr)
 	{
 		this->selected_material = material_ptr;
-		this->updateAvailableTextures();
+		this->updateAvailableTextures(); // This should update in other places
+		this->readbackUISettings();
 	}
 
 };
