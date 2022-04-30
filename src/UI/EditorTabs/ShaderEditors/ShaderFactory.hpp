@@ -452,6 +452,33 @@ private:
 		uv_slot.scale = uv_ui.widget_scale->checkbox->isChecked();
 	}
 
+	void createParallaxSettings(FactorySettings& settings)
+	{
+		bool diff_or_norm = this->texture_layer_1->diffuse_texture_settings->checkbox->isChecked() || this->texture_layer_1->normal_texture_settings->checkbox->isChecked();
+		if (this->texture_layer_1->parallax_settings->checkbox->isChecked() && diff_or_norm)
+		{
+			settings.parallax = true;
+			settings.view_matrix = true;
+			settings.use_tangents = true;
+			auto heightmap = this->texture_layer_1->parallax_settings->heightmap_combobox->currentText();
+			if (heightmap == "Diffuse Texture")
+				settings.parallax_heightmap = MapType::DIFFUSE;
+			else if (heightmap == "Normal Texture")
+				settings.parallax_heightmap = MapType::NORMAL;
+			else
+				throw std::exception("Error: parallax maptype not diffuse or normal.");
+			settings.parallax_heightmap_channel = RGBAChannel::A; // Make this configurable
+		}
+	}
+
+	void createBumpSettings(FactorySettings& settings)
+	{
+		if (this->texture_layer_1->bumpmap_settings->checkbox->isChecked() && this->texture_layer_1->normal_texture_settings->checkbox->isChecked())
+		{
+			settings.use_tangents = true;
+		}
+	}
+
 	void createSettingsFromUI(FactorySettings& settings, TextureRefs& textures)
 	{
 		// Load textures
@@ -467,6 +494,11 @@ private:
 		this->createUVSettings(settings.uv_slots[0], *this->uv_settings_1);
 		this->createUVSettings(settings.uv_slots[1], *this->uv_settings_2);
 		this->createUVSettings(settings.uv_slots[2], *this->uv_settings_3);
+
+		// Parallax
+		this->createParallaxSettings(settings);
+		this->createBumpSettings(settings);
+
 	}
 
 	void assignTextureReferences(MaterialPtr& material, TextureRefs& textures)
