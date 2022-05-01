@@ -595,6 +595,8 @@ public:
 class PositionSettings : public QWidget
 {
 public:
+	TitleWidget* title_widget;
+	ToggleableTextboxesWidget<0>* calculate_binormal;
 	ToggleableTextboxesWidget<1>* fat;
 	ToggleableTextboxesWidget<1>* zbias;
 	QCheckBox* billboard_checkbox;
@@ -603,6 +605,8 @@ public:
 	{
 		auto _layout = new QVBoxLayout;
 		{
+			this->title_widget = new TitleWidget("Vertex Adjust", this);
+			this->calculate_binormal = new ToggleableTextboxesWidget<0>("Calculate Binormal", this);
 			this->fat = new ToggleableTextboxesWidget<1>("Fat", this);
 			this->zbias = new ToggleableTextboxesWidget<1>("Z Bias", this);
 
@@ -629,6 +633,8 @@ public:
 				}
 				billboard_layout->addItem(align_y_layout, 2, 2);
 			}
+			_layout->addWidget(this->title_widget);
+			_layout->addWidget(this->calculate_binormal);
 			_layout->addWidget(this->fat);
 			_layout->addWidget(this->zbias);
 			_layout->addItem(billboard_layout);
@@ -748,12 +754,42 @@ private:
 		}
 	}
 
+	void createDiffuseColorSettings(FactorySettings& settings)
+	{
+		if (this->diffuse_color_settings->vertex_colors_widget->checkbox->isChecked())
+		{
+			auto vertex_color_setting = this->diffuse_color_settings->vertex_colors_widget->combobox->currentText();
+			if (vertex_color_setting == "RGBA")
+			{
+				settings.layer_1_vertex_rgb = true;
+				settings.layer_1_vertex_alpha = true;
+			}
+			else if (vertex_color_setting == "RGB")
+			{
+				settings.layer_1_vertex_rgb = true;
+			}
+			else
+			{
+				throw std::exception("Unknown vertex color setting");
+			}
+		}
+	}
+
 	void createBumpSettings(FactorySettings& settings)
 	{
 		if (this->texture_layer_1->bumpmap_settings->checkbox->isChecked() && this->texture_layer_1->normal_texture_settings->checkbox->isChecked())
 		{
 			settings.use_tangents = true;
 		}
+	}
+
+	void createVertexSettings(FactorySettings& settings)
+	{
+		settings.calculate_binormal = this->position_settings->calculate_binormal;
+		settings.fat = this->position_settings->fat->checkbox->isChecked();
+		settings.zbias = this->position_settings->zbias->checkbox->isChecked();
+		settings.is_billboard = this->position_settings->billboard_checkbox->isChecked();
+		settings.align_with_y = this->position_settings->billboard_checkbox->isChecked() && this->position_settings->billboard_align_y_checkbox->isChecked();
 	}
 
 	void createSettingsFromUI(FactorySettings& settings, TextureRefs& textures)
@@ -775,6 +811,9 @@ private:
 		// Parallax
 		this->createParallaxSettings(settings);
 		this->createBumpSettings(settings);
+
+		// Vertex
+		this->createVertexSettings(settings);
 
 	}
 
