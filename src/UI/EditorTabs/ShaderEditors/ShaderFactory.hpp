@@ -608,7 +608,7 @@ public:
 			this->title_widget = new TitleWidget("Vertex Adjust", this);
 			this->calculate_binormal = new ToggleableTextboxesWidget<0>("Calculate Binormal", this);
 			this->fat = new ToggleableTextboxesWidget<1>("Fat", this);
-			this->zbias = new ToggleableTextboxesWidget<1>("Z Bias", this);
+			this->zbias = new ToggleableTextboxesWidget<1>("Depth Bias", this);
 
 			QGridLayout* billboard_layout = new QGridLayout;
 			{
