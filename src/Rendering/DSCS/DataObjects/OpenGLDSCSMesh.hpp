@@ -17,6 +17,20 @@ namespace Rendering::DSCS::DataObjects
 		uint8_t  always_20;
 		uint16_t vertex_struct_offset;
 	};
+
+	struct EditableVertex
+	{
+		std::array<float, 3> position{};
+		std::array<float, 3> normal{};
+		std::array<float, 3> tangent{};
+		std::array<float, 3> bitangent{};
+		std::array<float, 2> uv1{};
+		std::array<float, 2> uv2{};
+		std::array<float, 2> uv3{};
+		std::array<float, 4> color{};
+		std::array<float, 4> weights{};
+		std::array<float, 4> indices{};
+	};
 	
 	class OpenGLDSCSMesh : protected QOpenGLFunctions
 	{
@@ -26,6 +40,7 @@ namespace Rendering::DSCS::DataObjects
 		std::shared_ptr<OpenGLDSCSMaterial> material;
 		FileFormats::DSCS::GeomFile::MeshReadWrite mesh;
 		std::vector<uint32_t> used_bones;
+		std::vector<EditableVertex> editable_vertices;
 
 		void bind();
 		void draw();
@@ -58,6 +73,10 @@ namespace Rendering::DSCS::DataObjects
 			{10,  7},
 			{11,  1}
 		};
+
+		void createEditableVertexRepresentation();
+		void deleteEditableVertexRepresentation();
+		void loadEditableVerticesIntoVertexBuffers();
 	};
 
 }

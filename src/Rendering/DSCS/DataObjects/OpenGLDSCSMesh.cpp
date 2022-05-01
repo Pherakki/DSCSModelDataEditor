@@ -37,6 +37,26 @@ namespace Rendering::DSCS::DataObjects
 		this->checkGLError();
 	}
 
+	// Will create a vector of Vertex items that can be easily talked to
+	void OpenGLDSCSMesh::createEditableVertexRepresentation()
+	{
+
+	}
+
+	// Delete the editable vertices
+	void OpenGLDSCSMesh::deleteEditableVertexRepresentation()
+	{
+		// Clear and shrink the editable vertices back to 0 capacity
+		this->editable_vertices.clear();
+		this->editable_vertices = decltype(this->editable_vertices){};
+	}
+
+	// Replace the model's vertex data/attributes with those in the editable format
+	void OpenGLDSCSMesh::loadEditableVerticesIntoVertexBuffers()
+	{
+
+	}
+
 	void OpenGLDSCSMesh::bind()
 	{
 		glBindBuffer(GL_ARRAY_BUFFER, this->vertex_buffer_id);
