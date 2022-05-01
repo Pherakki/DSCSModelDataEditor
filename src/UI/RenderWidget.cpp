@@ -17,23 +17,15 @@ namespace CustomWidgets
 		// Set up camera
 		this->camera.setPosition({ 0.0f, 0.0f, 3.f });
 
-		// DirLampDir01
-		this->animation_buffer.shader_uniform_buffer[0xB0] = 1.f;
-		this->animation_buffer.shader_uniform_buffer[0xB1] = 0.f;
-		this->animation_buffer.shader_uniform_buffer[0xB2] = 1.f;
-		this->animation_buffer.shader_uniform_buffer[0xB3] = 0.f;
-
-		// DirLampColor01
-		this->animation_buffer.shader_uniform_buffer[0xC0] = 0.5f;
-		this->animation_buffer.shader_uniform_buffer[0xC1] = 0.5f;
-		this->animation_buffer.shader_uniform_buffer[0xC2] = 0.5f;
-		this->animation_buffer.shader_uniform_buffer[0xC3] = 0.5f;
-
-		// AmbientColor
-		this->animation_buffer.shader_uniform_buffer[0x2E0] = 0.5f;
-		this->animation_buffer.shader_uniform_buffer[0x2E1] = 0.5f;
-		this->animation_buffer.shader_uniform_buffer[0x2E2] = 0.5f;
-		this->animation_buffer.shader_uniform_buffer[0x2E3] = 0.5f;
+		this->animation_buffer.DirLamp01Dir->set({ 1.0f, 0.f, 1.0f });
+		this->animation_buffer.DirLamp01Color->set({ 0.5f, 0.5f, 0.5f, 0.5f });
+		this->animation_buffer.AmbientColor->set({ 0.5f, 0.5f, 0.5f });
+		this->animation_buffer.FogColor->set({ 0.5f, 0.1f, 0.0f });
+		this->animation_buffer.FogParams->set({ 0.01f, 1.0f, 0.5f });
+		this->animation_buffer.GroundColor->set({ 0.f, 0.5f, 0.0f });
+		this->animation_buffer.SkyDir->set({ 0.0f, 1.0f, 0.0f });
+		// BackBufferSampler
+		// ShadowSampler
 	}
 
 	void RenderWidget::refreshRenderSettings()
@@ -128,8 +120,12 @@ namespace CustomWidgets
 		auto proj_matrix = perspectiveMatrix(this->camera.fov, this->aspect_ratio, this->camera.zNear, this->camera.zFar);
 		auto viewproj = genericMatrixProduct<4, 4, 4>(view_matrix, proj_matrix);
 
+		// Probably wrong?!
+		auto light_view_matrix = makeViewMatrix(this->camera.getPosition(), this->camera.getTarget(), this->camera.getUp());
+
 		this->animation_buffer.View->set(view_matrix);
 		this->animation_buffer.ViewProj->set(viewproj);
+		this->animation_buffer.LightViewProj->set(viewproj);
 		this->animation_buffer.CameraPosition->set(this->camera.getPosition());
 		this->animation_buffer.ViewInverse->set(invertViewMatrix(view_matrix, this->camera.getPosition()));
 
