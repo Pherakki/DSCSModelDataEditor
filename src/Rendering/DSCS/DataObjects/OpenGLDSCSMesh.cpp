@@ -1,4 +1,5 @@
 #include "OpenGLDSCSMesh.hpp"
+#include "Utils/Float16.hpp"
 
 namespace Rendering::DSCS::DataObjects
 {
@@ -37,6 +38,12 @@ namespace Rendering::DSCS::DataObjects
 		this->checkGLError();
 	}
 
+	void OpenGLDSCSMesh::refreshVBO()
+	{
+		glBufferData(GL_ARRAY_BUFFER, this->mesh.vertices.size(), &this->mesh.vertices[0], GL_STATIC_DRAW);
+		this->checkGLError();
+	}
+
 	// Will create a vector of Vertex items that can be easily talked to
 	void OpenGLDSCSMesh::createEditableVertexRepresentation()
 	{
@@ -53,6 +60,11 @@ namespace Rendering::DSCS::DataObjects
 
 	// Replace the model's vertex data/attributes with those in the editable format
 	void OpenGLDSCSMesh::loadEditableVerticesIntoVertexBuffers()
+	{
+
+	}
+
+	void OpenGLDSCSMesh::calculateTangents(uint8_t which_uv_map)
 	{
 
 	}

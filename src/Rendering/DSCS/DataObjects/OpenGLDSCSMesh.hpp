@@ -18,12 +18,24 @@ namespace Rendering::DSCS::DataObjects
 		uint16_t vertex_struct_offset;
 	};
 
+	struct VertexInfo
+	{
+		bool has_normals = false;
+		bool has_tangents = false;
+		bool has_binormals = false;
+		bool has_uv1 = false;
+		bool has_uv2 = false;
+		bool has_uv3 = false;
+		bool has_color = false;
+		uint8_t num_weights = 0;
+	};
+
 	struct EditableVertex
 	{
 		std::array<float, 3> position{};
 		std::array<float, 3> normal{};
-		std::array<float, 3> tangent{};
-		std::array<float, 3> bitangent{};
+		std::array<float, 4> tangent{};
+		std::array<float, 3> binormal{};
 		std::array<float, 2> uv1{};
 		std::array<float, 2> uv2{};
 		std::array<float, 2> uv3{};
@@ -40,7 +52,6 @@ namespace Rendering::DSCS::DataObjects
 		std::shared_ptr<OpenGLDSCSMaterial> material;
 		FileFormats::DSCS::GeomFile::MeshReadWrite mesh;
 		std::vector<uint32_t> used_bones;
-		std::vector<EditableVertex> editable_vertices;
 
 		void bind();
 		void draw();
@@ -53,6 +64,9 @@ namespace Rendering::DSCS::DataObjects
 		uint32_t vertex_buffer_id = 0;
 		uint32_t index_buffer_id = 0;
 		std::vector<OpenGLDSDSVertexAttribute> vertex_attributes;
+
+		VertexInfo editable_vertex_info;
+		std::vector<EditableVertex> editable_vertices;
 
 		std::map<uint8_t, GLenum> dtype_map_DSCS_to_GL
 		{
@@ -77,6 +91,10 @@ namespace Rendering::DSCS::DataObjects
 		void createEditableVertexRepresentation();
 		void deleteEditableVertexRepresentation();
 		void loadEditableVerticesIntoVertexBuffers();
+		void refreshVBO();
+		void calculateNormals();
+		void calculateTangents(uint8_t which_uv_map);
+		void calculateBinormals();
 	};
 
 }
