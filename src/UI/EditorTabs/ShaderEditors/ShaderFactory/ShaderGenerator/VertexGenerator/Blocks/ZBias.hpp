@@ -13,6 +13,13 @@ public:
 	VarRefVec inputs  = { inputPosition, inputZBias };
 	VarRefVec outputs = { outputPosition };
 
+	BiasOutputPosition(const VariablePtr& inputPos, const VariablePtr& inputzbias, const VariablePtr& outputPos) : LogicalBlock()
+	{
+		this->inputPosition.variable = inputPos;
+		this->inputZBias.variable = inputzbias;
+		this->outputPosition.variable = outputPos;
+	}
+
 	std::string generateCode(const FactorySettings& settings) override
 	{
 		std::string text;

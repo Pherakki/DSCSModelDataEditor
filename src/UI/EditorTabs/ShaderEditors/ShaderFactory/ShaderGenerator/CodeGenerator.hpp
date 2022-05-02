@@ -38,7 +38,7 @@ public:
 	typedef bool(*ConditionFunction)(FactorySettings&);
 	typedef std::vector<ConditionFunction> ConditionVector;
 
-	VarPtr variable;
+	VarPtr variable = nullptr;
 	const ConditionFunction condition;
 
 	VariableReference(ConditionFunction fn) : condition{fn} {};
@@ -49,6 +49,7 @@ class LogicalBlock
 {
 protected:
 	typedef std::vector<VariableReference> VarRefVec;
+	typedef std::shared_ptr<Variable> VariablePtr;
 
 	VarRefVec inputs;
 	VarRefVec outputs;
@@ -68,7 +69,7 @@ private:
 
 class CodeGenerator
 {
-private:
+protected:
 	typedef std::unique_ptr<LogicalBlock> LogicalBlockPtr;
 	std::vector<LogicalBlockPtr> code_blocks;
 public:
