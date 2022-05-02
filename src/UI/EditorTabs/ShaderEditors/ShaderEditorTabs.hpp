@@ -4,7 +4,7 @@
 #include <QtWidgets/QTabWidget>
 
 #include <UI/EditorTabs/ShaderEditors/PrebuiltShaders.hpp>
-#include <UI/EditorTabs/ShaderEditors/ShaderFactory.hpp>
+#include <UI/EditorTabs/ShaderEditors/ShaderFactory/ShaderFactory.hpp>
 #include <UI/EditorTabs/ShaderEditors/CodeEditor.hpp>
 
 class ShaderEditorTabs : public QTabWidget

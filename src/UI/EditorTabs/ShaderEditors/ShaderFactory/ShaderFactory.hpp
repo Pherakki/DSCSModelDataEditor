@@ -14,11 +14,11 @@
 
 #include "ShaderGenerator/VertexShader.hpp"
 #include "ShaderGenerator/FragmentShader.hpp"
-#include "../../Spoiler/Spoiler.hpp"
-#include "../../../Rendering/DSCS/DataObjects/OpenGLDSCSMesh.hpp"
-#include "../../../Rendering/DSCS/DataObjects/OpenGLDSCSMaterial.hpp"
-#include "../../../Rendering/DSCS/ShaderSystem/cgGL/cgGLShaderBackend.hpp"
-#include "../../../Utils/Hashing.hpp"
+#include "../../../Spoiler/Spoiler.hpp"
+#include "../../../../Rendering/DSCS/DataObjects/OpenGLDSCSMesh.hpp"
+#include "../../../../Rendering/DSCS/DataObjects/OpenGLDSCSMaterial.hpp"
+#include "../../../../Rendering/DSCS/ShaderSystem/cgGL/cgGLShaderBackend.hpp"
+#include "../../../../Utils/Hashing.hpp"
 
 
 template <uint8_t n_boxes>
@@ -525,35 +525,72 @@ public:
 		}
 		this->setLayout(_layout);
 	}
+
+	void toggleTransparencyMap(int active)
+	{
+		this->transparency_map_widget->checkbox->setEnabled(active);
+	}
+	void toggleDiffuseStrMap(int active)
+	{
+		this->diffuse_map_widget->checkbox->setEnabled(active);
+	}
+	void toggleOverlayDiffuseStrMap(int active)
+	{
+		this->diffuse_map_widget_layer_2->checkbox->setEnabled(active);
+	}
 };
 
 class SpecularColorSettings : public QWidget
 {
 public:
+	QCheckBox* checkbox;
 	TitleWidget* title_widget;
+	TextureMapWidget* specular_map;
+	ToggleableCombobox* overlay_channel;
 	SpecularColorSettings(QWidget* parent = Q_NULLPTR) : QWidget(parent)
 	{
-		auto _layout = new QVBoxLayout;
+		auto _layout = new QGridLayout;
 		{
+			this->checkbox = new QCheckBox(this);
 			this->title_widget = new TitleWidget("Specular Color", this);
 
-			_layout->addWidget(this->title_widget);
+			_layout->addWidget(this->checkbox, 0, 0);
+			_layout->addWidget(this->title_widget, 0, 1);
+
+			auto settings_layout = new QVBoxLayout;
+			{
+				this->specular_map = new TextureMapWidget("Specular Map", this);
+				this->overlay_channel = new ToggleableCombobox("Overlay Channel", this);
+
+				settings_layout->addWidget(this->specular_map);
+				settings_layout->addWidget(this->overlay_channel);
+			}
+			_layout->addItem(settings_layout, 1, 1);
 		}
 		this->setLayout(_layout);
 	}
 };
 
+class FresnelReflectionWidget : public QWidget
+{
+
+};
+
 class ReflectionSettings : public QWidget
 {
 public:
-	TitleWidget* title_widget;
+	ShaderFactoryTextureSlot* env_texture;
+	//TitleWidget* title_widget;
 	ReflectionSettings(QWidget* parent = Q_NULLPTR) : QWidget(parent)
 	{
-		auto _layout = new QVBoxLayout;
+		auto _layout = new QGridLayout;
 		{
-			this->title_widget = new TitleWidget("Reflection", this);
+			//this->title_widget = new TitleWidget("Reflection", this);
 
-			_layout->addWidget(this->title_widget);
+			this->env_texture = new ShaderFactoryTextureSlot("Reflection Texture", this);
+
+			_layout->addWidget(this->env_texture, 0, 1);
+			_layout->addWidget(this->env_texture->checkbox, 0, 0);
 		}
 		this->setLayout(_layout);
 	}
@@ -700,6 +737,13 @@ private:
 	ShaderBackend_t& shader_backend;
 	std::unordered_map<std::string, MaterialPtr> local_material_cache;
 
+	bool anyLayer1SamplerEnabled()
+	{
+		return this->texture_layer_1->diffuse_texture_settings->checkbox->isChecked()
+			|| this->texture_layer_1->normal_texture_settings->checkbox->isChecked();
+		// Also include light sampler
+	}
+
 	void updateTexturesOn(QComboBox* combobox)
 	{
 		combobox->clear();
@@ -758,6 +802,7 @@ private:
 	{
 		if (this->diffuse_color_settings->vertex_colors_widget->checkbox->isChecked())
 		{
+			settings.use_vertex_colors = true;
 			auto vertex_color_setting = this->diffuse_color_settings->vertex_colors_widget->combobox->currentText();
 			if (vertex_color_setting == "RGBA")
 			{
@@ -773,6 +818,13 @@ private:
 				throw std::exception("Unknown vertex color setting");
 			}
 		}
+
+		if (this->anyLayer1SamplerEnabled() && this->diffuse_color_settings->transparency_map_widget->checkbox->isChecked())
+		{
+			settings.transparency_map.enabled = true;
+			// Need to grab the maptype and channel
+			// Maptype needs to only be settable if the diffuse/normal/light textures are enabled
+		}
 	}
 
 	void createBumpSettings(FactorySettings& settings)
@@ -782,6 +834,7 @@ private:
 			settings.use_tangents = true;
 		}
 	}
+
 
 	void createVertexSettings(FactorySettings& settings)
 	{
@@ -811,6 +864,10 @@ private:
 		// Parallax
 		this->createParallaxSettings(settings);
 		this->createBumpSettings(settings);
+
+		// Various Color Contributions
+		this->createDiffuseColorSettings(settings);
+
 
 		// Vertex
 		this->createVertexSettings(settings);
@@ -855,25 +912,28 @@ private:
 	{
 		for (const auto& [id, texture] : this->selected_material->texture_refs)
 		{
-			QComboBox* cbox = nullptr;
-			switch (id)
+			if (texture->texture_type == CG_SAMPLER2D)
 			{
-			case 0x32:
-				cbox = this->texture_layer_1->diffuse_texture_settings->file_combo_box->combobox;
-				break;
-			case 0x35:
-				cbox = this->texture_layer_1->normal_texture_settings->file_combo_box->combobox;
-				break;
-			case 0x44:
-				cbox = this->texture_layer_2->diffuse_texture_settings->file_combo_box->combobox;
-				break;
-			case 0x45:
-				cbox = this->texture_layer_2->normal_texture_settings->file_combo_box->combobox;
-				break;
-			default:
-				return;
+				QComboBox* cbox = nullptr;
+				switch (id)
+				{
+				case 0x32:
+					cbox = this->texture_layer_1->diffuse_texture_settings->file_combo_box->combobox;
+					break;
+				case 0x35:
+					cbox = this->texture_layer_1->normal_texture_settings->file_combo_box->combobox;
+					break;
+				case 0x44:
+					cbox = this->texture_layer_2->diffuse_texture_settings->file_combo_box->combobox;
+					break;
+				case 0x45:
+					cbox = this->texture_layer_2->normal_texture_settings->file_combo_box->combobox;
+					break;
+				default:
+					return;
+				}
+				cbox->setCurrentText(QString::fromStdString(texture->img_name));
 			}
-			cbox->setCurrentText(QString::fromStdString(texture->img_name));
 		}
 	}
 
