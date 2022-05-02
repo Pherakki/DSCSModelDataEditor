@@ -133,7 +133,7 @@ void DSCSModelDataEditorWindow::overwriteMaterial(MaterialPtr material)
 
 void DSCSModelDataEditorWindow::testInit()
 {
-    std::string test_path = "data/chr800";
+    std::string test_path = "data/chr065";
     std::string anim_path2 = test_path;
     anim_path2 += "_bn01.anim";
 
