@@ -52,7 +52,7 @@ add_executable (${PROJECT_NAME}
                 "UI/EditorTabs/ShaderEditors/ShaderFactory/ShaderGenerator/FragmentShader.cpp" 
                 "UI/EditorTabs/ShaderEditors/ShaderFactory/ShaderGenerator/Utils.cpp" 
                 "Utils/Float16.hpp"  
-                "Utils/Float16.cpp")
+                "Utils/Float16.cpp" "UI/EditorTabs/ShaderEditors/ShaderFactory/Widgets/CheckableWidget.hpp")
 
 # Allow CMake to build libraries
 cmake_policy(SET CMP0079 NEW)
