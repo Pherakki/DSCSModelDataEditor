@@ -365,6 +365,12 @@ private:
 		layout->addWidget(spoiler);
 	}
 
+	void updateUI()
+	{
+		// Get the UV slots in use
+		// Disable / enable the UV widgets accordingly
+	}
+
 signals:
 	void overwriteCurrentMaterial(MaterialPtr material_ptr);
 public:
