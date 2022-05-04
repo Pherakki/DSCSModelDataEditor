@@ -22,7 +22,8 @@ private:
 
 	void removeMap(const QString& name)
 	{
-		this->maptype->removeItem(this->maptype->findText(name));
+		if (int idx = this->maptype->findText(name); idx != -1)
+			this->maptype->removeItem(idx);
 	}
 
 public:
@@ -72,7 +73,8 @@ public:
 
 	void addDiffuseMap()
 	{
-		this->maptype->insertItem(0, this->diffuse_name, static_cast<uint8_t>(MapType::DIFFUSE));
+		if (int idx = this->maptype->findText(this->diffuse_name); idx == -1)
+			this->maptype->insertItem(0, this->diffuse_name, static_cast<int>(MapType::DIFFUSE));
 	}
 
 	void removeDiffuseMap()
@@ -82,7 +84,8 @@ public:
 
 	void addNormalMap()
 	{
-		this->maptype->insertItem(1, this->normal_name, static_cast<uint8_t>(MapType::NORMAL));
+		if (int idx = this->maptype->findText(this->normal_name); idx == -1)
+			this->maptype->insertItem(1, this->normal_name, static_cast<int>(MapType::NORMAL));
 	}
 
 	void removeNormalMap()
@@ -92,7 +95,8 @@ public:
 
 	void addLightMap()
 	{
-		this->maptype->insertItem(2, "Light Texture", static_cast<uint8_t>(MapType::LIGHT));
+		if (int idx = this->maptype->findText(this->light_name); idx == -1)
+			this->maptype->insertItem(2, this->light_name, static_cast<int>(MapType::LIGHT));
 	}
 
 	void removeLightMap()
