@@ -52,10 +52,10 @@ public:
 				this->maptype = new QComboBox(contents_widget);
 
 				this->channel = new QComboBox(contents_widget);
-				this->channel->addItem("R");
-				this->channel->addItem("G");
-				this->channel->addItem("B");
-				this->channel->addItem("A");
+				this->channel->addItem("R", static_cast<int>(RGBAChannel::R));
+				this->channel->addItem("G", static_cast<int>(RGBAChannel::G));
+				this->channel->addItem("B", static_cast<int>(RGBAChannel::B));
+				this->channel->addItem("A", static_cast<int>(RGBAChannel::A));
 
 				contents_layout->addWidget(this->maptype, 0, Qt::AlignRight);
 				contents_layout->addWidget(this->channel, 0, Qt::AlignRight);
@@ -98,5 +98,15 @@ public:
 	void removeLightMap()
 	{
 		this->removeMap(this->light_name);
+	}
+
+	MapType getMapType()
+	{
+		return static_cast<MapType>(this->maptype->currentData().toInt());
+	}
+
+	RGBAChannel getChannel()
+	{
+		return static_cast<RGBAChannel>(this->channel->currentData().toInt());
 	}
 };
