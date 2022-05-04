@@ -9,7 +9,10 @@
 class Variable
 {
 private:
+	typedef bool(*ConditionFunction)(FactorySettings&);
+	typedef std::vector<ConditionFunction> ConditionVector;
 	uint32_t id;
+	ConditionVector conditions;
 public:
 	std::string type;
 	std::string name;
@@ -29,6 +32,11 @@ public:
 	{
 		return this->id == other.getID();
 	}
+
+	void addCondition(const ConditionFunction& condition)
+	{
+		this->conditions.push_back(condition);
+	}
 };
 
 class VariableReference
@@ -36,12 +44,17 @@ class VariableReference
 public:
 	typedef std::shared_ptr<Variable> VarPtr;
 	typedef bool(*ConditionFunction)(FactorySettings&);
-	typedef std::vector<ConditionFunction> ConditionVector;
 
 	VarPtr variable = nullptr;
 	const ConditionFunction condition;
 
 	VariableReference(ConditionFunction fn) : condition{fn} {};
+
+	void setVariable(VarPtr& variable)
+	{
+		this->variable = variable;
+		this->variable->addCondition(this->condition);
+	}
 };
 
 // Can contain sub-blocks...
