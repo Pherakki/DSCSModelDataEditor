@@ -20,100 +20,11 @@
 #include "../../../../Rendering/DSCS/ShaderSystem/cgGL/cgGLShaderBackend.hpp"
 #include "../../../../Utils/Hashing.hpp"
 
-
-template <uint8_t n_boxes>
-class ToggleableTextboxesWidget : public QWidget
-{
-private:
-	void toggleTextboxes(bool state)
-	{
-		for (auto*& box : this->textboxes)
-			box->setEnabled(state);
-	}
-public:
-	QCheckBox* checkbox;
-	QLabel* label;
-	std::array<QLineEdit*, n_boxes> textboxes;
-
-	explicit ToggleableTextboxesWidget(QString label_text, QWidget* parent = nullptr) : QWidget(parent)
-	{
-		auto layout = new QHBoxLayout;
-
-		this->checkbox = new QCheckBox;
-		layout->addWidget(this->checkbox);
-		layout->setAlignment(this->checkbox, Qt::AlignLeft);
-		this->label = new QLabel(label_text);
-		layout->addWidget(this->label);
-		layout->setAlignment(this->label, Qt::AlignLeft);
-
-		layout->addStretch();
-
-		for (auto& box : this->textboxes)
-		{
-			box = new QLineEdit;
-			box->setValidator(new QDoubleValidator(0, 100, 4, this));
-			box->setMaximumWidth(40);
-			layout->addWidget(box);
-			layout->setAlignment(box, Qt::AlignRight);
-		}
-
-		this->setLayout(layout);
-		this->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
-		this->toggleTextboxes(false);
-		connect(this->checkbox, &QCheckBox::stateChanged, this, &ToggleableTextboxesWidget::toggleTextboxes);
-	}
-};
-
-template <uint8_t n_boxes>
-class TextboxArrayWidget : public QWidget
-{
-public:
-	QLabel* label;
-	std::array<QLineEdit*, n_boxes> textboxes;
-
-	explicit TextboxArrayWidget(QString label_text, QWidget* parent = nullptr) : QWidget(parent)
-	{
-		auto layout = new QHBoxLayout;
-
-		this->label = new QLabel(label_text);
-		layout->addWidget(this->label);
-		layout->setAlignment(this->label, Qt::AlignLeft);
-
-		layout->addStretch();
-
-		for (auto& box : this->textboxes)
-		{
-			box = new QLineEdit;
-			box->setValidator(new QDoubleValidator(0, 100, 4, this));
-			box->setMaximumWidth(40);
-			layout->addWidget(box);
-			layout->setAlignment(box, Qt::AlignRight);
-		}
-
-		this->setLayout(layout);
-		this->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
-	}
-};
-
-class TitleWidget : public QWidget
-{
-public:
-	QLabel* label;
-
-	explicit TitleWidget(QString label_text, QWidget* parent = nullptr) : QWidget(parent)
-	{
-		auto layout = new QHBoxLayout;
-
-		layout->addStretch();
-		this->label = new QLabel(label_text);
-		layout->setAlignment(this->label, Qt::AlignCenter);
-		layout->addWidget(this->label);
-		layout->addStretch();
-
-		this->setLayout(layout);
-		this->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
-	}
-};
+#include "Widgets/BaseWidgets/FileCombobox.hpp"
+#include "Widgets/BaseWidgets/TextboxArrayWidget.hpp"
+#include "Widgets/BaseWidgets/TitleWidget.hpp"
+#include "Widgets/BaseWidgets/ToggleableCombobox.hpp"
+#include "Widgets/BaseWidgets/ToggleableTextboxes.hpp"
 
 class ShaderFactoryUVSettingsWidget : public QWidget
 {
@@ -152,27 +63,6 @@ public:
 	}
 };
 
-
-class FileComboBox : public QWidget
-{
-public:
-	QComboBox*   combobox;
-	QPushButton* open_file_button;
-
-	FileComboBox(QWidget* parent = nullptr) : QWidget(parent)
-	{
-		auto f_layout = new QHBoxLayout;
-
-		this->combobox = new QComboBox;
-		this->open_file_button = new QPushButton;
-
-		f_layout->addWidget(this->combobox);
-		f_layout->addWidget(this->open_file_button);
-
-		this->setLayout(f_layout);
-		this->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
-	}
-};
 
 class ShaderFactoryTextureSlot : public QWidget
 {
@@ -453,42 +343,6 @@ public:
 	}
 };
 
-class ToggleableCombobox : public QWidget
-{
-private:
-	void toggle(int active)
-	{
-		this->combobox->setEnabled(active);
-	}
-public:
-	QCheckBox* checkbox;
-	QLabel* label;
-	QComboBox* combobox;
-
-	ToggleableCombobox(const std::string& label_text, QWidget* parent = Q_NULLPTR) : QWidget(parent)
-	{
-		QHBoxLayout* _layout = new QHBoxLayout;
-		{
-			QHBoxLayout* title_layout = new QHBoxLayout;
-			{
-				this->checkbox = new QCheckBox(this);
-				this->label = new QLabel(QString::fromStdString(label_text), this);
-				title_layout->addWidget(this->checkbox, 0, Qt::AlignLeft);
-				auto verticalSpacer = new QSpacerItem(10, 1, QSizePolicy::Fixed, QSizePolicy::Fixed);
-				title_layout->addItem(verticalSpacer);
-				title_layout->addWidget(this->label, 0, Qt::AlignLeft);
-			}
-			this->combobox = new QComboBox(this);
-
-			_layout->addItem(title_layout);
-			_layout->addWidget(this->combobox, 1, Qt::AlignRight);
-		}
-		this->setLayout(_layout);
-
-		this->toggle(false);
-		connect(this->checkbox, &QCheckBox::stateChanged, this, &ToggleableCombobox::toggle);
-	}
-};
 
 class DiffuseColorSettings : public QWidget
 {
