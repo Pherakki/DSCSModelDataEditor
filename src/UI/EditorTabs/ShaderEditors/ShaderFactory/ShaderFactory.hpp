@@ -365,6 +365,20 @@ private:
 		layout->addWidget(spoiler);
 	}
 
+	bool uvSlotInUse(ShaderFactoryTextureSlot*& slot, size_t idx)
+	{
+		return slot->checkbox->isChecked() && (slot->uv_slot_combobox->currentIndex() == idx);
+	}
+
+	bool getUVSlot(size_t idx)
+	{
+		return this->uvSlotInUse(this->texture_layer_1->diffuse_texture_settings, idx)
+			|| this->uvSlotInUse(this->texture_layer_1->normal_texture_settings, idx)
+			|| this->uvSlotInUse(this->texture_layer_2->diffuse_texture_settings, idx)
+			|| this->uvSlotInUse(this->texture_layer_2->normal_texture_settings, idx)
+			|| this->uvSlotInUse(this->diffuse_color_settings->light_sampler, idx);
+	}
+
 	void updateUI()
 	{
 		// Get the UV slots in use
