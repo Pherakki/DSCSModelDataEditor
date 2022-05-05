@@ -141,7 +141,7 @@ private:
 
 	void createParallaxSettings(FactorySettings& settings)
 	{
-		if (this->texture_layer_1->parallax_settings->checkbox->isChecked() && this->texture_layer_1->normal_texture_settings->checkbox->isChecked())
+		if (this->texture_layer_1->parallax_settings->isActivated())
 		{
 			settings.parallax = true;
 			settings.view_matrix = true;
