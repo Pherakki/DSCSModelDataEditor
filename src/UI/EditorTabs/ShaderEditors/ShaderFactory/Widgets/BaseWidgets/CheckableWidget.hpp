@@ -39,8 +39,14 @@ public:
 		this->contents_widget->setLayout(layout);
 	}
 
-	void isActivated()
+	bool isActivated()
 	{
 		return this->checkbox->isEnabled() && this->checkbox->isChecked();
+	}
+
+	void toggle(bool active)
+	{
+		this->setEnabled(active);
+		this->updateContentsEnableState();
 	}
 };
