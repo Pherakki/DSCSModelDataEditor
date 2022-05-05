@@ -24,7 +24,7 @@ public:
 	QLabel* uv_slot_label;
 	QComboBox* uv_slot_combobox;
 
-	ShaderFactoryTextureSlot(QString label_text, QWidget* parent = nullptr) : QWidget(parent)
+	ShaderFactoryTextureSlot(QString label_text, QWidget* parent = Q_NULLPTR) : QWidget(parent)
 	{
 		auto _layout = new QHBoxLayout;
 
