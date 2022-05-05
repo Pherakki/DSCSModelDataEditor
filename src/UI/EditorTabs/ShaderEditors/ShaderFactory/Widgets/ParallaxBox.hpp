@@ -9,6 +9,7 @@
 
 class ShaderFactoryTextureLayerParallaxBox : public QWidget
 {
+	Q_OBJECT;
 private:
 	void toggle(bool active)
 	{
@@ -67,5 +68,11 @@ public:
 
 		this->toggle(false);
 		connect(this->checkbox, &QCheckBox::stateChanged, this, &ShaderFactoryTextureLayerParallaxBox::toggle);
+
+		connect(this->checkbox, &QCheckBox::stateChanged, this, &ShaderFactoryTextureLayerParallaxBox::settingsUpdated);
+		connect(this->heightmap_combobox, static_cast<void(QComboBox::*)(int)>(&QComboBox::currentIndexChanged), this, &ShaderFactoryTextureLayerParallaxBox::settingsUpdated);
 	}
+
+signals:
+	void settingsUpdated(bool);
 };

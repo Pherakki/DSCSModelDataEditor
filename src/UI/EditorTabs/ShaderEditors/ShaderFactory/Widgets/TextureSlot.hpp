@@ -8,12 +8,15 @@
 
 class ShaderFactoryTextureSlot : public QWidget
 {
+	Q_OBJECT;
 private:
 	void toggle(bool active)
 	{
 		this->file_combo_box->setEnabled(active);
 		this->uv_slot_combobox->setEnabled(active);
 	}
+signals:
+	void settingsUpdated(bool);
 public:
 	QCheckBox* checkbox;
 	QLabel* texture_label;
@@ -43,5 +46,9 @@ public:
 
 		this->toggle(false);
 		connect(this->checkbox, &QCheckBox::stateChanged, this, &ShaderFactoryTextureSlot::toggle);
+
+		connect(this->checkbox, &QCheckBox::stateChanged, this, &ShaderFactoryTextureSlot::settingsUpdated);
+		connect(this->file_combo_box->combobox, static_cast<void(QComboBox::*)(int)>(&QComboBox::currentIndexChanged), this, &ShaderFactoryTextureSlot::settingsUpdated);
+		connect(this->uv_slot_combobox, static_cast<void(QComboBox::*)(int)>(&QComboBox::currentIndexChanged), this, &ShaderFactoryTextureSlot::settingsUpdated);
 	}
 };
