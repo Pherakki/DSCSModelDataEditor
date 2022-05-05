@@ -9,24 +9,34 @@ class CheckableWidget : public QWidget
 {
 private:
 	QCheckBox* checkbox;
-	QLayout* contents_layout = Q_NULLPTR;
+	QGridLayout* _layout;
+	QWidget* contents_widget;
 	CheckableWidget(const QString& name, QWidget* parent = Q_NULLPTR) : QWidget(parent)
 	{
 		this->checkbox = new QCheckBox(this);
 		auto label = new QLabel(name, this);
 
-		auto _layout = new QGridLayout;
-		_layout->addWidget(this->checkbox, 0, 0);
-		_layout->addWidget(label, 0, 1);
+		this->_layout = new QGridLayout;
+		this->_layout->addWidget(this->checkbox, 0, 0);
+		this->_layout->addWidget(label, 0, 1);
+		this->contents_widget = new QWidget(this);
+		this->_layout->addWidget(this->contents_widget, 1, 1);
 
-		this->setLayout(_layout);
+		this->setLayout(this->_layout);
+		this->contents_widget->setEnabled(false);
+
+		connect(this->checkbox, &QCheckBox::stateChanged, this, &CheckableWidget::updateContentsEnableState);
+	}
+
+	void updateContentsEnableState()
+	{
+		this->contents_widget->setEnabled(this->checkbox->isChecked());
 	}
 
 public:
 	void setContents(QLayout* layout)
 	{
-		this->contents_layout = layout;
-		this->layout()->addItem(this->contents_layout, 1, 1);
+		this->contents_widget->setLayout(layout);
 	}
 
 	void isActivated()
