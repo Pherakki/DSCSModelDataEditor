@@ -7,7 +7,7 @@
 
 class CheckableWidget : public QWidget
 {
-private:
+protected:
 	QCheckBox* checkbox;
 	QGridLayout* _layout;
 	QWidget* contents_widget;
