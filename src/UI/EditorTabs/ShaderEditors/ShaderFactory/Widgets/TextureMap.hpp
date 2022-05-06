@@ -130,4 +130,9 @@ public:
 	{
 		this->setEnabled(this->maptype->count());
 	}
+
+	bool isActive()
+	{
+		return this->isEnabled() && this->checkbox->isChecked();
+	}
 };
