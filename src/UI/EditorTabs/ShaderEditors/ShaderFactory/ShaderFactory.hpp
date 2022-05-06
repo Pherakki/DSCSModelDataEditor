@@ -60,6 +60,9 @@ struct TextureRefs
 
 	std::string env_texture_name;
 	Texture env_texture = nullptr;
+
+	std::string clut_texture_name;
+	Texture clut_texture = nullptr;
 };
 
 class ShaderFactory : public QWidget
@@ -119,6 +122,7 @@ private:
 		this->updateTexturesOn(this->texture_layer_2->diffuse_texture_settings->file_combo_box->combobox);
 		this->updateTexturesOn(this->texture_layer_2->normal_texture_settings->file_combo_box->combobox);
 		this->updateTexturesOn(this->diffuse_color_settings->light_sampler->file_combo_box->combobox);
+		this->updateTexturesOn(this->illumination_settings->clut->file_combo_box->combobox);
 	}
 
 	void createTexSettings(FactorySettings& settings, Sampler& sampler, std::string& texname, TexturePtr& texture, const ShaderFactoryTextureSlot& tex_ui)
@@ -210,6 +214,16 @@ private:
 		}
 	}
 
+	void createIlluminationSettings(FactorySettings& settings)
+	{
+		settings.dir_light_1 = this->illumination_settings->receive_lamp->isActive();
+		if (settings.dir_light_1)
+		{
+			settings.use_velvet = this->illumination_settings->velvet->isActive();
+		}
+		settings.use_clut = this->illumination_settings->clut->isActive();
+	}
+
 	void createBumpSettings(FactorySettings& settings)
 	{
 		if (this->texture_layer_1->normal_texture_settings->isActive())
@@ -241,6 +255,13 @@ private:
 			this->createTexSettings(settings, settings.texlayer_2.normalsampler, textures.n2_texture_name, textures.n2_texture, *tex_ui);
 		if (const auto& tex_ui = this->diffuse_color_settings->light_sampler; tex_ui->checkbox->isChecked())
 			this->createTexSettings(settings, settings.texlayer_2.normalsampler, textures.n2_texture_name, textures.n2_texture, *tex_ui);
+		if (const auto& tex_ui = this->illumination_settings->clut; tex_ui->isActive())
+		{
+			auto texname = tex_ui->file_combo_box->combobox->currentText().toStdString();
+			textures.clut_texture_name = texname;
+			textures.clut_texture = this->texture_library.at(texname);
+		}
+
 		// Handle UV adjustments
 		this->createUVSettings(settings.uv_slots[0], *this->uv_settings_1);
 		this->createUVSettings(settings.uv_slots[1], *this->uv_settings_2);
@@ -253,6 +274,7 @@ private:
 		// Various Color Contributions
 		this->createDiffuseColorSettings(settings);
 		this->createSpecularColorSettings(settings);
+		this->createIlluminationSettings(settings);
 
 		// Vertex
 		this->createVertexSettings(settings);
@@ -282,9 +304,12 @@ private:
 			material->setTextureName(0x45, textures.n2_texture_name);
 		}
 		if (textures.light_texture)
+		if (textures.clut_texture)
 		{
 			material->setTextureBuffer(0x43, textures.light_texture->getBufferID());
 			material->setTextureName(0x43, textures.light_texture_name);
+			material->setTextureBuffer(0x48, textures.clut_texture->getBufferID());
+			material->setTextureName(0x48, textures.clut_texture_name);
 		}
 	}
 
