@@ -255,6 +255,8 @@ private:
 			this->createTexSettings(settings, settings.texlayer_2.normalsampler, textures.n2_texture_name, textures.n2_texture, *tex_ui);
 		if (const auto& tex_ui = this->diffuse_color_settings->light_sampler; tex_ui->checkbox->isChecked())
 			this->createTexSettings(settings, settings.texlayer_2.normalsampler, textures.n2_texture_name, textures.n2_texture, *tex_ui);
+		if (const auto& tex_ui = this->diffuse_color_settings->light_sampler; tex_ui->isActive())
+			this->createTexSettings(settings, settings.lightsampler, textures.light_texture_name, textures.light_texture, *tex_ui);
 		if (const auto& tex_ui = this->illumination_settings->clut; tex_ui->isActive())
 		{
 			auto texname = tex_ui->file_combo_box->combobox->currentText().toStdString();
@@ -293,6 +295,10 @@ private:
 			material->setTextureBuffer(0x35, textures.n1_texture->getBufferID());
 			material->setTextureName(0x35, textures.n1_texture_name);
 		}
+		if (textures.light_texture)
+		{
+			material->setTextureBuffer(0x43, textures.light_texture->getBufferID());
+			material->setTextureName(0x43, textures.light_texture_name);
 		if (textures.c2_texture)
 		{
 			material->setTextureBuffer(0x44, textures.c2_texture->getBufferID());
@@ -303,11 +309,8 @@ private:
 			material->setTextureBuffer(0x45, textures.n2_texture->getBufferID());
 			material->setTextureName(0x45, textures.n2_texture_name);
 		}
-		if (textures.light_texture)
 		if (textures.clut_texture)
 		{
-			material->setTextureBuffer(0x43, textures.light_texture->getBufferID());
-			material->setTextureName(0x43, textures.light_texture_name);
 			material->setTextureBuffer(0x48, textures.clut_texture->getBufferID());
 			material->setTextureName(0x48, textures.clut_texture_name);
 		}
