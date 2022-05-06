@@ -71,10 +71,16 @@ public:
 		connect(this->checkbox, &QCheckBox::stateChanged, this, &TextureMapWidget::toggle);
 	}
 
+	template <bool isOverlay=false>
 	void addDiffuseMap()
 	{
+		MapType mt;
+		if constexpr (isOverlay)
+			mt = MapType::OLDIFFUSE;
+		else
+			mt = MapType::DIFFUSE;
 		if (int idx = this->maptype->findText(this->diffuse_name); idx == -1)
-			this->maptype->insertItem(0, this->diffuse_name, static_cast<int>(MapType::DIFFUSE));
+			this->maptype->insertItem(0, this->diffuse_name, static_cast<int>(mt));
 	}
 
 	void removeDiffuseMap()
@@ -82,10 +88,16 @@ public:
 		this->removeMap(this->diffuse_name);
 	}
 
+	template <bool isOverlay=false>
 	void addNormalMap()
 	{
+		MapType mt;
+		if constexpr (isOverlay)
+			mt = MapType::OLNORMAL;
+		else
+			mt = MapType::NORMAL;
 		if (int idx = this->maptype->findText(this->normal_name); idx == -1)
-			this->maptype->insertItem(1, this->normal_name, static_cast<int>(MapType::NORMAL));
+			this->maptype->insertItem(1, this->normal_name, static_cast<int>(mt));
 	}
 
 	void removeNormalMap()
@@ -112,5 +124,10 @@ public:
 	RGBAChannel getChannel()
 	{
 		return static_cast<RGBAChannel>(this->channel->currentData().toInt());
+	}
+
+	void setActive()
+	{
+		this->setEnabled(this->maptype->count());
 	}
 };
