@@ -6,6 +6,50 @@
 
 #include "BaseWidgets/FileCombobox.hpp"
 
+
+class ShaderFactoryTextureSlotNoUV : public QWidget
+{
+	Q_OBJECT;
+private:
+	void toggle(bool active)
+	{
+		this->file_combo_box->setEnabled(active);
+	}
+signals:
+	void settingsUpdated(bool);
+public:
+	QCheckBox* checkbox;
+	QLabel* texture_label;
+	FileComboBox* file_combo_box;
+
+	ShaderFactoryTextureSlotNoUV(QString label_text, QWidget* parent = Q_NULLPTR) : QWidget(parent)
+	{
+		auto _layout = new QHBoxLayout;
+
+		this->checkbox = new QCheckBox;
+		this->texture_label = new QLabel(label_text);
+		this->file_combo_box = new FileComboBox;
+
+		_layout->addWidget(this->checkbox);
+		_layout->addWidget(this->texture_label);
+		_layout->addWidget(this->file_combo_box);
+
+		this->setLayout(_layout);
+		this->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
+
+		this->toggle(false);
+		connect(this->checkbox, &QCheckBox::stateChanged, this, &ShaderFactoryTextureSlotNoUV::toggle);
+
+		connect(this->checkbox, &QCheckBox::stateChanged, this, &ShaderFactoryTextureSlotNoUV::settingsUpdated);
+		connect(this->file_combo_box->combobox, static_cast<void(QComboBox::*)(int)>(&QComboBox::currentIndexChanged), this, &ShaderFactoryTextureSlotNoUV::settingsUpdated);
+	}
+
+	bool isActive()
+	{
+		return this->checkbox->isEnabled() && this->checkbox->isChecked();
+	}
+};
+
 class ShaderFactoryTextureSlot : public QWidget
 {
 	Q_OBJECT;
