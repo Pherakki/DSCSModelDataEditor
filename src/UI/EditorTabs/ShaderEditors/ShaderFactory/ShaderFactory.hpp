@@ -199,6 +199,17 @@ private:
 		}
 	}
 
+	void createSpecularColorSettings(FactorySettings& settings)
+	{
+		settings.specular_input = this->specular_color_settings->checkbox->isChecked();
+		if (this->specular_color_settings->specular_map->isActive())
+		{
+			settings.specular_map.enabled = true;
+			settings.specular_map.type = this->specular_color_settings->specular_map->getMapType();
+			settings.specular_map.channel = this->specular_color_settings->specular_map->getChannel();
+		}
+	}
+
 	void createBumpSettings(FactorySettings& settings)
 	{
 		if (this->texture_layer_1->normal_texture_settings->isActive())
@@ -241,7 +252,7 @@ private:
 
 		// Various Color Contributions
 		this->createDiffuseColorSettings(settings);
-
+		this->createSpecularColorSettings(settings);
 
 		// Vertex
 		this->createVertexSettings(settings);
@@ -409,11 +420,13 @@ private:
 		{
 			this->diffuse_color_settings->transparency_map_widget->addDiffuseMap();
 			this->diffuse_color_settings->diffuse_map_widget->addDiffuseMap();
+			this->specular_color_settings->specular_map->addDiffuseMap();
 		}
 		else
 		{
 			this->diffuse_color_settings->transparency_map_widget->removeDiffuseMap();
 			this->diffuse_color_settings->diffuse_map_widget->removeDiffuseMap();
+			this->specular_color_settings->specular_map->removeDiffuseMap();
 		}
 
 		// Normal 1
@@ -421,11 +434,23 @@ private:
 		{
 			this->diffuse_color_settings->transparency_map_widget->addNormalMap();
 			this->diffuse_color_settings->diffuse_map_widget->addNormalMap();
+			this->specular_color_settings->specular_map->addNormalMap();
 		}
 		else
 		{
 			this->diffuse_color_settings->transparency_map_widget->removeNormalMap();
 			this->diffuse_color_settings->diffuse_map_widget->removeNormalMap();
+			this->specular_color_settings->specular_map->removeNormalMap();
+		}
+
+		// Light
+		if (this->diffuse_color_settings->light_sampler->isActive())
+		{
+			this->specular_color_settings->specular_map->addLightMap();
+		}
+		else
+		{
+			this->specular_color_settings->specular_map->removeLightMap();
 		}
 
 		// Diffuse 2
