@@ -9,9 +9,9 @@
 #include <QWidget>
 #include <QValidator>
 
-template <uint8_t n_boxes>
-class ToggleableTextboxesWidget : public QWidget
+class ToggleableTextboxesWidgetBase : public QWidget
 {
+	Q_OBJECT;
 private:
 	void toggleTextboxes(bool state)
 	{
@@ -21,9 +21,12 @@ private:
 public:
 	QCheckBox* checkbox;
 	QLabel* label;
-	std::array<QLineEdit*, n_boxes> textboxes;
+	// This should be an array, but can't mix templates with Q_OBJECTs...
+	std::vector<QLineEdit*> textboxes;
 
-	explicit ToggleableTextboxesWidget(QString label_text, QWidget* parent = nullptr) : QWidget(parent)
+	explicit ToggleableTextboxesWidgetBase(uint8_t num_boxes, QString label_text, QWidget* parent = nullptr) 
+		: QWidget(parent)
+		, textboxes{ std::vector<QLineEdit*>(num_boxes) }
 	{
 		auto layout = new QHBoxLayout;
 
@@ -48,6 +51,19 @@ public:
 		this->setLayout(layout);
 		this->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
 		this->toggleTextboxes(false);
-		connect(this->checkbox, &QCheckBox::stateChanged, this, &ToggleableTextboxesWidget::toggleTextboxes);
+		connect(this->checkbox, &QCheckBox::stateChanged, this, &ToggleableTextboxesWidgetBase::toggleTextboxes);
+		connect(this->checkbox, &QCheckBox::stateChanged, this, &ToggleableTextboxesWidgetBase::settingsUpdated);
 	}
+
+signals:
+	void settingsUpdated(bool);
+};
+
+// https://stackoverflow.com/questions/594730/overriding-static-variables-when-subclassing
+template <uint8_t n_boxes>
+class ToggleableTextboxesWidget : public ToggleableTextboxesWidgetBase
+{
+public:
+	explicit ToggleableTextboxesWidget(QString label_text, QWidget* parent = nullptr)
+		: ToggleableTextboxesWidgetBase(n_boxes, label_text, parent) {};
 };
