@@ -51,4 +51,9 @@ public:
 		connect(this->file_combo_box->combobox, static_cast<void(QComboBox::*)(int)>(&QComboBox::currentIndexChanged), this, &ShaderFactoryTextureSlot::settingsUpdated);
 		connect(this->uv_slot_combobox, static_cast<void(QComboBox::*)(int)>(&QComboBox::currentIndexChanged), this, &ShaderFactoryTextureSlot::settingsUpdated);
 	}
+
+	bool isActive()
+	{
+		return this->checkbox->isEnabled() && this->checkbox->isChecked();
+	}
 };
