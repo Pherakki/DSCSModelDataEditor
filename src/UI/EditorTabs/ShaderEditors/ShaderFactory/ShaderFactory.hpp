@@ -185,6 +185,18 @@ private:
 			settings.transparency_map.type = this->diffuse_color_settings->transparency_map_widget->getMapType();
 			settings.transparency_map.channel = this->diffuse_color_settings->transparency_map_widget->getChannel();
 		}
+		if (this->diffuse_color_settings->diffuse_map_widget->isActive())
+		{
+			settings.diffuse_map.enabled = true;
+			settings.diffuse_map.type = this->diffuse_color_settings->diffuse_map_widget->getMapType();
+			settings.diffuse_map.channel = this->diffuse_color_settings->diffuse_map_widget->getChannel();
+		}
+		if (this->diffuse_color_settings->diffuse_map_widget_layer_2->isActive())
+		{
+			settings.layer_2_diffuse_map.enabled = true;
+			settings.layer_2_diffuse_map.type = this->diffuse_color_settings->diffuse_map_widget_layer_2->getMapType();
+			settings.layer_2_diffuse_map.channel = this->diffuse_color_settings->diffuse_map_widget_layer_2->getChannel();
+		}
 	}
 
 	void createBumpSettings(FactorySettings& settings)
