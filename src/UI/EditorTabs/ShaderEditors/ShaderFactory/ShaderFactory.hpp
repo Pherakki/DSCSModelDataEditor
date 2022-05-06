@@ -99,8 +99,8 @@ private:
 	bool anyLayer1SamplerEnabled()
 	{
 		return this->texture_layer_1->diffuse_texture_settings->checkbox->isChecked()
-			|| this->texture_layer_1->normal_texture_settings->checkbox->isChecked();
-		// Also include light sampler
+			|| this->texture_layer_1->normal_texture_settings->checkbox->isChecked()
+			|| this->diffuse_color_settings->light_sampler->checkbox->isChecked();
 	}
 
 	void updateTexturesOn(QComboBox* combobox)
@@ -118,6 +118,7 @@ private:
 		this->updateTexturesOn(this->texture_layer_1->normal_texture_settings->file_combo_box->combobox);
 		this->updateTexturesOn(this->texture_layer_2->diffuse_texture_settings->file_combo_box->combobox);
 		this->updateTexturesOn(this->texture_layer_2->normal_texture_settings->file_combo_box->combobox);
+		this->updateTexturesOn(this->diffuse_color_settings->light_sampler->file_combo_box->combobox);
 	}
 
 	void createTexSettings(FactorySettings& settings, Sampler& sampler, std::string& texname, TexturePtr& texture, const ShaderFactoryTextureSlot& tex_ui)
@@ -181,8 +182,8 @@ private:
 		if (this->diffuse_color_settings->transparency_map_widget->isActive())
 		{
 			settings.transparency_map.enabled = true;
-			// Need to grab the maptype and channel
-			// Maptype needs to only be settable if the diffuse/normal/light textures are enabled
+			settings.transparency_map.type = this->diffuse_color_settings->transparency_map_widget->getMapType();
+			settings.transparency_map.channel = this->diffuse_color_settings->transparency_map_widget->getChannel();
 		}
 	}
 
@@ -214,6 +215,8 @@ private:
 		if (const auto& tex_ui = this->texture_layer_2->diffuse_texture_settings; tex_ui->checkbox->isChecked())
 			this->createTexSettings(settings, settings.texlayer_2.colorsampler, textures.c2_texture_name, textures.c2_texture, *tex_ui);
 		if (const auto& tex_ui = this->texture_layer_2->normal_texture_settings; tex_ui->checkbox->isChecked())
+			this->createTexSettings(settings, settings.texlayer_2.normalsampler, textures.n2_texture_name, textures.n2_texture, *tex_ui);
+		if (const auto& tex_ui = this->diffuse_color_settings->light_sampler; tex_ui->checkbox->isChecked())
 			this->createTexSettings(settings, settings.texlayer_2.normalsampler, textures.n2_texture_name, textures.n2_texture, *tex_ui);
 		// Handle UV adjustments
 		this->createUVSettings(settings.uv_slots[0], *this->uv_settings_1);
@@ -281,6 +284,9 @@ private:
 					break;
 				case 0x35:
 					cbox = this->texture_layer_1->normal_texture_settings->file_combo_box->combobox;
+					break;
+				case 0x43:
+					cbox = this->diffuse_color_settings->light_sampler->file_combo_box->combobox;
 					break;
 				case 0x44:
 					cbox = this->texture_layer_2->diffuse_texture_settings->file_combo_box->combobox;
