@@ -178,7 +178,7 @@ private:
 			}
 		}
 
-		if (this->anyLayer1SamplerEnabled() && this->diffuse_color_settings->transparency_map_widget->checkbox->isChecked())
+		if (this->diffuse_color_settings->transparency_map_widget->isActive())
 		{
 			settings.transparency_map.enabled = true;
 			// Need to grab the maptype and channel
@@ -188,7 +188,7 @@ private:
 
 	void createBumpSettings(FactorySettings& settings)
 	{
-		if (this->texture_layer_1->normal_texture_settings->checkbox->isChecked())
+		if (this->texture_layer_1->normal_texture_settings->isActive())
 		{
 			settings.use_tangents = true;
 		}
