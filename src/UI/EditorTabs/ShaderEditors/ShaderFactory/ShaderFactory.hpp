@@ -382,7 +382,57 @@ private:
 	void updateUI()
 	{
 		// Get the UV slots in use
-		// Disable / enable the UV widgets accordingly
+		this->uv_settings_1->toggle(getUVSlot(0));
+		this->uv_settings_2->toggle(getUVSlot(1));
+		this->uv_settings_3->toggle(getUVSlot(2));
+
+		// Diffuse 1
+		if (this->texture_layer_1->diffuse_texture_settings->isActive())
+		{
+			this->diffuse_color_settings->transparency_map_widget->addDiffuseMap();
+			this->diffuse_color_settings->diffuse_map_widget->addDiffuseMap();
+		}
+		else
+		{
+			this->diffuse_color_settings->transparency_map_widget->removeDiffuseMap();
+			this->diffuse_color_settings->diffuse_map_widget->removeDiffuseMap();
+		}
+
+		// Normal 1
+		if (this->texture_layer_1->normal_texture_settings->isActive())
+		{
+			this->diffuse_color_settings->transparency_map_widget->addNormalMap();
+			this->diffuse_color_settings->diffuse_map_widget->addNormalMap();
+		}
+		else
+		{
+			this->diffuse_color_settings->transparency_map_widget->removeNormalMap();
+			this->diffuse_color_settings->diffuse_map_widget->removeNormalMap();
+		}
+
+		// Diffuse 2
+		if (this->texture_layer_2->diffuse_texture_settings->isActive())
+		{
+			this->diffuse_color_settings->diffuse_map_widget_layer_2->addDiffuseMap<true>();
+		}
+		else
+		{
+			this->diffuse_color_settings->diffuse_map_widget_layer_2->removeDiffuseMap();
+		}
+
+		// Normal 2
+		if (this->texture_layer_2->normal_texture_settings->isActive())
+		{
+			this->diffuse_color_settings->diffuse_map_widget_layer_2->addNormalMap<true>();
+		}
+		else
+		{
+			this->diffuse_color_settings->diffuse_map_widget_layer_2->removeNormalMap();
+		}
+		
+		this->diffuse_color_settings->transparency_map_widget->setActive();
+		this->diffuse_color_settings->diffuse_map_widget->setActive();
+		this->diffuse_color_settings->diffuse_map_widget_layer_2->setActive();
 	}
 
 signals:
