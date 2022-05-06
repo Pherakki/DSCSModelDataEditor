@@ -146,7 +146,7 @@ private:
 
 	void createParallaxSettings(FactorySettings& settings)
 	{
-		if (this->texture_layer_1->parallax_settings->isActivated())
+		if (this->texture_layer_1->parallax_settings->isActive())
 		{
 			settings.parallax = true;
 			settings.view_matrix = true;
@@ -245,15 +245,13 @@ private:
 	void createSettingsFromUI(FactorySettings& settings, TextureRefs& textures)
 	{
 		// Load textures
-		if (const auto& tex_ui = this->texture_layer_1->diffuse_texture_settings; tex_ui->checkbox->isChecked())
+		if (const auto& tex_ui = this->texture_layer_1->diffuse_texture_settings; tex_ui->isActive())
 			this->createTexSettings(settings, settings.texlayer_1.colorsampler, textures.c1_texture_name, textures.c1_texture, *tex_ui);
-		if (const auto& tex_ui = this->texture_layer_1->normal_texture_settings; tex_ui->checkbox->isChecked())
+		if (const auto& tex_ui = this->texture_layer_1->normal_texture_settings; tex_ui->isActive())
 			this->createTexSettings(settings, settings.texlayer_1.normalsampler, textures.n1_texture_name, textures.n1_texture, *tex_ui);
-		if (const auto& tex_ui = this->texture_layer_2->diffuse_texture_settings; tex_ui->checkbox->isChecked())
+		if (const auto& tex_ui = this->texture_layer_2->diffuse_texture_settings; tex_ui->isActive())
 			this->createTexSettings(settings, settings.texlayer_2.colorsampler, textures.c2_texture_name, textures.c2_texture, *tex_ui);
-		if (const auto& tex_ui = this->texture_layer_2->normal_texture_settings; tex_ui->checkbox->isChecked())
-			this->createTexSettings(settings, settings.texlayer_2.normalsampler, textures.n2_texture_name, textures.n2_texture, *tex_ui);
-		if (const auto& tex_ui = this->diffuse_color_settings->light_sampler; tex_ui->checkbox->isChecked())
+		if (const auto& tex_ui = this->texture_layer_2->normal_texture_settings; tex_ui->isActive())
 			this->createTexSettings(settings, settings.texlayer_2.normalsampler, textures.n2_texture_name, textures.n2_texture, *tex_ui);
 		if (const auto& tex_ui = this->diffuse_color_settings->light_sampler; tex_ui->isActive())
 			this->createTexSettings(settings, settings.lightsampler, textures.light_texture_name, textures.light_texture, *tex_ui);
@@ -299,6 +297,7 @@ private:
 		{
 			material->setTextureBuffer(0x43, textures.light_texture->getBufferID());
 			material->setTextureName(0x43, textures.light_texture_name);
+		}
 		if (textures.c2_texture)
 		{
 			material->setTextureBuffer(0x44, textures.c2_texture->getBufferID());

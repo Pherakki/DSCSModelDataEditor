@@ -41,7 +41,7 @@ public:
 		this->contents_widget->setLayout(layout);
 	}
 
-	bool isActivated()
+	bool isActive()
 	{
 		return this->checkbox->isEnabled() && this->checkbox->isChecked();
 	}
