@@ -188,7 +188,7 @@ private:
 
 	void createBumpSettings(FactorySettings& settings)
 	{
-		if (this->texture_layer_1->bumpmap_settings->checkbox->isChecked() && this->texture_layer_1->normal_texture_settings->checkbox->isChecked())
+		if (this->texture_layer_1->normal_texture_settings->checkbox->isChecked())
 		{
 			settings.use_tangents = true;
 		}
