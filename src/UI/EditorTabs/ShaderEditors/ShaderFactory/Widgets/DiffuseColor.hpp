@@ -42,16 +42,4 @@ public:
 		this->setLayout(_layout);
 	}
 
-	void toggleTransparencyMap(int active)
-	{
-		this->transparency_map_widget->checkbox->setEnabled(active);
-	}
-	void toggleDiffuseStrMap(int active)
-	{
-		this->diffuse_map_widget->checkbox->setEnabled(active);
-	}
-	void toggleOverlayDiffuseStrMap(int active)
-	{
-		this->diffuse_map_widget_layer_2->checkbox->setEnabled(active);
-	}
 };
