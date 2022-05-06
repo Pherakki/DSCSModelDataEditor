@@ -37,5 +37,19 @@ public:
 
 		this->setLayout(layout);
 		this->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
+
+		connect(this->widget_projection, &ToggleableTextboxesWidget<0>::settingsUpdated, this, &ShaderFactoryUVSettingsWidget::settingsUpdated);
+		connect(this->widget_scrollspeed, &ToggleableTextboxesWidget<2>::settingsUpdated, this, &ShaderFactoryUVSettingsWidget::settingsUpdated);
+		connect(this->widget_rotation, &ToggleableTextboxesWidget<1>::settingsUpdated, this, &ShaderFactoryUVSettingsWidget::settingsUpdated);
+		connect(this->widget_offset, &ToggleableTextboxesWidget<2>::settingsUpdated, this, &ShaderFactoryUVSettingsWidget::settingsUpdated);
+		connect(this->widget_scale, &ToggleableTextboxesWidget<2>::settingsUpdated, this, &ShaderFactoryUVSettingsWidget::settingsUpdated);
 	}
+
+	void toggle(bool active)
+	{
+		this->setEnabled(active);
+	}
+
+signals:
+	void settingsUpdated(bool);
 };
