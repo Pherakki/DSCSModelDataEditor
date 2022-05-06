@@ -11,6 +11,14 @@ protected:
 	QCheckBox* checkbox;
 	QGridLayout* _layout;
 	QWidget* contents_widget;
+
+
+	void updateContentsEnableState()
+	{
+		this->contents_widget->setEnabled(this->checkbox->isChecked());
+	}
+
+public:
 	CheckableWidget(const QString& name, QWidget* parent = Q_NULLPTR) : QWidget(parent)
 	{
 		this->checkbox = new QCheckBox(this);
@@ -28,12 +36,6 @@ protected:
 		connect(this->checkbox, &QCheckBox::stateChanged, this, &CheckableWidget::updateContentsEnableState);
 	}
 
-	void updateContentsEnableState()
-	{
-		this->contents_widget->setEnabled(this->checkbox->isChecked());
-	}
-
-public:
 	void setContents(QLayout* layout)
 	{
 		this->contents_widget->setLayout(layout);
