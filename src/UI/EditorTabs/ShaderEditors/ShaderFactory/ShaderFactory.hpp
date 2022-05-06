@@ -443,6 +443,9 @@ public:
 			this->position_settings = new PositionSettings(this);
 			//placeInSpoiler("Position Adjust", this->position_settings, _layout);
 			_layout->addWidget(this->position_settings);
+
+			connect(this->texture_layer_1, &ShaderFactoryTextureLayer1::settingsUpdated, this, &ShaderFactory::updateUI);
+			connect(this->texture_layer_2, &ShaderFactoryTextureLayer1::settingsUpdated, this, &ShaderFactory::updateUI);
 		}
 		this->setLayout(_layout);
 
