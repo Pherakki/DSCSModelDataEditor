@@ -8,10 +8,23 @@
 
 namespace Rendering::DSCS::DataObjects
 {
-	
+	enum class cgVertexAttribute : uint16_t
+	{
+		Position = 0,
+		BoneWeight = 1,
+		Normal = 2,
+		Colour = 3,
+		WeightedBoneID = 7,
+		UV = 8,
+		UV2 = 9,
+		UV3 = 10,
+		Tangent = 14,
+		Binormal = 15
+	};
+
 	struct OpenGLDSDSVertexAttribute
 	{
-		uint16_t attribute_type = 0;
+		cgVertexAttribute attribute_type = cgVertexAttribute::Position;
 		uint16_t num_elements;
 		GLenum  data_type;
 		uint8_t  always_20;
@@ -59,7 +72,6 @@ namespace Rendering::DSCS::DataObjects
 
 		void checkGLError();
 
-
 	private:
 		typedef FileFormats::DSCS::GeomFile::VertexAttributeType VA_t;
 		uint32_t vertex_buffer_id = 0;
@@ -75,19 +87,19 @@ namespace Rendering::DSCS::DataObjects
 			{6, GL_FLOAT},
 			{11, GL_HALF_FLOAT}
 		};
-		std::map<VA_t, uint16_t> va_map_DSCS_to_GL
+		std::map<VA_t, cgVertexAttribute> va_map_DSCS_to_GL
 		{
 			// Cg attributes at https://developer.download.nvidia.com/cg/Cg_3.1/Cg-3.1_April2012_ReferenceManual.pdf
-			{ VA_t::Position,        0 },
-			{ VA_t::Normal,          2 },
-			{ VA_t::Tangent,        14 },
-			{ VA_t::Binormal,       15 },
-			{ VA_t::UV,              8 },
-			{ VA_t::UV2,             9 },
-			{ VA_t::UV3,            10 },
-			{ VA_t::Colour,          3 },
-			{ VA_t::WeightedBoneID,  7 },
-			{ VA_t::BoneWeight,      1 }
+			{ VA_t::Position,       cgVertexAttribute::Position },
+			{ VA_t::Normal,         cgVertexAttribute::Normal },
+			{ VA_t::Tangent,        cgVertexAttribute::Tangent },
+			{ VA_t::Binormal,       cgVertexAttribute::Binormal },
+			{ VA_t::UV,             cgVertexAttribute::UV },
+			{ VA_t::UV2,            cgVertexAttribute::UV2 },
+			{ VA_t::UV3,            cgVertexAttribute::UV3 },
+			{ VA_t::Colour,         cgVertexAttribute::Colour },
+			{ VA_t::WeightedBoneID, cgVertexAttribute::WeightedBoneID },
+			{ VA_t::BoneWeight,     cgVertexAttribute::BoneWeight }
 		};
 
 		void createEditableVertexRepresentation();

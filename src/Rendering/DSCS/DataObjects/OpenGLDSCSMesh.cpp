@@ -79,15 +79,15 @@ namespace Rendering::DSCS::DataObjects
 		{
 			glVertexAttribPointer
 			(
-				(GLuint)va.attribute_type,     // attribute id
-				va.num_elements,               // size
-				va.data_type,                  // type
-				GL_FALSE,                      // normalized
-				this->mesh.bytes_per_vertex,   // stride
-				(void*)va.vertex_struct_offset // array buffer offset
+				static_cast<GLuint>(va.attribute_type),          // attribute id
+				va.num_elements,                                 // size
+				va.data_type,                                    // type
+				GL_FALSE,                                        // normalized
+				this->mesh.bytes_per_vertex,                     // stride
+				reinterpret_cast<void*>(va.vertex_struct_offset) // array buffer offset
 			);
 			checkGLError();
-			glEnableVertexAttribArray((GLuint)va.attribute_type);
+			glEnableVertexAttribArray(static_cast<GLuint>(va.attribute_type));
 			checkGLError();
 		}
 		checkGLError();
@@ -111,7 +111,7 @@ namespace Rendering::DSCS::DataObjects
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 
 		for (int i = 0; i < this->vertex_attributes.size(); i++)
-			glDisableVertexAttribArray(this->vertex_attributes[i].attribute_type);
+			glDisableVertexAttribArray(static_cast<GLuint>(this->vertex_attributes[i].attribute_type));
 		this->checkGLError();
 	}
 
