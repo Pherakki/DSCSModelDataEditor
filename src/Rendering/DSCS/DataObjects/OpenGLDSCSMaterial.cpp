@@ -86,7 +86,10 @@ namespace Rendering::DSCS::DataObjects
 		switch (param_type)
 		{
 		case CG_SAMPLER2D:
-			holder.emplace(id, std::make_unique<ShaderUniforms::Tex2DUniform>(param, 0));
+			//if (id == 0x48)
+			//	holder.emplace(id, std::make_unique<ShaderUniforms::CLUTTex2DUniform>(param, 0));
+			//else
+				holder.emplace(id, std::make_unique<ShaderUniforms::Tex2DUniform>(param, 0));
 			break;
 		case CG_SAMPLERCUBE:
 			holder.emplace(id, std::make_unique<ShaderUniforms::TexCubeUniform>(param, 0));
