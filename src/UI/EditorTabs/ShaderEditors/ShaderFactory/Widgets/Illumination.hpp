@@ -53,7 +53,7 @@ public:
 			this->receive_ambient = new CheckableWidget("Receive Ambient Light", this);
 			{
 
-				auto receive_sky_contents = new QVBoxLayout;
+				auto receive_ambient_contents = new QVBoxLayout;
 				this->receive_sky = new CheckableWidget("Receive Sky", this);
 				// I think SkyDir and GroundColor are Global variables
 				//auto receive_sky_textboxes = new QVBoxLayout;
@@ -67,9 +67,9 @@ public:
 				//	this->receive_sky->setContents(receive_sky_textboxes);
 				//}
 
-				receive_sky_contents->addWidget(this->receive_sky);
+				receive_ambient_contents->addWidget(this->receive_sky);
 
-				this->receive_ambient->setContents(receive_sky_contents);
+				this->receive_ambient->setContents(receive_ambient_contents);
 			}
 			_layout->addWidget(this->title_widget);
 			_layout->addWidget(this->receive_lamp);
