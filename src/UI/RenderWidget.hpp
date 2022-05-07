@@ -147,8 +147,6 @@ namespace CustomWidgets
 
 
 		void refreshRenderSettings();
-		void initLampModel();
-		void renderLamp();
 
 		
 	protected slots:
