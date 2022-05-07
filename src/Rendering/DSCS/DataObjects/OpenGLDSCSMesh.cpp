@@ -23,9 +23,8 @@ namespace Rendering::DSCS::DataObjects
 		glBufferData(GL_ELEMENT_ARRAY_BUFFER, this->mesh.index_buffer.size() * sizeof(unsigned short), &this->mesh.index_buffer[0], GL_STATIC_DRAW);
 		this->checkGLError();
 
-		for (int i = 0; i < this->mesh.vertex_attributes.size(); i++)
+		for (const auto& va : this->mesh.vertex_attributes)
 		{
-			auto& va = this->mesh.vertex_attributes[i];
 			this->vertex_attributes.emplace_back(OpenGLDSDSVertexAttribute{ va_map_DSCS_to_GL[(uint16_t)va.attribute_type], va.num_elements, dtype_map_DSCS_to_GL[va.data_type], va.always_20, va.vertex_struct_offset });
 		}
 	}
@@ -76,9 +75,8 @@ namespace Rendering::DSCS::DataObjects
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, this->index_buffer_id);
 		this->checkGLError();
 
-		for (int i = 0; i < vertex_attributes.size(); i++)
+		for (const auto& va : this->vertex_attributes)
 		{
-			auto& va = this->vertex_attributes[i];
 			glVertexAttribPointer
 			(
 				(GLuint)va.attribute_type,     // attribute id
