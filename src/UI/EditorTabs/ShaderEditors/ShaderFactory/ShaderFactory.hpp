@@ -220,8 +220,8 @@ private:
 		if (settings.dir_light_1)
 		{
 			settings.use_velvet = this->illumination_settings->velvet->isActive();
+			settings.use_clut = this->illumination_settings->clut->isActive();
 		}
-		settings.use_clut = this->illumination_settings->clut->isActive();
 	}
 
 	void createBumpSettings(FactorySettings& settings)
