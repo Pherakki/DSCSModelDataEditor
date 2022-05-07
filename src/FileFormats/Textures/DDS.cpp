@@ -103,13 +103,15 @@ GLuint DDSLoader::texture_loadDDS(const char* path, TextureType tex_type)
 		glTexParameteri(texture_slot, GL_TEXTURE_MAX_LEVEL, mipMapCount - 1);
 		glTexParameteri(texture_slot, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 		glTexParameteri(texture_slot, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+		//glTexParameteri(texture_slot, GL_TEXTURE_MAG_FILTER, GL_NEAREST); // Seems to work for CLUTs?
+		//glTexParameteri(texture_slot, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 		glTexParameteri(texture_slot, GL_TEXTURE_WRAP_S, GL_REPEAT);
 		glTexParameteri(texture_slot, GL_TEXTURE_WRAP_T, GL_REPEAT);
-		// glTexEnvi(GL_TEXTURE_ENV,GL_TEXTURE_ENV_MODE,GL_REPLACE);
 		break;
 	case TextureType::TextureCube:
 		texture_slot = GL_TEXTURE_CUBE_MAP;
 
+		// glTexEnvi(GL_TEXTURE_ENV,GL_TEXTURE_ENV_MODE,GL_REPLACE);
 		glBindTexture(texture_slot, tid);
 		glTexParameteri(texture_slot, GL_TEXTURE_BASE_LEVEL, 0);
 		glTexParameteri(texture_slot, GL_TEXTURE_MAX_LEVEL, mipMapCount - 1);
