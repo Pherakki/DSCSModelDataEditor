@@ -10,6 +10,7 @@ using namespace std;
 
 int main(int argc, char* argv[])
 {
+    QCoreApplication::addLibraryPath("./Qt5");
     QApplication a(argc, argv);
     DSCSModelDataEditorWindow w;
     //w.showMaximized();

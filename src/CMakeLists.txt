@@ -85,6 +85,7 @@ cmake_policy(SET CMP0079 NEW)
 
 # Set up Qt5
 set(Qt5_DIR "../lib/Qt5/lib/cmake/Qt5") # Need to get rid of this eventually?
+set(Qt5_PLUGINS_DIR "../lib/Qt5/plugins")
 
 set_target_properties(${PROJECT_NAME} PROPERTIES AUTOMOC TRUE)
 set_target_properties(${PROJECT_NAME} PROPERTIES AUTORCC TRUE)
@@ -100,14 +101,20 @@ find_package(Qt5 COMPONENTS Widgets REQUIRED)
 target_link_libraries(${PROJECT_NAME}
   Qt5::Core
   Qt5::Gui
-  Qt5::Widgets  
+  Qt5::Widgets
 )
 
+add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E make_directory $<TARGET_FILE_DIR:${PROJECT_NAME}>/Qt5/
+    COMMAND ${CMAKE_COMMAND} -E make_directory $<TARGET_FILE_DIR:${PROJECT_NAME}>/Qt5/platforms/
+    COMMAND ${CMAKE_COMMAND} -E make_directory $<TARGET_FILE_DIR:${PROJECT_NAME}>/Qt5/styles/
+)
 add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
     COMMAND ${CMAKE_COMMAND} -E copy_if_different $<TARGET_FILE:Qt5::Core> $<TARGET_FILE_DIR:${PROJECT_NAME}>
     COMMAND ${CMAKE_COMMAND} -E copy_if_different $<TARGET_FILE:Qt5::Gui> $<TARGET_FILE_DIR:${PROJECT_NAME}>
     COMMAND ${CMAKE_COMMAND} -E copy_if_different $<TARGET_FILE:Qt5::Widgets> $<TARGET_FILE_DIR:${PROJECT_NAME}>
-    COMMAND ${CMAKE_COMMAND} -E copy_directory "${CMAKE_SOURCE_DIR}/lib/Qt5/plugins" $<TARGET_FILE_DIR:${PROJECT_NAME}> # Probably don't need the entire folder...
+    COMMAND ${CMAKE_COMMAND} -E copy_if_different $<TARGET_FILE:Qt5::QWindowsIntegrationPlugin> $<TARGET_FILE_DIR:${PROJECT_NAME}>/Qt5/platforms/
+    COMMAND ${CMAKE_COMMAND} -E copy_if_different $<TARGET_FILE:Qt5::QWindowsVistaStylePlugin> $<TARGET_FILE_DIR:${PROJECT_NAME}>/Qt5/styles/
     )
 
 # Set up Cg
