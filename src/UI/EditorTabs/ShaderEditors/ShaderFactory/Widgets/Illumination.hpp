@@ -10,6 +10,8 @@ class IlluminationSettings : public QWidget
 public:
 	TitleWidget* title_widget;
 	CheckableWidget* receive_lamp;
+	CheckableWidget* receive_ambient;
+	CheckableWidget* receive_sky;
 	CheckableWidget* velvet;
 	ShaderFactoryTextureSlotNoUV* clut;
 
@@ -48,9 +50,30 @@ public:
 				this->receive_lamp->setContents(receive_lamp_contents);
 			}
 
+			this->receive_ambient = new CheckableWidget("Receive Ambient Light", this);
+			{
 
+				auto receive_sky_contents = new QVBoxLayout;
+				this->receive_sky = new CheckableWidget("Receive Sky", this);
+				// I think SkyDir and GroundColor are Global variables
+				//auto receive_sky_textboxes = new QVBoxLayout;
+				//{
+				//	auto sky_dir = new TextboxArrayWidget<3>("Sky Dir", this);
+				//	auto ground_color = new TextboxArrayWidget<3>("Ground Color", this);
+
+				//	receive_sky_textboxes->addWidget(sky_dir);
+				//	receive_sky_textboxes->addWidget(ground_color);
+
+				//	this->receive_sky->setContents(receive_sky_textboxes);
+				//}
+
+				receive_sky_contents->addWidget(this->receive_sky);
+
+				this->receive_ambient->setContents(receive_sky_contents);
+			}
 			_layout->addWidget(this->title_widget);
 			_layout->addWidget(this->receive_lamp);
+			_layout->addWidget(this->receive_ambient);
 		}
 		this->setLayout(_layout);
 	}

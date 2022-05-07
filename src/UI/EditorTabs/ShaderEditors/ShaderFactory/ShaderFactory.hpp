@@ -222,6 +222,8 @@ private:
 			settings.use_velvet = this->illumination_settings->velvet->isActive();
 			settings.use_clut = this->illumination_settings->clut->isActive();
 		}
+		settings.use_ambient = this->illumination_settings->receive_ambient->isActive();
+		settings.use_ambient_gndsky = this->illumination_settings->receive_sky->isActive();
 	}
 
 	void createBumpSettings(FactorySettings& settings)
