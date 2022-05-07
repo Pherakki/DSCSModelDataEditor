@@ -10,7 +10,7 @@ public:
 	QCheckBox* checkbox;
 	TitleWidget* title_widget;
 	TextureMapWidget* specular_map;
-	ToggleableCombobox* overlay_channel;
+	//ToggleableCombobox* overlay_channel;
 	SpecularColorSettings(QWidget* parent = Q_NULLPTR) : QWidget(parent)
 	{
 		auto _layout = new QGridLayout;
@@ -24,10 +24,10 @@ public:
 			auto settings_layout = new QVBoxLayout;
 			{
 				this->specular_map = new TextureMapWidget("Specular Map", this);
-				this->overlay_channel = new ToggleableCombobox("Overlay Channel", this);
+				//this->overlay_channel = new ToggleableCombobox("Overlay Channel", this);
 
 				settings_layout->addWidget(this->specular_map);
-				settings_layout->addWidget(this->overlay_channel);
+				//settings_layout->addWidget(this->overlay_channel);
 			}
 			_layout->addItem(settings_layout, 1, 1);
 		}
