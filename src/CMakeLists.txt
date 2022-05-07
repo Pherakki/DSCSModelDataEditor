@@ -85,7 +85,7 @@ cmake_policy(SET CMP0079 NEW)
 
 # Set up Qt5
 set(Qt5_DIR "../lib/Qt5/lib/cmake/Qt5") # Need to get rid of this eventually?
-set(Qt5_PLUGINS_DIR "../lib/Qt5/plugins")
+set(Qt5_PLUGINS_DIR ${Qt5_DIR}/../../../plugins)
 
 set_target_properties(${PROJECT_NAME} PROPERTIES AUTOMOC TRUE)
 set_target_properties(${PROJECT_NAME} PROPERTIES AUTORCC TRUE)
