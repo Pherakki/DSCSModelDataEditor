@@ -27,6 +27,23 @@ namespace Rendering::DSCS::DataObjects
 		{
 			this->vertex_attributes.emplace_back(OpenGLDSDSVertexAttribute{ va_map_DSCS_to_GL[va.attribute_type], va.num_elements, dtype_map_DSCS_to_GL[va.data_type], va.always_20, va.vertex_struct_offset });
 		}
+
+		//this->createEditableVertexRepresentation();
+
+		//glGenBuffers(1, &this->normal_buffer_id);
+		//glBindBuffer(GL_ARRAY_BUFFER, this->normal_buffer_id);
+		//this->checkGLError();
+		//auto normal_size = 0.1f;
+		//this->normal_buffer = decltype(this->normal_buffer)(3*2*this->editable_vertices.size());
+		//for (size_t i = 0; i < this->editable_vertices.size(); ++i)
+		//{
+		//	for (size_t j = 0; j < 3; ++j)
+		//		this->normal_buffer[3*2*i + j] = this->editable_vertices[i].position[j];
+		//	for (size_t j = 0; j < 3; ++j)
+		//		this->normal_buffer[3*(2*i+1) + j] = this->editable_vertices[i].position[j] + normal_size * this->editable_vertices[i].normal[j];
+		//}
+		//glBufferData(GL_ARRAY_BUFFER, this->normal_buffer.size(), &this->normal_buffer[0], GL_STATIC_DRAW);
+			
 	}
 
 	OpenGLDSCSMesh::~OpenGLDSCSMesh()
@@ -184,6 +201,22 @@ namespace Rendering::DSCS::DataObjects
 		for (int i = 0; i < this->vertex_attributes.size(); i++)
 			glDisableVertexAttribArray(static_cast<GLuint>(this->vertex_attributes[i].attribute_type));
 		this->checkGLError();
+
+		//glBindBuffer(GL_ARRAY_BUFFER, this->normal_buffer_id);
+		//glVertexAttribPointer
+		//(
+		//	static_cast<GLuint>(cgVertexAttribute::Position), // attribute id
+		//	3,                                                // size
+		//	GL_FLOAT,                                         // type
+		//	GL_FALSE,                                         // normalized
+		//	4*3,                                              // stride
+		//	0                                                 // array buffer offset
+		//);
+		//glEnableVertexAttribArray(static_cast<GLuint>(cgVertexAttribute::Position));
+		//this->checkGLError();
+		//glDrawArrays(GL_LINES, 0, this->normal_buffer.size() / 3);
+		//glDisableVertexAttribArray(static_cast<GLuint>(cgVertexAttribute::Position));
+		//glBindBuffer(GL_ARRAY_BUFFER, 0);
 	}
 
 	void OpenGLDSCSMesh::checkGLError()

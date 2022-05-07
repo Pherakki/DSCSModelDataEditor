@@ -76,6 +76,8 @@ namespace Rendering::DSCS::DataObjects
 		typedef FileFormats::DSCS::GeomFile::VertexAttributeType VA_t;
 		uint32_t vertex_buffer_id = 0;
 		uint32_t index_buffer_id = 0;
+		//uint32_t normal_buffer_id = 0;
+		//std::vector<float> normal_buffer;
 		std::vector<OpenGLDSDSVertexAttribute> vertex_attributes;
 
 		VertexInfo editable_vertex_info;
