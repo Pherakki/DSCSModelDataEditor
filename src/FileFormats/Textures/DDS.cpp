@@ -101,12 +101,16 @@ GLuint DDSLoader::texture_loadDDS(const char* path, TextureType tex_type)
 		// thusly just minus one - simple off-by-one array fix
 		glTexParameteri(texture_slot, GL_TEXTURE_BASE_LEVEL, 0);
 		glTexParameteri(texture_slot, GL_TEXTURE_MAX_LEVEL, mipMapCount - 1);
+		// Correct for a "standard" texture
 		glTexParameteri(texture_slot, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 		glTexParameteri(texture_slot, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-		//glTexParameteri(texture_slot, GL_TEXTURE_MAG_FILTER, GL_NEAREST); // Seems to work for CLUTs?
-		//glTexParameteri(texture_slot, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 		glTexParameteri(texture_slot, GL_TEXTURE_WRAP_S, GL_REPEAT);
 		glTexParameteri(texture_slot, GL_TEXTURE_WRAP_T, GL_REPEAT);
+		// These should be set on a per-texture basis
+		glTexParameteri(texture_slot, GL_TEXTURE_MAG_FILTER, GL_NEAREST); // Seems to work for CLUTs?
+		glTexParameteri(texture_slot, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+		glTexParameteri(texture_slot, GL_TEXTURE_WRAP_S, GL_CLAMP);
+		glTexParameteri(texture_slot, GL_TEXTURE_WRAP_T, GL_CLAMP);
 		break;
 	case TextureType::TextureCube:
 		texture_slot = GL_TEXTURE_CUBE_MAP;
