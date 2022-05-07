@@ -46,7 +46,78 @@ namespace Rendering::DSCS::DataObjects
 	// Will create a vector of Vertex items that can be easily talked to
 	void OpenGLDSCSMesh::createEditableVertexRepresentation()
 	{
+		this->editable_vertices.clear();
+		auto num_vertices = this->mesh.vertices.size() / this->mesh.bytes_per_vertex;
+		this->editable_vertices = decltype(this->editable_vertices)(num_vertices);
+		size_t cur_offset = 0;
+		for (size_t i = 0; i < num_vertices; ++i)
+		{
+			cur_offset = i * this->mesh.bytes_per_vertex;
+			for (const auto& va : this->mesh.vertex_attributes)
+			{
+				EditableVertex& vertex = this->editable_vertices[i];
 
+				std::array<float, 4> var{};
+				auto start = cur_offset = va.vertex_struct_offset;
+				switch (dtype_map_DSCS_to_GL[va.data_type])
+				{
+				case GL_UNSIGNED_BYTE:
+					for (size_t i = 0; i < va.num_elements; ++i)
+					{
+						uint8_t elem;
+						memcpy(&elem, &this->mesh.vertices[cur_offset + i * 1], 1);
+						var[i] = static_cast<float>(elem);
+					}
+					break;
+				case GL_HALF_FLOAT:
+					for (size_t i = 0; i < va.num_elements; ++i)
+					{
+						uint16_t elem;
+						memcpy(&elem, &this->mesh.vertices[cur_offset + i * 2], 2);
+						var[i] = fp16tofp32(elem);
+					}
+					break;
+				case GL_FLOAT:
+					for (size_t i = 0; i < va.num_elements; ++i)
+						memcpy(&var[i], &this->mesh.vertices[cur_offset + i * 4], 4);
+					break;
+				}
+
+				switch (va_map_DSCS_to_GL[va.attribute_type])
+				{
+				case cgVertexAttribute::Position:
+					vertex.position = { var[0], var[1], var[2] };
+					break;
+				case cgVertexAttribute::Normal:
+					vertex.normal = { var[0], var[1], var[2] };
+					break;
+				case cgVertexAttribute::Tangent:
+					vertex.tangent = var;
+					break;
+				case cgVertexAttribute::Binormal:
+					vertex.binormal = { var[0], var[1], var[2] };
+					break;
+				case cgVertexAttribute::Colour:
+					vertex.color = var;
+					break;
+				case cgVertexAttribute::UV:
+					vertex.uv1 = { var[0], var[1] };
+					break;
+				case cgVertexAttribute::UV2:
+					vertex.uv2 = { var[0], var[1] };
+					break;
+				case cgVertexAttribute::UV3:
+					vertex.uv3 = { var[0], var[1] };
+					break;
+				case cgVertexAttribute::WeightedBoneID:
+					vertex.indices = var;
+					break;
+				case cgVertexAttribute::BoneWeight:
+					vertex.weights = var;
+					break;
+				}
+			}
+		}
 	}
 
 	// Delete the editable vertices
