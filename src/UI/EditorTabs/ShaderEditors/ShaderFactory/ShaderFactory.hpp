@@ -344,6 +344,9 @@ private:
 				case 0x45:
 					cbox = this->texture_layer_2->normal_texture_settings->file_combo_box->combobox;
 					break;
+				case 0x48:
+					cbox = this->illumination_settings->clut->file_combo_box->combobox;
+					break;
 				default:
 					return;
 				}
