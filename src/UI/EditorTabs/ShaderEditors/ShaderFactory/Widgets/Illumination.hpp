@@ -21,7 +21,7 @@ public:
 
 			this->receive_lamp = new CheckableWidget("Receive Lamp", this);
 			{
-				auto velvet_layout = new QVBoxLayout;
+				auto receive_lamp_contents = new QVBoxLayout;
 				this->velvet = new CheckableWidget("Velvet", this);
 				auto velvet_textboxes = new QVBoxLayout;
 				{
@@ -40,15 +40,17 @@ public:
 					this->velvet->setContents(velvet_textboxes);
 				}
 				
-				velvet_layout->addWidget(this->velvet);
-				this->receive_lamp->setContents(velvet_layout);
+				this->clut = new ShaderFactoryTextureSlotNoUV("CLUT", this);
+
+				receive_lamp_contents->addWidget(this->velvet);
+				receive_lamp_contents->addWidget(this->clut);
+
+				this->receive_lamp->setContents(receive_lamp_contents);
 			}
 
-			this->clut = new ShaderFactoryTextureSlotNoUV("CLUT", this);
 
 			_layout->addWidget(this->title_widget);
 			_layout->addWidget(this->receive_lamp);
-			_layout->addWidget(this->clut);
 		}
 		this->setLayout(_layout);
 	}
