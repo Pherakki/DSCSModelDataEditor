@@ -440,6 +440,7 @@ private:
 
 	void updateUI()
 	{
+		std::cout << "UPDATE UI" << std::endl;
 		// Get the UV slots in use
 		this->uv_settings_1->toggle(getUVSlot(0));
 		this->uv_settings_2->toggle(getUVSlot(1));
