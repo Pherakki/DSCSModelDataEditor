@@ -133,7 +133,7 @@ if (UNIX AND NOT APPLE)
     target_link_libraries(${PROJECT_NAME} 
         "${CMAKE_SOURCE_DIR}/Cg/linux64/libCg.so"
         "${CMAKE_SOURCE_DIR}/Cg/linux64/libCgGL.so")
-endif(UNIX)
+endif(UNIX AND NOT APPLE)
 
 # Shared - Doesn't work, it just copies files called cgLIB.lib etc instead of cg.dll...
 # add_library(cgLIB "../lib/Cg/lib/cg.dll")
