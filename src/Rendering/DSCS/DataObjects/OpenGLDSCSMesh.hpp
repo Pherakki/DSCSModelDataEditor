@@ -61,6 +61,7 @@ namespace Rendering::DSCS::DataObjects
 
 
 	private:
+		typedef FileFormats::DSCS::GeomFile::VertexAttributeType VA_t;
 		uint32_t vertex_buffer_id = 0;
 		uint32_t index_buffer_id = 0;
 		std::vector<OpenGLDSDSVertexAttribute> vertex_attributes;
@@ -74,18 +75,19 @@ namespace Rendering::DSCS::DataObjects
 			{6, GL_FLOAT},
 			{11, GL_HALF_FLOAT}
 		};
-		std::map<uint16_t, uint16_t> va_map_DSCS_to_GL
+		std::map<VA_t, uint16_t> va_map_DSCS_to_GL
 		{
-			{ 1,  0},
-			{ 2,  2},
-			{ 3, 14},
-			{ 4, 15},
-			{ 5,  8},
-			{ 6,  9},
-			{ 7, 10},
-			{ 9,  3},
-			{10,  7},
-			{11,  1}
+			// Cg attributes at https://developer.download.nvidia.com/cg/Cg_3.1/Cg-3.1_April2012_ReferenceManual.pdf
+			{ VA_t::Position,        0 },
+			{ VA_t::Normal,          2 },
+			{ VA_t::Tangent,        14 },
+			{ VA_t::Binormal,       15 },
+			{ VA_t::UV,              8 },
+			{ VA_t::UV2,             9 },
+			{ VA_t::UV3,            10 },
+			{ VA_t::Colour,          3 },
+			{ VA_t::WeightedBoneID,  7 },
+			{ VA_t::BoneWeight,      1 }
 		};
 
 		void createEditableVertexRepresentation();
