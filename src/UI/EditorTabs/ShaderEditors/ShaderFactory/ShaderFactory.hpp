@@ -224,6 +224,9 @@ private:
 		}
 		settings.use_ambient = this->illumination_settings->receive_ambient->isActive();
 		settings.use_ambient_gndsky = this->illumination_settings->receive_sky->isActive();
+
+		settings.fog = this->illumination_settings->receive_fog->isActive();
+		settings.fog_height = this->illumination_settings->receive_fog->isActive();
 	}
 
 	void createBumpSettings(FactorySettings& settings)

@@ -12,6 +12,9 @@ public:
 	CheckableWidget* receive_lamp;
 	CheckableWidget* receive_ambient;
 	CheckableWidget* receive_sky;
+	CheckableWidget* receive_fog;
+	CheckableWidget* receive_fog_height;
+	CheckableWidget* receive_fog_alpha;
 	CheckableWidget* velvet;
 	ShaderFactoryTextureSlotNoUV* clut;
 
@@ -71,9 +74,25 @@ public:
 
 				this->receive_ambient->setContents(receive_ambient_contents);
 			}
+
+			this->receive_fog = new CheckableWidget("Receive Fog", this);
+			{
+
+				auto receive_fog_contents = new QVBoxLayout;
+
+				this->receive_fog_height = new CheckableWidget("Use Height", this);
+				this->receive_fog_alpha = new CheckableWidget("Use Alpha", this);
+
+				receive_fog_contents->addWidget(this->receive_fog_height);
+				receive_fog_contents->addWidget(this->receive_fog_alpha);
+
+				this->receive_fog->setContents(receive_fog_contents);
+			}
+
 			_layout->addWidget(this->title_widget);
 			_layout->addWidget(this->receive_lamp);
 			_layout->addWidget(this->receive_ambient);
+			_layout->addWidget(this->receive_fog);
 		}
 		this->setLayout(_layout);
 	}
