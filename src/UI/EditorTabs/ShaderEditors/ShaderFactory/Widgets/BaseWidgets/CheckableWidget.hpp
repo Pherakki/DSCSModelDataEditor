@@ -26,9 +26,13 @@ public:
 
 		this->_layout = new QGridLayout;
 		this->_layout->addWidget(this->checkbox, 0, 0);
-		this->_layout->addWidget(label, 0, 1);
+		this->_layout->addWidget(label, 0, 1, Qt::AlignLeft);
 		this->contents_widget = new QWidget(this);
-		this->_layout->addWidget(this->contents_widget, 1, 1);
+		this->_layout->addWidget(this->contents_widget, 1, 1, Qt::AlignLeft);
+
+		this->_layout->setColumnStretch(0, 0);
+		this->_layout->setColumnStretch(1, 1);
+		this->contents_widget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Minimum);
 
 		this->setLayout(this->_layout);
 		this->contents_widget->setEnabled(false);
