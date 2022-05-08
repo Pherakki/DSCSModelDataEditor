@@ -243,8 +243,8 @@ private:
 		settings.calculate_binormal = this->position_settings->calculate_binormal;
 		settings.fat = this->position_settings->fat->checkbox->isChecked();
 		settings.zbias = this->position_settings->zbias->checkbox->isChecked();
-		settings.is_billboard = this->position_settings->billboard_checkbox->isChecked();
-		settings.align_with_y = this->position_settings->billboard_checkbox->isChecked() && this->position_settings->billboard_align_y_checkbox->isChecked();
+		settings.is_billboard = this->position_settings->billboard_checkbox->isActive();
+		settings.align_with_y = this->position_settings->billboard_align_y_checkbox->isActive();
 	}
 
 	void createSettingsFromUI(FactorySettings& settings, TextureRefs& textures)
