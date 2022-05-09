@@ -74,11 +74,11 @@ public:
 	template <bool isOverlay=false>
 	void addDiffuseMap()
 	{
-		EnvMapType mt;
+		MapType mt;
 		if constexpr (isOverlay)
-			mt = EnvMapType::OLDIFFUSE;
+			mt = MapType::OLDIFFUSE;
 		else
-			mt = EnvMapType::DIFFUSE;
+			mt = MapType::DIFFUSE;
 		if (int idx = this->maptype->findText(this->diffuse_name); idx == -1)
 			this->maptype->insertItem(0, this->diffuse_name, static_cast<int>(mt));
 	}
@@ -91,11 +91,11 @@ public:
 	template <bool isOverlay=false>
 	void addNormalMap()
 	{
-		EnvMapType mt;
+		MapType mt;
 		if constexpr (isOverlay)
-			mt = EnvMapType::OLNORMAL;
+			mt = MapType::OLNORMAL;
 		else
-			mt = EnvMapType::NORMAL;
+			mt = MapType::NORMAL;
 		if (int idx = this->maptype->findText(this->normal_name); idx == -1)
 			this->maptype->insertItem(1, this->normal_name, static_cast<int>(mt));
 	}
@@ -108,7 +108,7 @@ public:
 	void addLightMap()
 	{
 		if (int idx = this->maptype->findText(this->light_name); idx == -1)
-			this->maptype->insertItem(2, this->light_name, static_cast<int>(EnvMapType::LIGHT));
+			this->maptype->insertItem(2, this->light_name, static_cast<int>(MapType::LIGHT));
 	}
 
 	void removeLightMap()
@@ -116,9 +116,9 @@ public:
 		this->removeMap(this->light_name);
 	}
 
-	EnvMapType getMapType()
+	MapType getMapType()
 	{
-		return static_cast<EnvMapType>(this->maptype->currentData().toInt());
+		return static_cast<MapType>(this->maptype->currentData().toInt());
 	}
 
 	RGBAChannel getChannel()
