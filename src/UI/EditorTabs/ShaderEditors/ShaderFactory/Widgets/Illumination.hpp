@@ -1,5 +1,6 @@
 #pragma once
 
+#include "TextureMap.hpp"
 #include "TextureSlot.hpp"
 #include "BaseWidgets/CheckableWidget.hpp"
 #include "BaseWidgets/TextboxArrayWidget.hpp"
@@ -12,9 +13,11 @@ public:
 	CheckableWidget* receive_lamp;
 	CheckableWidget* receive_ambient;
 	CheckableWidget* receive_sky;
+	CheckableWidget* obscure;
+	TextureMapWidget* ambient_occlusion_map;
+	CheckableWidget* receive_shadow_map;
 	CheckableWidget* receive_fog;
 	CheckableWidget* receive_fog_height;
-	CheckableWidget* receive_fog_alpha;
 	CheckableWidget* velvet;
 	ShaderFactoryTextureSlotNoUV* clut;
 
@@ -75,16 +78,26 @@ public:
 				this->receive_ambient->setContents(receive_ambient_contents);
 			}
 
+			this->obscure = new CheckableWidget("Shadows", this);
+			{
+
+				auto receive_ambient_contents = new QVBoxLayout;
+				this->ambient_occlusion_map = new TextureMapWidget("Ambient Occlusion Map", this);
+				this->receive_shadow_map = new CheckableWidget("Receive Shadow Map", this);
+				receive_ambient_contents->addWidget(this->ambient_occlusion_map);
+				receive_ambient_contents->addWidget(this->receive_shadow_map);
+
+				this->obscure->setContents(receive_ambient_contents);
+			}
+
 			this->receive_fog = new CheckableWidget("Receive Fog", this);
 			{
 
 				auto receive_fog_contents = new QVBoxLayout;
 
 				this->receive_fog_height = new CheckableWidget("Use Height", this);
-				this->receive_fog_alpha = new CheckableWidget("Use Alpha", this);
 
 				receive_fog_contents->addWidget(this->receive_fog_height);
-				receive_fog_contents->addWidget(this->receive_fog_alpha);
 
 				this->receive_fog->setContents(receive_fog_contents);
 			}
@@ -92,6 +105,7 @@ public:
 			_layout->addWidget(this->title_widget);
 			_layout->addWidget(this->receive_lamp);
 			_layout->addWidget(this->receive_ambient);
+			_layout->addWidget(this->obscure);
 			_layout->addWidget(this->receive_fog);
 		}
 		this->setLayout(_layout);
