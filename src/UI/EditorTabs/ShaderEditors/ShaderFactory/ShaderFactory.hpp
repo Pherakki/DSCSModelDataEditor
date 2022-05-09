@@ -60,6 +60,7 @@ struct TextureRefs
 
 	std::string env_texture_name;
 	Texture env_texture = nullptr;
+	bool isSphere = false;
 
 	std::string clut_texture_name;
 	Texture clut_texture = nullptr;
@@ -123,6 +124,7 @@ private:
 		this->updateTexturesOn(this->texture_layer_2->normal_texture_settings->file_combo_box->combobox);
 		this->updateTexturesOn(this->diffuse_color_settings->light_sampler->file_combo_box->combobox);
 		this->updateTexturesOn(this->illumination_settings->clut->file_combo_box->combobox);
+		this->updateTexturesOn(this->reflection_settings->env_texture->file_combo_box->combobox);
 	}
 
 	void createTexSettings(FactorySettings& settings, Sampler& sampler, std::string& texname, TexturePtr& texture, const ShaderFactoryTextureSlot& tex_ui)
@@ -227,6 +229,19 @@ private:
 
 		settings.fog = this->illumination_settings->receive_fog->isActive();
 		settings.fog_height = this->illumination_settings->receive_fog->isActive();
+
+		settings.use_obscure = this->illumination_settings->obscure->isActive();
+		settings.ambient_occlusion.enabled = this->illumination_settings->ambient_occlusion_map->isActive();
+		settings.ambient_occlusion.type = this->illumination_settings->ambient_occlusion_map->getMapType();
+		settings.ambient_occlusion.channel = this->illumination_settings->ambient_occlusion_map->getChannel();
+		settings.receive_shadows = this->illumination_settings->receive_shadow_map->isActive();
+	}
+
+	void createReflectionSettings(FactorySettings& settings)
+	{
+		settings.use_reflection = this->reflection_settings->isActive();
+		settings.refl_sphere_map = this->reflection_settings->isSphereMap();
+		settings.use_fresnel = this->reflection_settings->fresnel->isActive();
 	}
 
 	void createBumpSettings(FactorySettings& settings)
@@ -266,6 +281,13 @@ private:
 			textures.clut_texture_name = texname;
 			textures.clut_texture = this->texture_library.at(texname);
 		}
+		if (const auto& tex_ui = this->reflection_settings->env_texture; tex_ui->isActive())
+		{
+			auto texname = tex_ui->file_combo_box->combobox->currentText().toStdString();
+			textures.env_texture_name = texname;
+			textures.env_texture = this->texture_library.at(texname);
+			textures.isSphere = this->reflection_settings->isSphereMap();
+		}
 
 		// Handle UV adjustments
 		this->createUVSettings(settings.uv_slots[0], *this->uv_settings_1);
@@ -280,6 +302,7 @@ private:
 		this->createDiffuseColorSettings(settings);
 		this->createSpecularColorSettings(settings);
 		this->createIlluminationSettings(settings);
+		this->createReflectionSettings(settings);
 
 		// Vertex
 		this->createVertexSettings(settings);
@@ -317,6 +340,19 @@ private:
 		{
 			material->setTextureBuffer(0x48, textures.clut_texture->getBufferID());
 			material->setTextureName(0x48, textures.clut_texture_name);
+		}
+		if (textures.env_texture)
+		{
+			if (textures.isSphere)
+			{
+				material->setTextureBuffer(0x8E, textures.env_texture->getBufferID());
+				material->setTextureName(0x8E, textures.env_texture_name);
+			}
+			else
+			{
+				material->setTextureBuffer(0x3A, textures.env_texture->getBufferID());
+				material->setTextureName(0x3A, textures.env_texture_name);
+			}
 		}
 	}
 
@@ -457,12 +493,14 @@ private:
 			this->diffuse_color_settings->transparency_map_widget->addDiffuseMap();
 			this->diffuse_color_settings->diffuse_map_widget->addDiffuseMap();
 			this->specular_color_settings->specular_map->addDiffuseMap();
+			this->illumination_settings->ambient_occlusion_map->addDiffuseMap();
 		}
 		else
 		{
 			this->diffuse_color_settings->transparency_map_widget->removeDiffuseMap();
 			this->diffuse_color_settings->diffuse_map_widget->removeDiffuseMap();
 			this->specular_color_settings->specular_map->removeDiffuseMap();
+			this->illumination_settings->ambient_occlusion_map->removeDiffuseMap();
 		}
 
 		// Normal 1
@@ -471,22 +509,26 @@ private:
 			this->diffuse_color_settings->transparency_map_widget->addNormalMap();
 			this->diffuse_color_settings->diffuse_map_widget->addNormalMap();
 			this->specular_color_settings->specular_map->addNormalMap();
+			this->illumination_settings->ambient_occlusion_map->addNormalMap();
 		}
 		else
 		{
 			this->diffuse_color_settings->transparency_map_widget->removeNormalMap();
 			this->diffuse_color_settings->diffuse_map_widget->removeNormalMap();
 			this->specular_color_settings->specular_map->removeNormalMap();
+			this->illumination_settings->ambient_occlusion_map->removeNormalMap();
 		}
 
 		// Light
 		if (this->diffuse_color_settings->light_sampler->isActive())
 		{
 			this->specular_color_settings->specular_map->addLightMap();
+			this->illumination_settings->ambient_occlusion_map->addLightMap();
 		}
 		else
 		{
 			this->specular_color_settings->specular_map->removeLightMap();
+			this->illumination_settings->ambient_occlusion_map->removeLightMap();
 		}
 
 		// Diffuse 2
