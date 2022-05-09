@@ -50,6 +50,54 @@ public:
 	}
 };
 
+class ShaderFactoryComboboxTextureSlot : public QWidget
+{
+	Q_OBJECT;
+
+signals:
+	void settingsUpdated(bool);
+public:
+	void toggle(bool active)
+	{
+		this->file_combo_box->setEnabled(active);
+		this->uv_slot_combobox->setEnabled(active);
+	}
+	QComboBox* combobox;
+	FileComboBox* file_combo_box;
+	QLabel* uv_slot_label;
+	QComboBox* uv_slot_combobox;
+
+	ShaderFactoryComboboxTextureSlot(QWidget* parent = Q_NULLPTR) : QWidget(parent)
+	{
+		auto _layout = new QHBoxLayout;
+
+		this->combobox = new QComboBox(this);
+		this->file_combo_box = new FileComboBox(this);
+		this->uv_slot_label = new QLabel("UV Slot:", this);
+		this->uv_slot_combobox = new QComboBox(this);
+		this->uv_slot_combobox->addItems({ "1", "2", "3" });
+
+		_layout->addWidget(this->combobox);
+		_layout->addWidget(this->file_combo_box);
+		_layout->addWidget(this->uv_slot_label);
+		_layout->addWidget(this->uv_slot_combobox);
+
+		this->setLayout(_layout);
+		this->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
+
+		this->toggle(false);
+
+		connect(this->combobox, static_cast<void(QComboBox::*)(int)>(&QComboBox::currentIndexChanged), this, &ShaderFactoryComboboxTextureSlot::settingsUpdated);
+		connect(this->file_combo_box->combobox, static_cast<void(QComboBox::*)(int)>(&QComboBox::currentIndexChanged), this, &ShaderFactoryComboboxTextureSlot::settingsUpdated);
+		connect(this->uv_slot_combobox, static_cast<void(QComboBox::*)(int)>(&QComboBox::currentIndexChanged), this, &ShaderFactoryComboboxTextureSlot::settingsUpdated);
+	}
+
+	bool isActive()
+	{
+		return this->isEnabled();
+	}
+};
+
 class ShaderFactoryTextureSlot : public QWidget
 {
 	Q_OBJECT;
