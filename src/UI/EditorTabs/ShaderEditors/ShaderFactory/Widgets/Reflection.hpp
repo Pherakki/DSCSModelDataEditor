@@ -1,28 +1,59 @@
 #pragma once
 
+#include "BaseWidgets/CheckableWidget.hpp"
+#include "BaseWidgets/TextboxArrayWidget.hpp"
 #include "TextureSlot.hpp"
 
-class FresnelReflectionWidget : public QWidget
-{
 
-};
-
-class ReflectionSettings : public QWidget
+class ReflectionSettings : public CheckableWidget
 {
 public:
-	ShaderFactoryTextureSlot* env_texture;
-	TitleWidget* title_widget;
-	ReflectionSettings(QWidget* parent = Q_NULLPTR) : QWidget(parent)
+	static enum class EnvMapType
 	{
-		auto _layout = new QGridLayout;
+		CubeMap,
+		SphereMap
+	};
+
+	ShaderFactoryComboboxTextureSlot* env_texture;
+	CheckableWidget* fresnel;
+	TextboxArrayWidget<1>* fresnel_min;
+	TextboxArrayWidget<1>* fresnel_exp;
+
+	ReflectionSettings(QWidget* parent = Q_NULLPTR) 
+		: CheckableWidget("Reflection", parent)
+		, fresnel_min{ new TextboxArrayWidget<1>("Min", this) }
+		, fresnel_exp{ new TextboxArrayWidget<1>("Exp", this) }
+	{
+		auto contents_layout = new QVBoxLayout;
 		{
-			this->title_widget = new TitleWidget("Reflection", this);
+			this->env_texture = new ShaderFactoryComboboxTextureSlot(this);
+			this->env_texture->combobox->addItem("Cube Map", static_cast<int>(EnvMapType::CubeMap));
+			this->env_texture->combobox->addItem("Sphere Map", static_cast<int>(EnvMapType::SphereMap));
 
-			this->env_texture = new ShaderFactoryTextureSlot("Reflection Texture", this);
+			this->fresnel = new CheckableWidget("Fresnel", this);
+			auto fresnel_layout = new QVBoxLayout;
+			{
+				fresnel_layout->addWidget(this->fresnel_min);
+				fresnel_layout->addWidget(this->fresnel_exp);
+			}
+			this->fresnel->setContents(fresnel_layout);
 
-			_layout->addWidget(this->env_texture, 0, 1);
-			_layout->addWidget(this->env_texture->checkbox, 0, 0);
+			contents_layout->addWidget(this->env_texture);
+			contents_layout->addWidget(this->fresnel);
 		}
-		this->setLayout(_layout);
+		this->setContents(contents_layout);
+
+		connect(this->checkbox, &QCheckBox::stateChanged, this->env_texture, &ShaderFactoryComboboxTextureSlot::setEnabled);
+		connect(this->checkbox, &QCheckBox::stateChanged, this->env_texture, &ShaderFactoryComboboxTextureSlot::toggle);
+	}
+
+	EnvMapType getMapType()
+	{
+		return static_cast<EnvMapType>(this->env_texture->combobox->currentData().toInt());
+	}
+
+	bool isSphereMap()
+	{
+		return this->getMapType() == EnvMapType::SphereMap;
 	}
 };
