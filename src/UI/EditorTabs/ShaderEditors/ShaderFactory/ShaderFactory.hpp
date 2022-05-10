@@ -14,6 +14,7 @@
 
 #include "ShaderGenerator/VertexShader.hpp"
 #include "ShaderGenerator/FragmentShader.hpp"
+#include "../TabMaterials.hpp"
 #include "../../../Spoiler/Spoiler.hpp"
 #include "../../../../Rendering/DSCS/DataObjects/OpenGLDSCSMesh.hpp"
 #include "../../../../Rendering/DSCS/DataObjects/OpenGLDSCSMaterial.hpp"
@@ -564,7 +565,7 @@ private:
 signals:
 	void overwriteCurrentMaterial(MaterialPtr material_ptr);
 public:
-	explicit ShaderFactory(TextureLibrary_t& texlib, ShaderBackend_t& shader_backend, Rendering::DSCS::AnimationBuffer& animation_buffer, QWidget* parent = nullptr)
+	explicit ShaderFactory(std::vector<TabMaterials>& tab_materials, TextureLibrary_t& texlib, ShaderBackend_t& shader_backend, Rendering::DSCS::AnimationBuffer& animation_buffer, QWidget* parent = nullptr)
 		: QWidget(parent)
 		, texture_library{ texlib }
 		, shader_backend{ shader_backend }
