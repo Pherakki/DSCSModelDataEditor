@@ -2,7 +2,7 @@
 
 #include "../../../Rendering/DSCS/DataObjects/OpenGLDSCSMaterial.hpp"
 
-struct TabMaterials
+struct TabShaders
 {
 private:
     typedef Rendering::DSCS::DataObjects::OpenGLDSCSMaterial Material;
@@ -13,4 +13,5 @@ public:
     MaterialPtr custom_code_material = nullptr;
 };
 
-typedef std::vector<TabMaterials> TabMaterialLibrary;
+// Should also be indexable by Model, not just Material
+typedef std::vector<TabShaders> TabShadersLibrary;

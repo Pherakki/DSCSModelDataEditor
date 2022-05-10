@@ -7,7 +7,7 @@
 #include <UI/EditorTabs/ShaderEditors/ShaderFactory/ShaderFactory.hpp>
 #include <UI/EditorTabs/ShaderEditors/CodeEditor.hpp>
 
-#include "TabMaterials.hpp"
+#include "TabShaders.hpp"
 
 class ShaderEditorTabs : public QTabWidget
 {
@@ -26,7 +26,7 @@ private:
     ShaderFactory* factory_tab;
     CodeEditor* code_tab = new CodeEditor(this->editor_materials, this);
 
-    TabMaterialLibrary editor_materials;
+    TabShadersLibrary editor_materials;
 signals:
     void overwriteCurrentMaterial(MaterialPtr material_ptr);
 public:

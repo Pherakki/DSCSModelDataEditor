@@ -78,7 +78,7 @@ add_executable (${PROJECT_NAME}
                 "UI/EditorTabs/ShaderEditors/ShaderFactory/Widgets/Reflection.hpp" 
                 "UI/EditorTabs/ShaderEditors/ShaderFactory/Widgets/Illumination.hpp" 
                 "UI/EditorTabs/ShaderEditors/ShaderFactory/Widgets/GlassMap.hpp"
-                "UI/EditorTabs/ShaderEditors/ShaderFactory/Widgets/PositionSettings.hpp" "UI/EditorTabs/ShaderEditors/TabMaterials.hpp")
+                "UI/EditorTabs/ShaderEditors/ShaderFactory/Widgets/PositionSettings.hpp" "UI/EditorTabs/ShaderEditors/TabShaders.hpp")
 
 # Allow CMake to build libraries
 cmake_policy(SET CMP0079 NEW)

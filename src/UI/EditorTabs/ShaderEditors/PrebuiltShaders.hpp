@@ -10,7 +10,7 @@
 #include <QtWidgets/QLineEdit>
 
 #include "Rendering/DSCS/DataObjects/OpenGLDSCSMaterial.hpp"
-#include "TabMaterials.hpp"
+#include "TabShaders.hpp"
 
 class PrebuiltTab : public QWidget
 {
@@ -28,7 +28,7 @@ private:
 
 	MaterialPtr selected_material = nullptr;
 public:
-	PrebuiltTab(TabMaterialLibrary& tab_materials, QWidget* parent = Q_NULLPTR) : QWidget(parent)
+	PrebuiltTab(TabShadersLibrary& tab_materials, QWidget* parent = Q_NULLPTR) : QWidget(parent)
 	{
 		QVBoxLayout* layout = new QVBoxLayout(this);
 

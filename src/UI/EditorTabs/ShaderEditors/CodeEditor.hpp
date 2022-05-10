@@ -7,7 +7,7 @@
 
 #include <UI/CgSyntaxHighlighter.hpp>
 
-#include "TabMaterials.hpp"
+#include "TabShaders.hpp"
 
 class CodeEditor : public QWidget
 {
@@ -44,7 +44,7 @@ private:
     }
 
 public:
-	CodeEditor(TabMaterialLibrary& tab_materials, QWidget* parent=Q_NULLPTR) : QWidget(parent)
+	CodeEditor(TabShadersLibrary& tab_materials, QWidget* parent=Q_NULLPTR) : QWidget(parent)
 	{
         this->setLayout(this->layout);
         this->setContentsMargins({ 0, 0, 0, 0 });
