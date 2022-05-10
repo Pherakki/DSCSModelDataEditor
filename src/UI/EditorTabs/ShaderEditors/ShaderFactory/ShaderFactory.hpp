@@ -438,22 +438,23 @@ private:
 			return;
 		}
 
-		MaterialPtr new_material = std::make_shared<Material>(shader, this->animation_buffer.uniform_dispatch_buffer);
-		if (this->selected_material)
-		{
-			new_material->name = this->selected_material->name;
-			new_material->name_hash = this->selected_material->name_hash;
-			new_material->opengl_settings = this->selected_material->opengl_settings;
-		}
-		else
-		{
-			new_material->name = "New Material";
-			new_material->name_hash = dscsNameHash(new_material->name);
-		}
-		this->assignTextureReferences(new_material, textures);
-		this->assignDefaultValues(new_material);
+		//MaterialPtr new_material = std::make_shared<Material>(shader, this->animation_buffer.uniform_dispatch_buffer);
+		//if (this->selected_material)
+		//{
+		//	new_material->name = this->selected_material->name;
+		//	new_material->name_hash = this->selected_material->name_hash;
+		//	new_material->opengl_settings = this->selected_material->opengl_settings;
+		//}
+		//else
+		//{
+		//	new_material->name = "New Material";
+		//	new_material->name_hash = dscsNameHash(new_material->name);
+		//}
+		this->selected_material->replaceShader(shader, this->animation_buffer.uniform_dispatch_buffer);
+		this->assignTextureReferences(this->selected_material, textures);
+		this->assignDefaultValues(this->selected_material);
 
-		this->active_local_material = new_material;
+		this->active_local_material = this->selected_material;
 		this->setActiveMaterialAsSelected(); // This should get linked to buttons...
 	}
 
