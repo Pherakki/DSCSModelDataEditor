@@ -217,6 +217,11 @@ void DSCSModelDataEditorWindow::loadAnim(const QString& fileName)
     this->render_widget->loadAnim(fileName.toStdString());
 }
 
+SelectedObjectReferences DSCSModelDataEditorWindow::createSelectedObjectReferences()
+{
+    return SelectedObjectReferences(this->selected_model, this->selected_mesh, this->selected_material);
+}
+
 /*
 UI Init
 */

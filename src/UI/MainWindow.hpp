@@ -18,6 +18,7 @@
 #include "../Commands/ICommand.hpp"
 #include "EditorTabs/ShaderEditors/ShaderFactory/ShaderFactory.hpp"
 #include "EditorTabs/MaterialEditor.hpp"
+#include "SelectedObjectReferences.hpp"
 
 
 class DSCSModelDataEditorWindow : public QMainWindow
@@ -41,6 +42,7 @@ private:
     void initToolbar();
     void loadModel(const QString& fileName);
     void loadAnim(const QString& fileName);
+    SelectedObjectReferences createSelectedObjectReferences();
 signals:
     void selectedModelUpdated(std::shared_ptr<Rendering::DSCS::DataObjects::OpenGLDSCSModel> model_ptr);
     void selectedMeshUpdated(std::shared_ptr<Rendering::DSCS::DataObjects::OpenGLDSCSMesh> mesh_ptr);
