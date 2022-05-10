@@ -62,7 +62,7 @@ namespace Rendering::DSCS::DataObjects
 	public:
 		OpenGLDSCSMesh(const FileFormats::DSCS::GeomFile::MeshReadWrite& mesh);
 		~OpenGLDSCSMesh();
-		std::shared_ptr<OpenGLDSCSMaterial> material;
+		std::shared_ptr<OpenGLDSCSMaterial> material = nullptr;
 		FileFormats::DSCS::GeomFile::MeshReadWrite mesh;
 		std::vector<uint32_t> used_bones;
 
