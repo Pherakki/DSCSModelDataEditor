@@ -99,7 +99,6 @@ private:
 	MaterialPtr active_local_material = nullptr;
 	TextureLibrary_t& texture_library;
 	ShaderBackend_t& shader_backend;
-	std::unordered_map<std::string, MaterialPtr> local_material_cache;
 
 	bool anyLayer1SamplerEnabled()
 	{
