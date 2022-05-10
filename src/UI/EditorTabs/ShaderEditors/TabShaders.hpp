@@ -15,5 +15,5 @@ public:
     MaterialPtr custom_code_material = nullptr;
 };
 
-// Should also be indexable by Model, not just Material
-typedef std::unordered_map<std::shared_ptr<Rendering::DSCS::DataObjects::OpenGLDSCSMaterial>, TabShaders> TabShadersLibrary;
+typedef std::unordered_map<std::shared_ptr<Rendering::DSCS::DataObjects::OpenGLDSCSMaterial>, TabShaders> ModelTabShadersLibrary;
+typedef std::unordered_map<std::shared_ptr<Rendering::DSCS::DataObjects::OpenGLDSCSModel>, ModelTabShadersLibrary> TabShadersLibrary;
