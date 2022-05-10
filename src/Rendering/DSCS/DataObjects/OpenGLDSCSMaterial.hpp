@@ -40,7 +40,6 @@ namespace Rendering::DSCS::DataObjects
 		typedef std::shared_ptr<ShaderObjects::cgGLShaderObject> ShaderPtr;
 		std::vector<std::unique_ptr<ShaderUniforms::AbstractcgGLShaderUniform>> world_uniforms;
 	public:
-		OpenGLDSCSMaterial(const ShaderPtr& shader);
 		OpenGLDSCSMaterial(const ShaderPtr& shader, const std::array<float*, 0xA0>& uniform_dispatch_buffer);
 		// Need to map uniform IDs and opengl IDs to parameter names and functions
 		// Lots of these should be private and have getters
