@@ -2,12 +2,12 @@
 
 #include <unordered_map>
 
-#include "../../../Rendering/DSCS/DataObjects/OpenGLDSCSMaterial.hpp"
+#include "../../../Rendering/DSCS/DataObjects/OpenGLDSCSModel.hpp"
 
 struct TabShaders
 {
 private:
-    typedef std::shared_ptr<ShaderObjects::cgGLShaderObject> ShaderPtr;
+    typedef std::shared_ptr<Rendering::ShaderObjects::cgGLShaderObject> ShaderPtr;
 public:
     ShaderPtr prebuilt_shader = nullptr;
     ShaderPtr factory_shader = nullptr;
