@@ -7,12 +7,11 @@
 struct TabShaders
 {
 private:
-    typedef Rendering::DSCS::DataObjects::OpenGLDSCSMaterial Material;
-    typedef std::shared_ptr<Material> MaterialPtr;
+    typedef std::shared_ptr<ShaderObjects::cgGLShaderObject> ShaderPtr;
 public:
-    MaterialPtr prebuilt_material = nullptr;
-    MaterialPtr factory_material = nullptr;
-    MaterialPtr custom_code_material = nullptr;
+    ShaderPtr prebuilt_shader = nullptr;
+    ShaderPtr factory_shader = nullptr;
+    ShaderPtr custom_code_shader = nullptr;
 };
 
 typedef std::unordered_map<std::shared_ptr<Rendering::DSCS::DataObjects::OpenGLDSCSMaterial>, TabShaders> ModelTabShadersLibrary;
