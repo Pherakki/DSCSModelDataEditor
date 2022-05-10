@@ -26,7 +26,7 @@ private:
     ShaderFactory* factory_tab;
     CodeEditor* code_tab = new CodeEditor(this->editor_materials, this);
 
-    std::vector<TabMaterials> editor_materials;
+    TabMaterialLibrary editor_materials;
 signals:
     void overwriteCurrentMaterial(MaterialPtr material_ptr);
 public:

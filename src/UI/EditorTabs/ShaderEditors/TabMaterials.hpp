@@ -12,3 +12,5 @@ public:
     MaterialPtr factory_material = nullptr;
     MaterialPtr custom_code_material = nullptr;
 };
+
+typedef std::vector<TabMaterials> TabMaterialLibrary;

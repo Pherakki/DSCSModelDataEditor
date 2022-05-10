@@ -44,7 +44,7 @@ private:
     }
 
 public:
-	CodeEditor(std::vector<TabMaterials>& tab_materials, QWidget* parent=Q_NULLPTR) : QWidget(parent)
+	CodeEditor(TabMaterialLibrary& tab_materials, QWidget* parent=Q_NULLPTR) : QWidget(parent)
 	{
         this->setLayout(this->layout);
         this->setContentsMargins({ 0, 0, 0, 0 });

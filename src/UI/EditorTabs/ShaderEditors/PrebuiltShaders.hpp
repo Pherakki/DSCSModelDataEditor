@@ -28,7 +28,7 @@ private:
 
 	MaterialPtr selected_material = nullptr;
 public:
-	PrebuiltTab(std::vector<TabMaterials>& tab_materials, QWidget* parent = Q_NULLPTR) : QWidget(parent)
+	PrebuiltTab(TabMaterialLibrary& tab_materials, QWidget* parent = Q_NULLPTR) : QWidget(parent)
 	{
 		QVBoxLayout* layout = new QVBoxLayout(this);
 
