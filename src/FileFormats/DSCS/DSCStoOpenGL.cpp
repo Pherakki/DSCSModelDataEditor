@@ -132,10 +132,9 @@ namespace FileFormats::DSCS
 			}
 
 			// Init the material with the shader
-			auto material = std::make_shared<Rendering::DSCS::DataObjects::OpenGLDSCSMaterial>(shader);
+			auto material = std::make_shared<Rendering::DSCS::DataObjects::OpenGLDSCSMaterial>(shader, uniform_dispatch_buffer);
 
 			// Init Shader Uniforms handlers
-			material->initShaderUniforms(uniform_dispatch_buffer);
 			material->name_hash = geom_mat.name_hash;
 			material->name = material_name_lookup[geom_mat.name_hash];
 			// Copy shader uniform data into the material
