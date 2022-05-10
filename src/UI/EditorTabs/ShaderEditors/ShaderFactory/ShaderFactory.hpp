@@ -16,6 +16,7 @@
 #include "ShaderGenerator/FragmentShader.hpp"
 #include "../TabShaders.hpp"
 #include "../../../Spoiler/Spoiler.hpp"
+#include "../../../../Rendering/DSCS/DataObjects/OpenGLDSCSModel.hpp"
 #include "../../../../Rendering/DSCS/DataObjects/OpenGLDSCSMesh.hpp"
 #include "../../../../Rendering/DSCS/DataObjects/OpenGLDSCSMaterial.hpp"
 #include "../../../../Rendering/DSCS/ShaderSystem/cgGL/cgGLShaderBackend.hpp"
@@ -72,6 +73,8 @@ class ShaderFactory : public QWidget
 	Q_OBJECT;
 
 private:
+	typedef Rendering::DSCS::DataObjects::OpenGLDSCSModel Model;
+	typedef std::shared_ptr<Model> ModelPtr;
 	typedef Rendering::DSCS::DataObjects::OpenGLDSCSMesh Mesh;
 	typedef std::shared_ptr<Mesh> MeshPtr;
 	typedef std::shared_ptr<Rendering::DataObjects::OpenGLDSCSTexture> TexturePtr;
@@ -94,6 +97,7 @@ private:
 	PositionSettings* position_settings;
 
 	AnimBuf_t& animation_buffer;
+	ModelPtr selected_model = nullptr;
 	MeshPtr selected_mesh = nullptr;
 	MaterialPtr selected_material = nullptr;
 	MaterialPtr active_local_material = nullptr;
@@ -631,6 +635,11 @@ public:
 	/*
 	Update methods for the data on this widget
 	*/
+	void updateSelectedModel(ModelPtr model_ptr)
+	{
+		this->selected_model = model_ptr;
+	}
+
 	void updateSelectedMesh(MeshPtr mesh_ptr)
 	{
 		this->selected_mesh = mesh_ptr;
