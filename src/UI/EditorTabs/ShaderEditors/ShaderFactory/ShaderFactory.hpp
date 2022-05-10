@@ -455,7 +455,12 @@ private:
 		this->assignDefaultValues(new_material);
 
 		this->active_local_material = new_material;
-		emit this->overwriteCurrentMaterial(new_material);
+		this->setActiveMaterialAsSelected(); // This should get linked to buttons...
+	}
+
+	void setActiveMaterialAsSelected()
+	{
+		emit this->overwriteCurrentMaterial(this->active_local_material);
 	}
 
 	void placeInSpoiler(const QString& title, QWidget* widget, QLayout* layout)
