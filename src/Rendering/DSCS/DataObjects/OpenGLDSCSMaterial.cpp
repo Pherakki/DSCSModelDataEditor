@@ -11,6 +11,12 @@ namespace Rendering::DSCS::DataObjects
 	{
 		for (auto& val : this->local_uniform_buffer)
 			val = { 0., 0., 0., 0. };
+		this->replaceShader(shader, uniform_dispatch_buffer);
+	}
+
+
+	void OpenGLDSCSMaterial::replaceShader(const ShaderPtr& shader, const std::array<float*, 0xA0>& uniform_dispatch_buffer)
+	{
 		this->shader = shader;
 		this->errorChecker = OpenGLErrorChecker();
 		this->initShaderUniforms(uniform_dispatch_buffer);
