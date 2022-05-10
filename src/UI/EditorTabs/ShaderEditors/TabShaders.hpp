@@ -1,5 +1,7 @@
 #pragma once
 
+#include <unordered_map>
+
 #include "../../../Rendering/DSCS/DataObjects/OpenGLDSCSMaterial.hpp"
 
 struct TabShaders
@@ -14,4 +16,4 @@ public:
 };
 
 // Should also be indexable by Model, not just Material
-typedef std::vector<TabShaders> TabShadersLibrary;
+typedef std::unordered_map<std::shared_ptr<Rendering::DSCS::DataObjects::OpenGLDSCSMaterial>, TabShaders> TabShadersLibrary;
