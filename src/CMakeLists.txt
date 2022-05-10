@@ -78,12 +78,14 @@ add_executable (${PROJECT_NAME}
                 "UI/EditorTabs/ShaderEditors/ShaderFactory/Widgets/Reflection.hpp" 
                 "UI/EditorTabs/ShaderEditors/ShaderFactory/Widgets/Illumination.hpp" 
                 "UI/EditorTabs/ShaderEditors/ShaderFactory/Widgets/GlassMap.hpp"
-                "UI/EditorTabs/ShaderEditors/ShaderFactory/Widgets/PositionSettings.hpp")
+                "UI/EditorTabs/ShaderEditors/ShaderFactory/Widgets/PositionSettings.hpp" "UI/EditorTabs/ShaderEditors/TabMaterials.hpp")
 
 # Allow CMake to build libraries
 cmake_policy(SET CMP0079 NEW)
 
 # Set up Qt5
+message(PROJECT_SOURCE_DIR="${Qt5_DIR}")
+# The Qt5_DIR needs to be set to Qt5/lib/cmake/Qt5 of your Qt5 install
 set(Qt5_DIR "../lib/Qt5/lib/cmake/Qt5") # Need to get rid of this eventually?
 set(Qt5_PLUGINS_DIR ${Qt5_DIR}/../../../plugins)
 
