@@ -438,7 +438,7 @@ private:
 			return;
 		}
 
-		MaterialPtr new_material = std::make_shared<Material>(shader);
+		MaterialPtr new_material = std::make_shared<Material>(shader, this->animation_buffer.uniform_dispatch_buffer);
 		if (this->selected_material)
 		{
 			new_material->name = this->selected_material->name;
@@ -450,7 +450,6 @@ private:
 			new_material->name = "New Material";
 			new_material->name_hash = dscsNameHash(new_material->name);
 		}
-		new_material->initShaderUniforms(this->animation_buffer.uniform_dispatch_buffer);
 		this->assignTextureReferences(new_material, textures);
 		this->assignDefaultValues(new_material);
 

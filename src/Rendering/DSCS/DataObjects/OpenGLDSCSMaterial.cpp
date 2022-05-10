@@ -7,17 +7,12 @@ namespace Rendering::DSCS::DataObjects
 	typedef std::shared_ptr<ShaderObjects::cgGLShaderObject> ShaderPtr;
 
 	// Constructor
-	OpenGLDSCSMaterial::OpenGLDSCSMaterial(const ShaderPtr& shader)
+	OpenGLDSCSMaterial::OpenGLDSCSMaterial(const ShaderPtr& shader, const std::array<float*, 0xA0>& uniform_dispatch_buffer)
 	{
 		for (auto& val : this->local_uniform_buffer)
 			val = { 0., 0., 0., 0. };
 		this->shader = shader;
 		this->errorChecker = OpenGLErrorChecker();
-	}
-
-	OpenGLDSCSMaterial::OpenGLDSCSMaterial(const ShaderPtr& shader, const std::array<float*, 0xA0>& uniform_dispatch_buffer)
-		: OpenGLDSCSMaterial::OpenGLDSCSMaterial(shader)
-	{
 		this->initShaderUniforms(uniform_dispatch_buffer);
 	}
 
