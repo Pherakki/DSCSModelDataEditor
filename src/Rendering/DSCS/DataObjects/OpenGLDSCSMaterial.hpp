@@ -45,7 +45,7 @@ namespace Rendering::DSCS::DataObjects
 		// Lots of these should be private and have getters
 		std::string name;
 		uint32_t name_hash;
-		std::shared_ptr<ShaderObjects::cgGLShaderObject> shader;
+		std::shared_ptr<ShaderObjects::cgGLShaderObject> shader = nullptr;
 		OpenGLErrorChecker errorChecker;
 
 		void bind();
