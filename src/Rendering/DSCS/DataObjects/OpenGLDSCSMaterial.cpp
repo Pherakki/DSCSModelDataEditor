@@ -17,6 +17,18 @@ namespace Rendering::DSCS::DataObjects
 
 	void OpenGLDSCSMaterial::replaceShader(const ShaderPtr& shader, const std::array<float*, 0xA0>& uniform_dispatch_buffer)
 	{
+		this->world_uniforms.clear();
+		decltype(this->world_uniforms) empty_worlds{};
+		this->world_uniforms.swap(empty_worlds);
+
+		this->texture_refs.clear();
+		decltype(this->texture_refs) empty_textures{};
+		this->texture_refs.swap(empty_textures);
+
+		this->material_uniforms.clear();
+		decltype(this->material_uniforms) empty_materials{};
+		this->material_uniforms.swap(empty_materials);
+
 		this->shader = shader;
 		this->errorChecker = OpenGLErrorChecker();
 		this->initShaderUniforms(uniform_dispatch_buffer);
