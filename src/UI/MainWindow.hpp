@@ -31,9 +31,7 @@ public:
     ~DSCSModelDataEditorWindow() { };
 private:
     typedef std::shared_ptr<Rendering::DSCS::DataObjects::OpenGLDSCSMaterial> MaterialPtr;
-    std::shared_ptr<Rendering::DSCS::DataObjects::OpenGLDSCSModel> selected_model = nullptr;
-    std::shared_ptr<Rendering::DSCS::DataObjects::OpenGLDSCSMesh> selected_mesh = nullptr;
-    std::shared_ptr<Rendering::DSCS::DataObjects::OpenGLDSCSMaterial> selected_material = nullptr;
+    SelectedObjectReferences selected_objects;
 
     CustomWidgets::RenderWidget* render_widget;
     QPlainTextEdit* vertex_shader_textedit;
@@ -42,7 +40,6 @@ private:
     void initToolbar();
     void loadModel(const QString& fileName);
     void loadAnim(const QString& fileName);
-    SelectedObjectReferences createSelectedObjectReferences();
 signals:
     void selectedModelUpdated(std::shared_ptr<Rendering::DSCS::DataObjects::OpenGLDSCSModel> model_ptr);
     void selectedMeshUpdated(std::shared_ptr<Rendering::DSCS::DataObjects::OpenGLDSCSMesh> mesh_ptr);

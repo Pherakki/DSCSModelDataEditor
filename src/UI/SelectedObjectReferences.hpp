@@ -25,6 +25,7 @@ signals:
 signals:
 	void selectedMaterialUpdated();
 public:
+	SelectedObjectReferences() {}
 	SelectedObjectReferences(const ModelPtr& model, const MeshPtr& mesh, const MaterialPtr& material)
 		: selected_model{model}
 		, selected_mesh{mesh}
