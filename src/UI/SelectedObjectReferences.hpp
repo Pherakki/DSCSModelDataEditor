@@ -16,7 +16,7 @@ protected:
 	MeshPtr& selected_mesh;
 	MaterialPtr& selected_material;
 public:
-	SelectedObjectReferences(const ModelPtr& model, const MeshPtr& mesh, const MaterialPtr& material)
+	SelectedObjectReferences(ModelPtr& model, MeshPtr& mesh, MaterialPtr& material)
 		: selected_model{model}
 		, selected_mesh{mesh}
 		, selected_material{material}
