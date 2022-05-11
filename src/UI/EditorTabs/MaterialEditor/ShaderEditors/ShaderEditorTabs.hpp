@@ -25,7 +25,7 @@ private:
     PrebuiltTab* prebuilts_tab = new PrebuiltTab(this->selected_objects, this->editor_materials, this);
     //QScrollArea* shader_factory_scroll_area = new QScrollArea(this);
     ShaderFactory* factory_tab;
-    CodeEditor* code_tab = new CodeEditor(this->editor_materials, this);
+    CodeEditor* code_tab = new CodeEditor(this->selected_objects, this->editor_materials, this);
 
     TabShadersLibrary editor_materials;
     SelectedObjectReferences& selected_objects;

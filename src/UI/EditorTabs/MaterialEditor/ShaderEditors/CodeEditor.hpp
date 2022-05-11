@@ -8,6 +8,7 @@
 #include <UI/CgSyntaxHighlighter.hpp>
 
 #include "TabShaders.hpp"
+#include "UI/SelectedObjectReferences.hpp"
 
 class CodeEditor : public QWidget
 {
@@ -22,6 +23,7 @@ private:
     QPushButton* compile_button = new QPushButton("Compile", this);
 
     MaterialPtr selected_material = nullptr;
+    SelectedObjectReferences& selected_objects;
 
     void setSyntaxHighlighter(QPlainTextEdit* textbox)
     {
@@ -44,7 +46,9 @@ private:
     }
 
 public:
-	CodeEditor(TabShadersLibrary& tab_materials, QWidget* parent=Q_NULLPTR) : QWidget(parent)
+	CodeEditor(SelectedObjectReferences& sor, TabShadersLibrary& tab_materials, QWidget* parent=Q_NULLPTR) 
+        : QWidget(parent)
+        , selected_objects{sor}
 	{
         this->setLayout(this->layout);
         this->setContentsMargins({ 0, 0, 0, 0 });
