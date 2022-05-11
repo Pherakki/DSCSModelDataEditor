@@ -1,9 +1,12 @@
 #pragma once
 
+#include <QObject>
+
 #include "../Rendering/DSCS/DataObjects/OpenGLDSCSModel.hpp"
 
-class SelectedObjectReferences
+class SelectedObjectReferences : public QObject
 {
+	Q_OBJECT
 protected:
 	typedef Rendering::DSCS::DataObjects::OpenGLDSCSModel Model;
 	typedef std::shared_ptr<Model> ModelPtr;
@@ -15,6 +18,12 @@ protected:
 	ModelPtr& selected_model;
 	MeshPtr& selected_mesh;
 	MaterialPtr& selected_material;
+signals:
+	void selectedModelUpdated();
+signals:
+	void selectedMeshUpdated();
+signals:
+	void selectedMaterialUpdated();
 public:
 	SelectedObjectReferences(ModelPtr& model, MeshPtr& mesh, MaterialPtr& material)
 		: selected_model{model}
@@ -22,7 +31,13 @@ public:
 		, selected_material{material}
 	{}
 
-	const ModelPtr&    getSelectedModel()    const noexcept { return this->selected_model; }
-	const MeshPtr&     getSelectedMesh()     const noexcept { return this->selected_mesh; }
+	const ModelPtr&    getSelectedModel   () const noexcept { return this->selected_model;    }
+	const MeshPtr&     getSelectedMesh    () const noexcept { return this->selected_mesh;     }
 	const MaterialPtr& getSelectedMaterial() const noexcept { return this->selected_material; }
+
+	MaterialPtr& getEditableSelectedMaterial() const noexcept { return this->selected_material; }
+
+	void setSelectedModel   (const ModelPtr&    model   ) { this->selected_model    = model;    emit this->selectedModelUpdated();    }
+	void setSelectedMesh    (const MeshPtr&     mesh    ) { this->selected_mesh     = mesh;     emit this->selectedMeshUpdated();     }
+	void setSelectedMaterial(const MaterialPtr& material) { this->selected_material = material; emit this->selectedMaterialUpdated(); }
 };
