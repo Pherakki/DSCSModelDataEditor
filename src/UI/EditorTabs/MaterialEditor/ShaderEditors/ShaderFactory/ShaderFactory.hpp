@@ -21,6 +21,7 @@
 #include "../../../../../Rendering/DSCS/DataObjects/OpenGLDSCSMaterial.hpp"
 #include "../../../../../Rendering/DSCS/ShaderSystem/cgGL/cgGLShaderBackend.hpp"
 #include "../../../../../Utils/Hashing.hpp"
+#include "UI/SelectedObjectReferences.hpp"
 
 #include "Widgets/BumpmapBox.hpp"
 #include "Widgets/DiffuseColor.hpp"
@@ -103,6 +104,7 @@ private:
 	MaterialPtr active_local_material = nullptr;
 	TextureLibrary_t& texture_library;
 	ShaderBackend_t& shader_backend;
+	SelectedObjectReferences& selected_objects;
 
 	bool anyLayer1SamplerEnabled()
 	{
@@ -568,11 +570,12 @@ private:
 signals:
 	void overwriteCurrentMaterial(MaterialPtr material_ptr);
 public:
-	explicit ShaderFactory(TabShadersLibrary& tab_materials, TextureLibrary_t& texlib, ShaderBackend_t& shader_backend, Rendering::DSCS::AnimationBuffer& animation_buffer, QWidget* parent = nullptr)
+	explicit ShaderFactory(SelectedObjectReferences& sor, TabShadersLibrary& tab_materials, TextureLibrary_t& texlib, ShaderBackend_t& shader_backend, Rendering::DSCS::AnimationBuffer& animation_buffer, QWidget* parent = nullptr)
 		: QWidget(parent)
 		, texture_library{ texlib }
 		, shader_backend{ shader_backend }
 		, animation_buffer{ animation_buffer }
+		, selected_objects{ sor }
 	{
 
 		auto _layout = new QVBoxLayout;
