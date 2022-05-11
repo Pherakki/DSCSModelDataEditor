@@ -54,7 +54,7 @@ DSCSModelDataEditorWindow::DSCSModelDataEditorWindow(QWidget* parent = Q_NULLPTR
     auto info_editor = new QTabWidget();
     auto mesh_info_tab = new MeshEditorTab(this->selected_objects, this);
     auto skeleton_info_tab = new QWidget(this);
-    auto material_info_tab = new MaterialEditorTab(render_widget->texture_library, render_widget->shader_backend, this->render_widget->animation_buffer, this);
+    auto material_info_tab = new MaterialEditorTab(this->selected_objects, this->render_widget->texture_library, this->render_widget->shader_backend, this->render_widget->animation_buffer, this);
     auto animation_info_tab = new AnimationEditorTab(render_widget->models);
 
     info_editor->addTab(animation_info_tab, "Animation");

@@ -16,8 +16,8 @@
 #include "EditorTabs/MeshEditor.hpp"
 #include "../Commands/CommandManager.hpp"
 #include "../Commands/ICommand.hpp"
-#include "EditorTabs/ShaderEditors/ShaderFactory/ShaderFactory.hpp"
-#include "EditorTabs/MaterialEditor.hpp"
+#include "EditorTabs/MaterialEditor/ShaderEditors/ShaderFactory/ShaderFactory.hpp"
+#include "EditorTabs/MaterialEditor/MaterialEditor.hpp"
 #include "SelectedObjectReferences.hpp"
 
 

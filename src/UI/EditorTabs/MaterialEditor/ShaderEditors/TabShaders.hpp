@@ -2,7 +2,7 @@
 
 #include <unordered_map>
 
-#include "../../../Rendering/DSCS/DataObjects/OpenGLDSCSModel.hpp"
+#include "Rendering/DSCS/DataObjects/OpenGLDSCSModel.hpp"
 
 struct TabShaders
 {

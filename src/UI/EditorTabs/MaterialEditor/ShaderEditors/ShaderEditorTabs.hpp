@@ -3,9 +3,9 @@
 #include <QtWidgets/QScrollArea>
 #include <QtWidgets/QTabWidget>
 
-#include <UI/EditorTabs/ShaderEditors/PrebuiltShaders.hpp>
-#include <UI/EditorTabs/ShaderEditors/ShaderFactory/ShaderFactory.hpp>
-#include <UI/EditorTabs/ShaderEditors/CodeEditor.hpp>
+#include <UI/EditorTabs/MaterialEditor/ShaderEditors/PrebuiltShaders.hpp>
+#include <UI/EditorTabs/MaterialEditor/ShaderEditors/ShaderFactory/ShaderFactory.hpp>
+#include <UI/EditorTabs/MaterialEditor/ShaderEditors/CodeEditor.hpp>
 
 #include "TabShaders.hpp"
 
