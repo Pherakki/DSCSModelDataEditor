@@ -11,6 +11,7 @@
 
 #include "Rendering/DSCS/DataObjects/OpenGLDSCSMaterial.hpp"
 #include "TabShaders.hpp"
+#include "UI/SelectedObjectReferences.hpp"
 
 class PrebuiltTab : public QWidget
 {
@@ -27,8 +28,11 @@ private:
 	QWidget* vector_uniforms_widget = new QWidget(this->uniform_lists_widget);
 
 	MaterialPtr selected_material = nullptr;
+	SelectedObjectReferences& selected_objects;
 public:
-	PrebuiltTab(TabShadersLibrary& tab_materials, QWidget* parent = Q_NULLPTR) : QWidget(parent)
+	PrebuiltTab(SelectedObjectReferences& sor, TabShadersLibrary& tab_materials, QWidget* parent = Q_NULLPTR) 
+		: QWidget(parent)
+		, selected_objects{sor}
 	{
 		QVBoxLayout* layout = new QVBoxLayout(this);
 
