@@ -18,12 +18,6 @@ protected:
 	ModelPtr selected_model       = nullptr;
 	MeshPtr selected_mesh         = nullptr;
 	MaterialPtr selected_material = nullptr;
-signals:
-	void selectedModelUpdated();
-signals:
-	void selectedMeshUpdated();
-signals:
-	void selectedMaterialUpdated();
 public:
 	SelectedObjectReferences() {}
 	SelectedObjectReferences(const ModelPtr& model, const MeshPtr& mesh, const MaterialPtr& material)
@@ -41,4 +35,12 @@ public:
 	void setSelectedModel   (const ModelPtr&    model   ) { this->selected_model    = model;    emit this->selectedModelUpdated();    }
 	void setSelectedMesh    (const MeshPtr&     mesh    ) { this->selected_mesh     = mesh;     emit this->selectedMeshUpdated();     }
 	void setSelectedMaterial(const MaterialPtr& material) { this->selected_material = material; emit this->selectedMaterialUpdated(); }
+
+
+signals:
+	void selectedModelUpdated();
+signals:
+	void selectedMeshUpdated();
+signals:
+	void selectedMaterialUpdated();
 };

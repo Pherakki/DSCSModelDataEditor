@@ -6,6 +6,7 @@
 #include <QtWidgets/QListWidget>
 #include <QtWidgets/QWidget>
 
+#include "../SelectedObjectReferences.hpp"
 #include "../Types.hpp"
 #include "../../Rendering/DSCS/DataObjects/OpenGLDSCSMesh.hpp"
 
@@ -20,8 +21,7 @@ private:
     typedef Rendering::DSCS::DataObjects::OpenGLDSCSMaterial Material;
     typedef std::shared_ptr<Material> MaterialPtr;
 
-    ModelPtr selected_model = nullptr;
-    MeshPtr  selected_mesh = nullptr;
+    SelectedObjectReferences& selected_objects;
     QListWidget* mesh_list;
     QListWidget* material_list;
     std::unordered_map<MeshPtr, QListWidgetItem*> mesh_lookup;
@@ -33,7 +33,9 @@ private:
 
 
 public:
-    MeshEditorTab(QWidget* parent = Q_NULLPTR) : QWidget(parent)
+    MeshEditorTab(SelectedObjectReferences& sor, QWidget* parent = Q_NULLPTR) 
+        : QWidget(parent)
+        , selected_objects{ sor }
     {
         auto layout = new QHBoxLayout(this);
         this->mesh_list = new QListWidget(this);
@@ -42,9 +44,22 @@ public:
         layout->addWidget(this->material_list);
         this->setLayout(layout);
 
-        this->mesh_link = connect(this->mesh_list, &QListWidget::currentItemChanged, this, &MeshEditorTab::selectMesh);
-        this->material_link = connect(this->material_list, &QListWidget::currentItemChanged, this, &MeshEditorTab::selectMaterial);
+        this->reconnect_mesh();
+        this->reconnect_material();
+
+        connect(&this->selected_objects, &SelectedObjectReferences::selectedModelUpdated, this, &MeshEditorTab::updateDataList);
+        connect(&this->selected_objects, &SelectedObjectReferences::selectedMeshUpdated, this, &MeshEditorTab::updateSelectedMesh);
     };
+
+    void reconnect_mesh()
+    {
+        this->mesh_link = connect(this->mesh_list, &QListWidget::currentItemChanged, this, &MeshEditorTab::selectMesh);
+    }
+    
+    void reconnect_material()
+    {
+        this->material_link = connect(this->material_list, &QListWidget::currentItemChanged, this, &MeshEditorTab::reassignMeshMaterial);
+    }
 
     void updateDataList()
     {
@@ -55,17 +70,18 @@ public:
         this->mesh_lookup.clear();
         this->material_lookup.clear();
         this->material_reverse_lookup.clear();
-        this->mesh_link = connect(this->mesh_list, &QListWidget::currentItemChanged, this, &MeshEditorTab::selectMesh);
-        this->material_link = connect(this->material_list, &QListWidget::currentItemChanged, this, &MeshEditorTab::selectMaterial);
+        this->reconnect_mesh();
+        this->reconnect_material();
 
-        if (this->selected_model)
+        auto& selected_model = this->selected_objects.getSelectedModel();
+        if (selected_model)
         {
             std::vector<QListWidgetItem*> meshlist_items;
-            size_t mesh_sz = this->selected_model->meshes.size();
+            size_t mesh_sz = selected_model->meshes.size();
             meshlist_items.reserve(mesh_sz);
             for (size_t i = 0; i < mesh_sz; ++i)
             {
-                auto& mesh = this->selected_model->meshes[i];
+                auto& mesh = selected_model->meshes[i];
                 auto mesh_name = QString::fromStdString("Mesh " + std::to_string(i));
                 auto list_item = new QListWidgetItem(mesh_name);
                 
@@ -79,11 +95,11 @@ public:
             }
 
             std::vector<QListWidgetItem*> materiallist_items;
-            size_t mat_sz = this->selected_model->materials.size();
+            size_t mat_sz = selected_model->materials.size();
             materiallist_items.reserve(mat_sz);
             for (size_t i = 0; i < mat_sz; ++i)
             {
-                auto& material = this->selected_model->materials[i];
+                auto& material = selected_model->materials[i];
                 auto list_item = new QListWidgetItem(QString::fromStdString(material->name));
 
                 this->material_lookup[material] = list_item;
@@ -103,35 +119,29 @@ signals:
 signals:
     void materialSelectionUpdated(MaterialPtr material_ptr);
 public slots:
-    /*
-    Update methods for the data on this widget
-    */
-    void updateSelectedModel(ModelPtr model_ptr)
-    {
-        this->selected_model = model_ptr;
-        this->updateDataList();
-    }
 
-    void updateSelectedMesh(MeshPtr mesh_ptr)
-    {
-        this->mesh_list->setCurrentItem(this->mesh_lookup.at(mesh_ptr));
-        this->selected_mesh = mesh_ptr;
-    }
 
-    void updateSelectedMaterial(MaterialPtr material_ptr)
+    void updateHighlightedMaterial()
     {
+        auto& material_ptr = this->selected_objects.getSelectedMesh()->material;
         try
         {
             this->material_list->setCurrentItem(this->material_lookup.at(material_ptr));
         }
         catch (const std::exception& ex)
         {
-            std::cout << "Did not find material ptr in mesh editor: " << material_ptr << " " << material_ptr->name << std::endl;
+            std::cout << "UNABLE TO HIGHLIGHT: " << material_ptr << " " << material_ptr->name << ", DOES NOT EXIST!" << std::endl;
             for (const auto& [key, value] : this->material_lookup)
             {
                 std::cout << key << " " << value << " " << key->name << std::endl;
             }
         }
+    }
+
+    void updateSelectedMesh()
+    {
+        this->mesh_list->setCurrentItem(this->mesh_lookup.at(this->selected_objects.getSelectedMesh()));
+        this->updateHighlightedMaterial();
     }
 
     /*
@@ -150,21 +160,22 @@ public slots:
         }
         else
         {
-            emit this->meshSelectionUpdated(this->mesh_reverse_lookup.at(item));
+            auto& selected_mesh = this->mesh_reverse_lookup.at(item);
+            this->selected_objects.setSelectedMesh(selected_mesh);
         }
     }
 
-    void selectMaterial(QListWidgetItem* item, QListWidgetItem* prev)
+    void reassignMeshMaterial(QListWidgetItem* item, QListWidgetItem* prev)
     {
         try
         {
             auto& material = this->material_reverse_lookup.at(item);
-            this->selected_mesh->material = material;
-            emit this->materialSelectionUpdated(material);
+            this->selected_objects.getSelectedMesh()->material = material;
+            this->updateHighlightedMaterial();
         }
         catch (const std::exception& ex)
         {
-            std::cout << "BAD LOOKUP IN MATERIAL" << std::endl;
+            std::cout << "ATTEMPTED TO ASSIGN MATERIAL TO MESH, MATERIAL DOES NOT EXIST." << std::endl;
         }
     }
 

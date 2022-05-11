@@ -52,7 +52,7 @@ DSCSModelDataEditorWindow::DSCSModelDataEditorWindow(QWidget* parent = Q_NULLPTR
 
     // Create tabs for info view
     auto info_editor = new QTabWidget();
-    auto mesh_info_tab = new MeshEditorTab(this);
+    auto mesh_info_tab = new MeshEditorTab(this->selected_objects, this);
     auto skeleton_info_tab = new QWidget(this);
     auto material_info_tab = new MaterialEditorTab(render_widget->texture_library, render_widget->shader_backend, this->render_widget->animation_buffer, this);
     auto animation_info_tab = new AnimationEditorTab(render_widget->models);
@@ -85,33 +85,32 @@ DSCSModelDataEditorWindow::DSCSModelDataEditorWindow(QWidget* parent = Q_NULLPTR
 
     // Model updates
     // -> Updated Widgets
-    connect(this, &DSCSModelDataEditorWindow::selectedModelUpdated, mesh_info_tab, &MeshEditorTab::updateSelectedModel);
+    //connect(this, &DSCSModelDataEditorWindow::selectedModelUpdated, mesh_info_tab, &MeshEditorTab::updateSelectedModel);
     connect(this, &DSCSModelDataEditorWindow::selectedModelUpdated, material_info_tab, &MaterialEditorTab::updateSelectedModel);
 
     // Mesh updates
     // -> Updating Widgets
-    connect(mesh_info_tab, &MeshEditorTab::meshSelectionUpdated, this, &DSCSModelDataEditorWindow::setSelectedMesh);
     // -> Updated Widgets
-    connect(this, &DSCSModelDataEditorWindow::selectedMeshUpdated, mesh_info_tab, &MeshEditorTab::updateSelectedMesh);
     connect(this, &DSCSModelDataEditorWindow::selectedMeshUpdated, material_info_tab, &MaterialEditorTab::updateSelectedMesh);
 
     // Material updates
     // -> Updating Widgets
-    connect(mesh_info_tab, &MeshEditorTab::materialSelectionUpdated, this, &DSCSModelDataEditorWindow::setSelectedMaterial);
     connect(material_info_tab, &MaterialEditorTab::materialSelectionUpdated, this, &DSCSModelDataEditorWindow::setSelectedMaterial);
     connect(material_info_tab, &MaterialEditorTab::overwriteCurrentMaterial, this, &DSCSModelDataEditorWindow::overwriteMaterial);
     // -> Updated Widgets
-    connect(this, &DSCSModelDataEditorWindow::selectedMaterialUpdated, mesh_info_tab, &MeshEditorTab::updateSelectedMaterial);
     connect(this, &DSCSModelDataEditorWindow::selectedMaterialUpdated, material_info_tab, &MaterialEditorTab::updateSelectedMaterial);
 }
 
 void DSCSModelDataEditorWindow::overwriteMaterial(MaterialPtr material)
 {
     auto idx = -1;
-    for (size_t i = 0; i < this->selected_model->materials.size(); ++i)
+    auto& selected_model = selected_objects.getSelectedModel();
+    auto& selected_mesh = selected_objects.getSelectedMesh();
+    auto& selected_material = selected_objects.getSelectedMaterial();
+    for (size_t i = 0; i < selected_model->materials.size(); ++i)
     {
-        auto& s_material = this->selected_model->materials[i];
-        if (this->selected_material == s_material)
+        auto& s_material = selected_model->materials[i];
+        if (selected_material == s_material)
         {
             idx = i;
             break;
@@ -123,10 +122,10 @@ void DSCSModelDataEditorWindow::overwriteMaterial(MaterialPtr material)
     }
     else
     {
-        auto s_mesh = this->selected_mesh;
+        auto s_mesh = selected_mesh;
         s_mesh->material = material;
-        this->selected_model->materials[idx] = material;
-        this->setSelectedModel(this->selected_model);
+        selected_model->materials[idx] = material;
+        this->setSelectedModel(selected_model);
         this->setSelectedMesh(s_mesh);
     }
 }
@@ -173,7 +172,7 @@ Global variable dispatchers
 */
 void DSCSModelDataEditorWindow::setSelectedModelOnly(std::shared_ptr<Rendering::DSCS::DataObjects::OpenGLDSCSModel> model)
 {
-    this->selected_model = model;
+    this->selected_objects.setSelectedModel(model);
     emit this->selectedModelUpdated(model);
 }
 
@@ -186,7 +185,7 @@ void DSCSModelDataEditorWindow::setSelectedModel(std::shared_ptr<Rendering::DSCS
 
 void DSCSModelDataEditorWindow::setSelectedMeshOnly(std::shared_ptr<Rendering::DSCS::DataObjects::OpenGLDSCSMesh> mesh)
 {
-    this->selected_mesh = mesh;
+    this->selected_objects.setSelectedMesh(mesh);
     emit this->selectedMeshUpdated(mesh);
 }
 
@@ -199,7 +198,7 @@ void DSCSModelDataEditorWindow::setSelectedMesh(std::shared_ptr<Rendering::DSCS:
 
 void DSCSModelDataEditorWindow::setSelectedMaterial(std::shared_ptr<Rendering::DSCS::DataObjects::OpenGLDSCSMaterial> material)
 {
-    this->selected_material = material;
+    this->selected_objects.setSelectedMaterial(material);
     emit this->selectedMaterialUpdated(material);
 }
 
@@ -217,10 +216,6 @@ void DSCSModelDataEditorWindow::loadAnim(const QString& fileName)
     this->render_widget->loadAnim(fileName.toStdString());
 }
 
-SelectedObjectReferences DSCSModelDataEditorWindow::createSelectedObjectReferences()
-{
-    return SelectedObjectReferences(this->selected_model, this->selected_mesh, this->selected_material);
-}
 
 /*
 UI Init
