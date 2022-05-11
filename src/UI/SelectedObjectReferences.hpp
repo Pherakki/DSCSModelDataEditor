@@ -15,9 +15,9 @@ protected:
 	typedef Rendering::DSCS::DataObjects::OpenGLDSCSMaterial Material;
 	typedef std::shared_ptr<Material> MaterialPtr;
 
-	ModelPtr& selected_model;
-	MeshPtr& selected_mesh;
-	MaterialPtr& selected_material;
+	ModelPtr selected_model;
+	MeshPtr selected_mesh;
+	MaterialPtr selected_material;
 signals:
 	void selectedModelUpdated();
 signals:
@@ -25,7 +25,7 @@ signals:
 signals:
 	void selectedMaterialUpdated();
 public:
-	SelectedObjectReferences(ModelPtr& model, MeshPtr& mesh, MaterialPtr& material)
+	SelectedObjectReferences(const ModelPtr& model, const MeshPtr& mesh, const MaterialPtr& material)
 		: selected_model{model}
 		, selected_mesh{mesh}
 		, selected_material{material}
@@ -35,7 +35,7 @@ public:
 	const MeshPtr&     getSelectedMesh    () const noexcept { return this->selected_mesh;     }
 	const MaterialPtr& getSelectedMaterial() const noexcept { return this->selected_material; }
 
-	MaterialPtr& getEditableSelectedMaterial() const noexcept { return this->selected_material; }
+	MaterialPtr& getEditableSelectedMaterial() noexcept { return this->selected_material; }
 
 	void setSelectedModel   (const ModelPtr&    model   ) { this->selected_model    = model;    emit this->selectedModelUpdated();    }
 	void setSelectedMesh    (const MeshPtr&     mesh    ) { this->selected_mesh     = mesh;     emit this->selectedMeshUpdated();     }
