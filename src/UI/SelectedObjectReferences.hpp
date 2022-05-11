@@ -15,8 +15,8 @@ protected:
 	typedef Rendering::DSCS::DataObjects::OpenGLDSCSMaterial Material;
 	typedef std::shared_ptr<Material> MaterialPtr;
 
-	ModelPtr selected_model       = nullptr;
-	MeshPtr selected_mesh         = nullptr;
+	ModelPtr    selected_model    = nullptr;
+	MeshPtr     selected_mesh     = nullptr;
 	MaterialPtr selected_material = nullptr;
 public:
 	SelectedObjectReferences() {}
