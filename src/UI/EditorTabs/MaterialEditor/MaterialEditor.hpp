@@ -53,7 +53,7 @@ public:
         auto widget = new QWidget(this);
         auto w_layout = new QVBoxLayout;
         this->material_dropdown = new QComboBox(widget);
-        this->shader_edit_modes = new ShaderEditorTabs(texlib, backend, animation_buffer, widget);
+        this->shader_edit_modes = new ShaderEditorTabs(sor, texlib, backend, animation_buffer, widget);
         this->opengl_settings = new OpenGLSettingsWidget(widget);
 
         w_layout->addWidget(this->shader_edit_modes); // use PutInSpoiler once the Spoiler class is fixed

@@ -7,6 +7,7 @@
 #include <UI/EditorTabs/MaterialEditor/ShaderEditors/ShaderFactory/ShaderFactory.hpp>
 #include <UI/EditorTabs/MaterialEditor/ShaderEditors/CodeEditor.hpp>
 
+#include "UI/SelectedObjectReferences.hpp"
 #include "TabShaders.hpp"
 
 class ShaderEditorTabs : public QTabWidget
@@ -27,11 +28,13 @@ private:
     CodeEditor* code_tab = new CodeEditor(this->editor_materials, this);
 
     TabShadersLibrary editor_materials;
+    SelectedObjectReferences& selectedObjects;
 signals:
     void overwriteCurrentMaterial(MaterialPtr material_ptr);
 public:
-    ShaderEditorTabs(TextureLibrary_t& texlib, ShaderBackend_t& backend, AnimBuf_t& animation_buffer, QWidget* parent = Q_NULLPTR) 
+    ShaderEditorTabs(SelectedObjectReferences& sor, TextureLibrary_t& texlib, ShaderBackend_t& backend, AnimBuf_t& animation_buffer, QWidget* parent = Q_NULLPTR)
         : QTabWidget(parent)
+        , selectedObjects(sor)
         , factory_tab{ new ShaderFactory(this->editor_materials, texlib, backend, animation_buffer, this) }
     {
         //this->shader_factory_scroll_area->setWidgetResizable(true);
