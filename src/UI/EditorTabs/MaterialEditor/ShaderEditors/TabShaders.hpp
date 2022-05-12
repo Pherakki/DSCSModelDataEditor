@@ -14,5 +14,4 @@ public:
     MaterialPtr custom_code_material = nullptr;
 };
 
-typedef std::unordered_map<std::shared_ptr<Rendering::DSCS::DataObjects::OpenGLDSCSMaterial>, TabMaterials> ModelTabMaterialsLibrary;
-typedef std::unordered_map<std::shared_ptr<Rendering::DSCS::DataObjects::OpenGLDSCSModel>, ModelTabMaterialsLibrary> TabMaterialsLibrary;
+typedef std::unordered_map<std::shared_ptr<Rendering::DSCS::DataObjects::OpenGLDSCSMaterial>, TabMaterials> TabMaterialsLibrary;
