@@ -83,22 +83,9 @@ DSCSModelDataEditorWindow::DSCSModelDataEditorWindow(QWidget* parent = Q_NULLPTR
     // Set up slots
     connect(this->render_widget, &CustomWidgets::RenderWidget::glInitialised, this, &DSCSModelDataEditorWindow::testInit);
 
-    // Model updates
-    // -> Updated Widgets
-    //connect(this, &DSCSModelDataEditorWindow::selectedModelUpdated, mesh_info_tab, &MeshEditorTab::updateSelectedModel);
-    connect(this, &DSCSModelDataEditorWindow::selectedModelUpdated, material_info_tab, &MaterialEditorTab::updateSelectedModel);
-
-    // Mesh updates
-    // -> Updating Widgets
-    // -> Updated Widgets
-    connect(this, &DSCSModelDataEditorWindow::selectedMeshUpdated, material_info_tab, &MaterialEditorTab::updateSelectedMesh);
-
     // Material updates
     // -> Updating Widgets
-    connect(material_info_tab, &MaterialEditorTab::materialSelectionUpdated, this, &DSCSModelDataEditorWindow::setSelectedMaterial);
     connect(material_info_tab, &MaterialEditorTab::overwriteCurrentMaterial, this, &DSCSModelDataEditorWindow::overwriteMaterial);
-    // -> Updated Widgets
-    connect(this, &DSCSModelDataEditorWindow::selectedMaterialUpdated, material_info_tab, &MaterialEditorTab::updateSelectedMaterial);
 }
 
 void DSCSModelDataEditorWindow::overwriteMaterial(MaterialPtr material)

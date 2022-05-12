@@ -67,6 +67,9 @@ public:
 
         connect(this->material_dropdown, static_cast<CIC_t>(&QComboBox::currentIndexChanged), this, &MaterialEditorTab::selectMaterial);
         connect(this->shader_edit_modes, &ShaderEditorTabs::overwriteCurrentMaterial, this, &MaterialEditorTab::overwriteCurrentMaterial);
+
+        connect(&this->selected_objects, &SelectedObjectReferences::selectedModelUpdated, this, &MaterialEditorTab::updateSelectedModel);
+        connect(&this->selected_objects, &SelectedObjectReferences::selectedMaterialUpdated, this, &MaterialEditorTab::updateSelectedMaterial);
     };
 
     void updateDataList()
@@ -99,28 +102,18 @@ public:
     }
 
 signals:
-    void materialSelectionUpdated(MaterialPtr material_ptr);
-signals:
     void overwriteCurrentMaterial(MaterialPtr material_ptr);
 public slots:
-    /*
-    Update methods for the data on this widget
-    */
-    void updateSelectedModel(ModelPtr model_ptr)
+    void updateSelectedModel()
     {
-        this->selected_objects.setSelectedModel(model_ptr);
         this->updateDataList();
     }
 
-    void updateSelectedMesh(MeshPtr mesh_ptr)
-    {
-        this->selected_objects.setSelectedMesh(mesh_ptr);
-    }
-
-    void updateSelectedMaterial(MaterialPtr material_ptr)
+    void updateSelectedMaterial()
     {
         try
         {
+            auto& material_ptr = this->selected_objects.getSelectedMaterial();
             this->material_dropdown->setCurrentIndex(this->material_lookup.at(material_ptr));
             this->opengl_settings->updateSelectedMaterial(material_ptr);
         }
@@ -130,9 +123,6 @@ public slots:
         }
     }
 
-    /*
-    Relay methods up to the central signal dispatcher for global variable changes
-    */
     void selectMaterial(int index)
     {
         if (!this->material_reverse_lookup.contains(index))
@@ -141,7 +131,7 @@ public slots:
             return;
         }
         auto& material = this->material_reverse_lookup.at(index);
-        emit this->materialSelectionUpdated(material);
+        this->selected_objects.setSelectedMaterial(material);
     }
 
 };
