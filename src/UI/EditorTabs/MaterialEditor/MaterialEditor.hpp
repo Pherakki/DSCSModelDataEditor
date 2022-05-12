@@ -115,7 +115,6 @@ public slots:
     void updateSelectedMesh(MeshPtr mesh_ptr)
     {
         this->selected_objects.setSelectedMesh(mesh_ptr);
-        this->shader_edit_modes->updateSelectedMesh(mesh_ptr);
     }
 
     void updateSelectedMaterial(MaterialPtr material_ptr)
@@ -123,7 +122,6 @@ public slots:
         try
         {
             this->material_dropdown->setCurrentIndex(this->material_lookup.at(material_ptr));
-            this->shader_edit_modes->updateSelectedMaterial(material_ptr);
             this->opengl_settings->updateSelectedMaterial(material_ptr);
         }
         catch (const std::exception& ex)

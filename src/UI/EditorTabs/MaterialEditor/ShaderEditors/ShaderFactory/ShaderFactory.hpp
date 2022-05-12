@@ -98,9 +98,6 @@ private:
 	PositionSettings* position_settings;
 
 	AnimBuf_t& animation_buffer;
-	ModelPtr selected_model = nullptr;
-	MeshPtr selected_mesh = nullptr;
-	MaterialPtr selected_material = nullptr;
 	MaterialPtr active_local_material = nullptr;
 	TextureLibrary_t& texture_library;
 	ShaderBackend_t& shader_backend;
@@ -369,7 +366,8 @@ private:
 
 	void readbackUISettings()
 	{
-		for (const auto& [id, texture] : this->selected_material->texture_refs)
+		auto& selected_material = this->selected_objects.getSelectedMaterial();
+		for (const auto& [id, texture] : selected_material->texture_refs)
 		{
 			if (texture->texture_type == CG_SAMPLER2D)
 			{
@@ -407,8 +405,10 @@ private:
 		FactorySettings settings;
 		TextureRefs textures;
 		this->createSettingsFromUI(settings, textures);
+
+		auto& selected_mesh = this->selected_objects.getSelectedMesh();
 		// Sort out remaining inputs to the factory
-		for (const auto& attr : this->selected_mesh->mesh.vertex_attributes)	
+		for (const auto& attr : selected_mesh->mesh.vertex_attributes)	
 		{
 			if (attr.attribute_type == FileFormats::DSCS::GeomFile::VertexAttributeType::WeightedBoneID)
 			{
@@ -456,11 +456,13 @@ private:
 		//	new_material->name = "New Material";
 		//	new_material->name_hash = dscsNameHash(new_material->name);
 		//}
-		this->selected_material->replaceShader(shader, this->animation_buffer.uniform_dispatch_buffer);
-		this->assignTextureReferences(this->selected_material, textures);
-		this->assignDefaultValues(this->selected_material);
 
-		this->active_local_material = this->selected_material;
+		auto& selected_material = this->selected_objects.getEditableSelectedMaterial();
+		selected_material->replaceShader(shader, this->animation_buffer.uniform_dispatch_buffer);
+		this->assignTextureReferences(selected_material, textures);
+		this->assignDefaultValues(selected_material);
+
+		this->active_local_material = selected_material;
 		this->setActiveMaterialAsSelected(); // This should get linked to buttons...
 	}
 
@@ -633,24 +635,13 @@ public:
 		this->setLayout(_layout);
 
 		this->updateAvailableTextures();
+
+		connect(&this->selected_objects, &SelectedObjectReferences::selectedMaterialUpdated, this, &ShaderFactory::updateReadbackSettings);
 	}
 
-	/*
-	Update methods for the data on this widget
-	*/
-	void updateSelectedModel(ModelPtr model_ptr)
-	{
-		this->selected_model = model_ptr;
-	}
 
-	void updateSelectedMesh(MeshPtr mesh_ptr)
+	void updateReadbackSettings()
 	{
-		this->selected_mesh = mesh_ptr;
-	}
-
-	void updateSelectedMaterial(MaterialPtr material_ptr)
-	{
-		this->selected_material = material_ptr;
 		this->updateAvailableTextures(); // This should update in other places
 		this->readbackUISettings();
 	}

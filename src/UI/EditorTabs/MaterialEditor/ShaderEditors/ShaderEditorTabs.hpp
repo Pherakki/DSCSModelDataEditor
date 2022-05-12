@@ -45,16 +45,4 @@ public:
         this->addTab(this->code_tab, "Code Editor");
         connect(this->factory_tab, &ShaderFactory::overwriteCurrentMaterial, this, &ShaderEditorTabs::overwriteCurrentMaterial);
     }
-public slots:
-    void updateSelectedMaterial(MaterialPtr material_ptr)
-    {
-        this->factory_tab->updateSelectedMaterial(material_ptr);
-    }
-
-    void updateSelectedMesh(MeshPtr mesh_ptr)
-    {
-        this->factory_tab->updateSelectedMesh(mesh_ptr);
-    }
-
-
 };
