@@ -46,6 +46,14 @@ public:
 	MaterialPtr& getEditableSelectedMaterial() noexcept { return this->selected_material; }
 	TabMaterialsPtr& getSelectedMaterialTabMaterials() { return this->selected_tab_materials; }
 
+	void registerNewModel(const ModelPtr& model)
+	{
+		for (const auto& mat : model->materials)
+		{
+			this->tab_materials_library.insert({ mat, TabMaterials{} });
+		}
+	}
+
 	void setSelectedModel(const ModelPtr& model)
 	{
 		this->selected_model = model;    
