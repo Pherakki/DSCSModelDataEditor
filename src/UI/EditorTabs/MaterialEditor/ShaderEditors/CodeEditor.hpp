@@ -52,7 +52,7 @@ private:
     }
 
 public:
-	CodeEditor(SelectedObjectReferences& sor, TabShadersLibrary& tab_materials, QWidget* parent=Q_NULLPTR) 
+	CodeEditor(SelectedObjectReferences& sor, TabMaterialsLibrary& tab_materials, QWidget* parent=Q_NULLPTR)
         : QWidget(parent)
         , selected_objects{sor}
 	{

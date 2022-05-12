@@ -4,15 +4,15 @@
 
 #include "Rendering/DSCS/DataObjects/OpenGLDSCSModel.hpp"
 
-struct TabShaders
+struct TabMaterials
 {
 private:
-    typedef std::shared_ptr<Rendering::ShaderObjects::cgGLShaderObject> ShaderPtr;
+    typedef std::shared_ptr<Rendering::DSCS::DataObjects::OpenGLDSCSMaterial> MaterialPtr;
 public:
-    ShaderPtr prebuilt_shader = nullptr;
-    ShaderPtr factory_shader = nullptr;
-    ShaderPtr custom_code_shader = nullptr;
+    MaterialPtr prebuilt_material = nullptr;
+    MaterialPtr factory_material = nullptr;
+    MaterialPtr custom_code_material = nullptr;
 };
 
-typedef std::unordered_map<std::shared_ptr<Rendering::DSCS::DataObjects::OpenGLDSCSMaterial>, TabShaders> ModelTabShadersLibrary;
-typedef std::unordered_map<std::shared_ptr<Rendering::DSCS::DataObjects::OpenGLDSCSModel>, ModelTabShadersLibrary> TabShadersLibrary;
+typedef std::unordered_map<std::shared_ptr<Rendering::DSCS::DataObjects::OpenGLDSCSMaterial>, TabMaterials> ModelTabMaterialsLibrary;
+typedef std::unordered_map<std::shared_ptr<Rendering::DSCS::DataObjects::OpenGLDSCSModel>, ModelTabMaterialsLibrary> TabMaterialsLibrary;

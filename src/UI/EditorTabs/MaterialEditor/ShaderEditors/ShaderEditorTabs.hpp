@@ -27,7 +27,7 @@ private:
     ShaderFactory* factory_tab;
     CodeEditor* code_tab = new CodeEditor(this->selected_objects, this->editor_materials, this);
 
-    TabShadersLibrary editor_materials;
+    TabMaterialsLibrary editor_materials;
     SelectedObjectReferences& selected_objects;
 signals:
     void overwriteCurrentMaterial(MaterialPtr material_ptr);

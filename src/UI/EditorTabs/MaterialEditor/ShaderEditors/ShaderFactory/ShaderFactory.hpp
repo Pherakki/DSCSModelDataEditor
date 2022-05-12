@@ -572,7 +572,7 @@ private:
 signals:
 	void overwriteCurrentMaterial(MaterialPtr material_ptr);
 public:
-	explicit ShaderFactory(SelectedObjectReferences& sor, TabShadersLibrary& tab_materials, TextureLibrary_t& texlib, ShaderBackend_t& shader_backend, Rendering::DSCS::AnimationBuffer& animation_buffer, QWidget* parent = nullptr)
+	explicit ShaderFactory(SelectedObjectReferences& sor, TabMaterialsLibrary& tab_materials, TextureLibrary_t& texlib, ShaderBackend_t& shader_backend, Rendering::DSCS::AnimationBuffer& animation_buffer, QWidget* parent = nullptr)
 		: QWidget(parent)
 		, texture_library{ texlib }
 		, shader_backend{ shader_backend }
