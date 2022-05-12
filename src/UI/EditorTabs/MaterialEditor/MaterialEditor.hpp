@@ -54,7 +54,7 @@ public:
         auto w_layout = new QVBoxLayout;
         this->material_dropdown = new QComboBox(widget);
         this->shader_edit_modes = new ShaderEditorTabs(sor, texlib, backend, animation_buffer, widget);
-        this->opengl_settings = new OpenGLSettingsWidget(widget);
+        this->opengl_settings = new OpenGLSettingsWidget(sor, widget);
 
         w_layout->addWidget(this->shader_edit_modes); // use PutInSpoiler once the Spoiler class is fixed
         w_layout->addWidget(this->opengl_settings);   // use PutInSpoiler once the Spoiler class is fixed
@@ -115,7 +115,6 @@ public slots:
         {
             auto& material_ptr = this->selected_objects.getSelectedMaterial();
             this->material_dropdown->setCurrentIndex(this->material_lookup.at(material_ptr));
-            this->opengl_settings->updateSelectedMaterial(material_ptr);
         }
         catch (const std::exception& ex)
         {

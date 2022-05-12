@@ -6,6 +6,7 @@
 #include <QWidget>
 
 #include "../../../Rendering/DSCS/DataObjects/OpenGLDSCSMaterial.hpp"
+#include "UI/SelectedObjectReferences.hpp"
 
 struct glOptions
 {
@@ -56,7 +57,7 @@ class OpenGLSettingsWidget : public QWidget
 {
     Q_OBJECT
 private:
-    MatEditTypedefs::MaterialPtr selected_material = nullptr;
+    SelectedObjectReferences& selected_objects;
 
     QCheckBox* alphafunc_checkbox = new QCheckBox(this);
     QCheckBox* blendfunc_checkbox = new QCheckBox(this);
@@ -84,7 +85,7 @@ private:
     template<uint8_t setting_id, class FunctorT, int... active_ids>
     void handleCheckbox(int checkstate, uint32_t v1, uint32_t v2, uint32_t v3, uint32_t v4, QWidget* widget = Q_NULLPTR)
     {
-        auto& material = this->selected_material;
+        auto& material = this->selected_objects.getSelectedMaterial();
         if (!material)
             return;
         auto& settings = material->opengl_settings;
@@ -129,7 +130,7 @@ private:
     template<typename F1, typename F2, typename F3, typename F4>
     void updateSettingData(uint8_t setting_id, F1 f1, F2 f2, F3 f3, F4 f4)
     {
-        auto& material = this->selected_material;
+        auto& material = this->selected_objects.getSelectedMaterial();
         if (!material)
             return;
         auto& settings = material->opengl_settings;
@@ -261,7 +262,9 @@ private:
 
 
 public:
-    OpenGLSettingsWidget(QWidget* parent = Q_NULLPTR) : QWidget(parent)
+    OpenGLSettingsWidget(SelectedObjectReferences& sor, QWidget* parent = Q_NULLPTR) 
+        : QWidget(parent)
+        , selected_objects(sor)
     {
         auto layout = new QGridLayout(this);
 
@@ -448,15 +451,17 @@ public:
         layout->setColumnStretch(1, 0);
         layout->setColumnStretch(2, 1);
         this->setLayout(layout);
+
+        connect(&this->selected_objects, &SelectedObjectReferences::selectedMaterialUpdated, this, &OpenGLSettingsWidget::updateUI);
     }
 
-    void updateSelectedMaterial(MatEditTypedefs::MaterialPtr material_ptr)
+    void updateUI()
     {
-        this->selected_material = material_ptr;
+        auto& selected_material = this->selected_objects.getSelectedMaterial();
 
-        if (int idx = this->checkIfSettingExists(0xA0, this->selected_material->opengl_settings); idx != -1)
+        if (int idx = this->checkIfSettingExists(0xA0, selected_material->opengl_settings); idx != -1)
         {
-            auto& setting = this->selected_material->opengl_settings[idx];
+            auto& setting = selected_material->opengl_settings[idx];
             auto data = setting->getData();
 
             auto begin = glCompOptions::options.begin();
@@ -475,9 +480,9 @@ public:
             emit this->alphafunc_checkbox->stateChanged(0);
         }
 
-        if (int idx = this->checkIfSettingExists(0xA2, this->selected_material->opengl_settings); idx != -1)
+        if (int idx = this->checkIfSettingExists(0xA2, selected_material->opengl_settings); idx != -1)
         {
-            auto& setting = this->selected_material->opengl_settings[idx];
+            auto& setting = selected_material->opengl_settings[idx];
             auto data = setting->getData();
 
             auto begin = glBlendFuncOptions::options.begin();
@@ -496,9 +501,9 @@ public:
             emit this->blendfunc_checkbox->stateChanged(0);
         }
 
-        if (int idx = this->checkIfSettingExists(0xA3, this->selected_material->opengl_settings); idx != -1)
+        if (int idx = this->checkIfSettingExists(0xA3, selected_material->opengl_settings); idx != -1)
         {
-            auto& setting = this->selected_material->opengl_settings[idx];
+            auto& setting = selected_material->opengl_settings[idx];
             auto data = setting->getData();
 
             auto begin = glBlendEqOptions::options.begin();
@@ -515,9 +520,9 @@ public:
             emit this->blendeq_checkbox->stateChanged(0);
         }
 
-        if (int idx = this->checkIfSettingExists(0xA5, this->selected_material->opengl_settings); idx != -1)
+        if (int idx = this->checkIfSettingExists(0xA5, selected_material->opengl_settings); idx != -1)
         {
-            auto& setting = this->selected_material->opengl_settings[idx];
+            auto& setting = selected_material->opengl_settings[idx];
             auto data = setting->getData();
 
             auto begin = glCullFaceOptions::options.begin();
@@ -534,9 +539,9 @@ public:
             emit this->faceculling_checkbox->stateChanged(0);
         }
 
-        if (int idx = this->checkIfSettingExists(0xA7, this->selected_material->opengl_settings); idx != -1)
+        if (int idx = this->checkIfSettingExists(0xA7, selected_material->opengl_settings); idx != -1)
         {
-            auto& setting = this->selected_material->opengl_settings[idx];
+            auto& setting = selected_material->opengl_settings[idx];
             auto data = setting->getData();
 
             auto begin = glCompOptions::options.begin();
@@ -553,9 +558,9 @@ public:
             emit this->depthfunc_checkbox->stateChanged(0);
         }
 
-        if (int idx = this->checkIfSettingExists(0xA8, this->selected_material->opengl_settings); idx != -1)
+        if (int idx = this->checkIfSettingExists(0xA8, selected_material->opengl_settings); idx != -1)
         {
-            auto& setting = this->selected_material->opengl_settings[idx];
+            auto& setting = selected_material->opengl_settings[idx];
             auto data = setting->getData();
 
             auto begin = glBoolOptions::options.begin();
@@ -572,9 +577,9 @@ public:
             emit this->depthmask_checkbox->stateChanged(0);
         }
 
-        if (int idx = this->checkIfSettingExists(0xAC, this->selected_material->opengl_settings); idx != -1)
+        if (int idx = this->checkIfSettingExists(0xAC, selected_material->opengl_settings); idx != -1)
         {
-            auto& setting = this->selected_material->opengl_settings[idx];
+            auto& setting = selected_material->opengl_settings[idx];
             auto data = setting->getData();
 
             auto begin = glBoolOptions::options.begin();
