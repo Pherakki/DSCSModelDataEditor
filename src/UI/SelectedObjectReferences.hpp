@@ -24,19 +24,19 @@ protected:
 	MaterialPtr selected_material = nullptr;
 	TabMaterialsLibrary tab_materials_library;
 
-	const ModelList_t& model_library;
+	//const ModelList_t& model_library;
 	TabMaterialsPtr selected_tab_materials = nullptr;
 	
 public:
+	SelectedObjectReferences() = default;
 	SelectedObjectReferences(
 		const ModelPtr& model, 
 		const MeshPtr& mesh, 
-		const MaterialPtr& material, 
-		const ModelList_t& model_lib)
-		: selected_model{model}
+		const MaterialPtr& material)
+		: QObject{}
+		, selected_model{model}
 		, selected_mesh{mesh}
 		, selected_material{material}
-		, model_library{model_lib}
 	{}
 
 	const ModelPtr&    getSelectedModel   () const noexcept { return this->selected_model;    }
@@ -64,7 +64,7 @@ public:
 	{
 		this->selected_material = material;
 		std::cout << "Selected Material Updated" << std::endl;
-		this->selected_tab_materials = &this->tab_materials_library.at(material);
+		//this->selected_tab_materials = &this->tab_materials_library.at(material);
 		emit this->selectedMaterialUpdated();
 	}
 
