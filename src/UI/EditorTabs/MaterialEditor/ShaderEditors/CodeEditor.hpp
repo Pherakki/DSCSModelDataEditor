@@ -22,7 +22,6 @@ private:
     QPlainTextEdit* fragment_shader_textedit = new QPlainTextEdit(this);
     QPushButton* compile_button = new QPushButton("Compile", this);
 
-    MaterialPtr selected_material = nullptr;
     SelectedObjectReferences& selected_objects;
 
     void setSyntaxHighlighter(QPlainTextEdit* textbox)
@@ -45,6 +44,13 @@ private:
         textbox->setTabStopDistance(tab_width_char * font_metrics.width(' '));
     }
 
+    void updateUI()
+    {
+        auto& selected_material = this->selected_objects.getSelectedMaterial();
+        this->vertex_shader_textedit->setPlainText(QString::fromStdString(selected_material->shader->vertex_source));
+        this->fragment_shader_textedit->setPlainText(QString::fromStdString(selected_material->shader->fragment_source));
+    }
+
 public:
 	CodeEditor(SelectedObjectReferences& sor, TabShadersLibrary& tab_materials, QWidget* parent=Q_NULLPTR) 
         : QWidget(parent)
@@ -65,14 +71,9 @@ public:
         this->code_tabs->addTab(this->fragment_shader_textedit, "Fragment");
         this->layout->addWidget(this->code_tabs);
         this->layout->addWidget(this->compile_button);
+
+        connect(&this->selected_objects, &SelectedObjectReferences::selectedMaterialUpdated, this, &CodeEditor::updateUI);
 	}
-public slots:
-    void updateSelectedMaterial(MaterialPtr material_ptr)
-    {
-        this->selected_material = material_ptr;
-        this->vertex_shader_textedit->setPlainText(QString::fromStdString(this->selected_material->shader->vertex_source));
-        this->fragment_shader_textedit->setPlainText(QString::fromStdString(this->selected_material->shader->fragment_source));
-    }
 
 
 };
