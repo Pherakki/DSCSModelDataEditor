@@ -1,5 +1,6 @@
 #pragma once
 
+#include <iostream> // Remove after debugging
 #include <QObject>
 
 #include "../Rendering/DSCS/DataObjects/OpenGLDSCSModel.hpp"
@@ -32,9 +33,9 @@ public:
 
 	MaterialPtr& getEditableSelectedMaterial() noexcept { return this->selected_material; }
 
-	void setSelectedModel   (const ModelPtr&    model   ) { this->selected_model    = model;    emit this->selectedModelUpdated();    }
-	void setSelectedMesh    (const MeshPtr&     mesh    ) { this->selected_mesh     = mesh;     emit this->selectedMeshUpdated();     }
-	void setSelectedMaterial(const MaterialPtr& material) { this->selected_material = material; emit this->selectedMaterialUpdated(); }
+	void setSelectedModel   (const ModelPtr&    model   ) { this->selected_model    = model;    std::cout << "Selected Model Updated"    << std::endl; emit this->selectedModelUpdated(); }
+	void setSelectedMesh    (const MeshPtr&     mesh    ) { this->selected_mesh     = mesh;     std::cout << "Selected Mesh Updated"     << std::endl; emit this->selectedMeshUpdated();     }
+	void setSelectedMaterial(const MaterialPtr& material) { this->selected_material = material; std::cout << "Selected Material Updated" << std::endl; emit this->selectedMaterialUpdated(); }
 
 
 signals:
