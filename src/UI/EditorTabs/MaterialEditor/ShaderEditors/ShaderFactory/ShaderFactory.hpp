@@ -102,6 +102,7 @@ private:
 	TextureLibrary_t& texture_library;
 	ShaderBackend_t& shader_backend;
 	SelectedObjectReferences& selected_objects;
+	TabMaterialsLibrary& tab_materials;
 
 	bool anyLayer1SamplerEnabled()
 	{
@@ -578,6 +579,7 @@ public:
 		, shader_backend{ shader_backend }
 		, animation_buffer{ animation_buffer }
 		, selected_objects{ sor }
+		, tab_materials{ tab_materials }
 	{
 
 		auto _layout = new QVBoxLayout;

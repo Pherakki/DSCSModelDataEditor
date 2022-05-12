@@ -28,10 +28,12 @@ private:
 	QWidget* vector_uniforms_widget = new QWidget(this->uniform_lists_widget);
 
 	SelectedObjectReferences& selected_objects;
+	TabMaterialsLibrary& tab_materials;
 public:
 	PrebuiltTab(SelectedObjectReferences& sor, TabMaterialsLibrary& tab_materials, QWidget* parent = Q_NULLPTR) 
 		: QWidget(parent)
 		, selected_objects{sor}
+		, tab_materials{tab_materials}
 	{
 		QVBoxLayout* layout = new QVBoxLayout(this);
 

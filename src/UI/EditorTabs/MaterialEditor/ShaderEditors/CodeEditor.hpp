@@ -23,6 +23,7 @@ private:
     QPushButton* compile_button = new QPushButton("Compile", this);
 
     SelectedObjectReferences& selected_objects;
+    TabMaterialsLibrary& tab_materials;
 
     void setSyntaxHighlighter(QPlainTextEdit* textbox)
     {
@@ -55,6 +56,7 @@ public:
 	CodeEditor(SelectedObjectReferences& sor, TabMaterialsLibrary& tab_materials, QWidget* parent=Q_NULLPTR)
         : QWidget(parent)
         , selected_objects{sor}
+        , tab_materials{ tab_materials }
 	{
         this->setLayout(this->layout);
         this->setContentsMargins({ 0, 0, 0, 0 });
