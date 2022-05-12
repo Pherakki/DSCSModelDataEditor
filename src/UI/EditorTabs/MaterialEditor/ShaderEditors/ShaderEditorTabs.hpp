@@ -48,7 +48,6 @@ public:
 public slots:
     void updateSelectedMaterial(MaterialPtr material_ptr)
     {
-        this->prebuilts_tab->updateSelectedMaterial(material_ptr);
         this->factory_tab->updateSelectedMaterial(material_ptr);
         this->code_tab->updateSelectedMaterial(material_ptr);
     }

@@ -27,7 +27,6 @@ private:
 	QGridLayout* vector_uniforms_layout = new QGridLayout;
 	QWidget* vector_uniforms_widget = new QWidget(this->uniform_lists_widget);
 
-	MaterialPtr selected_material = nullptr;
 	SelectedObjectReferences& selected_objects;
 public:
 	PrebuiltTab(SelectedObjectReferences& sor, TabShadersLibrary& tab_materials, QWidget* parent = Q_NULLPTR) 
@@ -53,6 +52,7 @@ public:
 		layout->addWidget(uniform_lists_widget);
 		this->setLayout(layout);
 
+		connect(&this->selected_objects, &SelectedObjectReferences::selectedMaterialUpdated, this, &PrebuiltTab::updateDataList);
 	}
 
 	void updateDataList()
@@ -63,9 +63,10 @@ public:
 			delete child;
 		}
 
-		for (uint8_t i=0; i < this->selected_material->material_uniforms.size(); ++i)
+		auto& selected_material = this->selected_objects.getSelectedMaterial();
+		for (uint8_t i=0; i < selected_material->material_uniforms.size(); ++i)
 		{
-			auto& uniform = this->selected_material->material_uniforms[i];
+			auto& uniform = selected_material->material_uniforms[i];
 			uint8_t id = uniform->id;
 
 			QWidget* tmp_widget = new QWidget(vector_uniforms_widget);
@@ -76,7 +77,7 @@ public:
 			tmp_label->setText(QString::fromStdString(uniform->getName()));
 			this->vector_uniforms_layout->addWidget(tmp_label, i, 0);
 
-			std::array<float, 4>& static_val = this->selected_material->local_uniform_buffer[id];
+			std::array<float, 4>& static_val = selected_material->local_uniform_buffer[id];
 		
 			for (uint8_t j = 0; j < uniform->getSize(); ++j)
 			{
@@ -93,6 +94,7 @@ public:
 
 	void sanitiseTextChanged(uint8_t id, uint8_t change_idx, const QString& value)
 	{
+		auto& selected_material = this->selected_objects.getSelectedMaterial();
 		float f_value;
 		try
 		{
@@ -102,16 +104,7 @@ public:
 		{
 			f_value = 0;
 		}
-		std::array<float, 4>& static_val = this->selected_material->local_uniform_buffer[id];
+		std::array<float, 4>& static_val = selected_material->local_uniform_buffer[id];
 		static_val[change_idx] = f_value;
-	}
-
-	/*
-	Update methods for the data on this widget
-	*/
-	void updateSelectedMaterial(MaterialPtr material_ptr)
-	{
-		this->selected_material = material_ptr;
-		this->updateDataList();
 	}
 };
