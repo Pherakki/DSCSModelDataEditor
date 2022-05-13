@@ -14,7 +14,10 @@
 
 typedef std::shared_ptr<Rendering::DSCS::DataObjects::OpenGLDSCSMaterial> MaterialPtr;
 
-DSCSModelDataEditorWindow::DSCSModelDataEditorWindow(QWidget* parent = Q_NULLPTR) : QMainWindow(parent)
+DSCSModelDataEditorWindow::DSCSModelDataEditorWindow(QWidget* parent = Q_NULLPTR)
+    : QMainWindow(parent)
+    , render_widget{ new CustomWidgets::RenderWidget(this) }
+    , selected_objects{SelectedObjectReferences()}
 {
     // Qt5 takes ownership of raw pointers and handles destruction properly, 
     // so no memory leaks here even though it looks like it
@@ -23,7 +26,6 @@ DSCSModelDataEditorWindow::DSCSModelDataEditorWindow(QWidget* parent = Q_NULLPTR
     central_widget->setContentsMargins({ 0, 0, 0, 0 });
     main_layout->setContentsMargins({ 0, 0, 0, 0 });
 
-    this->render_widget = new CustomWidgets::RenderWidget(this);
     this->render_widget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
     auto animation_timeline = new QTextEdit;
 
