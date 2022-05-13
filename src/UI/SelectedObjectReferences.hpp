@@ -31,6 +31,26 @@ public:
 	const auto getCustomCodeMaterial() const noexcept { return this->tab_materials.custom_code_material; }
 };
 
+class TextureResource
+{
+private:
+	typedef Rendering::DSCS::DataObjects::ShaderUniforms::AbstractcgGLTextureReference Texture;
+	typedef std::shared_ptr<Texture> TexturePtr;
+	typedef Rendering::DSCS::DataObjects::ShaderUniforms::Tex2DUniform Texture2D;
+	typedef std::shared_ptr<Texture2D> Texture2DPtr;
+	typedef Rendering::DSCS::DataObjects::ShaderUniforms::TexCubeUniform TextureCube;
+	typedef std::shared_ptr<TextureCube> TextureCubePtr;
+	typedef Rendering::DSCS::DataObjects::ShaderUniforms::CLUTTex2DUniform TextureCLUT;
+	typedef std::shared_ptr<TextureCLUT> TextureCLUTPtr;
+
+	TexturePtr texture_file;
+public:
+	TextureResource() {}
+	//Texture2DPtr as2D() {}
+	//TextureCubePtr asCube() {}
+	//TextureCLUTPtr asCLUT() {}
+};
+
 class SelectedObjectReferences : public QObject
 {
 	Q_OBJECT
@@ -48,6 +68,7 @@ protected:
 
 	//const ModelList_t& model_library;
 	std::unordered_map<std::string, MaterialResource> material_resources;
+	std::unordered_map<std::string, TextureResource> texture_resources;
 
 	
 public:
