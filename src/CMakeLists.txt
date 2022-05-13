@@ -79,7 +79,7 @@ add_executable (${PROJECT_NAME}
                 "UI/EditorTabs/MaterialEditor/ShaderEditors/ShaderFactory/Widgets/TextureMap.hpp" 
                 "UI/EditorTabs/MaterialEditor/ShaderEditors/ShaderFactory/Widgets/TextureSlot.hpp" 
                 "UI/EditorTabs/MaterialEditor/ShaderEditors/ShaderFactory/Widgets/UVSlot.hpp"
-                "UI/EditorTabs/MaterialEditor/ShaderEditors/TabShaders.hpp" 
+                "UI/EditorTabs/MaterialEditor/ShaderEditors/TabMaterials.hpp" 
                 "UI/SelectedObjectReferences.hpp" "UI/EditorTabs/MaterialEditor/OpenGLSettingsEditor.hpp")
 
 # Allow CMake to build libraries

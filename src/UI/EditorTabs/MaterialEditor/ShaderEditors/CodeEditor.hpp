@@ -7,7 +7,7 @@
 
 #include <UI/CgSyntaxHighlighter.hpp>
 
-#include "TabShaders.hpp"
+#include "TabMaterials.hpp"
 #include "UI/SelectedObjectReferences.hpp"
 
 class CodeEditor : public QWidget

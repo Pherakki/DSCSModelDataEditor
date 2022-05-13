@@ -14,7 +14,7 @@
 
 #include "ShaderGenerator/VertexShader.hpp"
 #include "ShaderGenerator/FragmentShader.hpp"
-#include "../TabShaders.hpp"
+#include "../TabMaterials.hpp"
 #include "../../../../Spoiler/Spoiler.hpp"
 #include "../../../../../Rendering/DSCS/DataObjects/OpenGLDSCSModel.hpp"
 #include "../../../../../Rendering/DSCS/DataObjects/OpenGLDSCSMesh.hpp"

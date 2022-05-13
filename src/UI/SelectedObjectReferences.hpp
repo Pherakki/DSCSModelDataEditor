@@ -4,7 +4,7 @@
 #include <QObject>
 
 #include "../Rendering/DSCS/DataObjects/OpenGLDSCSModel.hpp"
-#include "UI/EditorTabs/MaterialEditor//ShaderEditors/TabShaders.hpp"
+#include "UI/EditorTabs/MaterialEditor//ShaderEditors/TabMaterials.hpp"
 
 
 class SelectedObjectReferences : public QObject

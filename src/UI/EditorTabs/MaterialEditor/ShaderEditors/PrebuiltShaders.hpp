@@ -10,7 +10,7 @@
 #include <QtWidgets/QLineEdit>
 
 #include "Rendering/DSCS/DataObjects/OpenGLDSCSMaterial.hpp"
-#include "TabShaders.hpp"
+#include "TabMaterials.hpp"
 #include "UI/SelectedObjectReferences.hpp"
 
 class PrebuiltTab : public QWidget

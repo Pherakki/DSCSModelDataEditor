@@ -8,7 +8,7 @@
 #include <UI/EditorTabs/MaterialEditor/ShaderEditors/CodeEditor.hpp>
 
 #include "UI/SelectedObjectReferences.hpp"
-#include "TabShaders.hpp"
+#include "TabMaterials.hpp"
 
 class ShaderEditorTabs : public QTabWidget
 {
