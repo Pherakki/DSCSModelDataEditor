@@ -7,6 +7,30 @@
 #include "UI/EditorTabs/MaterialEditor//ShaderEditors/TabMaterials.hpp"
 
 
+class MaterialResource
+{
+private:
+	typedef Rendering::DSCS::DataObjects::OpenGLDSCSMaterial Material;
+	typedef std::shared_ptr<Material> MaterialPtr;
+
+	MaterialPtr active_material;
+	TabMaterials tab_materials;
+
+public:
+	MaterialResource(const MaterialPtr& material_ptr)
+	{
+		this->active_material = material_ptr;
+		this->tab_materials.prebuilt_material = nullptr; // Need a material clone function...
+		this->tab_materials.factory_material = nullptr; // Set a default when you can
+		this->tab_materials.custom_code_material = nullptr; // Set a default when you can
+	}
+
+	const auto getMaterial() const noexcept { return this->active_material; }
+	const auto getPrebuiltMaterial() const noexcept { return this->tab_materials.prebuilt_material; }
+	const auto getFactoryMaterial() const noexcept { return this->tab_materials.factory_material; }
+	const auto getCustomCodeMaterial() const noexcept { return this->tab_materials.custom_code_material; }
+};
+
 class SelectedObjectReferences : public QObject
 {
 	Q_OBJECT
@@ -17,15 +41,14 @@ protected:
 	typedef std::shared_ptr<Mesh> MeshPtr;
 	typedef Rendering::DSCS::DataObjects::OpenGLDSCSMaterial Material;
 	typedef std::shared_ptr<Material> MaterialPtr;
-	typedef TabMaterials* TabMaterialsPtr;
 
 	ModelPtr    selected_model    = nullptr;
 	MeshPtr     selected_mesh     = nullptr;
 	MaterialPtr selected_material = nullptr;
-	TabMaterialsLibrary tab_materials_library;
 
 	//const ModelList_t& model_library;
-	TabMaterialsPtr selected_tab_materials = nullptr;
+	std::unordered_map<std::string, MaterialResource> material_resources;
+
 	
 public:
 	SelectedObjectReferences() = default;
@@ -44,13 +67,12 @@ public:
 	const MaterialPtr& getSelectedMaterial() const noexcept { return this->selected_material; }
 
 	MaterialPtr& getEditableSelectedMaterial() noexcept { return this->selected_material; }
-	TabMaterialsPtr& getSelectedMaterialTabMaterials() { return this->selected_tab_materials; }
 
 	void registerNewModel(const ModelPtr& model)
 	{
 		for (const auto& mat : model->materials)
 		{
-			this->tab_materials_library.insert({ mat, TabMaterials{} });
+			this->material_resources.insert({ mat->name, MaterialResource{mat} });
 		}
 	}
 
