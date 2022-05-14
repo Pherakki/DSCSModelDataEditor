@@ -7,9 +7,9 @@
 #include <QBoxLayout>
 #include <QDoubleValidator>
 #include <QLabel>
+#include <QLineEdit>
 #include <QObject>
 #include <QPushButton>
-#include <QLineEdit>
 #include <QWidget>
 
 #include "ShaderGenerator/VertexShader.hpp"
@@ -40,6 +40,7 @@
 #include "Widgets/BaseWidgets/TitleWidget.hpp"
 #include "Widgets/BaseWidgets/ToggleableCombobox.hpp"
 #include "Widgets/BaseWidgets/ToggleableTextboxes.hpp"
+
 
 
 struct TextureRefs
@@ -96,6 +97,18 @@ private:
 	IlluminationSettings* illumination_settings;
 	GlassMapSettings* glassmap_settings;
 	PositionSettings* position_settings;
+
+	QMetaObject::Connection texture_layer_1_connection;
+	QMetaObject::Connection texture_layer_2_connection;
+	QMetaObject::Connection uv_settings_1_connection;
+	QMetaObject::Connection uv_settings_2_connection;
+	QMetaObject::Connection uv_settings_3_connection;
+	QMetaObject::Connection diffuse_color_settings_connection;
+	QMetaObject::Connection specular_color_settings_connection;
+	QMetaObject::Connection reflection_settings_connection;
+	QMetaObject::Connection illumination_settings_connection;
+	QMetaObject::Connection glassmap_settings_connection;
+	QMetaObject::Connection position_settings_connection;
 
 	AnimBuf_t& animation_buffer;
 	MaterialPtr active_local_material = nullptr;
@@ -403,6 +416,7 @@ private:
 
 	void regenerateMaterial()
 	{
+		std::cout << "Regenerating material!" << std::endl;
 		FactorySettings settings;
 		TextureRefs textures;
 		this->createSettingsFromUI(settings, textures);
@@ -453,7 +467,9 @@ private:
 		this->assignTextureReferences(curr_material, textures);
 		this->assignDefaultValues(curr_material);
 
+		std::cout << "Completed Regeneration, about to dispatch" << std::endl;
 		this->setActiveMaterialAsSelected(); // This should get linked to buttons...
+		std::cout << "Finished dispatch" << std::endl;
 	}
 
 	void setActiveMaterialAsSelected()
@@ -497,6 +513,7 @@ private:
 	void updateUI()
 	{
 		std::cout << "UPDATE UI" << std::endl;
+		this->disconnectUI();
 		// Get the UV slots in use
 		this->uv_settings_1->toggle(getUVSlot(0));
 		this->uv_settings_2->toggle(getUVSlot(1));
@@ -569,6 +586,44 @@ private:
 		this->diffuse_color_settings->transparency_map_widget->setActive();
 		this->diffuse_color_settings->diffuse_map_widget->setActive();
 		this->diffuse_color_settings->diffuse_map_widget_layer_2->setActive();
+
+		this->connectUI();
+	}
+
+	template <typename T>
+	auto getSettingsUpdated(T* widget)
+	{
+		return &std::remove_reference<decltype(*widget)>::type::settingsUpdated;
+	}
+
+	void connectUI()
+	{
+		this->texture_layer_1_connection         = connect(this->texture_layer_1, getSettingsUpdated(this->texture_layer_1), this, &ShaderFactory::updateUI);
+		this->texture_layer_2_connection         = connect(this->texture_layer_2, getSettingsUpdated(this->texture_layer_2), this, &ShaderFactory::updateUI);
+		this->uv_settings_1_connection           = connect(this->uv_settings_1, getSettingsUpdated(this->uv_settings_1), this, &ShaderFactory::updateUI);
+		this->uv_settings_2_connection           = connect(this->uv_settings_2, getSettingsUpdated(this->uv_settings_2), this, &ShaderFactory::updateUI);
+		this->uv_settings_3_connection           = connect(this->uv_settings_3, getSettingsUpdated(this->uv_settings_3), this, &ShaderFactory::updateUI);
+		//this->diffuse_color_settings_connection  = connect(this->diffuse_color_settings, getSettingsUpdated(this->diffuse_color_settings), this, &ShaderFactory::updateUI);
+		//this->specular_color_settings_connection = connect(this->specular_color_settings, getSettingsUpdated(this->specular_color_settings), this, &ShaderFactory::updateUI);
+		//this->reflection_settings_connection     = connect(this->reflection_settings, getSettingsUpdated(this->reflection_settings), this, &ShaderFactory::updateUI);
+		//this->illumination_settings_connection   = connect(this->illumination_settings, getSettingsUpdated(this->illumination_settings), this, &ShaderFactory::updateUI);
+		//this->glassmap_settings_connection       = connect(this->glassmap_settings, getSettingsUpdated(this->glassmap_settings), this, &ShaderFactory::updateUI);
+		//this->position_settings_connection       = connect(this->position_settings, getSettingsUpdated(this->position_settings), this, &ShaderFactory::updateUI);
+	}
+
+	void disconnectUI()
+	{
+		disconnect(this->texture_layer_1_connection);
+		disconnect(this->texture_layer_2_connection);
+		disconnect(this->uv_settings_1_connection);
+		disconnect(this->uv_settings_2_connection);
+		disconnect(this->uv_settings_3_connection);
+		//disconnect(this->diffuse_color_settings_connection);
+		//disconnect(this->specular_color_settings_connection);
+		//disconnect(this->reflection_settings_connection);
+		//disconnect(this->illumination_settings_connection);
+		//disconnect(this->glassmap_settings_connection);
+		//disconnect(this->position_settings_connection);
 	}
 
 public:
@@ -630,10 +685,11 @@ public:
 			//placeInSpoiler("Position Adjust", this->position_settings, _layout);
 			_layout->addWidget(this->position_settings);
 
-			connect(this->texture_layer_1, &ShaderFactoryTextureLayer1::settingsUpdated, this, &ShaderFactory::updateUI);
-			connect(this->texture_layer_2, &ShaderFactoryTextureLayer1::settingsUpdated, this, &ShaderFactory::updateUI);
 		}
+		this->connectUI();
 		this->setLayout(_layout);
+
+
 
 		this->updateAvailableTextures();
 
@@ -643,8 +699,10 @@ public:
 
 	void updateReadbackSettings()
 	{
+		disconnectUI();
 		this->updateAvailableTextures(); // This should update in other places
 		this->readbackUISettings();
+		connectUI();
 	}
 
 };
