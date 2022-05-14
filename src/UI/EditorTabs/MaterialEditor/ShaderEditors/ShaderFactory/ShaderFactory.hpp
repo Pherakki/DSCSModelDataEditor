@@ -596,19 +596,25 @@ private:
 		return &std::remove_reference<decltype(*widget)>::type::settingsUpdated;
 	}
 
+	template <typename T>
+	auto connectUIUpdate(T* widget)
+	{
+		return connect(widget, getSettingsUpdated(widget), this, &ShaderFactory::updateUI);
+	}
+
 	void connectUI()
 	{
-		this->texture_layer_1_connection         = connect(this->texture_layer_1, getSettingsUpdated(this->texture_layer_1), this, &ShaderFactory::updateUI);
-		this->texture_layer_2_connection         = connect(this->texture_layer_2, getSettingsUpdated(this->texture_layer_2), this, &ShaderFactory::updateUI);
-		this->uv_settings_1_connection           = connect(this->uv_settings_1, getSettingsUpdated(this->uv_settings_1), this, &ShaderFactory::updateUI);
-		this->uv_settings_2_connection           = connect(this->uv_settings_2, getSettingsUpdated(this->uv_settings_2), this, &ShaderFactory::updateUI);
-		this->uv_settings_3_connection           = connect(this->uv_settings_3, getSettingsUpdated(this->uv_settings_3), this, &ShaderFactory::updateUI);
-		//this->diffuse_color_settings_connection  = connect(this->diffuse_color_settings, getSettingsUpdated(this->diffuse_color_settings), this, &ShaderFactory::updateUI);
-		//this->specular_color_settings_connection = connect(this->specular_color_settings, getSettingsUpdated(this->specular_color_settings), this, &ShaderFactory::updateUI);
-		//this->reflection_settings_connection     = connect(this->reflection_settings, getSettingsUpdated(this->reflection_settings), this, &ShaderFactory::updateUI);
-		//this->illumination_settings_connection   = connect(this->illumination_settings, getSettingsUpdated(this->illumination_settings), this, &ShaderFactory::updateUI);
-		//this->glassmap_settings_connection       = connect(this->glassmap_settings, getSettingsUpdated(this->glassmap_settings), this, &ShaderFactory::updateUI);
-		//this->position_settings_connection       = connect(this->position_settings, getSettingsUpdated(this->position_settings), this, &ShaderFactory::updateUI);
+		this->texture_layer_1_connection         = connectUIUpdate(this->texture_layer_1);
+		this->texture_layer_2_connection         = connectUIUpdate(this->texture_layer_2);
+		this->uv_settings_1_connection           = connectUIUpdate(this->uv_settings_1);
+		this->uv_settings_2_connection           = connectUIUpdate(this->uv_settings_2);
+		this->uv_settings_3_connection           = connectUIUpdate(this->uv_settings_3);
+		//this->diffuse_color_settings_connection  = connectUIUpdate(this->diffuse_color_settings);
+		//this->specular_color_settings_connection = connectUIUpdate(this->specular_color_settings);
+		//this->reflection_settings_connection     = connectUIUpdate(this->reflection_settings);
+		//this->illumination_settings_connection   = connectUIUpdate(this->illumination_settings);
+		//this->glassmap_settings_connection       = connectUIUpdate(this->glassmap_settings);
+		//this->position_settings_connection       = connectUIUpdate(this->position_settings);
 	}
 
 	void disconnectUI()
