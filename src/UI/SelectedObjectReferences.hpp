@@ -3,13 +3,14 @@
 #include <iostream> // Remove after debugging
 #include <QObject>
 
-#include "../Rendering/DSCS/DataObjects/OpenGLDSCSModel.hpp"
+#include "Rendering/DSCS/Renderer.hpp"
+#include "Rendering/DSCS/DataObjects/OpenGLDSCSModel.hpp"
 #include "UI/EditorTabs/MaterialEditor//ShaderEditors/TabMaterials.hpp"
-
 
 class MaterialResource
 {
 private:
+	typedef Rendering::DSCS::AnimationBuffer AnimationBuffer;
 	typedef Rendering::DSCS::DataObjects::OpenGLDSCSMaterial Material;
 	typedef std::shared_ptr<Material> MaterialPtr;
 
@@ -17,12 +18,12 @@ private:
 	TabMaterials tab_materials;
 
 public:
-	MaterialResource(const MaterialPtr& material_ptr)
+	MaterialResource(const MaterialPtr& material_ptr, const AnimationBuffer& anim_buffer)
 	{
 		this->active_material = material_ptr;
-		this->tab_materials.prebuilt_material = nullptr; // Need a material clone function...
-		this->tab_materials.factory_material = nullptr; // Set a default when you can
-		this->tab_materials.custom_code_material = nullptr; // Set a default when you can
+		this->tab_materials.prebuilt_material = std::make_shared<Material>(material_ptr->shader, anim_buffer.uniform_dispatch_buffer);
+		this->tab_materials.factory_material = nullptr;
+		this->tab_materials.custom_code_material = std::make_shared<Material>(material_ptr->shader, anim_buffer.uniform_dispatch_buffer);
 	}
 
 	const auto getMaterial() const noexcept { return this->active_material; }
@@ -55,6 +56,7 @@ class SelectedObjectReferences : public QObject
 {
 	Q_OBJECT
 protected:
+	typedef Rendering::DSCS::AnimationBuffer AnimationBuffer;
 	typedef Rendering::DSCS::DataObjects::OpenGLDSCSModel Model;
 	typedef std::shared_ptr<Model> ModelPtr;
 	typedef Rendering::DSCS::DataObjects::OpenGLDSCSMesh Mesh;
@@ -66,36 +68,51 @@ protected:
 	MeshPtr     selected_mesh     = nullptr;
 	MaterialPtr selected_material = nullptr;
 
+	AnimationBuffer& anim_buffer;
+
 	//const ModelList_t& model_library;
-	std::unordered_map<std::string, MaterialResource> material_resources;
+	std::unordered_map<MaterialPtr, MaterialResource> material_resources;
 	std::unordered_map<std::string, TextureResource> texture_resources;
 	// Add library for animations
 
 	
 public:
-	SelectedObjectReferences() = default;
+	SelectedObjectReferences(AnimationBuffer& anim_buffer)
+		: anim_buffer{ anim_buffer }
+	{}
+
 	SelectedObjectReferences(
 		const ModelPtr& model, 
 		const MeshPtr& mesh, 
-		const MaterialPtr& material)
+		const MaterialPtr& material,
+		AnimationBuffer& anim_buffer)
 		: QObject{}
 		, selected_model{model}
 		, selected_mesh{mesh}
 		, selected_material{material}
+		, anim_buffer{anim_buffer}
 	{}
 
 	const ModelPtr&    getSelectedModel   () const noexcept { return this->selected_model;    }
 	const MeshPtr&     getSelectedMesh    () const noexcept { return this->selected_mesh;     }
 	const MaterialPtr& getSelectedMaterial() const noexcept { return this->selected_material; }
 
+
 	MaterialPtr& getEditableSelectedMaterial() noexcept { return this->selected_material; }
+	MaterialResource& getEditableSelectedMaterialResource()
+	{
+		return this->material_resources.at(this->selected_material);
+	}
 
 	void registerNewModel(const ModelPtr& model)
 	{
 		for (const auto& mat : model->materials)
-		{
-			this->material_resources.insert({ mat->name, MaterialResource{mat} });
-		}
+			this->registerNewMaterial(mat);
+	}
+
+	void registerNewMaterial(const MaterialPtr& material)
+	{
+		this->material_resources.insert({ material, MaterialResource{material, this->anim_buffer} });
 	}
 
 	void setSelectedModel(const ModelPtr& model)

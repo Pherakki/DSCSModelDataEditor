@@ -22,10 +22,10 @@ private:
     typedef std::unordered_map<std::string, std::shared_ptr<Rendering::DataObjects::OpenGLDSCSTexture>> TextureLibrary_t;
     typedef Rendering::DSCS::AnimationBuffer AnimBuf_t;
 
-    PrebuiltTab* prebuilts_tab = new PrebuiltTab(this->selected_objects, this->editor_materials, this);
+    PrebuiltTab* prebuilts_tab;
     //QScrollArea* shader_factory_scroll_area = new QScrollArea(this);
     ShaderFactory* factory_tab;
-    CodeEditor* code_tab = new CodeEditor(this->selected_objects, this->editor_materials, this);
+    CodeEditor* code_tab;
 
     TabMaterialsLibrary editor_materials;
     SelectedObjectReferences& selected_objects;
@@ -39,6 +39,9 @@ public:
     {
         //this->shader_factory_scroll_area->setWidgetResizable(true);
         //this->shader_factory_scroll_area->setWidget(this->factory_tab);
+
+        this->prebuilts_tab = new PrebuiltTab(this->selected_objects, this->editor_materials, this);
+        this->code_tab = new CodeEditor(this->selected_objects, this->editor_materials, this);
 
         this->addTab(this->prebuilts_tab, "Pre-Built");
         this->addTab(this->factory_tab, "Shader Factory");

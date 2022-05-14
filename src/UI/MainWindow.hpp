@@ -31,9 +31,9 @@ public:
     ~DSCSModelDataEditorWindow() { };
 private:
     typedef std::shared_ptr<Rendering::DSCS::DataObjects::OpenGLDSCSMaterial> MaterialPtr;
-    SelectedObjectReferences selected_objects;
 
     CustomWidgets::RenderWidget* render_widget;
+    SelectedObjectReferences selected_objects; // Selected Objects depends on data from render widget, so initialise it after!!
     QPlainTextEdit* vertex_shader_textedit;
     QPlainTextEdit* fragment_shader_textedit;
 

@@ -17,7 +17,7 @@ typedef std::shared_ptr<Rendering::DSCS::DataObjects::OpenGLDSCSMaterial> Materi
 DSCSModelDataEditorWindow::DSCSModelDataEditorWindow(QWidget* parent = Q_NULLPTR)
     : QMainWindow(parent)
     , render_widget{ new CustomWidgets::RenderWidget(this) }
-    , selected_objects{SelectedObjectReferences()}
+    , selected_objects{SelectedObjectReferences(this->render_widget->animation_buffer)}
 {
     // Qt5 takes ownership of raw pointers and handles destruction properly, 
     // so no memory leaks here even though it looks like it
