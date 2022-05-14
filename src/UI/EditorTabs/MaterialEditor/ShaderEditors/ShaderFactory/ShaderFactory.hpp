@@ -417,7 +417,6 @@ private:
 
 	void regenerateMaterial()
 	{
-		std::cout << "Regenerating material!" << std::endl;
 		FactorySettings settings;
 		TextureRefs textures;
 		this->createSettingsFromUI(settings, textures);
@@ -468,9 +467,7 @@ private:
 		this->assignTextureReferences(curr_material, textures);
 		this->assignDefaultValues(curr_material);
 
-		std::cout << "Completed Regeneration, about to dispatch" << std::endl;
 		this->setActiveMaterialAsSelected(); // This should get linked to buttons...
-		std::cout << "Finished dispatch" << std::endl;
 
 		this->setting_update_in_progress = false;
 	}
@@ -546,13 +543,9 @@ private:
 	void updateUI()
 	{
 		this->blockUISignals();
-		std::cout << "UPDATE UI";
+		std::cout << "UPDATE UI" << std::endl;
 		if (this->setting_update_in_progress)
-		{
-			std::cout << " > UPDATE DISCARDED" << std::endl;
 			return;
-		}
-		std::cout << " > UPDATE PASSED" << std::endl;
 		this->setting_update_in_progress = true;
 
 
@@ -736,7 +729,6 @@ public:
 		this->updateAvailableTextures(); // This should update in other places
 		this->readbackUISettings();
 
-		std::cout << "Finished Reading back" << std::endl;
 		this->unblockUISignals();
 	}
 

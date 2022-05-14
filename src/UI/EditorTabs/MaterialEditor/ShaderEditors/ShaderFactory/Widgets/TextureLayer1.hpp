@@ -11,6 +11,7 @@ class ShaderFactoryTextureLayer1 : public QWidget
 private:
 	void toggleParallax()
 	{
+		this->blockSignals(true);
 		QString ctex = "Diffuse Texture";
 		bool activate = false;
 		auto*& hbox = this->parallax_settings->heightmap_combobox;
@@ -36,6 +37,8 @@ private:
 			this->parallax_settings->heightmap_combobox->removeItem(hbox->findText(ntex));
 		}
 		this->parallax_settings->setEnabled(activate);
+
+		this->blockSignals(false);
 	}
 	void toggleBump()
 	{
