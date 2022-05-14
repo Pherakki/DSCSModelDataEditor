@@ -634,7 +634,7 @@ private:
 		connectUIUpdate(this->uv_settings_2);
 		connectUIUpdate(this->uv_settings_3);
 		connectUIUpdate(this->diffuse_color_settings);
-		// connectUIUpdate(this->specular_color_settings);
+		connectUIUpdate(this->specular_color_settings);
 		// connectUIUpdate(this->reflection_settings);
 		// connectUIUpdate(this->illumination_settings);
 		// connectUIUpdate(this->glassmap_settings);

@@ -6,6 +6,7 @@
 
 class SpecularColorSettings : public QWidget
 {
+	Q_OBJECT
 public:
 	QCheckBox* checkbox;
 	TitleWidget* title_widget;
@@ -32,5 +33,10 @@ public:
 			_layout->addItem(settings_layout, 1, 1);
 		}
 		this->setLayout(_layout);
+
+		connect(this->checkbox, &QCheckBox::stateChanged, this, &SpecularColorSettings::settingsUpdated);
+		connect(this->specular_map, &TextureMapWidget::settingsUpdated, this, &SpecularColorSettings::settingsUpdated);
 	}
+signals:
+	void settingsUpdated(bool);
 };
