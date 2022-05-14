@@ -23,19 +23,29 @@ public:
 	MaterialResource(const MaterialPtr& material_ptr, const AnimationBuffer& anim_buffer)
 	{
 		this->active_material = material_ptr;
+
 		this->tab_materials.prebuilt_material = std::make_shared<Material>(material_ptr->shader, anim_buffer.uniform_dispatch_buffer);
 		this->tab_materials.factory_material = std::make_shared<Material>(material_ptr->shader, anim_buffer.uniform_dispatch_buffer);
 		this->tab_materials.custom_code_material = std::make_shared<Material>(material_ptr->shader, anim_buffer.uniform_dispatch_buffer);
+
 	}
 
-	const auto& getMaterial() const noexcept { return this->active_material; }
-	const auto& getPrebuiltMaterial() const noexcept { return this->tab_materials.prebuilt_material; }
-	const auto& getFactoryMaterial() const noexcept { return this->tab_materials.factory_material; }
+	const auto& getActiveMaterial() const noexcept { return this->active_material; }
+	const auto& getPrebuiltMaterial  () const noexcept { return this->tab_materials.prebuilt_material   ; }
+	const auto& getFactoryMaterial   () const noexcept { return this->tab_materials.factory_material    ; }
 	const auto& getCustomCodeMaterial() const noexcept { return this->tab_materials.custom_code_material; }
-	auto& getEditableMaterial() noexcept { return this->active_material; }
-	auto& getEditablePrebuiltMaterial() noexcept { return this->tab_materials.prebuilt_material; }
-	auto& getEditableFactoryMaterial() noexcept { return this->tab_materials.factory_material; }
+	auto& getEditableMaterial() noexcept { return this->active_material; } // This needs to go in favour of automatic updates
+	auto& getEditablePrebuiltMaterial  () noexcept { return this->tab_materials.prebuilt_material   ; }
+	auto& getEditableFactoryMaterial   () noexcept { return this->tab_materials.factory_material    ; }
 	auto& getEditableCustomCodeMaterial() noexcept { return this->tab_materials.custom_code_material; }
+
+	// Need to instead update the shader held on the active material
+	//const void setPrebuiltMaterialActive  () noexcept { this->active_material = this->tab_materials.prebuilt_material   ; }
+	//const void setFactoryMaterialActive   () noexcept { this->active_material = this->tab_materials.factory_material    ; }
+	//const void setCustomCodeMaterialActive() noexcept { this->active_material = this->tab_materials.custom_code_material; }
+	//const void setPrebuiltMaterialShader  (const ShaderPtr& shader, const AnimationBuffer& anim_buffer) { this->tab_materials.prebuilt_material   ->replaceShader(shader, anim_buffer.uniform_dispatch_buffer); }
+	//const void setFactoryMaterialShader   (const ShaderPtr& shader, const AnimationBuffer& anim_buffer) { this->tab_materials.factory_material    ->replaceShader(shader, anim_buffer.uniform_dispatch_buffer); }
+	//const void setCustomCodeMaterialShader(const ShaderPtr& shader, const AnimationBuffer& anim_buffer) { this->tab_materials.custom_code_material->replaceShader(shader, anim_buffer.uniform_dispatch_buffer); }
 };
 
 class TextureResource
