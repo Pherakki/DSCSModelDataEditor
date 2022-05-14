@@ -69,6 +69,7 @@ protected:
 	//const ModelList_t& model_library;
 	std::unordered_map<std::string, MaterialResource> material_resources;
 	std::unordered_map<std::string, TextureResource> texture_resources;
+	// Add library for animations
 
 	
 public:
