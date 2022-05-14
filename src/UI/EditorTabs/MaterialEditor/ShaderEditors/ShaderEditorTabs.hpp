@@ -46,6 +46,5 @@ public:
         this->addTab(this->prebuilts_tab, "Pre-Built");
         this->addTab(this->factory_tab, "Shader Factory");
         this->addTab(this->code_tab, "Code Editor");
-        connect(this->factory_tab, &ShaderFactory::overwriteCurrentMaterial, this, &ShaderEditorTabs::overwriteCurrentMaterial);
     }
 };

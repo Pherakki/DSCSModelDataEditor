@@ -13,6 +13,8 @@ private:
 	typedef Rendering::DSCS::AnimationBuffer AnimationBuffer;
 	typedef Rendering::DSCS::DataObjects::OpenGLDSCSMaterial Material;
 	typedef std::shared_ptr<Material> MaterialPtr;
+	typedef Rendering::ShaderObjects::cgGLShaderObject Shader;
+	typedef std::shared_ptr<Shader> ShaderPtr;
 
 	MaterialPtr active_material;
 	TabMaterials tab_materials;
@@ -22,14 +24,18 @@ public:
 	{
 		this->active_material = material_ptr;
 		this->tab_materials.prebuilt_material = std::make_shared<Material>(material_ptr->shader, anim_buffer.uniform_dispatch_buffer);
-		this->tab_materials.factory_material = nullptr;
+		this->tab_materials.factory_material = std::make_shared<Material>(material_ptr->shader, anim_buffer.uniform_dispatch_buffer);
 		this->tab_materials.custom_code_material = std::make_shared<Material>(material_ptr->shader, anim_buffer.uniform_dispatch_buffer);
 	}
 
-	const auto getMaterial() const noexcept { return this->active_material; }
-	const auto getPrebuiltMaterial() const noexcept { return this->tab_materials.prebuilt_material; }
-	const auto getFactoryMaterial() const noexcept { return this->tab_materials.factory_material; }
-	const auto getCustomCodeMaterial() const noexcept { return this->tab_materials.custom_code_material; }
+	const auto& getMaterial() const noexcept { return this->active_material; }
+	const auto& getPrebuiltMaterial() const noexcept { return this->tab_materials.prebuilt_material; }
+	const auto& getFactoryMaterial() const noexcept { return this->tab_materials.factory_material; }
+	const auto& getCustomCodeMaterial() const noexcept { return this->tab_materials.custom_code_material; }
+	auto& getEditableMaterial() noexcept { return this->active_material; }
+	auto& getEditablePrebuiltMaterial() noexcept { return this->tab_materials.prebuilt_material; }
+	auto& getEditableFactoryMaterial() noexcept { return this->tab_materials.factory_material; }
+	auto& getEditableCustomCodeMaterial() noexcept { return this->tab_materials.custom_code_material; }
 };
 
 class TextureResource

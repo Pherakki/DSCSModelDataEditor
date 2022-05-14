@@ -84,40 +84,8 @@ DSCSModelDataEditorWindow::DSCSModelDataEditorWindow(QWidget* parent = Q_NULLPTR
 
     // Set up slots
     connect(this->render_widget, &CustomWidgets::RenderWidget::glInitialised, this, &DSCSModelDataEditorWindow::testInit);
-
-    // Material updates
-    // -> Updating Widgets
-    connect(material_info_tab, &MaterialEditorTab::overwriteCurrentMaterial, this, &DSCSModelDataEditorWindow::overwriteMaterial);
 }
 
-void DSCSModelDataEditorWindow::overwriteMaterial(MaterialPtr material)
-{
-    auto idx = -1;
-    auto& selected_model = selected_objects.getSelectedModel();
-    auto& selected_mesh = selected_objects.getSelectedMesh();
-    auto& selected_material = selected_objects.getSelectedMaterial();
-    for (size_t i = 0; i < selected_model->materials.size(); ++i)
-    {
-        auto& s_material = selected_model->materials[i];
-        if (selected_material == s_material)
-        {
-            idx = i;
-            break;
-        }
-    }
-    if (idx == -1)
-    {
-        return;
-    }
-    else
-    {
-        auto s_mesh = selected_mesh;
-        s_mesh->material = material;
-        selected_model->materials[idx] = material;
-        this->setSelectedModel(selected_model);
-        this->setSelectedMesh(s_mesh);
-    }
-}
 
 void DSCSModelDataEditorWindow::testInit()
 {

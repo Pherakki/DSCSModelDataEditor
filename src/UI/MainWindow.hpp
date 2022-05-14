@@ -52,7 +52,6 @@ private slots:
     void setSelectedMesh(std::shared_ptr<Rendering::DSCS::DataObjects::OpenGLDSCSMesh> mesh);
     void setSelectedMeshOnly(std::shared_ptr<Rendering::DSCS::DataObjects::OpenGLDSCSMesh> mesh);
     void setSelectedMaterial(MaterialPtr material);
-    void overwriteMaterial(MaterialPtr material);
 };
 
 

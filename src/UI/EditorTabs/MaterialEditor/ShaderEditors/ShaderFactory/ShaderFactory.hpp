@@ -407,6 +407,8 @@ private:
 		TextureRefs textures;
 		this->createSettingsFromUI(settings, textures);
 
+		// Need to figure out a way to do this with the new resource system...
+		// Probably need to store a list of Mesh references on the MaterialResource..?
 		auto& selected_mesh = this->selected_objects.getSelectedMesh();
 		// Sort out remaining inputs to the factory
 		for (const auto& attr : selected_mesh->mesh.vertex_attributes)	
@@ -458,18 +460,29 @@ private:
 		//	new_material->name_hash = dscsNameHash(new_material->name);
 		//}
 
-		auto& selected_material = this->selected_objects.getEditableSelectedMaterial();
-		selected_material->replaceShader(shader, this->animation_buffer.uniform_dispatch_buffer);
-		this->assignTextureReferences(selected_material, textures);
-		this->assignDefaultValues(selected_material);
+		auto& material_resource = this->selected_objects.getEditableSelectedMaterialResource();
+		auto& curr_material = material_resource.getEditableFactoryMaterial();
+		curr_material->replaceShader(shader, this->animation_buffer.uniform_dispatch_buffer);
+		this->assignTextureReferences(curr_material, textures);
+		this->assignDefaultValues(curr_material);
 
-		this->active_local_material = selected_material;
 		this->setActiveMaterialAsSelected(); // This should get linked to buttons...
 	}
 
 	void setActiveMaterialAsSelected()
 	{
-		emit this->overwriteCurrentMaterial(this->active_local_material);
+		auto& material_resource = this->selected_objects.getEditableSelectedMaterialResource();
+
+		FactorySettings settings;
+		TextureRefs textures;
+		this->createSettingsFromUI(settings, textures);
+
+		auto& curr_material = material_resource.getEditableMaterial();
+		curr_material->replaceShader(material_resource.getFactoryMaterial()->shader, this->animation_buffer.uniform_dispatch_buffer);
+		this->assignTextureReferences(curr_material, textures);
+		this->assignDefaultValues(curr_material);
+
+		emit this->selected_objects.setSelectedMaterial(this->selected_objects.getSelectedMaterial());
 	}
 
 	void placeInSpoiler(const QString& title, QWidget* widget, QLayout* layout)
@@ -570,8 +583,6 @@ private:
 		this->diffuse_color_settings->diffuse_map_widget_layer_2->setActive();
 	}
 
-signals:
-	void overwriteCurrentMaterial(MaterialPtr material_ptr);
 public:
 	explicit ShaderFactory(SelectedObjectReferences& sor, TabMaterialsLibrary& tab_materials, TextureLibrary_t& texlib, ShaderBackend_t& shader_backend, Rendering::DSCS::AnimationBuffer& animation_buffer, QWidget* parent = nullptr)
 		: QWidget(parent)
@@ -586,7 +597,7 @@ public:
 		{
 			// Put in the Position manip / Billboarding here
 
-			auto compile_button = new QPushButton("Compile");
+			auto compile_button = new QPushButton("Set Active");
 			_layout->addWidget(compile_button);
 			connect(compile_button, &QPushButton::clicked, this, &ShaderFactory::regenerateMaterial);
 			this->texture_layer_1 = new ShaderFactoryTextureLayer1("Texture Layer 1");
