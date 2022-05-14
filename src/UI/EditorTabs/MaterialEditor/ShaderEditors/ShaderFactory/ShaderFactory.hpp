@@ -116,6 +116,7 @@ private:
 	ShaderBackend_t& shader_backend;
 	SelectedObjectReferences& selected_objects;
 	TabMaterialsLibrary& tab_materials;
+	bool setting_update_in_progress = false;
 
 	bool anyLayer1SamplerEnabled()
 	{
@@ -470,6 +471,8 @@ private:
 		std::cout << "Completed Regeneration, about to dispatch" << std::endl;
 		this->setActiveMaterialAsSelected(); // This should get linked to buttons...
 		std::cout << "Finished dispatch" << std::endl;
+
+		this->setting_update_in_progress = false;
 	}
 
 	void setActiveMaterialAsSelected()
@@ -510,10 +513,49 @@ private:
 			|| this->uvSlotInUse(this->diffuse_color_settings->light_sampler, idx);
 	}
 
+	void blockUISignals()
+	{
+		this->uv_settings_1->blockSignals(true);
+		this->uv_settings_2->blockSignals(true);
+		this->uv_settings_3->blockSignals(true);
+		this->texture_layer_1->blockSignals(true);
+		this->texture_layer_2->blockSignals(true);
+		this->diffuse_color_settings->blockSignals(true);
+		this->specular_color_settings->blockSignals(true);
+		this->illumination_settings->blockSignals(true);
+		this->reflection_settings->blockSignals(true);
+		this->glassmap_settings->blockSignals(true);
+		this->position_settings->blockSignals(true);
+	}
+
+	void unblockUISignals()
+	{
+		this->uv_settings_1->blockSignals(false);
+		this->uv_settings_2->blockSignals(false);
+		this->uv_settings_3->blockSignals(false);
+		this->texture_layer_1->blockSignals(false);
+		this->texture_layer_2->blockSignals(false);
+		this->diffuse_color_settings->blockSignals(false);
+		this->specular_color_settings->blockSignals(false);
+		this->illumination_settings->blockSignals(false);
+		this->reflection_settings->blockSignals(false);
+		this->glassmap_settings->blockSignals(false);
+		this->position_settings->blockSignals(false);
+	}
+
 	void updateUI()
 	{
-		std::cout << "UPDATE UI" << std::endl;
-		this->disconnectUI();
+		this->blockUISignals();
+		std::cout << "UPDATE UI";
+		if (this->setting_update_in_progress)
+		{
+			std::cout << " > UPDATE DISCARDED" << std::endl;
+			return;
+		}
+		std::cout << " > UPDATE PASSED" << std::endl;
+		this->setting_update_in_progress = true;
+
+
 		// Get the UV slots in use
 		this->uv_settings_1->toggle(getUVSlot(0));
 		this->uv_settings_2->toggle(getUVSlot(1));
@@ -587,7 +629,8 @@ private:
 		this->diffuse_color_settings->diffuse_map_widget->setActive();
 		this->diffuse_color_settings->diffuse_map_widget_layer_2->setActive();
 
-		this->connectUI();
+		this->regenerateMaterial();
+		this->unblockUISignals();
 	}
 
 	template <typename T>
@@ -617,20 +660,7 @@ private:
 		//this->position_settings_connection       = connectUIUpdate(this->position_settings);
 	}
 
-	void disconnectUI()
-	{
-		disconnect(this->texture_layer_1_connection);
-		disconnect(this->texture_layer_2_connection);
-		disconnect(this->uv_settings_1_connection);
-		disconnect(this->uv_settings_2_connection);
-		disconnect(this->uv_settings_3_connection);
-		//disconnect(this->diffuse_color_settings_connection);
-		//disconnect(this->specular_color_settings_connection);
-		//disconnect(this->reflection_settings_connection);
-		//disconnect(this->illumination_settings_connection);
-		//disconnect(this->glassmap_settings_connection);
-		//disconnect(this->position_settings_connection);
-	}
+
 
 public:
 	explicit ShaderFactory(SelectedObjectReferences& sor, TabMaterialsLibrary& tab_materials, TextureLibrary_t& texlib, ShaderBackend_t& shader_backend, Rendering::DSCS::AnimationBuffer& animation_buffer, QWidget* parent = nullptr)
@@ -641,14 +671,13 @@ public:
 		, selected_objects{ sor }
 		, tab_materials{ tab_materials }
 	{
-
 		auto _layout = new QVBoxLayout;
 		{
 			// Put in the Position manip / Billboarding here
 
 			auto compile_button = new QPushButton("Set Active");
 			_layout->addWidget(compile_button);
-			connect(compile_button, &QPushButton::clicked, this, &ShaderFactory::regenerateMaterial);
+			connect(compile_button, &QPushButton::clicked, this, &ShaderFactory::setActiveMaterialAsSelected);
 			this->texture_layer_1 = new ShaderFactoryTextureLayer1("Texture Layer 1");
 			this->texture_layer_2 = new ShaderFactoryTextureLayer1("Texture Layer 2");
 
@@ -692,10 +721,8 @@ public:
 			_layout->addWidget(this->position_settings);
 
 		}
-		this->connectUI();
 		this->setLayout(_layout);
-
-
+		this->connectUI();
 
 		this->updateAvailableTextures();
 
@@ -705,10 +732,12 @@ public:
 
 	void updateReadbackSettings()
 	{
-		disconnectUI();
+		this->blockUISignals();
 		this->updateAvailableTextures(); // This should update in other places
 		this->readbackUISettings();
-		connectUI();
+
+		std::cout << "Finished Reading back" << std::endl;
+		this->unblockUISignals();
 	}
 
 };

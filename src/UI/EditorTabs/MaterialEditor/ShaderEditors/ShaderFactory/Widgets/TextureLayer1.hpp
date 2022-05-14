@@ -41,6 +41,8 @@ private:
 	{
 		this->bumpmap_settings->toggle(this->normal_texture_settings->checkbox->isChecked());
 	}
+
+
 public:
 	TitleWidget* title_widget;
 	ShaderFactoryTextureSlot* diffuse_texture_settings;
