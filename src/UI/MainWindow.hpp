@@ -40,18 +40,9 @@ private:
     void initToolbar();
     void loadModel(const QString& fileName);
     void loadAnim(const QString& fileName);
-signals:
-    void selectedModelUpdated(std::shared_ptr<Rendering::DSCS::DataObjects::OpenGLDSCSModel> model_ptr);
-    void selectedMeshUpdated(std::shared_ptr<Rendering::DSCS::DataObjects::OpenGLDSCSMesh> mesh_ptr);
-    void selectedMaterialUpdated(std::shared_ptr<Rendering::DSCS::DataObjects::OpenGLDSCSMaterial> material_ptr);
 private slots:
     void testInit();
     void openLoadModelDialog();
-    void setSelectedModel(std::shared_ptr<Rendering::DSCS::DataObjects::OpenGLDSCSModel> model_ptr);
-    void setSelectedModelOnly(std::shared_ptr<Rendering::DSCS::DataObjects::OpenGLDSCSModel> model_ptr);
-    void setSelectedMesh(std::shared_ptr<Rendering::DSCS::DataObjects::OpenGLDSCSMesh> mesh);
-    void setSelectedMeshOnly(std::shared_ptr<Rendering::DSCS::DataObjects::OpenGLDSCSMesh> mesh);
-    void setSelectedMaterial(MaterialPtr material);
 };
 
 

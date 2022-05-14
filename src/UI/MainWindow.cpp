@@ -125,48 +125,19 @@ void DSCSModelDataEditorWindow::openLoadModelDialog()
 }
 
 /*
-Global variable dispatchers
-*/
-void DSCSModelDataEditorWindow::setSelectedModelOnly(std::shared_ptr<Rendering::DSCS::DataObjects::OpenGLDSCSModel> model)
-{
-    this->selected_objects.setSelectedModel(model);
-    emit this->selectedModelUpdated(model);
-}
-
-void DSCSModelDataEditorWindow::setSelectedModel(std::shared_ptr<Rendering::DSCS::DataObjects::OpenGLDSCSModel> model)
-{
-    this->setSelectedModelOnly(model);
-    if (model->meshes.size())
-        this->setSelectedMesh(model->meshes[0]);
-}
-
-void DSCSModelDataEditorWindow::setSelectedMeshOnly(std::shared_ptr<Rendering::DSCS::DataObjects::OpenGLDSCSMesh> mesh)
-{
-    this->selected_objects.setSelectedMesh(mesh);
-    emit this->selectedMeshUpdated(mesh);
-}
-
-void DSCSModelDataEditorWindow::setSelectedMesh(std::shared_ptr<Rendering::DSCS::DataObjects::OpenGLDSCSMesh> mesh)
-{
-    this->setSelectedMeshOnly(mesh);
-
-    this->setSelectedMaterial(mesh->material);
-}
-
-void DSCSModelDataEditorWindow::setSelectedMaterial(std::shared_ptr<Rendering::DSCS::DataObjects::OpenGLDSCSMaterial> material)
-{
-    this->selected_objects.setSelectedMaterial(material);
-    emit this->selectedMaterialUpdated(material);
-}
-
-/*
 Asset loaders
 */
 void DSCSModelDataEditorWindow::loadModel(const QString& fileName)
 {
     auto model = this->render_widget->loadModel(fileName.toStdString());
     this->selected_objects.registerNewModel(model);
-    this->setSelectedModel(model);
+    this->selected_objects.setSelectedModel(model);
+    if (model->meshes.size())
+    {
+        auto& mesh = model->meshes[0];
+        this->selected_objects.setSelectedMesh(mesh);
+        this->selected_objects.setSelectedMaterial(mesh->material);
+    }
 }
 
 void DSCSModelDataEditorWindow::loadAnim(const QString& fileName)
