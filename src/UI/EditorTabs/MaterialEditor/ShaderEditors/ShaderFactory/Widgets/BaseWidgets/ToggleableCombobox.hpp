@@ -8,10 +8,13 @@
 
 class ToggleableCombobox : public QWidget
 {
+	Q_OBJECT
 private:
 	void toggle(int active)
 	{
+		this->blockSignals(true);
 		this->combobox->setEnabled(active);
+		this->blockSignals(false);
 	}
 public:
 	QCheckBox* checkbox;
@@ -40,5 +43,9 @@ public:
 
 		this->toggle(false);
 		connect(this->checkbox, &QCheckBox::stateChanged, this, &ToggleableCombobox::toggle);
+		connect(this->checkbox, &QCheckBox::stateChanged, this, &ToggleableCombobox::settingsUpdated);
+		connect(this->combobox, static_cast<void(QComboBox::*)(int)>(&QComboBox::currentIndexChanged), this, [&]() {this->settingsUpdated(true); });
 	}
+signals:
+	void settingsUpdated(bool);
 };

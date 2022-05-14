@@ -9,6 +9,7 @@
 //template <bool is_overlay>
 class TextureMapWidget : public QWidget
 {
+	Q_OBJECT
 private:
 	QString diffuse_name = "Diffuse Texture";
 	QString normal_name = "Normal Texture";
@@ -16,14 +17,18 @@ private:
 
 	void toggle(int active)
 	{
+		this->blockSignals(true);
 		this->maptype->setEnabled(active);
 		this->channel->setEnabled(active);
+		this->blockSignals(false);
 	}
 
 	void removeMap(const QString& name)
 	{
+		this->blockSignals(true);
 		if (int idx = this->maptype->findText(name); idx != -1)
 			this->maptype->removeItem(idx);
+		this->blockSignals(false);
 	}
 
 public:
@@ -69,11 +74,16 @@ public:
 
 		this->toggle(false);
 		connect(this->checkbox, &QCheckBox::stateChanged, this, &TextureMapWidget::toggle);
+
+		connect(this->checkbox, &QCheckBox::stateChanged, this, &TextureMapWidget::settingsUpdated);
+		connect(this->maptype, static_cast<void(QComboBox::*)(int)>(&QComboBox::currentIndexChanged), this, [&]() {this->settingsUpdated(true); });
+		connect(this->channel, static_cast<void(QComboBox::*)(int)>(&QComboBox::currentIndexChanged), this, [&]() {this->settingsUpdated(true); });
 	}
 
 	template <bool isOverlay=false>
 	void addDiffuseMap()
 	{
+		this->blockSignals(true);
 		MapType mt;
 		if constexpr (isOverlay)
 			mt = MapType::OLDIFFUSE;
@@ -81,6 +91,7 @@ public:
 			mt = MapType::DIFFUSE;
 		if (int idx = this->maptype->findText(this->diffuse_name); idx == -1)
 			this->maptype->insertItem(0, this->diffuse_name, static_cast<int>(mt));
+		this->blockSignals(false);
 	}
 
 	void removeDiffuseMap()
@@ -91,6 +102,7 @@ public:
 	template <bool isOverlay=false>
 	void addNormalMap()
 	{
+		this->blockSignals(true);
 		MapType mt;
 		if constexpr (isOverlay)
 			mt = MapType::OLNORMAL;
@@ -98,6 +110,7 @@ public:
 			mt = MapType::NORMAL;
 		if (int idx = this->maptype->findText(this->normal_name); idx == -1)
 			this->maptype->insertItem(1, this->normal_name, static_cast<int>(mt));
+		this->blockSignals(false);
 	}
 
 	void removeNormalMap()
@@ -107,8 +120,10 @@ public:
 
 	void addLightMap()
 	{
+		this->blockSignals(true);
 		if (int idx = this->maptype->findText(this->light_name); idx == -1)
 			this->maptype->insertItem(2, this->light_name, static_cast<int>(MapType::LIGHT));
+		this->blockSignals(false);
 	}
 
 	void removeLightMap()
@@ -135,4 +150,7 @@ public:
 	{
 		return this->isEnabled() && this->checkbox->isChecked();
 	}
+
+signals:
+	void settingsUpdated(bool);
 };

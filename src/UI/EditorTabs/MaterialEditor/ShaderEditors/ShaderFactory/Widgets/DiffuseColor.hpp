@@ -10,6 +10,7 @@
 
 class DiffuseColorSettings : public QWidget
 {
+	Q_OBJECT
 public:
 	TitleWidget* title_widget;
 	TextboxArrayWidget<4>* diffuse_color_widget;
@@ -20,6 +21,7 @@ public:
 	ShaderFactoryTextureSlot* light_sampler;
 	QLineEdit* light_strength_textbox;
 	QLineEdit* light_power_textbox;
+	QWidget* light_input_widget;
 	DiffuseColorSettings(QWidget* parent = Q_NULLPTR) : QWidget(parent)
 	{
 		auto _layout = new QVBoxLayout;
@@ -34,7 +36,7 @@ public:
 			this->diffuse_map_widget_layer_2 = new TextureMapWidget("Overlay Diffuse Strength Map", this);
 			this->light_sampler = new ShaderFactoryTextureSlot("LightSampler", this);
 
-			auto light_input_widget = new QWidget;
+			this->light_input_widget = new QWidget;
 			auto light_input_layout = new QHBoxLayout;
 			this->light_strength_textbox = new QLineEdit(this);
 			light_input_layout->addWidget(new QLabel("Light Strength"));
@@ -53,10 +55,30 @@ public:
 			_layout->addWidget(this->light_sampler, 0, Qt::AlignTop);
 			_layout->addWidget(light_input_widget, 0, Qt::AlignTop);
 
-			light_input_widget->setEnabled(false);
-			connect(this->light_sampler->checkbox, &QCheckBox::stateChanged, light_input_widget, &QWidget::setEnabled);
+			this->light_input_widget->setEnabled(false);
+			this->transparency_map_widget->setEnabled(false);
+			this->diffuse_map_widget->setEnabled(false);
+			this->diffuse_map_widget_layer_2->setEnabled(false);
+
+			connect(this->light_sampler->checkbox, &QCheckBox::stateChanged, this, &DiffuseColorSettings::toggleLightInputs);
+
+			connect(this->vertex_colors_widget, &ToggleableCombobox::settingsUpdated, this, &DiffuseColorSettings::settingsUpdated);
+			connect(this->transparency_map_widget, &TextureMapWidget::settingsUpdated, this, &DiffuseColorSettings::settingsUpdated);
+			connect(this->diffuse_map_widget, &TextureMapWidget::settingsUpdated, this, &DiffuseColorSettings::settingsUpdated);
+			connect(this->diffuse_map_widget_layer_2, &TextureMapWidget::settingsUpdated, this, &DiffuseColorSettings::settingsUpdated);
+			connect(this->light_sampler, &ShaderFactoryTextureSlot::settingsUpdated, this, &DiffuseColorSettings::settingsUpdated);
+
 		}
 		this->setLayout(_layout);
 	}
 
+private slots:
+	void toggleLightInputs(bool toggle)
+	{
+		this->blockSignals(true);
+		this->light_input_widget->setEnabled(toggle);
+		this->blockSignals(false);
+	}
+signals:
+	void settingsUpdated(bool);
 };

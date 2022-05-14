@@ -645,7 +645,7 @@ private:
 		this->uv_settings_1_connection           = connectUIUpdate(this->uv_settings_1);
 		this->uv_settings_2_connection           = connectUIUpdate(this->uv_settings_2);
 		this->uv_settings_3_connection           = connectUIUpdate(this->uv_settings_3);
-		//this->diffuse_color_settings_connection  = connectUIUpdate(this->diffuse_color_settings);
+		this->diffuse_color_settings_connection  = connectUIUpdate(this->diffuse_color_settings);
 		//this->specular_color_settings_connection = connectUIUpdate(this->specular_color_settings);
 		//this->reflection_settings_connection     = connectUIUpdate(this->reflection_settings);
 		//this->illumination_settings_connection   = connectUIUpdate(this->illumination_settings);
