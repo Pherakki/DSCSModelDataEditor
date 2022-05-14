@@ -447,19 +447,6 @@ private:
 			return;
 		}
 
-		//MaterialPtr new_material = std::make_shared<Material>(shader, this->animation_buffer.uniform_dispatch_buffer);
-		//if (this->selected_material)
-		//{
-		//	new_material->name = this->selected_material->name;
-		//	new_material->name_hash = this->selected_material->name_hash;
-		//	new_material->opengl_settings = this->selected_material->opengl_settings;
-		//}
-		//else
-		//{
-		//	new_material->name = "New Material";
-		//	new_material->name_hash = dscsNameHash(new_material->name);
-		//}
-
 		auto& material_resource = this->selected_objects.getEditableSelectedMaterialResource();
 		auto& curr_material = material_resource.getEditableFactoryMaterial();
 		curr_material->replaceShader(shader, this->animation_buffer.uniform_dispatch_buffer);
