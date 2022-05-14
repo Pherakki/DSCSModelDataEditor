@@ -98,18 +98,6 @@ private:
 	GlassMapSettings* glassmap_settings;
 	PositionSettings* position_settings;
 
-	QMetaObject::Connection texture_layer_1_connection;
-	QMetaObject::Connection texture_layer_2_connection;
-	QMetaObject::Connection uv_settings_1_connection;
-	QMetaObject::Connection uv_settings_2_connection;
-	QMetaObject::Connection uv_settings_3_connection;
-	QMetaObject::Connection diffuse_color_settings_connection;
-	QMetaObject::Connection specular_color_settings_connection;
-	QMetaObject::Connection reflection_settings_connection;
-	QMetaObject::Connection illumination_settings_connection;
-	QMetaObject::Connection glassmap_settings_connection;
-	QMetaObject::Connection position_settings_connection;
-
 	AnimBuf_t& animation_buffer;
 	MaterialPtr active_local_material = nullptr;
 	TextureLibrary_t& texture_library;
@@ -640,17 +628,17 @@ private:
 
 	void connectUI()
 	{
-		this->texture_layer_1_connection         = connectUIUpdate(this->texture_layer_1);
-		this->texture_layer_2_connection         = connectUIUpdate(this->texture_layer_2);
-		this->uv_settings_1_connection           = connectUIUpdate(this->uv_settings_1);
-		this->uv_settings_2_connection           = connectUIUpdate(this->uv_settings_2);
-		this->uv_settings_3_connection           = connectUIUpdate(this->uv_settings_3);
-		this->diffuse_color_settings_connection  = connectUIUpdate(this->diffuse_color_settings);
-		//this->specular_color_settings_connection = connectUIUpdate(this->specular_color_settings);
-		//this->reflection_settings_connection     = connectUIUpdate(this->reflection_settings);
-		//this->illumination_settings_connection   = connectUIUpdate(this->illumination_settings);
-		//this->glassmap_settings_connection       = connectUIUpdate(this->glassmap_settings);
-		//this->position_settings_connection       = connectUIUpdate(this->position_settings);
+		connectUIUpdate(this->texture_layer_1);
+		connectUIUpdate(this->texture_layer_2);
+		connectUIUpdate(this->uv_settings_1);
+		connectUIUpdate(this->uv_settings_2);
+		connectUIUpdate(this->uv_settings_3);
+		connectUIUpdate(this->diffuse_color_settings);
+		// connectUIUpdate(this->specular_color_settings);
+		// connectUIUpdate(this->reflection_settings);
+		// connectUIUpdate(this->illumination_settings);
+		// connectUIUpdate(this->glassmap_settings);
+		// connectUIUpdate(this->position_settings);
 	}
 
 
