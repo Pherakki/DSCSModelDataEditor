@@ -197,6 +197,7 @@ Asset loaders
 void DSCSModelDataEditorWindow::loadModel(const QString& fileName)
 {
     auto model = this->render_widget->loadModel(fileName.toStdString());
+    this->selected_objects.registerNewModel(model);
     this->setSelectedModel(model);
 }
 
