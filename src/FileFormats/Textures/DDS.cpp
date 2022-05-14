@@ -108,7 +108,7 @@ GLuint DDSLoader::texture_loadDDS(const char* path, TextureType tex_type)
 		glTexParameteri(texture_slot, GL_TEXTURE_WRAP_T, GL_REPEAT);
 		// These should be set on a per-texture basis
 		glTexParameteri(texture_slot, GL_TEXTURE_MAG_FILTER, GL_NEAREST); // Seems to work for CLUTs?
-		glTexParameteri(texture_slot, GL_TEXTURE_MIN_FILTER, GL_NEAREST_MIPMAP_NEAREST);
+		glTexParameteri(texture_slot, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 		glTexParameteri(texture_slot, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
 		glTexParameteri(texture_slot, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 		break;
