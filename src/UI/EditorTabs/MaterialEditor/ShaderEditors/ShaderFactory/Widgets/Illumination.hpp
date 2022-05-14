@@ -8,6 +8,7 @@
 
 class IlluminationSettings : public QWidget
 {
+	Q_OBJECT
 public:
 	TitleWidget* title_widget;
 	CheckableWidget* receive_lamp;
@@ -109,5 +110,19 @@ public:
 			_layout->addWidget(this->receive_fog);
 		}
 		this->setLayout(_layout);
+
+		connect(this->receive_lamp, &CheckableWidget::stateChanged, this, &IlluminationSettings::settingsUpdated);
+		connect(this->receive_ambient, &CheckableWidget::stateChanged, this, &IlluminationSettings::settingsUpdated);
+		connect(this->receive_sky, &CheckableWidget::stateChanged, this, &IlluminationSettings::settingsUpdated);
+		connect(this->obscure, &CheckableWidget::stateChanged, this, &IlluminationSettings::settingsUpdated);
+		connect(this->ambient_occlusion_map, &TextureMapWidget::settingsUpdated, this, &IlluminationSettings::settingsUpdated);
+
+		connect(this->receive_shadow_map, &CheckableWidget::stateChanged, this, &IlluminationSettings::settingsUpdated);
+		connect(this->receive_fog, &CheckableWidget::stateChanged, this, &IlluminationSettings::settingsUpdated);
+		connect(this->receive_fog_height, &CheckableWidget::stateChanged, this, &IlluminationSettings::settingsUpdated);
+		connect(this->velvet, &CheckableWidget::stateChanged, this, &IlluminationSettings::settingsUpdated);
+		connect(this->clut, &ShaderFactoryTextureSlotNoUV::settingsUpdated, this, &IlluminationSettings::settingsUpdated);
 	}
+signals:
+	void settingsUpdated(bool);
 };

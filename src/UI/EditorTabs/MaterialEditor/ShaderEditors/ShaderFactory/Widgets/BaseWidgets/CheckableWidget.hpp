@@ -7,6 +7,7 @@
 
 class CheckableWidget : public QWidget
 {
+	Q_OBJECT
 protected:
 	QCheckBox* checkbox;
 	QGridLayout* _layout;
@@ -38,6 +39,7 @@ public:
 		this->contents_widget->setEnabled(false);
 
 		connect(this->checkbox, &QCheckBox::stateChanged, this, &CheckableWidget::updateContentsEnableState);
+		connect(this->checkbox, &QCheckBox::stateChanged, this, &CheckableWidget::stateChanged);
 	}
 
 	void setContents(QLayout* layout)
@@ -55,4 +57,6 @@ public:
 		this->setEnabled(active);
 		this->updateContentsEnableState();
 	}
+signals:
+	void stateChanged(int);
 };

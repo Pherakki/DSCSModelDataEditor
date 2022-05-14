@@ -13,7 +13,9 @@ class ShaderFactoryTextureSlotNoUV : public QWidget
 private:
 	void toggle(bool active)
 	{
+		this->blockSignals(true);
 		this->file_combo_box->setEnabled(active);
+		this->blockSignals(false);
 	}
 signals:
 	void settingsUpdated(bool);
