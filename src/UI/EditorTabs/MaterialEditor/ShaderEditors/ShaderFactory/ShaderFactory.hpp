@@ -400,7 +400,7 @@ private:
 		return out;
 	}
 
-	void assignDefaultValues(MaterialPtr& material)
+	void assignUniformValues(MaterialPtr& material)
 	{
 		material->setUniformValue(0x33, { 1.0f, 1.0f, 1.0f, 1.0f }); // DiffuseColor
 	}
@@ -491,7 +491,7 @@ private:
 		auto& curr_material = material_resource.getEditableFactoryMaterial();
 		curr_material->replaceShader(shader, this->animation_buffer.uniform_dispatch_buffer);
 		this->assignTextureReferences(curr_material, textures);
-		this->assignDefaultValues(curr_material);
+		this->assignUniformValues(curr_material);
 
 		this->setActiveMaterialAsSelected(); // This should get linked to buttons...
 
