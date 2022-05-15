@@ -40,9 +40,17 @@ public:
 		}
 		this->setLayout(_layout);
 
+		connect(this->checkbox, &QCheckBox::stateChanged, this, &SpecularColorSettings::toggle);
 		connect(this->checkbox, &QCheckBox::stateChanged, this, &SpecularColorSettings::settingsUpdated);
 		connect(this->specular_map, &TextureMapWidget::settingsUpdated, this, &SpecularColorSettings::settingsUpdated);
 	}
 signals:
 	void settingsUpdated(bool);
+private:
+	void toggle(bool active)
+	{
+		this->blockSignals(true);
+		this->specular_strength->setEnabled(active);
+		this->blockSignals(false);
+	}
 };

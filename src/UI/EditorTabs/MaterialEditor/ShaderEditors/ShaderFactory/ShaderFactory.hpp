@@ -610,6 +610,8 @@ private:
 		this->diffuse_color_settings->diffuse_map_widget->setActive();
 		this->diffuse_color_settings->diffuse_map_widget_layer_2->setActive();
 
+		this->specular_color_settings->specular_power->setEnabled(this->illumination_settings->clut->isActive());
+
 		this->regenerateMaterial();
 		this->unblockUISignals();
 	}
