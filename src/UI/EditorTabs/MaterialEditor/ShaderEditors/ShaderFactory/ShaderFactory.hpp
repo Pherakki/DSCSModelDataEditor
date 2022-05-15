@@ -1252,7 +1252,7 @@ public:
 		this->updateAvailableTextures();
 
 		connect(&this->selected_objects, &SelectedObjectReferences::selectedMaterialUpdated, this, &ShaderFactory::updateReadbackSettings);
-		this->hookUniformUpdates();
+		//this->hookUniformUpdates();
 	}
 
 
