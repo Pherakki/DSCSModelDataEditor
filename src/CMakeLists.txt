@@ -61,7 +61,8 @@ add_executable (${PROJECT_NAME}
                 "UI/EditorTabs/MaterialEditor/ShaderEditors/ShaderFactory/ShaderGenerator/VertexGenerator/Blocks/GenerateUVTransform/UI.hpp" 
                 "UI/EditorTabs/MaterialEditor/ShaderEditors/ShaderFactory/ShaderGenerator/VertexGenerator/Blocks/GenerateUVTransform/Logic.hpp" 
                 "UI/EditorTabs/MaterialEditor/ShaderEditors/ShaderFactory/ShaderGenerator/VertexGenerator/Blocks/GenerateHeader.hpp" 
-                "UI/EditorTabs/MaterialEditor/ShaderEditors/ShaderFactory/Widgets/BaseWidgets/CheckableWidget.hpp" 
+                "UI/EditorTabs/MaterialEditor/ShaderEditors/ShaderFactory/Widgets/BaseWidgets/CheckableWidget.hpp"
+                "UI/EditorTabs/MaterialEditor/ShaderEditors/ShaderFactory/Widgets/BaseWidgets/EditorTextbox.hpp"
                 "UI/EditorTabs/MaterialEditor/ShaderEditors/ShaderFactory/Widgets/BaseWidgets/FileCombobox.hpp" 
                 "UI/EditorTabs/MaterialEditor/ShaderEditors/ShaderFactory/Widgets/BaseWidgets/ToggleableCombobox.hpp" 
                 "UI/EditorTabs/MaterialEditor/ShaderEditors/ShaderFactory/Widgets/BaseWidgets/ToggleableTextboxes.hpp" 
@@ -80,7 +81,8 @@ add_executable (${PROJECT_NAME}
                 "UI/EditorTabs/MaterialEditor/ShaderEditors/ShaderFactory/Widgets/TextureSlot.hpp" 
                 "UI/EditorTabs/MaterialEditor/ShaderEditors/ShaderFactory/Widgets/UVSlot.hpp"
                 "UI/EditorTabs/MaterialEditor/ShaderEditors/TabMaterials.hpp" 
-                "UI/SelectedObjectReferences.hpp" "UI/EditorTabs/MaterialEditor/OpenGLSettingsEditor.hpp")
+                "UI/SelectedObjectReferences.hpp" 
+                "UI/EditorTabs/MaterialEditor/OpenGLSettingsEditor.hpp")
 
 # Allow CMake to build libraries
 cmake_policy(SET CMP0079 NEW)
