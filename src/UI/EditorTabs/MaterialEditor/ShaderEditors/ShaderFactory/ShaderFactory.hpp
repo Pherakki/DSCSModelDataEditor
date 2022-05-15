@@ -638,7 +638,7 @@ private:
 		// connectUIUpdate(this->reflection_settings); // Need to wait until the textures are fixed to enable this one
 		connectUIUpdate(this->illumination_settings);
 		// connectUIUpdate(this->glassmap_settings); // Still needs to be implemented
-		// connectUIUpdate(this->position_settings);
+		connectUIUpdate(this->position_settings);
 	}
 
 

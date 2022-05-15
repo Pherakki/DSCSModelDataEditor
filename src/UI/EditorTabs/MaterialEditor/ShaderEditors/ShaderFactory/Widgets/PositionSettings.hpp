@@ -5,6 +5,7 @@
 
 class PositionSettings : public QWidget
 {
+	Q_OBJECT
 public:
 	TitleWidget* title_widget;
 	ToggleableTextboxesWidget<0>* calculate_binormal;
@@ -36,5 +37,13 @@ public:
 			_layout->addWidget(this->billboard_checkbox);
 		}
 		this->setLayout(_layout);
+
+		connect(this->calculate_binormal, &ToggleableTextboxesWidget<0>::settingsUpdated, this, &PositionSettings::settingsUpdated);
+		connect(this->fat, &ToggleableTextboxesWidget<1>::settingsUpdated, this, &PositionSettings::settingsUpdated);
+		connect(this->zbias, &ToggleableTextboxesWidget<1>::settingsUpdated, this, &PositionSettings::settingsUpdated);
+		connect(this->billboard_checkbox, &CheckableWidget::stateChanged, this, &PositionSettings::settingsUpdated);
+		connect(this->billboard_align_y_checkbox, &CheckableWidget::stateChanged, this, &PositionSettings::settingsUpdated);
 	}
+signals:
+	void settingsUpdated(bool);
 };
