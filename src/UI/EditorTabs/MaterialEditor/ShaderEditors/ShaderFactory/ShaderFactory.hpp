@@ -362,6 +362,36 @@ private:
 		}
 	}
 
+	float safeStof(const QString& value) const noexcept
+	{
+
+		float f_value;
+		try
+		{
+			f_value = std::stof(value.toStdString());
+		}
+		catch (const std::exception& ex)
+		{
+			f_value = 0;
+		}
+		return f_value;
+	}
+
+	template<size_t N>
+	auto sanitiseTextChanged(std::array<QLineEdit*, N>& textboxes)
+	{
+		std::array<float, 4> out{};
+		for (size_t i=0; i < N; ++i)
+			out[i] = this->safeStof(textboxes[i]->text());
+		return out;
+	}
+	auto sanitiseTextChanged(QLineEdit*& textbox)
+	{
+		std::array<float, 4> out{};
+		out[0] = this->safeStof(textbox->text());
+		return out;
+	}
+
 	void assignDefaultValues(MaterialPtr& material)
 	{
 		material->setUniformValue(0x33, { 1.0f, 1.0f, 1.0f, 1.0f }); // DiffuseColor
