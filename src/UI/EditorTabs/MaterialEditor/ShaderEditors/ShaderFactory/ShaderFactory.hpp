@@ -385,6 +385,14 @@ private:
 			out[i] = this->safeStof(textboxes[i]->text());
 		return out;
 	}
+	template<size_t N>
+	auto sanitiseTextChanged(ToggleableTextboxesWidget<N>& widget)
+	{
+		std::array<float, 4> out{};
+		for (size_t i = 0; i < N; ++i)
+			out[i] = this->safeStof(widget.textboxes[i]->text());
+		return out;
+	}
 	auto sanitiseTextChanged(QLineEdit*& textbox)
 	{
 		std::array<float, 4> out{};
