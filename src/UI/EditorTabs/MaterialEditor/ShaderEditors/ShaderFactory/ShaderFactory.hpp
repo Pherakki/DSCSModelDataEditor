@@ -656,7 +656,7 @@ private:
 		auto& curr_material = material_resource.getEditableMaterial();
 		curr_material->replaceShader(material_resource.getFactoryMaterial()->shader, this->animation_buffer.uniform_dispatch_buffer);
 		this->assignTextureReferences(curr_material, textures);
-		this->assignDefaultValues(curr_material);
+		this->assignUniformValues(curr_material);
 
 		emit this->selected_objects.setSelectedMaterial(this->selected_objects.getSelectedMaterial());
 	}
