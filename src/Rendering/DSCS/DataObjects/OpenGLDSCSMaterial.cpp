@@ -10,7 +10,11 @@ namespace Rendering::DSCS::DataObjects
 	OpenGLDSCSMaterial::OpenGLDSCSMaterial(const ShaderPtr& shader, const std::array<float*, 0xA0>& uniform_dispatch_buffer)
 	{
 		for (auto& val : this->local_uniform_buffer)
-			val = { 0., 0., 0., 0. };
+			val = { 0.f, 0.f, 0.f, 0.f };
+		this->local_uniform_buffer[0x33] = { 1.f, 1.f, 1.f, 1.f }; // DiffuseColor
+		this->local_uniform_buffer[0x3E] = { 1.f, 1.f, 1.f, 1.f }; // SurfaceColor
+		this->local_uniform_buffer[0x3F] = { 1.f, 1.f, 1.f, 1.f }; // FuzzySpecColor
+		this->local_uniform_buffer[0x40] = { 1.f, 1.f, 1.f, 1.f }; // SubColor
 		this->replaceShader(shader, uniform_dispatch_buffer);
 	}
 
