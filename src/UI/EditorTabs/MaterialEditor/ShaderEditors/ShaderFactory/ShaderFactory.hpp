@@ -551,9 +551,188 @@ private:
 
 	}
 
+	template<size_t N>
+	void readbackUniformToUI(const MaterialPtr& material, size_t idx, std::array<QLineEdit*, N>& textboxes)
+	{
+		auto& buf = material->local_uniform_buffer;
+		for (size_t i = 0; i < N; ++i)
+		{
+			textboxes[i]->setText(QString::fromStdString(std::to_string(buf[idx][i])));
+			textboxes[i]->setCursorPosition(0);
+		}
+	}
+	template<size_t N>
+	void readbackUniformToUI(const MaterialPtr& material, size_t idx, ToggleableTextboxesWidget<N>& widget)
+	{
+		auto& buf = material->local_uniform_buffer;
+		for (size_t i = 0; i < N; ++i)
+		{
+			widget.textboxes[i]->setText(QString::fromStdString(std::to_string(buf[idx][i])));
+			widget.textboxes[i]->setCursorPosition(0);
+		}
+	}
+	void readbackUniformToUI(const MaterialPtr& material, size_t idx, QLineEdit*& textbox)
+	{
+		auto& buf = material->local_uniform_buffer;
+		textbox->setText(QString::fromStdString(std::to_string(buf[idx][0])));
+		textbox->setCursorPosition(0);
+	}
+
+	void readbackUniformValues(const MaterialPtr& material)
+	{
+		//auto& material = this->selected_objects.getEditableSelectedMaterialResource().getEditableFactoryMaterial();
+
+		{ // DiffuseColor
+			auto& t = this->diffuse_color_settings->diffuse_color_widget->textboxes;
+			this->readbackUniformToUI(material, 0x33, t);
+		}
+		{ // Bumpiness
+			auto& t = this->texture_layer_1->bumpmap_settings->bump_strength;
+			this->readbackUniformToUI(material, 0x36, t);
+		}
+		{ // SpecularStrength
+			auto& t = this->specular_color_settings->specular_strength->textboxes;
+			this->readbackUniformToUI(material, 0x38, t);
+		}
+		{ // SpecularPower
+			auto& t = this->specular_color_settings->specular_power->textboxes;
+			this->readbackUniformToUI(material, 0x39, t);
+		}
+		{ // ReflectionStrength
+			auto& t = this->reflection_settings->reflection_strength->textboxes;
+			this->readbackUniformToUI(material, 0x3B, t);
+		}
+		{ // FresnelMin
+			auto& t = this->reflection_settings->fresnel_min->textboxes;
+			this->readbackUniformToUI(material, 0x3C, t);
+		}
+		{ // FresnelExp
+			auto& t = this->reflection_settings->fresnel_exp->textboxes;
+			this->readbackUniformToUI(material, 0x3D, t);
+		}
+		{ // SurfaceColor
+			auto& t = this->illumination_settings->surface_color->textboxes;
+			this->readbackUniformToUI(material, 0x3E, t);
+		}
+		{ // FuzzySpecColor
+			auto& t = this->illumination_settings->fuzzy_spec_color->textboxes;
+			this->readbackUniformToUI(material, 0x3F, t);
+		}
+		{ // SubColor
+			auto& t = this->illumination_settings->sub_color->textboxes;
+			this->readbackUniformToUI(material, 0x40, t);
+		}
+		{ // RollOff
+			auto& t = this->illumination_settings->rolloff->textboxes;
+			this->readbackUniformToUI(material, 0x41, t);
+		}
+		{ // VelvetStrength
+			auto& t = this->illumination_settings->velvet_strength->textboxes;
+			this->readbackUniformToUI(material, 0x42, t);
+		}
+		{ // OverlayBumpiness
+			auto& t = this->texture_layer_2->bumpmap_settings->bump_strength;
+			this->readbackUniformToUI(material, 0x46, t);
+		}
+		{ // OverlayStrength
+			//auto& t = this->texture_layer_2->bumpmap_settings->bump_strength;
+			//this->readbackUniformToUI(material, 0x47, t);
+		}
+		{ // GlassStrength
+			//auto& t = this->texture_layer_2->bumpmap_settings->bump_strength;
+			//this->readbackUniformToUI(material, 0x4B, t);
+		}
+		{ // Curvature
+			//auto& t = this->texture_layer_2->bumpmap_settings->bump_strength;
+			//this->readbackUniformToUI(material, 0x4C, t);
+		}
+		{ // UpsideDown
+			//auto& t = this->texture_layer_2->bumpmap_settings->bump_strength;
+			//this->readbackUniformToUI(material, 0x4D, t);
+		}
+		{ // ParallaxBiasX
+			auto& t = this->texture_layer_1->parallax_settings->bias_x;
+			this->readbackUniformToUI(material, 0x4F, t);
+		}
+		{ // ParallaxBiasY
+			auto& t = this->texture_layer_1->parallax_settings->bias_y;
+			this->readbackUniformToUI(material, 0x50, t);
+		}
+		{ // ScrollSpeedSet1
+			auto& t = this->uv_settings_1->widget_scrollspeed;
+			this->readbackUniformToUI(material, 0x55, *t);
+		}
+		{ // ScrollSpeedSet2
+			auto& t = this->uv_settings_2->widget_scrollspeed;
+			this->readbackUniformToUI(material, 0x58, *t);
+		}
+		{ // ScrollSpeedSet3
+			auto& t = this->uv_settings_3->widget_scrollspeed;
+			this->readbackUniformToUI(material, 0x5B, *t);
+		}
+		{ // OffsetSet1
+			auto& t = this->uv_settings_1->widget_offset;
+			this->readbackUniformToUI(material, 0x5E, *t);
+		}
+		{ // OffsetSet2
+			auto& t = this->uv_settings_2->widget_offset;
+			this->readbackUniformToUI(material, 0x61, *t);
+		}
+		{ // OffsetSet3
+			auto& t = this->uv_settings_3->widget_offset;
+			this->readbackUniformToUI(material, 0x74, *t);
+		}
+		{ // RotationSet1
+			auto& t = this->uv_settings_1->widget_rotation;
+			this->readbackUniformToUI(material, 0x78, *t);
+		}
+		{ // RotationSet2
+			auto& t = this->uv_settings_2->widget_rotation;
+			this->readbackUniformToUI(material, 0x7B, *t);
+		}
+		{ // RotationSet3
+			auto& t = this->uv_settings_3->widget_rotation;
+			this->readbackUniformToUI(material, 0x7E, *t);
+		}
+		{ // ScaleSet1
+			auto& t = this->uv_settings_1->widget_scale;
+			this->readbackUniformToUI(material, 0x81, *t);
+		}
+		{ // ScaleSet2
+			auto& t = this->uv_settings_2->widget_scale;
+			this->readbackUniformToUI(material, 0x84, *t);
+		}
+		{ // ScaleSet3
+			auto& t = this->uv_settings_3->widget_scale;
+			this->readbackUniformToUI(material, 0x87, *t);
+		}
+		{ // DistortionStrength
+			//auto& t = this->uv_settings_3->widget_offset;
+			//material->setUniformValue(0x64, this->sanitiseTextChanged(*t));
+		}
+		{ // LightMapPower
+			auto& t = this->diffuse_color_settings->light_power_textbox;
+			this->readbackUniformToUI(material, 0x71, t);
+		}
+		{ // LightMapStrength
+			auto& t = this->diffuse_color_settings->light_strength_textbox;
+			this->readbackUniformToUI(material, 0x72, t);
+		}
+		{ // Fat
+			auto& t = this->position_settings->fat;
+			this->readbackUniformToUI(material, 0x77, *t);
+		}
+		{ // ZBias
+			auto& t = this->position_settings->fat;
+			this->readbackUniformToUI(material, 0x8D, *t);
+		}
+
+	}
+
+
 	void readbackUISettings()
 	{
-		auto& selected_material = this->selected_objects.getSelectedMaterial();
+		auto& selected_material = this->selected_objects.getEditableSelectedMaterialResource().getFactoryMaterial();
 		for (const auto& [id, texture] : selected_material->texture_refs)
 		{
 			if (texture->texture_type == CG_SAMPLER2D)
@@ -585,6 +764,7 @@ private:
 				cbox->setCurrentText(QString::fromStdString(texture->img_name));
 			}
 		}
+		this->readbackUniformValues(selected_material);
 	}
 
 	void regenerateMaterial()
