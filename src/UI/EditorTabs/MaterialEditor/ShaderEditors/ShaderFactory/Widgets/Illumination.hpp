@@ -21,6 +21,11 @@ public:
 	CheckableWidget* receive_fog_height;
 	CheckableWidget* velvet;
 	ShaderFactoryTextureSlotNoUV* clut;
+	TextboxArrayWidget<3>* surface_color = new TextboxArrayWidget<3>("Surface Color", this);
+	TextboxArrayWidget<3>* fuzzy_spec_color = new TextboxArrayWidget<3>("Fuzzy Spec Color", this);
+	TextboxArrayWidget<3>* sub_color = new TextboxArrayWidget<3>("Sub Color", this);
+	TextboxArrayWidget<1>* rolloff = new TextboxArrayWidget<1>("RollOff", this);
+	TextboxArrayWidget<1>* velvet_strength = new TextboxArrayWidget<1>("Velvet Strength", this);
 
 	IlluminationSettings(QWidget* parent = Q_NULLPTR) : QWidget(parent)
 	{
@@ -34,12 +39,6 @@ public:
 				this->velvet = new CheckableWidget("Velvet", this);
 				auto velvet_textboxes = new QVBoxLayout;
 				{
-					auto surface_color = new TextboxArrayWidget<3>("Surface Color", this);
-					auto fuzzy_spec_color = new TextboxArrayWidget<3>("Fuzzy Spec Color", this);
-					auto sub_color = new TextboxArrayWidget<3>("Sub Color", this);
-					auto rolloff = new TextboxArrayWidget<1>("RollOff", this);
-					auto velvet_strength = new TextboxArrayWidget<1>("Velvet Strength", this);
-
 					velvet_textboxes->addWidget(surface_color);
 					velvet_textboxes->addWidget(fuzzy_spec_color);
 					velvet_textboxes->addWidget(sub_color);
