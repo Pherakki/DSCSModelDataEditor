@@ -28,6 +28,7 @@ public:
 			box->setValidator(new QDoubleValidator(0, 100, 4, this));
 			box->setMaximumWidth(40);
 			layout->addWidget(box);
+			box->setText("0.0");
 			layout->setAlignment(box, Qt::AlignRight);
 		}
 
