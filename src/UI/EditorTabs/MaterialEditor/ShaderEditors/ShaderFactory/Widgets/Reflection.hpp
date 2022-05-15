@@ -42,12 +42,12 @@ public:
 			this->fresnel->setContents(fresnel_layout);
 
 			contents_layout->addWidget(this->env_texture);
+			contents_layout->addWidget(this->reflection_strength);
 			contents_layout->addWidget(this->fresnel);
 		}
 		this->setContents(contents_layout);
 
-		connect(this->checkbox, &QCheckBox::stateChanged, this->env_texture, &ShaderFactoryComboboxTextureSlot::setEnabled);
-		connect(this->checkbox, &QCheckBox::stateChanged, this->env_texture, &ShaderFactoryComboboxTextureSlot::toggle);
+		connect(this->checkbox, &QCheckBox::stateChanged, this, &ReflectionSettings::toggle);
 	}
 
 	EnvMapType getMapType()
@@ -58,5 +58,15 @@ public:
 	bool isSphereMap()
 	{
 		return this->getMapType() == EnvMapType::SphereMap;
+	}
+private:
+	void toggle(bool active)
+	{
+		this->blockSignals(true);
+		this->env_texture->toggle(active);
+		this->fresnel->toggle(active);
+		this->reflection_strength->setEnabled(active);
+		this->blockSignals(false);
+
 	}
 };
