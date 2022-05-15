@@ -12,6 +12,8 @@ public:
 	TitleWidget* title_widget;
 	TextureMapWidget* specular_map;
 	//ToggleableCombobox* overlay_channel;
+	TextboxArrayWidget<1>* specular_power = new TextboxArrayWidget<1>("Specular Power", this);
+	TextboxArrayWidget<1>* specular_strength = new TextboxArrayWidget<1>("Specular Strength", this);
 	SpecularColorSettings(QWidget* parent = Q_NULLPTR) : QWidget(parent)
 	{
 		auto _layout = new QGridLayout;
@@ -24,9 +26,13 @@ public:
 
 			auto settings_layout = new QVBoxLayout;
 			{
+				this->specular_power->textboxes[0]->setText("0.0");
+				this->specular_strength->textboxes[0]->setText("0.0");
 				this->specular_map = new TextureMapWidget("Specular Map", this);
 				//this->overlay_channel = new ToggleableCombobox("Overlay Channel", this);
 
+				settings_layout->addWidget(this->specular_power);
+				settings_layout->addWidget(this->specular_strength);
 				settings_layout->addWidget(this->specular_map);
 				//settings_layout->addWidget(this->overlay_channel);
 			}
