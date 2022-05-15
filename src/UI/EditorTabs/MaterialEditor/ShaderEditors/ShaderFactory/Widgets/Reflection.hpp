@@ -15,6 +15,7 @@ public:
 	};
 
 	ShaderFactoryComboboxTextureSlot* env_texture;
+	TextboxArrayWidget<1>* reflection_strength = new TextboxArrayWidget<1>("Reflection Strength", this);
 	CheckableWidget* fresnel;
 	TextboxArrayWidget<1>* fresnel_min;
 	TextboxArrayWidget<1>* fresnel_exp;
@@ -29,6 +30,8 @@ public:
 			this->env_texture = new ShaderFactoryComboboxTextureSlot(this);
 			this->env_texture->combobox->addItem("Cube Map", static_cast<int>(EnvMapType::CubeMap));
 			this->env_texture->combobox->addItem("Sphere Map", static_cast<int>(EnvMapType::SphereMap));
+
+			this->reflection_strength->textboxes[0]->setText("0.0");
 
 			this->fresnel = new CheckableWidget("Fresnel", this);
 			auto fresnel_layout = new QVBoxLayout;
