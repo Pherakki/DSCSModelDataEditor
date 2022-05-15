@@ -378,7 +378,7 @@ private:
 	}
 
 	template<size_t N>
-	auto sanitiseTextChanged(std::array<QLineEdit*, N>& textboxes)
+	auto sanitiseTextChanged(std::array<EditorTextbox*, N>& textboxes)
 	{
 		std::array<float, 4> out{};
 		for (size_t i=0; i < N; ++i)
@@ -393,7 +393,7 @@ private:
 			out[i] = this->safeStof(widget.textboxes[i]->text());
 		return out;
 	}
-	auto sanitiseTextChanged(QLineEdit*& textbox)
+	auto sanitiseTextChanged(EditorTextbox*& textbox)
 	{
 		std::array<float, 4> out{};
 		out[0] = this->safeStof(textbox->text());
@@ -409,7 +409,7 @@ private:
 			material->setUniformValue(0x33, this->sanitiseTextChanged(t));
 		}
 		{ // Bumpiness
-			auto& t = this->texture_layer_1->bumpmap_settings->bump_strength;
+			auto& t = this->texture_layer_1->bumpmap_settings->bump_strength->textboxes;
 			material->setUniformValue(0x36, this->sanitiseTextChanged(t));
 		}
 		{ // SpecularStrength
@@ -453,7 +453,7 @@ private:
 			material->setUniformValue(0x42, this->sanitiseTextChanged(t));
 		}
 		{ // OverlayBumpiness
-			auto& t = this->texture_layer_2->bumpmap_settings->bump_strength;
+			auto& t = this->texture_layer_2->bumpmap_settings->bump_strength->textboxes;
 			material->setUniformValue(0x46, this->sanitiseTextChanged(t));
 		}
 		{ // OverlayStrength
@@ -473,11 +473,11 @@ private:
 			//material->setUniformValue(0x4D, this->sanitiseTextChanged(t));
 		}
 		{ // ParallaxBiasX
-			auto& t = this->texture_layer_1->parallax_settings->bias_x;
+			auto& t = this->texture_layer_1->parallax_settings->bias_xy->textboxes[0];
 			material->setUniformValue(0x4F, this->sanitiseTextChanged(t));
 		}
 		{ // ParallaxBiasY
-			auto& t = this->texture_layer_1->parallax_settings->bias_y;
+			auto& t = this->texture_layer_1->parallax_settings->bias_xy->textboxes[1];
 			material->setUniformValue(0x50, this->sanitiseTextChanged(t));
 		}
 		{ // ScrollSpeedSet1
@@ -533,11 +533,11 @@ private:
 			//material->setUniformValue(0x64, this->sanitiseTextChanged(*t));
 		}
 		{ // LightMapPower
-			auto& t = this->diffuse_color_settings->light_power_textbox;
+			auto& t = this->diffuse_color_settings->light_power_textbox->textboxes;
 			material->setUniformValue(0x71, this->sanitiseTextChanged(t));
 		}
 		{ // LightMapStrength
-			auto& t = this->diffuse_color_settings->light_strength_textbox;
+			auto& t = this->diffuse_color_settings->light_strength_textbox->textboxes;
 			material->setUniformValue(0x72, this->sanitiseTextChanged(t));
 		}
 		{ // Fat
@@ -552,7 +552,7 @@ private:
 	}
 
 	template<size_t N>
-	void readbackUniformToUI(const MaterialPtr& material, size_t idx, std::array<QLineEdit*, N>& textboxes)
+	void readbackUniformToUI(const MaterialPtr& material, size_t idx, std::array<EditorTextbox*, N>& textboxes)
 	{
 		auto& buf = material->local_uniform_buffer;
 		for (size_t i = 0; i < N; ++i)
@@ -571,7 +571,7 @@ private:
 			widget.textboxes[i]->setCursorPosition(0);
 		}
 	}
-	void readbackUniformToUI(const MaterialPtr& material, size_t idx, QLineEdit*& textbox)
+	void readbackUniformToUI(const MaterialPtr& material, size_t idx, EditorTextbox*& textbox)
 	{
 		auto& buf = material->local_uniform_buffer;
 		textbox->setText(QString::fromStdString(std::to_string(buf[idx][0])));
@@ -587,7 +587,7 @@ private:
 			this->readbackUniformToUI(material, 0x33, t);
 		}
 		{ // Bumpiness
-			auto& t = this->texture_layer_1->bumpmap_settings->bump_strength;
+			auto& t = this->texture_layer_1->bumpmap_settings->bump_strength->textboxes;
 			this->readbackUniformToUI(material, 0x36, t);
 		}
 		{ // SpecularStrength
@@ -631,7 +631,7 @@ private:
 			this->readbackUniformToUI(material, 0x42, t);
 		}
 		{ // OverlayBumpiness
-			auto& t = this->texture_layer_2->bumpmap_settings->bump_strength;
+			auto& t = this->texture_layer_2->bumpmap_settings->bump_strength->textboxes;
 			this->readbackUniformToUI(material, 0x46, t);
 		}
 		{ // OverlayStrength
@@ -651,11 +651,11 @@ private:
 			//this->readbackUniformToUI(material, 0x4D, t);
 		}
 		{ // ParallaxBiasX
-			auto& t = this->texture_layer_1->parallax_settings->bias_x;
+			auto& t = this->texture_layer_1->parallax_settings->bias_xy->textboxes[0];
 			this->readbackUniformToUI(material, 0x4F, t);
 		}
 		{ // ParallaxBiasY
-			auto& t = this->texture_layer_1->parallax_settings->bias_y;
+			auto& t = this->texture_layer_1->parallax_settings->bias_xy->textboxes[1];
 			this->readbackUniformToUI(material, 0x50, t);
 		}
 		{ // ScrollSpeedSet1
@@ -711,11 +711,11 @@ private:
 			//material->setUniformValue(0x64, this->sanitiseTextChanged(*t));
 		}
 		{ // LightMapPower
-			auto& t = this->diffuse_color_settings->light_power_textbox;
+			auto& t = this->diffuse_color_settings->light_power_textbox->textboxes;
 			this->readbackUniformToUI(material, 0x71, t);
 		}
 		{ // LightMapStrength
-			auto& t = this->diffuse_color_settings->light_strength_textbox;
+			auto& t = this->diffuse_color_settings->light_strength_textbox->textboxes;
 			this->readbackUniformToUI(material, 0x72, t);
 		}
 		{ // Fat

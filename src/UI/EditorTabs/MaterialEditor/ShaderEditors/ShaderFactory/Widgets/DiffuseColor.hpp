@@ -19,8 +19,8 @@ public:
 	TextureMapWidget* diffuse_map_widget;
 	TextureMapWidget* diffuse_map_widget_layer_2;
 	ShaderFactoryTextureSlot* light_sampler;
-	QLineEdit* light_strength_textbox;
-	QLineEdit* light_power_textbox;
+	TextboxArrayWidget<1>* light_strength_textbox = new TextboxArrayWidget<1>("Light Strength", this);
+	TextboxArrayWidget<1>* light_power_textbox = new TextboxArrayWidget<1>("Light Power", this);
 	QWidget* light_input_widget;
 	DiffuseColorSettings(QWidget* parent = Q_NULLPTR) : QWidget(parent)
 	{
@@ -38,11 +38,7 @@ public:
 
 			this->light_input_widget = new QWidget;
 			auto light_input_layout = new QHBoxLayout;
-			this->light_strength_textbox = new QLineEdit(this);
-			light_input_layout->addWidget(new QLabel("Light Strength"));
 			light_input_layout->addWidget(this->light_strength_textbox);
-			this->light_power_textbox = new QLineEdit(this);
-			light_input_layout->addWidget(new QLabel("Light Power"));
 			light_input_layout->addWidget(this->light_power_textbox);
 			light_input_widget->setLayout(light_input_layout);
 

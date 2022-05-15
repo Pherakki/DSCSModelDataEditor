@@ -1,16 +1,17 @@
 #pragma once
 
 #include <QLabel>
-#include <QLineEdit>
 #include <QWidget>
 #include <QValidator>
+
+#include "EditorTextbox.hpp"
 
 template <uint8_t n_boxes>
 class TextboxArrayWidget : public QWidget
 {
 public:
 	QLabel* label;
-	std::array<QLineEdit*, n_boxes> textboxes;
+	std::array<EditorTextbox*, n_boxes> textboxes;
 
 	explicit TextboxArrayWidget(const QString& label_text, QWidget* parent = Q_NULLPTR) : QWidget(parent)
 	{
@@ -24,11 +25,8 @@ public:
 
 		for (auto& box : this->textboxes)
 		{
-			box = new QLineEdit;
-			box->setValidator(new QDoubleValidator(0, 100, 4, this));
-			box->setMaximumWidth(40);
+			box = new EditorTextbox;
 			layout->addWidget(box);
-			box->setText("0.0");
 			layout->setAlignment(box, Qt::AlignRight);
 		}
 

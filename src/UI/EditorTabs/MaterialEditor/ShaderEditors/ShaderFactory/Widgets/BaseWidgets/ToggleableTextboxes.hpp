@@ -5,9 +5,10 @@
 #include <QBoxLayout>
 #include <QCheckBox>
 #include <QLabel>
-#include <QLineEdit>
 #include <QWidget>
 #include <QValidator>
+
+#include "EditorTextbox.hpp"
 
 class ToggleableTextboxesWidgetBase : public QWidget
 {
@@ -22,11 +23,11 @@ public:
 	QCheckBox* checkbox;
 	QLabel* label;
 	// This should be an array, but can't mix templates with Q_OBJECTs...
-	std::vector<QLineEdit*> textboxes;
+	std::vector<EditorTextbox*> textboxes;
 
 	explicit ToggleableTextboxesWidgetBase(uint8_t num_boxes, QString label_text, QWidget* parent = nullptr) 
 		: QWidget(parent)
-		, textboxes{ std::vector<QLineEdit*>(num_boxes) }
+		, textboxes{ std::vector<EditorTextbox*>(num_boxes) }
 	{
 		auto layout = new QHBoxLayout;
 
@@ -41,9 +42,7 @@ public:
 
 		for (auto& box : this->textboxes)
 		{
-			box = new QLineEdit;
-			box->setValidator(new QDoubleValidator(0, 100, 4, this));
-			box->setMaximumWidth(40);
+			box = new EditorTextbox(this);
 			layout->addWidget(box);
 			layout->setAlignment(box, Qt::AlignRight);
 		}

@@ -2,9 +2,10 @@
 
 #include <QCheckBox>
 #include <QLabel>
-#include <QLineEdit>
 #include <QWidget>
 #include <QValidator>
+
+#include "BaseWidgets/TextboxArrayWidget.hpp"
 
 class ShaderFactoryTextureLayerBumpmapBox : public QWidget
 {
@@ -17,8 +18,7 @@ public:
 
 	QCheckBox* checkbox;
 	QLabel* label;
-	QLabel* bump_label;
-	QLineEdit* bump_strength;
+	TextboxArrayWidget<1>* bump_strength = new TextboxArrayWidget<1>("Bump Strength", this);
 
 	ShaderFactoryTextureLayerBumpmapBox(QWidget* parent = Q_NULLPTR) : QWidget(parent)
 	{
@@ -26,11 +26,6 @@ public:
 		{
 			auto bump_settings_layout = new QHBoxLayout;
 			{
-				this->bump_label = new QLabel("Bump Strength");
-				this->bump_strength = new QLineEdit;
-				this->bump_strength->setValidator(new QDoubleValidator(0, 100, 4, this));
-				this->bump_strength->setText("0.0");
-				bump_settings_layout->addWidget(this->bump_label);
 				bump_settings_layout->addWidget(this->bump_strength);
 			}
 			settings_layout->addItem(bump_settings_layout);
