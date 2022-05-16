@@ -10,6 +10,7 @@
 #include <QtWidgets/QLineEdit>
 
 #include "Rendering/DSCS/DataObjects/OpenGLDSCSMaterial.hpp"
+#include "Rendering/DSCS/Renderer.hpp"
 #include "TabMaterials.hpp"
 #include "UI/SelectedObjectReferences.hpp"
 
@@ -19,6 +20,7 @@ class PrebuiltTab : public QWidget
 private:
 	typedef Rendering::DSCS::DataObjects::OpenGLDSCSMaterial Material;
 	typedef std::shared_ptr<Material> MaterialPtr;
+	typedef Rendering::DSCS::AnimationBuffer AnimationBuffer;
 
 	QListWidget* category_list = new QListWidget(this);
 	QListWidget* shader_list = new QListWidget(this);
@@ -29,11 +31,13 @@ private:
 
 	SelectedObjectReferences& selected_objects;
 	TabMaterialsLibrary& tab_materials;
+	AnimationBuffer& anim_buffer;
 public:
-	PrebuiltTab(SelectedObjectReferences& sor, TabMaterialsLibrary& tab_materials, QWidget* parent = Q_NULLPTR) 
+	PrebuiltTab(SelectedObjectReferences& sor, TabMaterialsLibrary& tab_materials, AnimationBuffer& anim_buffer, QWidget* parent = Q_NULLPTR)
 		: QWidget(parent)
 		, selected_objects{sor}
 		, tab_materials{tab_materials}
+		, anim_buffer{ anim_buffer }
 	{
 		QVBoxLayout* layout = new QVBoxLayout(this);
 

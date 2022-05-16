@@ -35,12 +35,12 @@ public:
     ShaderEditorTabs(SelectedObjectReferences& sor, TextureLibrary_t& texlib, ShaderBackend_t& backend, AnimBuf_t& animation_buffer, QWidget* parent = Q_NULLPTR)
         : QTabWidget(parent)
         , selected_objects(sor)
+        , prebuilts_tab{ new PrebuiltTab(sor, this->editor_materials, animation_buffer, this) }
         , factory_tab{ new ShaderFactory(sor, this->editor_materials, texlib, backend, animation_buffer, this) }
     {
         //this->shader_factory_scroll_area->setWidgetResizable(true);
         //this->shader_factory_scroll_area->setWidget(this->factory_tab);
 
-        this->prebuilts_tab = new PrebuiltTab(this->selected_objects, this->editor_materials, this);
         this->code_tab = new CodeEditor(this->selected_objects, this->editor_materials, this);
 
         this->addTab(this->prebuilts_tab, "Pre-Built");
