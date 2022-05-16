@@ -50,6 +50,11 @@ public:
 	const void activateFactory()    noexcept { this->active_material = this->tab_materials.factory_material; }
 	const void activateCustomCode() noexcept { this->active_material = this->tab_materials.custom_code_material; }
 
+	const void updateMainMaterialBuffer(uint8_t idx, const std::array<float, 4>& value)
+	{
+		this->main_material->local_uniform_buffer[idx] = value;
+	}
+
 	const void updateMainMaterial(const AnimationBuffer& anim_buffer)
 	{
 		this->main_material->replaceShader(this->active_material->shader, anim_buffer.uniform_dispatch_buffer);
