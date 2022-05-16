@@ -1039,9 +1039,18 @@ private:
 	{
 		for (const auto& textbox : textboxes)
 		{
-			//textboxes[i]->setText(QString::fromStdString(std::to_string(buf[idx][i])));
-			//textboxes[i]->setCursorPosition(0);
-			connect(textbox, &EditorTextbox::textChanged, this, &ShaderFactory::regenerateMaterial);
+			connect(textbox, &EditorTextbox::textChanged, this, [&]()
+				{
+					std::cout << "TEXT CHANGED" << std::endl;
+					auto& material_resource = this->selected_objects.getEditableSelectedMaterialResource();
+					auto& material = material_resource.getFactoryMaterial();
+					material->setUniformValue(idx, this->sanitiseTextChanged(textboxes));
+					if (material_resource.isFactoryActive())
+						material_resource.updateMainMaterialBuffer(idx, this->sanitiseTextChanged(textboxes));
+					std::array<float, 4>& static_val = this->selected_objects.getSelectedMaterial()->local_uniform_buffer[idx];
+					static_val = this->sanitiseTextChanged(textboxes);
+				}
+			);
 		}
 	}
 	template<size_t N>
@@ -1049,17 +1058,34 @@ private:
 	{
 		for (const auto& textbox : widget.textboxes)
 		{
-		//	widget.textboxes[i]->setText(QString::fromStdString(std::to_string(buf[idx][i])));
-		//	widget.textboxes[i]->setCursorPosition(0);
-			connect(textbox, &EditorTextbox::textChanged, this, &ShaderFactory::regenerateMaterial);
+			connect(textbox, &EditorTextbox::textChanged, this, [&]()
+				{
+					std::cout << "TEXT CHANGED" << std::endl;
+					auto& material_resource = this->selected_objects.getEditableSelectedMaterialResource();
+					auto& material = material_resource.getFactoryMaterial();
+					material->setUniformValue(idx, this->sanitiseTextChanged(widget));
+					if (material_resource.isFactoryActive())
+						material_resource.updateMainMaterialBuffer(idx, this->sanitiseTextChanged(widget));
+					std::array<float, 4>& static_val = this->selected_objects.getSelectedMaterial()->local_uniform_buffer[idx];
+					static_val = this->sanitiseTextChanged(widget);
+				}
+			);
 		}
 	}
 	void hookUniformValueUpdate(size_t idx, EditorTextbox*& textbox)
 	{
-		//auto& buf = material->local_uniform_buffer;
-		//textbox->setText(QString::fromStdString(std::to_string(buf[idx][0])));
-		//textbox->setCursorPosition(0);
-		connect(textbox, &EditorTextbox::textChanged, this, &ShaderFactory::regenerateMaterial);
+		connect(textbox, &EditorTextbox::textChanged, this, [&]()
+			{
+				std::cout << "TEXT CHANGED" << std::endl;
+				auto& material_resource = this->selected_objects.getEditableSelectedMaterialResource();
+				auto& material = material_resource.getFactoryMaterial();
+				material->setUniformValue(idx, this->sanitiseTextChanged(textbox));
+				if (material_resource.isFactoryActive())
+					material_resource.updateMainMaterialBuffer(idx, this->sanitiseTextChanged(textbox));
+				std::array<float, 4>& static_val = this->selected_objects.getSelectedMaterial()->local_uniform_buffer[idx];
+				static_val = this->sanitiseTextChanged(textbox);
+			}
+		);
 	}
 
 
@@ -1277,8 +1303,9 @@ public:
 
 		this->updateAvailableTextures();
 
+		this->hookUniformUpdates();
+
 		connect(&this->selected_objects, &SelectedObjectReferences::selectedMaterialUpdated, this, &ShaderFactory::updateReadbackSettings);
-		//this->hookUniformUpdates();
 	}
 
 
