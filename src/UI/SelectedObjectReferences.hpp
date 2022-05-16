@@ -16,25 +16,28 @@ private:
 	typedef Rendering::ShaderObjects::cgGLShaderObject Shader;
 	typedef std::shared_ptr<Shader> ShaderPtr;
 
+	MaterialPtr main_material;
 	MaterialPtr active_material;
 	TabMaterials tab_materials;
 
 public:
 	MaterialResource(const MaterialPtr& material_ptr, const AnimationBuffer& anim_buffer)
 	{
-		this->active_material = material_ptr;
+		this->main_material = material_ptr;
 
 		this->tab_materials.prebuilt_material = std::make_shared<Material>(material_ptr->shader, anim_buffer.uniform_dispatch_buffer);
 		this->tab_materials.factory_material = std::make_shared<Material>(material_ptr->shader, anim_buffer.uniform_dispatch_buffer);
 		this->tab_materials.custom_code_material = std::make_shared<Material>(material_ptr->shader, anim_buffer.uniform_dispatch_buffer);
 
+		this->active_material = this->tab_materials.prebuilt_material;
+
 	}
 
-	const auto& getActiveMaterial() const noexcept { return this->active_material; }
+	const auto& getMaterial() const noexcept { return this->main_material; }
 	const auto& getPrebuiltMaterial  () const noexcept { return this->tab_materials.prebuilt_material   ; }
 	const auto& getFactoryMaterial   () const noexcept { return this->tab_materials.factory_material    ; }
 	const auto& getCustomCodeMaterial() const noexcept { return this->tab_materials.custom_code_material; }
-	auto& getEditableMaterial() noexcept { return this->active_material; } // This needs to go in favour of automatic updates
+	auto& getEditableMaterial() noexcept { return this->main_material; } // This needs to go in favour of automatic updates
 	auto& getEditablePrebuiltMaterial  () noexcept { return this->tab_materials.prebuilt_material   ; }
 	auto& getEditableFactoryMaterial   () noexcept { return this->tab_materials.factory_material    ; }
 	auto& getEditableCustomCodeMaterial() noexcept { return this->tab_materials.custom_code_material; }
