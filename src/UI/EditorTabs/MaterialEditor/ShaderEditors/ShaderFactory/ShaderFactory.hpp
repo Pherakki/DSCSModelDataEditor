@@ -819,26 +819,16 @@ private:
 		this->assignTextureReferences(curr_material, textures);
 		this->assignUniformValues(curr_material);
 
-		this->setActiveMaterialAsSelected(); // This should get linked to buttons...
+		if (material_resource.isFactoryActive())
+			material_resource.updateMainMaterial(this->animation_buffer);
 
 		this->setting_update_in_progress = false;
 	}
 
-	void setActiveMaterialAsSelected()
+	void activateMaterial()
 	{
-		auto& material_resource = this->selected_objects.getEditableSelectedMaterialResource();
-
-		FactorySettings settings;
-		TextureRefs textures;
-		this->createSettingsFromUI(settings, textures);
-
-		// Need to automate this by giving Materials an ability to copy data from each other...
-		auto& curr_material = material_resource.getEditableMaterial();
-		curr_material->replaceShader(material_resource.getFactoryMaterial()->shader, this->animation_buffer.uniform_dispatch_buffer);
-		this->assignTextureReferences(curr_material, textures);
-		this->assignUniformValues(curr_material);
-
-		emit this->selected_objects.setSelectedMaterial(this->selected_objects.getSelectedMaterial());
+		this->selected_objects.getEditableSelectedMaterialResource().activateFactory();
+		this->regenerateMaterial();
 	}
 
 	void placeInSpoiler(const QString& title, QWidget* widget, QLayout* layout)
@@ -1202,7 +1192,7 @@ public:
 
 			auto compile_button = new QPushButton("Set Active");
 			_layout->addWidget(compile_button);
-			connect(compile_button, &QPushButton::clicked, this, &ShaderFactory::setActiveMaterialAsSelected);
+			connect(compile_button, &QPushButton::clicked, this, &ShaderFactory::activateMaterial);
 			this->texture_layer_1 = new ShaderFactoryTextureLayer1("Texture Layer 1");
 			this->texture_layer_2 = new ShaderFactoryTextureLayer1("Texture Layer 2");
 
