@@ -50,6 +50,16 @@ public:
 	const void activateFactory()    noexcept { this->active_material = this->tab_materials.factory_material; }
 	const void activateCustomCode() noexcept { this->active_material = this->tab_materials.custom_code_material; }
 
+	const void updateMainMaterial(const AnimationBuffer& anim_buffer)
+	{
+		this->main_material->replaceShader(this->active_material->shader, anim_buffer.uniform_dispatch_buffer);
+		this->main_material->local_uniform_buffer = this->active_material->local_uniform_buffer;
+		for (auto& [tex_id, tex] : this->active_material->texture_refs)
+		{
+			this->main_material->setTextureBuffer(tex_id, tex->buffer_id);
+		}
+	}
+
 	// Need to instead update the shader held on the active material
 	//const void setPrebuiltMaterialActive  () noexcept { this->active_material = this->tab_materials.prebuilt_material   ; }
 	//const void setFactoryMaterialActive   () noexcept { this->active_material = this->tab_materials.factory_material    ; }
