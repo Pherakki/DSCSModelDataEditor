@@ -32,6 +32,21 @@ private:
 	SelectedObjectReferences& selected_objects;
 	TabMaterialsLibrary& tab_materials;
 	AnimationBuffer& anim_buffer;
+	
+
+	void activateMaterial()
+	{
+		this->selected_objects.getEditableSelectedMaterialResource().activatePrebuilt();
+		this->regenerateMaterial();
+	}
+
+	void regenerateMaterial()
+	{
+		auto& material_resource = this->selected_objects.getEditableSelectedMaterialResource();
+		if (material_resource.isPrebuiltActive())
+			material_resource.updateMainMaterial(this->anim_buffer);
+	}
+
 public:
 	PrebuiltTab(SelectedObjectReferences& sor, TabMaterialsLibrary& tab_materials, AnimationBuffer& anim_buffer, QWidget* parent = Q_NULLPTR)
 		: QWidget(parent)
@@ -40,6 +55,10 @@ public:
 		, anim_buffer{ anim_buffer }
 	{
 		QVBoxLayout* layout = new QVBoxLayout(this);
+
+		auto compile_button = new QPushButton("Set Active");
+		layout->addWidget(compile_button);
+		connect(compile_button, &QPushButton::clicked, this, &PrebuiltTab::activateMaterial);
 
 		QWidget* lists_widget = new QWidget(this);
 		QHBoxLayout* lists_layout = new QHBoxLayout(lists_widget);
