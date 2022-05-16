@@ -852,39 +852,75 @@ private:
 			|| this->uvSlotInUse(this->diffuse_color_settings->light_sampler, idx);
 	}
 
-	void blockUISignals()
+	void blockUISignals(bool active)
 	{
-		this->uv_settings_1->blockSignals(true);
-		this->uv_settings_2->blockSignals(true);
-		this->uv_settings_3->blockSignals(true);
-		this->texture_layer_1->blockSignals(true);
-		this->texture_layer_2->blockSignals(true);
-		this->diffuse_color_settings->blockSignals(true);
-		this->specular_color_settings->blockSignals(true);
-		this->illumination_settings->blockSignals(true);
-		this->reflection_settings->blockSignals(true);
-		this->glassmap_settings->blockSignals(true);
-		this->position_settings->blockSignals(true);
-	}
+		this->uv_settings_1->blockSignals(active);
+		this->uv_settings_2->blockSignals(active);
+		this->uv_settings_3->blockSignals(active);
+		this->texture_layer_1->blockSignals(active);
+		this->texture_layer_2->blockSignals(active);
+		this->diffuse_color_settings->blockSignals(active);
+		this->specular_color_settings->blockSignals(active);
+		this->illumination_settings->blockSignals(active);
+		this->reflection_settings->blockSignals(active);
+		this->glassmap_settings->blockSignals(active);
+		this->position_settings->blockSignals(active);
 
-	void unblockUISignals()
-	{
-		this->uv_settings_1->blockSignals(false);
-		this->uv_settings_2->blockSignals(false);
-		this->uv_settings_3->blockSignals(false);
-		this->texture_layer_1->blockSignals(false);
-		this->texture_layer_2->blockSignals(false);
-		this->diffuse_color_settings->blockSignals(false);
-		this->specular_color_settings->blockSignals(false);
-		this->illumination_settings->blockSignals(false);
-		this->reflection_settings->blockSignals(false);
-		this->glassmap_settings->blockSignals(false);
-		this->position_settings->blockSignals(false);
+		this->uv_settings_1->widget_scrollspeed->textboxes[0]->blockSignals(active);
+		this->uv_settings_1->widget_scrollspeed->textboxes[1]->blockSignals(active);
+		this->uv_settings_1->widget_offset->textboxes[0]->blockSignals(active);
+		this->uv_settings_1->widget_offset->textboxes[1]->blockSignals(active);
+		this->uv_settings_1->widget_rotation->textboxes[0]->blockSignals(active);
+		this->uv_settings_1->widget_scale->textboxes[0]->blockSignals(active);
+		this->uv_settings_1->widget_scale->textboxes[1]->blockSignals(active);
+		this->uv_settings_2->widget_scrollspeed->textboxes[0]->blockSignals(active);
+		this->uv_settings_2->widget_scrollspeed->textboxes[1]->blockSignals(active);
+		this->uv_settings_2->widget_offset->textboxes[0]->blockSignals(active);
+		this->uv_settings_2->widget_offset->textboxes[1]->blockSignals(active);
+		this->uv_settings_2->widget_rotation->textboxes[0]->blockSignals(active);
+		this->uv_settings_2->widget_scale->textboxes[0]->blockSignals(active);
+		this->uv_settings_2->widget_scale->textboxes[1]->blockSignals(active);
+		this->uv_settings_3->widget_scrollspeed->textboxes[0]->blockSignals(active);
+		this->uv_settings_3->widget_scrollspeed->textboxes[1]->blockSignals(active);
+		this->uv_settings_3->widget_offset->textboxes[0]->blockSignals(active);
+		this->uv_settings_3->widget_offset->textboxes[1]->blockSignals(active);
+		this->uv_settings_3->widget_rotation->textboxes[0]->blockSignals(active);
+		this->uv_settings_3->widget_scale->textboxes[0]->blockSignals(active);
+		this->uv_settings_3->widget_scale->textboxes[1]->blockSignals(active);
+
+		this->texture_layer_1->parallax_settings->bias_xy->textboxes[0]->blockSignals(active);
+		this->texture_layer_1->parallax_settings->bias_xy->textboxes[1]->blockSignals(active);
+		this->texture_layer_1->bumpmap_settings->bump_strength->textboxes[0]->blockSignals(active);
+		this->texture_layer_2->bumpmap_settings->bump_strength->textboxes[0]->blockSignals(active);
+		this->diffuse_color_settings->diffuse_color_widget->textboxes[0]->blockSignals(active);
+		this->diffuse_color_settings->diffuse_color_widget->textboxes[1]->blockSignals(active);
+		this->diffuse_color_settings->diffuse_color_widget->textboxes[2]->blockSignals(active);
+		this->diffuse_color_settings->diffuse_color_widget->textboxes[3]->blockSignals(active);
+		this->diffuse_color_settings->light_power_textbox->textboxes[0]->blockSignals(active);
+		this->diffuse_color_settings->light_strength_textbox->textboxes[0]->blockSignals(active);
+		this->specular_color_settings->specular_power->textboxes[0]->blockSignals(active);
+		this->specular_color_settings->specular_strength->textboxes[0]->blockSignals(active);
+		this->reflection_settings->reflection_strength->textboxes[0]->blockSignals(active);
+		this->reflection_settings->fresnel_exp->textboxes[0]->blockSignals(active);
+		this->reflection_settings->fresnel_min->textboxes[0]->blockSignals(active);
+		this->illumination_settings->surface_color->textboxes[0]->blockSignals(active);
+		this->illumination_settings->surface_color->textboxes[1]->blockSignals(active);
+		this->illumination_settings->surface_color->textboxes[2]->blockSignals(active);
+		this->illumination_settings->fuzzy_spec_color->textboxes[0]->blockSignals(active);
+		this->illumination_settings->fuzzy_spec_color->textboxes[1]->blockSignals(active);
+		this->illumination_settings->fuzzy_spec_color->textboxes[2]->blockSignals(active);
+		this->illumination_settings->sub_color->textboxes[0]->blockSignals(active);
+		this->illumination_settings->sub_color->textboxes[1]->blockSignals(active);
+		this->illumination_settings->sub_color->textboxes[2]->blockSignals(active);
+		this->illumination_settings->rolloff->textboxes[0]->blockSignals(active);
+		this->illumination_settings->velvet_strength->textboxes[0]->blockSignals(active);
+		this->position_settings->zbias->textboxes[0]->blockSignals(active);
+		this->position_settings->fat->textboxes[0]->blockSignals(active);
 	}
 
 	void updateUI()
 	{
-		this->blockUISignals();
+		this->blockUISignals(true);
 		std::cout << "UPDATE UI" << std::endl;
 		if (this->setting_update_in_progress)
 			return;
@@ -967,7 +1003,7 @@ private:
 		this->specular_color_settings->specular_power->setEnabled(!this->illumination_settings->clut->isActive());
 
 		this->regenerateMaterial();
-		this->unblockUISignals();
+		this->blockUISignals(false);
 	}
 
 	template <typename T>
@@ -1248,11 +1284,11 @@ public:
 
 	void updateReadbackSettings()
 	{
-		this->blockUISignals();
+		this->blockUISignals(true);
 		this->updateAvailableTextures(); // This should update in other places
 		this->readbackUISettings();
 
-		this->unblockUISignals();
+		this->blockUISignals(false);
 	}
 
 };
