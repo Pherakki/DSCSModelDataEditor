@@ -1039,7 +1039,7 @@ private:
 	{
 		for (const auto& textbox : textboxes)
 		{
-			connect(textbox, &EditorTextbox::textChanged, this, [&]()
+			connect(textbox, &EditorTextbox::textChanged, this, [this, idx, &textboxes]()
 				{
 					std::cout << "TEXT CHANGED" << std::endl;
 					auto& material_resource = this->selected_objects.getEditableSelectedMaterialResource();
@@ -1058,7 +1058,7 @@ private:
 	{
 		for (const auto& textbox : widget.textboxes)
 		{
-			connect(textbox, &EditorTextbox::textChanged, this, [&]()
+			connect(textbox, &EditorTextbox::textChanged, this, [this, idx, &widget]()
 				{
 					std::cout << "TEXT CHANGED" << std::endl;
 					auto& material_resource = this->selected_objects.getEditableSelectedMaterialResource();
@@ -1074,7 +1074,7 @@ private:
 	}
 	void hookUniformValueUpdate(size_t idx, EditorTextbox*& textbox)
 	{
-		connect(textbox, &EditorTextbox::textChanged, this, [&]()
+		connect(textbox, &EditorTextbox::textChanged, this, [this, idx, &textbox]()
 			{
 				std::cout << "TEXT CHANGED" << std::endl;
 				auto& material_resource = this->selected_objects.getEditableSelectedMaterialResource();
