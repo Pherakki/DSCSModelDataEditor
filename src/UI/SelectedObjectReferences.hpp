@@ -52,9 +52,6 @@ public:
 
 	const void updateMainMaterialBuffer(uint8_t idx, const std::array<float, 4>& value)
 	{
-		std::cout << "Updating buffer" << std::endl;
-		std::cout << value[0] << std::endl;
-		std::cout << "IDX: " << std::to_string(idx) << std::endl;
 		for (auto i=0; i < 4; ++i)
 			this->main_material->local_uniform_buffer[idx][i] = value[i];
 	}
