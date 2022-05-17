@@ -66,10 +66,6 @@ public:
 		}
 	}
 
-	// Need to instead update the shader held on the active material
-	//const void setPrebuiltMaterialActive  () noexcept { this->active_material = this->tab_materials.prebuilt_material   ; }
-	//const void setFactoryMaterialActive   () noexcept { this->active_material = this->tab_materials.factory_material    ; }
-	//const void setCustomCodeMaterialActive() noexcept { this->active_material = this->tab_materials.custom_code_material; }
 	//const void setPrebuiltMaterialShader  (const ShaderPtr& shader, const AnimationBuffer& anim_buffer) { this->tab_materials.prebuilt_material   ->replaceShader(shader, anim_buffer.uniform_dispatch_buffer); }
 	//const void setFactoryMaterialShader   (const ShaderPtr& shader, const AnimationBuffer& anim_buffer) { this->tab_materials.factory_material    ->replaceShader(shader, anim_buffer.uniform_dispatch_buffer); }
 	//const void setCustomCodeMaterialShader(const ShaderPtr& shader, const AnimationBuffer& anim_buffer) { this->tab_materials.custom_code_material->replaceShader(shader, anim_buffer.uniform_dispatch_buffer); }
