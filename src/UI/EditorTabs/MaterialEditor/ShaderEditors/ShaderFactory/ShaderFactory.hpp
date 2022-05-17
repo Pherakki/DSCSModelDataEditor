@@ -1041,14 +1041,11 @@ private:
 		{
 			connect(textbox, &EditorTextbox::textChanged, this, [this, idx, &textboxes]()
 				{
-					std::cout << "TEXT CHANGED" << std::endl;
 					auto& material_resource = this->selected_objects.getEditableSelectedMaterialResource();
 					auto& material = material_resource.getFactoryMaterial();
 					material->setUniformValue(idx, this->sanitiseTextChanged(textboxes));
 					if (material_resource.isFactoryActive())
 						material_resource.updateMainMaterialBuffer(idx, this->sanitiseTextChanged(textboxes));
-					std::array<float, 4>& static_val = this->selected_objects.getSelectedMaterial()->local_uniform_buffer[idx];
-					static_val = this->sanitiseTextChanged(textboxes);
 				}
 			);
 		}
@@ -1060,14 +1057,11 @@ private:
 		{
 			connect(textbox, &EditorTextbox::textChanged, this, [this, idx, &widget]()
 				{
-					std::cout << "TEXT CHANGED" << std::endl;
 					auto& material_resource = this->selected_objects.getEditableSelectedMaterialResource();
 					auto& material = material_resource.getFactoryMaterial();
 					material->setUniformValue(idx, this->sanitiseTextChanged(widget));
 					if (material_resource.isFactoryActive())
 						material_resource.updateMainMaterialBuffer(idx, this->sanitiseTextChanged(widget));
-					std::array<float, 4>& static_val = this->selected_objects.getSelectedMaterial()->local_uniform_buffer[idx];
-					static_val = this->sanitiseTextChanged(widget);
 				}
 			);
 		}
@@ -1076,14 +1070,11 @@ private:
 	{
 		connect(textbox, &EditorTextbox::textChanged, this, [this, idx, &textbox]()
 			{
-				std::cout << "TEXT CHANGED" << std::endl;
 				auto& material_resource = this->selected_objects.getEditableSelectedMaterialResource();
 				auto& material = material_resource.getFactoryMaterial();
 				material->setUniformValue(idx, this->sanitiseTextChanged(textbox));
 				if (material_resource.isFactoryActive())
 					material_resource.updateMainMaterialBuffer(idx, this->sanitiseTextChanged(textbox));
-				std::array<float, 4>& static_val = this->selected_objects.getSelectedMaterial()->local_uniform_buffer[idx];
-				static_val = this->sanitiseTextChanged(textbox);
 			}
 		);
 	}
