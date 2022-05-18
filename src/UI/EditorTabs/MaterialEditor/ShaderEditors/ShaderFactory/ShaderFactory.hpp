@@ -556,7 +556,7 @@ private:
 	inline void readbackUniformToUIBase(T* textbox, float val)
 	{
 		std::stringstream stream;
-		stream << std::fixed << std::setprecision(4) << val;
+		stream << std::fixed << std::setprecision(textbox->getNumDigits()) << val;
 		textbox->clear();
 		textbox->insert(QString::fromStdString(stream.str()));
 	}

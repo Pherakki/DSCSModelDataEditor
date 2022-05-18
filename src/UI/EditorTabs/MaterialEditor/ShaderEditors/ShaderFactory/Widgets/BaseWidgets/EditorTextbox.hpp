@@ -10,6 +10,7 @@ class EditorTextbox : public QLineEdit
 {
     Q_OBJECT
 private:
+    inline static const uint8_t num_digits = 4;
     //void focusInEvent(QFocusEvent* event) override
     //{
     //    if (event->gotFocus())
@@ -41,10 +42,14 @@ public:
     EditorTextbox(QWidget* parent = Q_NULLPTR) : QLineEdit(parent)
     {
         auto validator = new QDoubleValidator(this);
-        validator->setDecimals(4);
+        validator->setDecimals(this->num_digits);
         this->setValidator(validator);
         this->setMaximumWidth(40);
         this->setText("0.00");
+    }
+    auto getNumDigits()
+    {
+        return this->num_digits;
     }
 };
 
