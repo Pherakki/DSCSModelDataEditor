@@ -40,9 +40,11 @@ private:
 public:
     EditorTextbox(QWidget* parent = Q_NULLPTR) : QLineEdit(parent)
     {
-        this->setValidator(new QDoubleValidator(0, 100, 4, this));
+        auto validator = new QDoubleValidator(this);
+        validator->setDecimals(4);
+        this->setValidator(validator);
         this->setMaximumWidth(40);
-        this->setText("0.0");
+        this->setText("0.00");
     }
 };
 
