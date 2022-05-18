@@ -1,6 +1,7 @@
 #pragma once
 
 #include <array>
+#include <sstream>
 
 #include <QCheckBox>
 #include <QComboBox>
@@ -551,14 +552,24 @@ private:
 
 	}
 
+	template <typename T>
+	inline void readbackUniformToUIBase(T* textbox, float val)
+	{
+		std::stringstream stream;
+		stream << std::fixed << std::setprecision(4) << val;
+		textbox->clear();
+		textbox->insert(QString::fromStdString(stream.str()));
+	}
+
 	template<size_t N>
 	void readbackUniformToUI(const MaterialPtr& material, size_t idx, std::array<EditorTextbox*, N>& textboxes)
 	{
 		auto& buf = material->local_uniform_buffer;
 		for (size_t i = 0; i < N; ++i)
 		{
-			textboxes[i]->setText(QString::fromStdString(std::to_string(buf[idx][i])));
-			textboxes[i]->setCursorPosition(0);
+			auto& textbox = textboxes[i];
+			this->readbackUniformToUIBase(textbox, buf[idx][i]);
+			textbox->setCursorPosition(0);
 		}
 	}
 	template<size_t N>
@@ -567,14 +578,15 @@ private:
 		auto& buf = material->local_uniform_buffer;
 		for (size_t i = 0; i < N; ++i)
 		{
-			widget.textboxes[i]->setText(QString::fromStdString(std::to_string(buf[idx][i])));
-			widget.textboxes[i]->setCursorPosition(0);
+			auto& textbox = widget.textboxes[i];
+			this->readbackUniformToUIBase(textbox, buf[idx][i]);
+			textbox->setCursorPosition(0);
 		}
 	}
 	void readbackUniformToUI(const MaterialPtr& material, size_t idx, EditorTextbox*& textbox)
 	{
 		auto& buf = material->local_uniform_buffer;
-		textbox->setText(QString::fromStdString(std::to_string(buf[idx][0])));
+		this->readbackUniformToUIBase(textbox, buf[idx][0]);
 		textbox->setCursorPosition(0);
 	}
 
