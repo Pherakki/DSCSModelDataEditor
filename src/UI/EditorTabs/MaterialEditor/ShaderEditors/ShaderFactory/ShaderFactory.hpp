@@ -545,7 +545,7 @@ private:
 			material->setUniformValue(0x77, this->sanitiseTextChanged(*t));
 		}
 		{ // ZBias
-			auto& t = this->position_settings->fat;
+			auto& t = this->position_settings->zbias;
 			material->setUniformValue(0x8D, this->sanitiseTextChanged(*t));
 		}
 
@@ -723,7 +723,7 @@ private:
 			this->readbackUniformToUI(material, 0x77, *t);
 		}
 		{ // ZBias
-			auto& t = this->position_settings->fat;
+			auto& t = this->position_settings->zbias;
 			this->readbackUniformToUI(material, 0x8D, *t);
 		}
 
@@ -1225,7 +1225,7 @@ private:
 			this->hookUniformValueUpdate(0x77, *t);
 		}
 		{ // ZBias
-			auto& t = this->position_settings->fat;
+			auto& t = this->position_settings->zbias;
 			this->hookUniformValueUpdate(0x8D, *t);
 		}
 
