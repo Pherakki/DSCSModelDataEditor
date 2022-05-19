@@ -110,6 +110,7 @@ namespace Rendering::DSCS::DataObjects
 		CGtype param_type = cgGetParameterType(param);
 		switch (param_type)
 		{
+			// Do we even need to make this distinction any more now that the texture parameters are fixed?
 		case CG_SAMPLER2D:
 			holder.emplace(id, std::make_unique<ShaderUniforms::Tex2DUniform>(param, 0));
 			break;
