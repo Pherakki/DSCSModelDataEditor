@@ -80,15 +80,10 @@ private:
 	typedef std::shared_ptr<Texture2D> Texture2DPtr;
 	typedef Rendering::DSCS::DataObjects::ShaderUniforms::TexCubeUniform TextureCube;
 	typedef std::shared_ptr<TextureCube> TextureCubePtr;
-	typedef Rendering::DSCS::DataObjects::ShaderUniforms::CLUTTex2DUniform TextureCLUT;
-	typedef std::shared_ptr<TextureCLUT> TextureCLUTPtr;
 
 	TexturePtr texture_file;
 public:
 	TextureResource() {}
-	//Texture2DPtr as2D() {}
-	//TextureCubePtr asCube() {}
-	//TextureCLUTPtr asCLUT() {}
 };
 
 class SelectedObjectReferences : public QObject
