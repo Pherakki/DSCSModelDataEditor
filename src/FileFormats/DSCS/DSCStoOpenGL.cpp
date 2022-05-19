@@ -2,8 +2,7 @@
 #include "Utils/Hashing.hpp"
 
 // Init used textures
-// Wrong, wrong, so very wrong...
-uint16_t initTexture(uint16_t param_type, const std::array<uint16_t, 8>& data, const std::filesystem::path& img_path, const std::vector<std::array<char, 32>>& texture_names, std::unordered_map<std::string, std::shared_ptr<Rendering::DataObjects::OpenGLDSCSTexture>>& texture_library)
+uint16_t initTexture(uint16_t uniform_id, const std::array<uint16_t, 8>& data, const std::filesystem::path& img_path, const std::vector<std::array<char, 32>>& texture_names, std::unordered_map<std::string, std::shared_ptr<Rendering::DataObjects::OpenGLDSCSTexture>>& texture_library)
 {
 	uint16_t texture_idx = data[0];
 	std::string tex_name = texture_names[texture_idx].data();
@@ -11,13 +10,23 @@ uint16_t initTexture(uint16_t param_type, const std::array<uint16_t, 8>& data, c
 	if (!texture_library.contains(tex_name))
 	{
 		TextureType tex_type;
-		switch (param_type)
+		switch (uniform_id)
 		{
-		case (CG_SAMPLER2D):
+		case 0x32:
+		case 0x35:
+		case 0x44:
+		case 0x45:
+		case 0x8E:
 			tex_type = TextureType::Texture2D;
 			break;
-		case (CG_SAMPLERCUBE):
+		case 0x48:
+			tex_type = TextureType::TextureCLUT;
+			break;
+		case 0x3A:
 			tex_type = TextureType::TextureCube;
+			break;
+		case 0x43:
+			tex_type = TextureType::TextureLuminance;
 			break;
 		default:
 			std::string error_msg = "Unknown texture type ";
@@ -143,11 +152,10 @@ namespace FileFormats::DSCS
 				auto& geom_mat_uniform = geom_mat.shader_uniforms[j];
 				if (geom_mat_uniform.num_floats_in_payload == 0)
 				{
-					uint16_t texture_type = material->getTextureType(geom_mat_uniform.shader_uniform_type);
 					std::array<uint16_t, 8> data;
 					memcpy(&data, &geom_mat_uniform.payload, sizeof(geom_mat_uniform.payload));
 					// TODO: Add check if filepaths exist
-					material->setTextureBuffer(geom_mat_uniform.shader_uniform_type, initTexture(texture_type, data, img_path, geom_file.texture_names, texture_library));
+					material->setTextureBuffer(geom_mat_uniform.shader_uniform_type, initTexture(geom_mat_uniform.shader_uniform_type, data, img_path, geom_file.texture_names, texture_library));
 					material->setTextureName(geom_mat_uniform.shader_uniform_type, &geom_file.texture_names[geom_mat_uniform.payload[0]][0]);
 				}
 				else
