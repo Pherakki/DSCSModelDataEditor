@@ -97,6 +97,10 @@ protected:
 	typedef std::shared_ptr<Mesh> MeshPtr;
 	typedef Rendering::DSCS::DataObjects::OpenGLDSCSMaterial Material;
 	typedef std::shared_ptr<Material> MaterialPtr;
+	typedef Rendering::DSCS::DataObjects::ShaderUniforms::Tex2DUniform Texture2D;
+	typedef std::shared_ptr<Texture2D> Texture2DPtr;
+	typedef Rendering::DSCS::DataObjects::ShaderUniforms::TexCubeUniform TextureCube;
+	typedef std::shared_ptr<TextureCube> TextureCubePtr;
 
 	ModelPtr    selected_model    = nullptr;
 	MeshPtr     selected_mesh     = nullptr;
@@ -106,7 +110,10 @@ protected:
 
 	//const ModelList_t& model_library;
 	std::unordered_map<MaterialPtr, MaterialResource> material_resources;
-	std::unordered_map<std::string, TextureResource> texture_resources;
+	std::unordered_map<std::string, Texture2DPtr>   texture_library_2d;
+	std::unordered_map<std::string, Texture2DPtr>   texture_library_clut;
+	std::unordered_map<std::string, Texture2DPtr>   texture_library_light;
+	std::unordered_map<std::string, TextureCubePtr> texture_library_cube;
 	// Add library for animations
 
 	
