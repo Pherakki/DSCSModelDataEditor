@@ -8,8 +8,10 @@
 
 enum class TextureType
 {
-	Texture2D = 0,
-	TextureCube = 1
+	Texture2D,
+	TextureCLUT,
+	TextureLuminance,
+	TextureCube
 };
 
 // Adapted from https://gist.github.com/tilkinsc/d1a8a46853dea160dc86aa48618be6f9
@@ -18,5 +20,4 @@ class DDSLoader : public QOpenGLFunctions_2_1
 public:
 	DDSLoader();
 	GLuint texture_loadDDS(const char* path, TextureType tex_type);
-
 };
