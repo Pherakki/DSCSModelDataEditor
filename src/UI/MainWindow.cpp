@@ -151,10 +151,10 @@ void DSCSModelDataEditorWindow::loadAnim(const QString& fileName)
 
 void DSCSModelDataEditorWindow::loadShaderHashes(const QString& directory)
 {
-    auto md5 = QCryptographicHash(QCryptographicHash::Algorithm::Md5);
     QDirIterator shader_iterator(directory, { "*vp.shad" }, QDir::Files);
     while (shader_iterator.hasNext())
     {
+        auto md5 = QCryptographicHash(QCryptographicHash::Algorithm::Md5);
         shader_iterator.next();
         // Hash vertex shader
         auto filepath = shader_iterator.filePath();
@@ -166,13 +166,15 @@ void DSCSModelDataEditorWindow::loadShaderHashes(const QString& directory)
         // Hash fragment shader
         filepath.replace(filepath.size() - 7, 1, "f");
         std::stringstream fp_file_contents;
-        fp_file_contents << std::ifstream(filepath.toStdString(), std::ios_base::binary).rdbuf();
-        auto fp_hash = md5.hash(vp_file_contents.str().c_str(), QCryptographicHash::Algorithm::Md5).toHex().toStdString();
+        fp_file_contents << std::ifstream(filepath.toStdString()).rdbuf();
+        auto fp_hash = md5.hash(fp_file_contents.str().c_str(), QCryptographicHash::Algorithm::Md5).toHex().toStdString();
 
         // Store hash
         auto shader_name = shader_iterator.fileName().toStdString();
         shader_name = shader_name.substr(0, shader_name.size() - 8);
         this->selected_objects.shader_hashes[vp_hash + fp_hash].push_back(shader_name);
+
+        md5.reset();
     }  
 }
 
