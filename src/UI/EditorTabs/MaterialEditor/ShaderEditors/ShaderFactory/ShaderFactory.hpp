@@ -5,6 +5,7 @@
 
 #include <QCheckBox>
 #include <QComboBox>
+#include <QCryptographicHash>
 #include <QBoxLayout>
 #include <QDoubleValidator>
 #include <QLabel>
@@ -87,6 +88,7 @@ private:
 	typedef std::unique_ptr<Rendering::ShaderBackends::cgGLShaderBackend> ShaderBackend_t;
 	typedef Rendering::DSCS::AnimationBuffer AnimBuf_t;
 
+	QLabel* matching_shader = new QLabel(this);
 	ShaderFactoryTextureLayer1* texture_layer_1;
 	ShaderFactoryTextureLayer1* texture_layer_2;
 	ShaderFactoryUVSettingsWidget* uv_settings_1;
@@ -835,6 +837,13 @@ private:
 			material_resource.updateMainMaterial(this->animation_buffer);
 
 		this->setting_update_in_progress = false;
+
+		auto& shader_hashes = this->selected_objects.getShaderHashes();
+		auto factory_hash = this->hashShader();
+		if (shader_hashes.contains(factory_hash))
+			this->matching_shader->setText(QString::fromStdString("Matches: " + shader_hashes.at(factory_hash)[0]));
+		else
+			this->matching_shader->setText("No matching shader.");
 	}
 
 	void activateMaterial()
@@ -1257,6 +1266,7 @@ public:
 
 			auto compile_button = new QPushButton("Set Active");
 			_layout->addWidget(compile_button);
+			_layout->addWidget(this->matching_shader);
 			connect(compile_button, &QPushButton::clicked, this, &ShaderFactory::activateMaterial);
 			this->texture_layer_1 = new ShaderFactoryTextureLayer1("Texture Layer 1");
 			this->texture_layer_2 = new ShaderFactoryTextureLayer1("Texture Layer 2");
@@ -1319,6 +1329,15 @@ public:
 		this->readbackUISettings();
 
 		this->blockUISignals(false);
+	}
+
+	std::string hashShader()
+	{
+		auto& mat = this->selected_objects.getEditableSelectedMaterialResource().getFactoryMaterial();
+		auto md5 = QCryptographicHash(QCryptographicHash::Algorithm::Md5);
+		auto vp_hash = md5.hash(mat->shader->vertex_source.c_str(), QCryptographicHash::Algorithm::Md5).toHex().toStdString();
+		auto fp_hash = md5.hash(mat->shader->fragment_source.c_str(), QCryptographicHash::Algorithm::Md5).toHex().toStdString();
+		return vp_hash + fp_hash;
 	}
 
 };
