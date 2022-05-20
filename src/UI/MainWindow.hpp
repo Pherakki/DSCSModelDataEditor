@@ -40,6 +40,7 @@ private:
     void initToolbar();
     void loadModel(const QString& fileName);
     void loadAnim(const QString& fileName);
+    void loadShaderHashes(const QString& directory);
 private slots:
     void testInit();
     void openLoadModelDialog();
