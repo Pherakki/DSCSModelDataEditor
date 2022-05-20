@@ -118,6 +118,8 @@ protected:
 
 	
 public:
+	std::unordered_map<std::string, std::vector<std::string>> shader_hashes;
+
 	SelectedObjectReferences(AnimationBuffer& anim_buffer)
 		: anim_buffer{ anim_buffer }
 	{}
@@ -178,6 +180,10 @@ public:
 		emit this->selectedMaterialUpdated();
 	}
 
+	const auto& getShaderHashes() const
+	{
+		return this->shader_hashes;
+	}
 
 signals:
 	void selectedModelUpdated();
