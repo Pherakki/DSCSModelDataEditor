@@ -53,10 +53,10 @@ namespace Rendering::ShaderBackends
 	// ReadFile
 	const void cgGLShaderBackend::readFile(const std::string& filepath, std::string& out)
 	{
-		std::fstream filestream;
+		std::ifstream filestream;
 		try
 		{
-			filestream.open(filepath, std::ios::in);
+			filestream.open(filepath);
 			std::stringstream file_contents;
 			file_contents << filestream.rdbuf();
 			filestream.close();
