@@ -28,7 +28,6 @@ private:
     typedef Rendering::DSCS::DataObjects::OpenGLDSCSMaterial Material;
     typedef std::shared_ptr<Material> MaterialPtr;
     typedef void(QComboBox::* CIC_t)(int);
-    typedef std::unordered_map<std::string, std::shared_ptr<Rendering::DataObjects::OpenGLDSCSTexture>> TextureLibrary_t;
     typedef std::unique_ptr<Rendering::ShaderBackends::cgGLShaderBackend> ShaderBackend_t;
     typedef Rendering::DSCS::AnimationBuffer AnimBuf_t;
 
@@ -44,7 +43,7 @@ private:
     std::unordered_map<int, MaterialPtr> material_reverse_lookup;
 
 public:
-    MaterialEditorTab(SelectedObjectReferences& sor, TextureLibrary_t& texlib, ShaderBackend_t& backend, AnimBuf_t& animation_buffer, QWidget* parent = Q_NULLPTR) 
+    MaterialEditorTab(SelectedObjectReferences& sor, ShaderBackend_t& backend, AnimBuf_t& animation_buffer, QWidget* parent = Q_NULLPTR) 
         : QWidget(parent)
         , selected_objects{sor}
     {
@@ -53,7 +52,7 @@ public:
         auto widget = new QWidget(this);
         auto w_layout = new QVBoxLayout;
         this->material_dropdown = new QComboBox(widget);
-        this->shader_edit_modes = new ShaderEditorTabs(sor, texlib, backend, animation_buffer, widget);
+        this->shader_edit_modes = new ShaderEditorTabs(sor, backend, animation_buffer, widget);
         this->opengl_settings = new OpenGLSettingsWidget(sor, widget);
 
         w_layout->addWidget(this->shader_edit_modes); // use PutInSpoiler once the Spoiler class is fixed

@@ -50,26 +50,26 @@ struct TextureRefs
 	typedef std::shared_ptr<Rendering::DataObjects::OpenGLDSCSTexture> Texture;
 
 	std::string c1_texture_name;
-	Texture c1_texture = nullptr;
+	uint32_t c1_texture = 0;
 
 	std::string n1_texture_name;
-	Texture n1_texture = nullptr;
+	uint32_t n1_texture = 0;
 
 	std::string c2_texture_name;
-	Texture c2_texture = nullptr;
+	uint32_t c2_texture = 0;
 
 	std::string n2_texture_name;
-	Texture n2_texture = nullptr;
+	uint32_t n2_texture = 0;
 
 	std::string light_texture_name;
-	Texture light_texture = nullptr;
+	uint32_t light_texture = 0;
 
 	std::string env_texture_name;
-	Texture env_texture = nullptr;
+	uint32_t env_texture = 0;
 	bool isSphere = false;
 
 	std::string clut_texture_name;
-	Texture clut_texture = nullptr;
+	uint32_t clut_texture = 0;
 };
 
 class ShaderFactory : public QWidget
@@ -82,7 +82,7 @@ private:
 	typedef Rendering::DSCS::DataObjects::OpenGLDSCSMesh Mesh;
 	typedef std::shared_ptr<Mesh> MeshPtr;
 	typedef std::shared_ptr<Rendering::DataObjects::OpenGLDSCSTexture> TexturePtr;
-	typedef std::unordered_map<std::string, TexturePtr> TextureLibrary_t;
+	typedef std::unordered_map<std::string, TexturePtr> TextureSubLibrary_t;
 	typedef Rendering::DSCS::DataObjects::OpenGLDSCSMaterial Material;
 	typedef std::shared_ptr<Material> MaterialPtr;
 	typedef std::unique_ptr<Rendering::ShaderBackends::cgGLShaderBackend> ShaderBackend_t;
@@ -103,7 +103,6 @@ private:
 
 	AnimBuf_t& animation_buffer;
 	MaterialPtr active_local_material = nullptr;
-	TextureLibrary_t& texture_library;
 	ShaderBackend_t& shader_backend;
 	SelectedObjectReferences& selected_objects;
 	TabMaterialsLibrary& tab_materials;
@@ -116,34 +115,64 @@ private:
 			|| this->diffuse_color_settings->light_sampler->checkbox->isChecked();
 	}
 
-	void updateTexturesOn(QComboBox* combobox)
+	void updateTexturesOn(QComboBox* combobox, TextureLibrary::TextureSubLibrary_t& tex_sublib)
 	{
 		combobox->clear();
-		for (const auto& [texture_name, texture] : this->texture_library)
+		for (const auto& [texture_name, texture] : tex_sublib)
 		{
 			combobox->addItem(QString::fromStdString(texture_name), QString::fromStdString(texture_name));
 		}
 	}
 
-	void updateAvailableTextures()
+	void update2DTexturesOn(QComboBox* combobox)
 	{
-		this->updateTexturesOn(this->texture_layer_1->diffuse_texture_settings->file_combo_box->combobox);
-		this->updateTexturesOn(this->texture_layer_1->normal_texture_settings->file_combo_box->combobox);
-		this->updateTexturesOn(this->texture_layer_2->diffuse_texture_settings->file_combo_box->combobox);
-		this->updateTexturesOn(this->texture_layer_2->normal_texture_settings->file_combo_box->combobox);
-		this->updateTexturesOn(this->diffuse_color_settings->light_sampler->file_combo_box->combobox);
-		this->updateTexturesOn(this->illumination_settings->clut->file_combo_box->combobox);
-		this->updateTexturesOn(this->reflection_settings->env_texture->file_combo_box->combobox);
+		this->updateTexturesOn(combobox, this->selected_objects.texture_library.textures_2d);
+	}
+	void updateCLUTTexturesOn(QComboBox* combobox)
+	{
+		this->updateTexturesOn(combobox, this->selected_objects.texture_library.textures_clut);
+	}
+	void updateLumTexturesOn(QComboBox* combobox)
+	{
+		this->updateTexturesOn(combobox, this->selected_objects.texture_library.textures_luminance);
+	}
+	void updateCubeTexturesOn(QComboBox* combobox)
+	{
+		this->updateTexturesOn(combobox, this->selected_objects.texture_library.textures_cube);
 	}
 
-	void createTexSettings(FactorySettings& settings, Sampler& sampler, std::string& texname, TexturePtr& texture, const ShaderFactoryTextureSlot& tex_ui)
+	void updateAvailableTextures()
+	{
+		this->update2DTexturesOn(this->texture_layer_1->diffuse_texture_settings->file_combo_box->combobox);
+		this->update2DTexturesOn(this->texture_layer_1->normal_texture_settings->file_combo_box->combobox);
+		this->update2DTexturesOn(this->texture_layer_2->diffuse_texture_settings->file_combo_box->combobox);
+		this->update2DTexturesOn(this->texture_layer_2->normal_texture_settings->file_combo_box->combobox);
+		this->updateLumTexturesOn(this->diffuse_color_settings->light_sampler->file_combo_box->combobox);
+		this->updateCLUTTexturesOn(this->illumination_settings->clut->file_combo_box->combobox);
+		if (this->reflection_settings->isSphereMap())
+			this->update2DTexturesOn(this->reflection_settings->env_texture->file_combo_box->combobox);
+		else
+			this->updateCubeTexturesOn(this->reflection_settings->env_texture->file_combo_box->combobox);
+	}
+
+	void createTexSettings(FactorySettings& settings, Sampler& sampler, std::string& texname, uint32_t& texture, const ShaderFactoryTextureSlot& tex_ui, TextureLibrary::TextureSubLibrary_t& sublib)
 	{
 		sampler.enabled = true;
 		sampler.uv_slot = tex_ui.uv_slot_combobox->currentIndex();
 		settings.uv_slots[sampler.uv_slot].enabled = true;
 		sampler.combined_channels = true; // Change later
 		texname = tex_ui.file_combo_box->combobox->currentText().toStdString();
-		texture = this->texture_library.at(texname);
+		texture = sublib.at(texname);
+	}
+
+	void createTexSettings2D(FactorySettings& settings, Sampler& sampler, std::string& texname, uint32_t& texture, const ShaderFactoryTextureSlot& tex_ui)
+	{
+		this->createTexSettings(settings, sampler, texname, texture, tex_ui, this->selected_objects.texture_library.textures_2d);
+	}
+
+	void createTexSettingsLum(FactorySettings& settings, Sampler& sampler, std::string& texname, uint32_t& texture, const ShaderFactoryTextureSlot& tex_ui)
+	{
+		this->createTexSettings(settings, sampler, texname, texture, tex_ui, this->selected_objects.texture_library.textures_luminance);
 	}
 
 	void createUVSettings(TexSlot& uv_slot, const ShaderFactoryUVSettingsWidget& uv_ui)
@@ -275,26 +304,29 @@ private:
 	{
 		// Load textures
 		if (const auto& tex_ui = this->texture_layer_1->diffuse_texture_settings; tex_ui->isActive())
-			this->createTexSettings(settings, settings.texlayer_1.colorsampler, textures.c1_texture_name, textures.c1_texture, *tex_ui);
+			this->createTexSettings2D(settings, settings.texlayer_1.colorsampler, textures.c1_texture_name, textures.c1_texture, *tex_ui);
 		if (const auto& tex_ui = this->texture_layer_1->normal_texture_settings; tex_ui->isActive())
-			this->createTexSettings(settings, settings.texlayer_1.normalsampler, textures.n1_texture_name, textures.n1_texture, *tex_ui);
+			this->createTexSettings2D(settings, settings.texlayer_1.normalsampler, textures.n1_texture_name, textures.n1_texture, *tex_ui);
 		if (const auto& tex_ui = this->texture_layer_2->diffuse_texture_settings; tex_ui->isActive())
-			this->createTexSettings(settings, settings.texlayer_2.colorsampler, textures.c2_texture_name, textures.c2_texture, *tex_ui);
+			this->createTexSettings2D(settings, settings.texlayer_2.colorsampler, textures.c2_texture_name, textures.c2_texture, *tex_ui);
 		if (const auto& tex_ui = this->texture_layer_2->normal_texture_settings; tex_ui->isActive())
-			this->createTexSettings(settings, settings.texlayer_2.normalsampler, textures.n2_texture_name, textures.n2_texture, *tex_ui);
+			this->createTexSettings2D(settings, settings.texlayer_2.normalsampler, textures.n2_texture_name, textures.n2_texture, *tex_ui);
 		if (const auto& tex_ui = this->diffuse_color_settings->light_sampler; tex_ui->isActive())
-			this->createTexSettings(settings, settings.lightsampler, textures.light_texture_name, textures.light_texture, *tex_ui);
+			this->createTexSettingsLum(settings, settings.lightsampler, textures.light_texture_name, textures.light_texture, *tex_ui);
 		if (const auto& tex_ui = this->illumination_settings->clut; tex_ui->isActive())
 		{
 			auto texname = tex_ui->file_combo_box->combobox->currentText().toStdString();
 			textures.clut_texture_name = texname;
-			textures.clut_texture = this->texture_library.at(texname);
+			textures.clut_texture = this->selected_objects.texture_library.textures_clut.at(texname);
 		}
 		if (const auto& tex_ui = this->reflection_settings->env_texture; tex_ui->isActive())
 		{
 			auto texname = tex_ui->file_combo_box->combobox->currentText().toStdString();
 			textures.env_texture_name = texname;
-			textures.env_texture = this->texture_library.at(texname);
+			if (this->reflection_settings->isSphereMap())
+				textures.env_texture = this->selected_objects.texture_library.textures_2d.at(texname);
+			else
+				textures.env_texture = this->selected_objects.texture_library.textures_cube.at(texname);
 			textures.isSphere = this->reflection_settings->isSphereMap();
 		}
 
@@ -322,44 +354,44 @@ private:
 	{
 		if (textures.c1_texture)
 		{
-			material->setTextureBuffer(0x32, textures.c1_texture->getBufferID());
+			material->setTextureBuffer(0x32, textures.c1_texture);
 			material->setTextureName(0x32, textures.c1_texture_name);
 		}
 		if (textures.n1_texture)
 		{
-			material->setTextureBuffer(0x35, textures.n1_texture->getBufferID());
+			material->setTextureBuffer(0x35, textures.n1_texture);
 			material->setTextureName(0x35, textures.n1_texture_name);
 		}
 		if (textures.light_texture)
 		{
-			material->setTextureBuffer(0x43, textures.light_texture->getBufferID());
+			material->setTextureBuffer(0x43, textures.light_texture);
 			material->setTextureName(0x43, textures.light_texture_name);
 		}
 		if (textures.c2_texture)
 		{
-			material->setTextureBuffer(0x44, textures.c2_texture->getBufferID());
+			material->setTextureBuffer(0x44, textures.c2_texture);
 			material->setTextureName(0x44, textures.c2_texture_name);
 		}
 		if (textures.n2_texture)
 		{
-			material->setTextureBuffer(0x45, textures.n2_texture->getBufferID());
+			material->setTextureBuffer(0x45, textures.n2_texture);
 			material->setTextureName(0x45, textures.n2_texture_name);
 		}
 		if (textures.clut_texture)
 		{
-			material->setTextureBuffer(0x48, textures.clut_texture->getBufferID());
+			material->setTextureBuffer(0x48, textures.clut_texture);
 			material->setTextureName(0x48, textures.clut_texture_name);
 		}
 		if (textures.env_texture)
 		{
 			if (textures.isSphere)
 			{
-				material->setTextureBuffer(0x8E, textures.env_texture->getBufferID());
+				material->setTextureBuffer(0x8E, textures.env_texture);
 				material->setTextureName(0x8E, textures.env_texture_name);
 			}
 			else
 			{
-				material->setTextureBuffer(0x3A, textures.env_texture->getBufferID());
+				material->setTextureBuffer(0x3A, textures.env_texture);
 				material->setTextureName(0x3A, textures.env_texture_name);
 			}
 		}
@@ -1252,9 +1284,8 @@ private:
 
 	}
 public:
-	explicit ShaderFactory(SelectedObjectReferences& sor, TabMaterialsLibrary& tab_materials, TextureLibrary_t& texlib, ShaderBackend_t& shader_backend, Rendering::DSCS::AnimationBuffer& animation_buffer, QWidget* parent = nullptr)
+	explicit ShaderFactory(SelectedObjectReferences& sor, TabMaterialsLibrary& tab_materials, ShaderBackend_t& shader_backend, Rendering::DSCS::AnimationBuffer& animation_buffer, QWidget* parent = nullptr)
 		: QWidget(parent)
-		, texture_library{ texlib }
 		, shader_backend{ shader_backend }
 		, animation_buffer{ animation_buffer }
 		, selected_objects{ sor }

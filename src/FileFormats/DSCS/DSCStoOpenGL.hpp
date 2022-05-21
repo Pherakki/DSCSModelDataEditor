@@ -6,6 +6,7 @@
 #include "SkelFile/SkelReadWrite.hpp"
 #include "AnimFile/AnimReadWrite.hpp"
 #include "../Textures/DDS.hpp"
+#include "../../UI/TextureLibrary.hpp"
 #include "../../Rendering/DSCS/Renderer.hpp"
 #include "../../Rendering/DSCS/DataObjects/OpenGLDSCSModel.hpp"
 #include "../../Rendering/DSCS/ShaderSystem/cgGL/cgGLShaderBackend.hpp"
@@ -20,13 +21,11 @@
 
 
 // Init used textures
-// Wrong, wrong, so very wrong...
 uint16_t initTexture(uint16_t param_type,
 	const std::array<uint16_t, 8>& data,
 	const std::filesystem::path& img_path,
 	const std::vector<std::array<char, 32>>& texture_names,
-	std::unordered_map<std::string,
-	std::shared_ptr<Rendering::DataObjects::OpenGLDSCSTexture>>&texture_library);
+	TextureLibrary&texture_library);
 
 
 namespace FileFormats::DSCS
@@ -208,6 +207,6 @@ namespace FileFormats::DSCS
 	Rendering::DSCS::DataObjects::OpenGLDSCSModel DSCStoOpenGL(const std::filesystem::path& filepath,
 															   std::unique_ptr<Rendering::ShaderBackends::cgGLShaderBackend>& shader_backend,
 														       const std::array<float*, 0xA0>& uniform_dispatch_buffer,
-		                                                       std::unordered_map<std::string, std::shared_ptr<Rendering::DataObjects::OpenGLDSCSTexture>>& texture_library,
+		                                                       TextureLibrary& texture_library,
 		                                                       std::unordered_map<std::string, std::shared_ptr<Rendering::ShaderObjects::cgGLShaderObject>>& shader_library);
 }

@@ -10,6 +10,7 @@
 #include "Camera.hpp"
 #include "InputHandler.hpp"
 #include "Types.hpp"
+#include "TextureLibrary.hpp"
 #include "../Rendering/DSCS/Renderer.hpp"
 #include "../FileFormats/DSCS/DSCStoOpenGL.hpp"
 #include "../Rendering/DSCS/DataObjects/OpenGLDSCSModel.hpp"
@@ -124,14 +125,13 @@ namespace CustomWidgets
 	{
 		Q_OBJECT;
 		typedef std::shared_ptr<Rendering::DSCS::DataObjects::OpenGLDSCSModel> ModelPtr;
-		typedef std::unordered_map<std::string, std::shared_ptr<Rendering::DataObjects::OpenGLDSCSTexture>> TextureLibrary_t;
 	public:
 		RenderWidget(QWidget* parent);
 		~RenderWidget();
 		ModelPtr loadModel(const std::string& path);
 		void loadAnim(const std::string& anim_path);
 		ModelList_t models;
-		TextureLibrary_t texture_library;
+		TextureLibrary texture_library;
 		Rendering::DSCS::AnimationBuffer animation_buffer;
 		std::unique_ptr<Rendering::ShaderBackends::cgGLShaderBackend> shader_backend;
 		std::unordered_map<std::string, std::shared_ptr<Rendering::ShaderObjects::cgGLShaderObject>> shader_library;

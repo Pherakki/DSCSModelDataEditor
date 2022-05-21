@@ -6,6 +6,7 @@
 #include "Rendering/DSCS/Renderer.hpp"
 #include "Rendering/DSCS/DataObjects/OpenGLDSCSModel.hpp"
 #include "UI/EditorTabs/MaterialEditor//ShaderEditors/TabMaterials.hpp"
+#include "UI/TextureLibrary.hpp"
 
 class MaterialResource
 {
@@ -118,10 +119,12 @@ protected:
 
 	
 public:
+	TextureLibrary& texture_library;
 	std::unordered_map<std::string, std::vector<std::string>> shader_hashes;
 
-	SelectedObjectReferences(AnimationBuffer& anim_buffer)
+	SelectedObjectReferences(AnimationBuffer& anim_buffer, TextureLibrary& texture_library)
 		: anim_buffer{ anim_buffer }
+		, texture_library{ texture_library }
 	{}
 
 	SelectedObjectReferences(
@@ -134,6 +137,7 @@ public:
 		, selected_mesh{mesh}
 		, selected_material{material}
 		, anim_buffer{anim_buffer}
+		, texture_library{ texture_library }
 	{}
 
 	const ModelPtr&    getSelectedModel   () const noexcept { return this->selected_model;    }

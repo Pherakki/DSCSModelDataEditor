@@ -2,49 +2,63 @@
 #include "Utils/Hashing.hpp"
 
 // Init used textures
-uint16_t initTexture(uint16_t uniform_id, const std::array<uint16_t, 8>& data, const std::filesystem::path& img_path, const std::vector<std::array<char, 32>>& texture_names, std::unordered_map<std::string, std::shared_ptr<Rendering::DataObjects::OpenGLDSCSTexture>>& texture_library)
+uint16_t initTexture(uint16_t uniform_id, const std::array<uint16_t, 8>& data, const std::filesystem::path& img_path, const std::vector<std::array<char, 32>>& texture_names, TextureLibrary& texture_library)
 {
 	uint16_t texture_idx = data[0];
 	std::string tex_name = texture_names[texture_idx].data();
 
-	if (!texture_library.contains(tex_name))
+	TextureType tex_type;
+	TextureLibrary::TextureSubLibrary_t* sublib = nullptr;
+	switch (uniform_id)
 	{
-		TextureType tex_type;
-		switch (uniform_id)
-		{
-		case 0x32:
-		case 0x35:
-		case 0x44:
-		case 0x45:
-		case 0x8E:
-			tex_type = TextureType::Texture2D;
-			break;
-		case 0x48:
-			tex_type = TextureType::TextureCLUT;
-			break;
-		case 0x3A:
-			tex_type = TextureType::TextureCube;
-			break;
-		case 0x43:
-			tex_type = TextureType::TextureLuminance;
-			break;
-		default:
-			std::string error_msg = "Unknown texture type ";
-			error_msg += (char*)tex_type;
-			error_msg += '.';
-			throw std::exception(error_msg.c_str());
-			break;
-		}
-
-		auto full_img_path = img_path;
-		full_img_path /= (tex_name + ".img");
-		DDSLoader dds_loader;
-		GLuint tex_id = dds_loader.texture_loadDDS(full_img_path.string().c_str(), tex_type);
-		auto texture = std::make_shared<Rendering::DataObjects::OpenGLDSCSTexture>(tex_id, tex_name);
-		texture_library[tex_name] = texture;
+	case 0x32:
+	case 0x35:
+	case 0x44:
+	case 0x45:
+	case 0x8E:
+		tex_type = TextureType::Texture2D;
+		sublib = &texture_library.textures_2d;
+		break;
+	case 0x48:
+		tex_type = TextureType::TextureCLUT;
+		sublib = &texture_library.textures_clut;
+		break;
+	case 0x3A:
+		tex_type = TextureType::TextureCube;
+		sublib = &texture_library.textures_cube;
+		break;
+	case 0x43:
+		tex_type = TextureType::TextureLuminance;
+		sublib = &texture_library.textures_luminance;
+		break;
+	default:
+		std::string error_msg = "Unknown texture type ";
+		error_msg += (char*)tex_type;
+		error_msg += '.';
+		throw std::exception(error_msg.c_str());
+		break;
 	}
 
-	return texture_library[tex_name]->getBufferID();
+	if (sublib)
+	{
+		if (sublib->contains(tex_name))
+		{
+			return sublib->at(tex_name);
+		}
+		else
+		{
+			auto full_img_path = img_path;
+			full_img_path /= (tex_name + ".img");
+			DDSLoader dds_loader;
+			GLuint tex_id = dds_loader.texture_loadDDS(full_img_path.string().c_str(), tex_type);
+			(*sublib)[tex_name] = tex_id;
+			return tex_id;
+		}
+	}
+	else
+	{
+		throw std::exception("CRITICAL ERROR: Texture library was not set when loading DDS!");
+	}
 }
 
 
@@ -56,7 +70,7 @@ namespace FileFormats::DSCS
 	Rendering::DSCS::DataObjects::OpenGLDSCSModel DSCStoOpenGL(const std::filesystem::path& filepath,
 		std::unique_ptr<Rendering::ShaderBackends::cgGLShaderBackend>& shader_backend,
 		const std::array<float*, 0xA0>& uniform_dispatch_buffer,
-		std::unordered_map<std::string, std::shared_ptr<Rendering::DataObjects::OpenGLDSCSTexture>>& texture_library,
+		TextureLibrary& texture_library,
 		std::unordered_map<std::string, std::shared_ptr<Rendering::ShaderObjects::cgGLShaderObject>>& shader_library)
 	{
 		NameFile::NameReadWrite name_file = NameFile::NameReadWrite();
