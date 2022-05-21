@@ -2,44 +2,12 @@
 
 #include "BaseWidgets/TitleWidget.hpp"
 #include "BumpmapBox.hpp"
-#include "ParallaxBox.hpp"
 #include "TextureSlot.hpp"
 
 class ShaderFactoryTextureLayer2 : public QWidget
 {
 	Q_OBJECT;
 private:
-	void toggleParallax()
-	{
-		this->blockSignals(true);
-		QString ctex = "Diffuse Texture";
-		bool activate = false;
-		auto*& hbox = this->parallax_settings->heightmap_combobox;
-		if (this->diffuse_texture_settings->checkbox->isChecked())
-		{
-			if (int idx = hbox->findText(ctex); idx == -1)
-				hbox->insertItem(0, ctex, ctex);
-		}
-		else
-		{
-			this->parallax_settings->heightmap_combobox->removeItem(0);
-		}
-
-		QString ntex = "Normal Texture";
-		if (this->normal_texture_settings->checkbox->isChecked())
-		{
-			activate = true;
-			if (int idx = hbox->findText(ntex); idx == -1)
-				hbox->insertItem(1, ntex, ntex);
-		}
-		else
-		{
-			this->parallax_settings->heightmap_combobox->removeItem(hbox->findText(ntex));
-		}
-		this->parallax_settings->setEnabled(activate);
-
-		this->blockSignals(false);
-	}
 	void toggleBump()
 	{
 		this->bumpmap_settings->toggle(this->normal_texture_settings->checkbox->isChecked());
@@ -50,7 +18,6 @@ public:
 	TitleWidget* title_widget;
 	ShaderFactoryTextureSlot* diffuse_texture_settings;
 	ShaderFactoryTextureSlot* normal_texture_settings;
-	ShaderFactoryTextureLayerParallaxBox* parallax_settings;
 	ShaderFactoryTextureLayerBumpmapBox* bumpmap_settings;
 
 	ShaderFactoryTextureLayer2(QString title_text, QWidget* parent = nullptr) : QWidget(parent)
@@ -69,23 +36,17 @@ public:
 			{
 				this->bumpmap_settings = new ShaderFactoryTextureLayerBumpmapBox;
 				normal_mapping_layout->addWidget(this->bumpmap_settings);
-				this->parallax_settings = new ShaderFactoryTextureLayerParallaxBox;
-				normal_mapping_layout->addWidget(this->parallax_settings);
 			}
 			_layout->addItem(normal_mapping_layout);
 
 		}
 		this->setLayout(_layout);
-		this->toggleParallax();
 		this->toggleBump();
 
-		connect(this->diffuse_texture_settings->checkbox, &QCheckBox::stateChanged, this, &ShaderFactoryTextureLayer2::toggleParallax);
-		connect(this->normal_texture_settings->checkbox, &QCheckBox::stateChanged, this, &ShaderFactoryTextureLayer2::toggleParallax);
 		connect(this->normal_texture_settings->checkbox, &QCheckBox::stateChanged, this, &ShaderFactoryTextureLayer2::toggleBump);
 
 		connect(this->diffuse_texture_settings, &ShaderFactoryTextureSlot::settingsUpdated, this, &ShaderFactoryTextureLayer2::settingsUpdated);
 		connect(this->normal_texture_settings, &ShaderFactoryTextureSlot::settingsUpdated, this, &ShaderFactoryTextureLayer2::settingsUpdated);
-		connect(this->parallax_settings, &ShaderFactoryTextureLayerParallaxBox::settingsUpdated, this, &ShaderFactoryTextureLayer2::settingsUpdated);
 	}
 
 signals:
