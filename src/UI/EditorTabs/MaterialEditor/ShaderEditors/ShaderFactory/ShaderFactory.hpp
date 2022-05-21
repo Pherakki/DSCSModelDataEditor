@@ -34,6 +34,7 @@
 #include "Widgets/Reflection.hpp"
 #include "Widgets/SpecularColor.hpp"
 #include "Widgets/TextureLayer1.hpp"
+#include "Widgets/TextureLayer2.hpp"
 #include "Widgets/TextureMap.hpp"
 #include "Widgets/TextureSlot.hpp"
 #include "Widgets/UVSlot.hpp"
@@ -90,7 +91,7 @@ private:
 
 	QLabel* matching_shader = new QLabel(this);
 	ShaderFactoryTextureLayer1* texture_layer_1;
-	ShaderFactoryTextureLayer1* texture_layer_2;
+	ShaderFactoryTextureLayer2* texture_layer_2;
 	ShaderFactoryUVSettingsWidget* uv_settings_1;
 	ShaderFactoryUVSettingsWidget* uv_settings_2;
 	ShaderFactoryUVSettingsWidget* uv_settings_3;
@@ -1300,7 +1301,7 @@ public:
 			_layout->addWidget(this->matching_shader);
 			connect(compile_button, &QPushButton::clicked, this, &ShaderFactory::activateMaterial);
 			this->texture_layer_1 = new ShaderFactoryTextureLayer1("Texture Layer 1");
-			this->texture_layer_2 = new ShaderFactoryTextureLayer1("Texture Layer 2");
+			this->texture_layer_2 = new ShaderFactoryTextureLayer2("Texture Layer 2");
 
 			_layout->addWidget(this->texture_layer_1);
 			_layout->addWidget(this->texture_layer_2);
