@@ -185,8 +185,13 @@ namespace CustomWidgets
 			model->base_anim_sampler.tick();
 			model->anim_sampler.tick();
 			
+			// Rotate the light in a circle, just to test the illumination render
 			float whole_part;
-			this->increment_test = std::modf(this->increment_test, &whole_part);
+			auto angle = 2*3.14*std::modf(this->increment_test/2, &whole_part);
+			std::cout << angle << std::endl;
+			this->animation_buffer.DirLamp01Dir->set({ 2.f * std::sinf(angle), 0.5f, 2.f * std::cosf(angle)});
+
+			//this->increment_test = std::modf(this->increment_test, &whole_part);
 			(*this->animation_buffer.Time)[0] = this->increment_test;
 		}
 
