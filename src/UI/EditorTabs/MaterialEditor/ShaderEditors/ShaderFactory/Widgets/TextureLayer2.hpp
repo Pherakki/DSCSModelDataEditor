@@ -79,13 +79,13 @@ public:
 		this->toggleParallax();
 		this->toggleBump();
 
-		connect(this->diffuse_texture_settings->checkbox, &QCheckBox::stateChanged, this, &ShaderFactoryTextureLayer1::toggleParallax);
-		connect(this->normal_texture_settings->checkbox, &QCheckBox::stateChanged, this, &ShaderFactoryTextureLayer1::toggleParallax);
-		connect(this->normal_texture_settings->checkbox, &QCheckBox::stateChanged, this, &ShaderFactoryTextureLayer1::toggleBump);
+		connect(this->diffuse_texture_settings->checkbox, &QCheckBox::stateChanged, this, &ShaderFactoryTextureLayer2::toggleParallax);
+		connect(this->normal_texture_settings->checkbox, &QCheckBox::stateChanged, this, &ShaderFactoryTextureLayer2::toggleParallax);
+		connect(this->normal_texture_settings->checkbox, &QCheckBox::stateChanged, this, &ShaderFactoryTextureLayer2::toggleBump);
 
-		connect(this->diffuse_texture_settings, &ShaderFactoryTextureSlot::settingsUpdated, this, &ShaderFactoryTextureLayer1::settingsUpdated);
-		connect(this->normal_texture_settings, &ShaderFactoryTextureSlot::settingsUpdated, this, &ShaderFactoryTextureLayer1::settingsUpdated);
-		connect(this->parallax_settings, &ShaderFactoryTextureLayerParallaxBox::settingsUpdated, this, &ShaderFactoryTextureLayer1::settingsUpdated);
+		connect(this->diffuse_texture_settings, &ShaderFactoryTextureSlot::settingsUpdated, this, &ShaderFactoryTextureLayer2::settingsUpdated);
+		connect(this->normal_texture_settings, &ShaderFactoryTextureSlot::settingsUpdated, this, &ShaderFactoryTextureLayer2::settingsUpdated);
+		connect(this->parallax_settings, &ShaderFactoryTextureLayerParallaxBox::settingsUpdated, this, &ShaderFactoryTextureLayer2::settingsUpdated);
 	}
 
 signals:
