@@ -21,11 +21,7 @@
 
 
 // Init used textures
-uint16_t initTexture(uint16_t param_type,
-	const std::array<uint16_t, 8>& data,
-	const std::filesystem::path& img_path,
-	const std::vector<std::array<char, 32>>& texture_names,
-	TextureLibrary&texture_library);
+uint16_t initTexture(uint16_t param_type, const std::filesystem::path& img_path, const std::string& texture_name, TextureLibrary&texture_library);
 
 
 namespace FileFormats::DSCS

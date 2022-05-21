@@ -2,11 +2,8 @@
 #include "Utils/Hashing.hpp"
 
 // Init used textures
-uint16_t initTexture(uint16_t uniform_id, const std::array<uint16_t, 8>& data, const std::filesystem::path& img_path, const std::vector<std::array<char, 32>>& texture_names, TextureLibrary& texture_library)
+uint16_t initTexture(uint16_t uniform_id,const std::filesystem::path& img_path, const std::string& tex_name, TextureLibrary& texture_library)
 {
-	uint16_t texture_idx = data[0];
-	std::string tex_name = texture_names[texture_idx].data();
-
 	TextureType tex_type;
 	TextureLibrary::TextureSubLibrary_t* sublib = nullptr;
 	switch (uniform_id)
@@ -169,7 +166,7 @@ namespace FileFormats::DSCS
 					std::array<uint16_t, 8> data;
 					memcpy(&data, &geom_mat_uniform.payload, sizeof(geom_mat_uniform.payload));
 					// TODO: Add check if filepaths exist
-					material->setTextureBuffer(geom_mat_uniform.shader_uniform_type, initTexture(geom_mat_uniform.shader_uniform_type, data, img_path, geom_file.texture_names, texture_library));
+					material->setTextureBuffer(geom_mat_uniform.shader_uniform_type, initTexture(geom_mat_uniform.shader_uniform_type, img_path, geom_file.texture_names[data[0]].data(), texture_library));
 					material->setTextureName(geom_mat_uniform.shader_uniform_type, &geom_file.texture_names[geom_mat_uniform.payload[0]][0]);
 				}
 				else
