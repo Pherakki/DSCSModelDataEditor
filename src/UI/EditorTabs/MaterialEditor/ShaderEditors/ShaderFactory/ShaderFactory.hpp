@@ -1312,6 +1312,7 @@ public:
 			auto compile_button = new QPushButton("Set Active");
 			_layout->addWidget(compile_button);
 			_layout->addWidget(this->matching_shader);
+			this->matching_shader->setTextInteractionFlags(Qt::TextSelectableByMouse);
 			connect(compile_button, &QPushButton::clicked, this, &ShaderFactory::activateMaterial);
 			this->texture_layer_1 = new ShaderFactoryTextureLayer1("Texture Layer 1");
 			this->texture_layer_2 = new ShaderFactoryTextureLayer2("Texture Layer 2");
