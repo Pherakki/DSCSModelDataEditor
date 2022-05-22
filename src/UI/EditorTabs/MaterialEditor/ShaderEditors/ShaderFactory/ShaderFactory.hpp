@@ -824,21 +824,34 @@ private:
 		// Probably need to store a list of Mesh references on the MaterialResource..?
 		auto& selected_mesh = this->selected_objects.getSelectedMesh();
 		// Sort out remaining inputs to the factory
+		bool found_weight = false;
 		for (const auto& attr : selected_mesh->mesh.vertex_attributes)	
 		{
 			if (attr.attribute_type == FileFormats::DSCS::GeomFile::VertexAttributeType::WeightedBoneID)
 			{
 				const auto& num_idxs = attr.num_elements;
 				settings.num_vertex_weights = num_idxs;
-				if (num_idxs > 0)
+				settings.use_skeleton = true;
+				settings.use_weights = true;
+				found_weight = true;
+				break;
+				
+			}
+		}
+		if (!found_weight)
+		{
+			for (const auto& attr : selected_mesh->mesh.vertex_attributes)
+			{
+				if (attr.attribute_type == FileFormats::DSCS::GeomFile::VertexAttributeType::Position)
 				{
-					settings.use_skeleton = true;
-					settings.use_weights = true;
-				}
-				else
-				{
+					const auto& num_idxs = attr.num_elements;
+					if (num_idxs == 4)
+						settings.num_vertex_weights = 1;
+					else
+						settings.num_vertex_weights = 0;		
 					settings.use_skeleton = true;
 					settings.use_weights = false;
+					break;
 				}
 			}
 		}
