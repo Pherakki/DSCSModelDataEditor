@@ -75,6 +75,7 @@ public:
         this->layout->addWidget(this->compile_button);
 
         connect(&this->selected_objects, &SelectedObjectReferences::selectedMaterialUpdated, this, &CodeEditor::updateUI);
+        connect(this->compile_button, &QPushButton::clicked, this, &CodeEditor::updateUI);
 	}
 
 
