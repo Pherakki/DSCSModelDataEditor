@@ -132,24 +132,34 @@ if (WIN32)
         "${CMAKE_SOURCE_DIR}/Cg/windows/cg.lib"
         "${CMAKE_SOURCE_DIR}/Cg/windows/cgGL.lib"
         "${CMAKE_SOURCE_DIR}/Cg/windows/glut32.lib")
+
+    # Try to link dlls... get errors...
+    #target_link_libraries(${PROJECT_NAME} 
+    #    "${CMAKE_SOURCE_DIR}/Cg/windows/cg.dll"
+    #    "${CMAKE_SOURCE_DIR}/Cg/windows/cgGL.dll"
+    #    "${CMAKE_SOURCE_DIR}/Cg/windows/glut32.dll")
+
+    #add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
+    #    COMMAND ${CMAKE_COMMAND} -E copy_if_different "${CMAKE_SOURCE_DIR}/Cg/windows/cg.dll"
+    #    COMMAND ${CMAKE_COMMAND} -E copy_if_different "${CMAKE_SOURCE_DIR}/Cg/windows/cgGL.dll"
+    #    COMMAND ${CMAKE_COMMAND} -E copy_if_different "${CMAKE_SOURCE_DIR}/Cg/windows/glut32.dll"
+    #)
 endif (WIN32)
 if (APPLE)
     target_link_libraries(${PROJECT_NAME} 
         "${CMAKE_SOURCE_DIR}/Cg/mac/libCg.dylib")
+
+    add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
+        COMMAND ${CMAKE_COMMAND} -E copy_if_different "${CMAKE_SOURCE_DIR}/Cg/mac/libCg.dylib"
+    )
 endif(APPLE)
 if (UNIX AND NOT APPLE)
     target_link_libraries(${PROJECT_NAME} 
         "${CMAKE_SOURCE_DIR}/Cg/linux64/libCg.so"
         "${CMAKE_SOURCE_DIR}/Cg/linux64/libCgGL.so")
+
+    add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
+        COMMAND ${CMAKE_COMMAND} -E copy_if_different "${CMAKE_SOURCE_DIR}/Cg/linux64/libCg.so"
+        COMMAND ${CMAKE_COMMAND} -E copy_if_different "${CMAKE_SOURCE_DIR}/Cg/linux64/libCgGL.so"
+    )
 endif(UNIX AND NOT APPLE)
-
-# Shared - Doesn't work, it just copies files called cgLIB.lib etc instead of cg.dll...
-# add_library(cgLIB "../lib/Cg/lib/cg.dll")
-# add_library(cgGLLIB "../lib/Cg/lib/cgGL.dll")
-# add_library(glut32LIB "../lib/Cg/lib/glut32.dll")
-
-# add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
-#     COMMAND ${CMAKE_COMMAND} -E copy_if_different $<TARGET_FILE:cgLIB> $<TARGET_FILE_DIR:${PROJECT_NAME}>
-#     COMMAND ${CMAKE_COMMAND} -E copy_if_different $<TARGET_FILE:cgGLLIB> $<TARGET_FILE_DIR:${PROJECT_NAME}>
-#     COMMAND ${CMAKE_COMMAND} -E copy_if_different $<TARGET_FILE:glut32LIB> $<TARGET_FILE_DIR:${PROJECT_NAME}>
-#     )
