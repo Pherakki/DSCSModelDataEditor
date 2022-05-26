@@ -11,6 +11,7 @@ namespace CustomWidgets
 		this->shader_backend = std::make_unique<Rendering::ShaderBackends::cgGLShaderBackend>();
 		// Set up the render loop
 		connect(&this->clock, &QTimer::timeout, this, &RenderWidget::update);
+		connect(&this->clock, &QTimer::timeout, this, [this](){	this->increment_test += 0.001 * targetFrameUpdateTime; /*convert to seconds*/ });
 		this->clock.start(this->targetFrameUpdateTime);
 		this->setFocusPolicy(Qt::StrongFocus);
 
@@ -129,7 +130,6 @@ namespace CustomWidgets
 		this->animation_buffer.CameraPosition->set(this->camera.getPosition());
 		this->animation_buffer.ViewInverse->set(invertViewMatrix(view_matrix, this->camera.getPosition()));
 
-		this->increment_test += 0.001*targetFrameUpdateTime; // convert to seconds
 		//std::cout << this->increment_test << std::endl;
 		this->repaint();
 	}
