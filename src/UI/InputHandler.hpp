@@ -27,6 +27,7 @@ namespace Input
 		bool shouldRotateCamera()    { return this->isKeyActive(Qt::RightButton); }
 		bool shouldTranslateCamera() { return (this->isKeyActive(Qt::Key_Shift) && this->isKeyActive(Qt::RightButton)); }
 		bool attemptedSelect()       { return this->isKeyActive(Qt::LeftButton); }
+		bool toggleAnimation()       { return this->isKeyActive(Qt::Key_Space); }
 	private:
 		QPoint mouse_delta;
 		QPoint mouse_position;
