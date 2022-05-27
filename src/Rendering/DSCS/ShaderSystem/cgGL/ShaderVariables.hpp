@@ -26,13 +26,13 @@ static const char* IN_fINDICES = "vIndices";
 static const char* IN_fWEIGHTS = "vWeights";
 static const std::vector<const char*> FRAGMENT_IN_PARAMS = { IN_fPOSITION, IN_fNORMAL, IN_fTANGENT, IN_fBINORMAL, IN_fUV0, IN_fUV1, IN_fUV2, IN_fINDICES, IN_fWEIGHTS };
 
-static const enum class ShaderType : uint8_t
+enum class ShaderType : uint8_t
 {
     FS,
     VS
 };
 
-static const enum class ShaderUniformType : uint8_t
+enum class ShaderUniformType : uint8_t
 {
     Texture,
     Vector,
@@ -40,7 +40,7 @@ static const enum class ShaderUniformType : uint8_t
     Array
 };
 
-static const struct ShaderUniformProperties
+struct ShaderUniformProperties
 {
 	std::string name;
 	uint8_t id;
