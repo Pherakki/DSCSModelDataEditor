@@ -1,3 +1,5 @@
+#include <cmath>
+
 #include "Vector.hpp"
 
 
@@ -34,7 +36,7 @@ void fixQuaternionSigns(std::vector<std::array<float, 4>>& quat_vec)
 	for (size_t i = 1; i < quat_vec.size(); ++i)
 	{
 		// Get a sign of -1 or 1 depending on whether the projection is < 0 or >= 0
-		int8_t factor = 2*(!signbit(dot(quat_vec[i - 1], quat_vec[i]))) - 1;
+		int8_t factor = 2*(!std::signbit(dot(quat_vec[i - 1], quat_vec[i]))) - 1;
 		quat_vec[i] = { factor * quat_vec[i][0], factor * quat_vec[i][1], factor * quat_vec[i][2], factor * quat_vec[i][3] };
 	}
 }
@@ -49,7 +51,7 @@ void fixQuaternionSigns2(std::vector<std::array<float, 4>>& quat_vec)
 	// Project one quaternion onto the other, and see if they are colinear or anti-colinear
 	std::vector<bool> boundaries(quat_vec.size() - 1);
 	for (size_t i = 0; i < quat_vec.size() - 1; ++i)
-		boundaries[i] = !signbit(dot(quat_vec[i], quat_vec[i + 1]));
+		boundaries[i] = !std::signbit(dot(quat_vec[i], quat_vec[i + 1]));
 
 	// Deduce which half of SO(3) the quaternions live in: arbitarily call whatever half the
 	// first quaternion lives in as '1', and the other half as '0'
