@@ -1,10 +1,7 @@
 #pragma once
 
-#include "../../../Cg/cg.h"
-#include "../../../Cg/cgGL.h"
 #include <stdio.h>
 #include <QOpenGLFunctions_2_1>
-#include "../../../src/Utils/OpenGL.hpp"
 
 enum class TextureType
 {

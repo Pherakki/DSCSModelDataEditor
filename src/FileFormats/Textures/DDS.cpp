@@ -1,4 +1,8 @@
 #include "DDS.hpp"
+#include "serialisation/ReadWriter.hpp"
+#include "../../../Cg/cg.h"
+#include "../../../Cg/cgGL.h"
+#include "../../../src/Utils/OpenGL.hpp"
 
 
 DDSLoader::DDSLoader()
