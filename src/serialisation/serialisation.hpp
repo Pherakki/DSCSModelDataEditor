@@ -2,8 +2,9 @@
 
 #include <algorithm>
 #include <array>
-#include <vector>
 #include <bit>
+#include <cstring>
+#include <vector>
 
 
 namespace serialisation
