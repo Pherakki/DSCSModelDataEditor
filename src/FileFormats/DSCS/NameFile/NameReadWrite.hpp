@@ -44,16 +44,16 @@ namespace FileFormats::DSCS::NameFile
 
         // Read counts
         readWriter.assertFilePointerIsAt(0);
-        readWriter.readWriteData<uint32_t, LE>(bone_name_count);
-        readWriter.readWriteData<uint32_t, LE>(material_name_count);
+        readWriter.template readWriteData<uint32_t, LE>(bone_name_count);
+        readWriter.template readWriteData<uint32_t, LE>(material_name_count);
         this->checkThatThisMightActuallyBeANameFileBecauseThereIsNoMagicValue<openmode_flag>(filepath);
 
         // Gives the name vectors and pointer vectors a size if we're in read mode
         initMemberVectorsIfRequired<openmode_flag>();
 
         // Read the pointers that say where each string in the following section begins
-        readWriter.readWriteDataVector<uint32_t, LE>(bone_name_pointers);
-        readWriter.readWriteDataVector<uint32_t, LE>(material_name_pointers);
+        readWriter.template readWriteDataVector<uint32_t, LE>(bone_name_pointers);
+        readWriter.template readWriteDataVector<uint32_t, LE>(material_name_pointers);
 
         // Read bone names
         for (uint32_t i = 0; i < bone_name_count - 1; i++)
