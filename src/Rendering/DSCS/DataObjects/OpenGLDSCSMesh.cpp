@@ -223,14 +223,13 @@ namespace Rendering::DSCS::DataObjects
 	{
 		GLenum err;
 		bool throw_error = false;
+		std::stringstream ss;
 		while ((err = glGetError()) != GL_NO_ERROR) {
-			std::stringstream ss;
-			ss << "ERROR: " << err << '\n' << std::endl;
-			OutputDebugStringA(ss.str().c_str());
+			ss << "ERROR: " << err << '\n';
 			throw_error = true;
 		}
 
 		if (throw_error)
-			throw std::exception();
+			throw std::runtime_error(ss.str().c_str());
 	}
 }
