@@ -61,11 +61,11 @@ namespace FileFormats::DSCS::GeomFile
     template<std::ios_base::openmode openmode_flag> 
     void MaterialReadWrite::readWriteHeader(serialisation::ReadWriter<openmode_flag>& read_writer)
     {
-        read_writer.readWriteData<uint32_t, serialisation::LE>(name_hash);
-        read_writer.readWriteData<std::array<uint32_t, 4>, serialisation::LE>(shader_hash);
-        read_writer.readWriteData<uint8_t, serialisation::LE>(num_shader_uniforms);
-        read_writer.readWriteData<uint8_t, serialisation::LE>(num_OpenGL_settings);
-        read_writer.readWriteData<uint16_t, serialisation::LE>(enable_shadows);
+        read_writer.template readWriteData<uint32_t, serialisation::LE>(name_hash);
+        read_writer.template readWriteData<std::array<uint32_t, 4>, serialisation::LE>(shader_hash);
+        read_writer.template readWriteData<uint8_t, serialisation::LE>(num_shader_uniforms);
+        read_writer.template readWriteData<uint8_t, serialisation::LE>(num_OpenGL_settings);
+        read_writer.template readWriteData<uint16_t, serialisation::LE>(enable_shadows);
     }
 
 
@@ -73,14 +73,14 @@ namespace FileFormats::DSCS::GeomFile
     template<std::ios_base::openmode openmode_flag>
     void MaterialReadWrite::readWriteShaderUniforms(serialisation::ReadWriter<openmode_flag>& read_writer)
     {
-        read_writer.readWriteDataVector<ShaderUniform, serialisation::LE>(this->shader_uniforms);
+        read_writer.template readWriteDataVector<ShaderUniform, serialisation::LE>(this->shader_uniforms);
     }
 
     // readWriteOpenGLSettings
     template<std::ios_base::openmode openmode_flag>
     void MaterialReadWrite::readWriteOpenGLSettings(serialisation::ReadWriter<openmode_flag>& read_writer)
     {
-        read_writer.readWriteDataVector<OpenGLSetting, serialisation::LE>(this->opengl_settings);
+        read_writer.template readWriteDataVector<OpenGLSetting, serialisation::LE>(this->opengl_settings);
     }
 
     template<std::ios_base::openmode openmode_flag> 
