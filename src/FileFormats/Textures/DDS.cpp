@@ -25,7 +25,7 @@ GLuint DDSLoader::texture_loadDDS(const char* path, TextureType tex_type)
     if (strncmp(filecode, "DDS ", 4) != 0) {
         fclose(f);
         // Replace with something catchable
-        throw std::exception("Not a DDS!");
+        throw std::runtime_error("Not a DDS!");
     }
 
     unsigned char header[124];
@@ -46,7 +46,7 @@ GLuint DDSLoader::texture_loadDDS(const char* path, TextureType tex_type)
     if (buffer == 0) {
         // Handle OOM
         // Replace with something catchable
-        throw std::exception("BUFFER HAS 0 SIZE");
+        throw std::runtime_error("BUFFER HAS 0 SIZE");
     }
 
     fread(buffer, 1, buffer_size, f);
@@ -81,7 +81,7 @@ GLuint DDSLoader::texture_loadDDS(const char* path, TextureType tex_type)
         free(buffer);
         // Replace with something catchable
         std::string debug_string = "Unknown compression type \'" + std::string(fourCC) + "\'";
-        throw std::exception(debug_string.c_str());
+        throw std::runtime_error(debug_string.c_str());
     }
 
     // glGenTextures() CAN return 0 on error, see docs - probably won't happen unless you are bad
@@ -90,7 +90,7 @@ GLuint DDSLoader::texture_loadDDS(const char* path, TextureType tex_type)
     if (tid == 0) {
         free(buffer);
         // Replace with something catchable
-        throw std::exception("GEN TEXTURES RETURNED 0");
+        throw std::runtime_error("GEN TEXTURES RETURNED 0");
     }
     gl_error_checker.checkGLError();
 
@@ -138,7 +138,7 @@ GLuint DDSLoader::texture_loadDDS(const char* path, TextureType tex_type)
         glTexParameteri(texture_slot, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
         break;
     default:
-        throw std::exception("Unknown Texture Type");
+        throw std::runtime_error("Unknown Texture Type");
     }
     gl_error_checker.checkGLError();
 
@@ -184,7 +184,7 @@ GLuint DDSLoader::texture_loadDDS(const char* path, TextureType tex_type)
                 }
                 break;
             default:
-                throw std::exception("AAARGH!");
+                throw std::runtime_error("AAARGH!");
             }
         }
         else
@@ -213,7 +213,7 @@ GLuint DDSLoader::texture_loadDDS(const char* path, TextureType tex_type)
                 }
                 break;
             default:
-                throw std::exception("AAARGH!");
+                throw std::runtime_error("AAARGH!");
             }
         }
 
