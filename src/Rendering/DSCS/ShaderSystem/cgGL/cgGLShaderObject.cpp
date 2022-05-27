@@ -1,4 +1,5 @@
 #include "cgGLShaderObject.hpp"
+#include <stdexcept>
 
 namespace Rendering::ShaderObjects
 {
@@ -77,7 +78,7 @@ namespace Rendering::ShaderObjects
 			else if (param_variability == CG_VARYING && param_direction == CG_OUT)
 				outs[param_id] = param;
 			else
-				std::exception("Unhandled parameter encountered.");
+				throw std::runtime_error("Unhandled parameter encountered.");
 			param = cgGetNextParameter(param);
 		}
 	}
