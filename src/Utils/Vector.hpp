@@ -6,7 +6,7 @@
 #include <vector>
 
 
-template<uint8_t size>
+template<size_t size>
 float dot(const std::array<float, size>& vec_1, const std::array<float, size>& vec_2)
 {
 	float out = 0;
