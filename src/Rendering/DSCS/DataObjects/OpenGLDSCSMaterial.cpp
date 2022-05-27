@@ -120,7 +120,7 @@ namespace Rendering::DSCS::DataObjects
 		default:
 			std::string error_msg = "Unhandled shader parameter type: ";
 			error_msg += cgGetTypeString(cgGetParameterType(param));
-			throw std::exception(error_msg.c_str());
+			throw std::runtime_error(error_msg.c_str());
 			break;
 		}
 	}
