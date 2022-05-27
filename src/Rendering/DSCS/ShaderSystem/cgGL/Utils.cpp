@@ -16,6 +16,6 @@ const void checkForCgError(const CGcontext& context, const std::string& message)
 		ss << "ERROR: " << message << ' ' << stringout << '\n';
 		if (error == CG_COMPILER_ERROR)
 			ss << cgGetLastListing(context) << '\n';
-		throw std::exception(ss.str().c_str());
+		throw std::runtime_error(ss.str().c_str());
 	}
 }
