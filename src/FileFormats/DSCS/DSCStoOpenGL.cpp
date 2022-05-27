@@ -32,7 +32,7 @@ uint16_t initTexture(uint16_t uniform_id,const std::filesystem::path& img_path, 
 		std::string error_msg = "Unknown texture type ";
 		error_msg += (char*)tex_type;
 		error_msg += '.';
-		throw std::exception(error_msg.c_str());
+		throw std::runtime_error(error_msg.c_str());
 		break;
 	}
 
@@ -54,7 +54,7 @@ uint16_t initTexture(uint16_t uniform_id,const std::filesystem::path& img_path, 
 	}
 	else
 	{
-		throw std::exception("CRITICAL ERROR: Texture library was not set when loading DDS!");
+		throw std::runtime_error("CRITICAL ERROR: Texture library was not set when loading DDS!");
 	}
 }
 
@@ -83,7 +83,7 @@ namespace FileFormats::DSCS
 		name_path += ".name";
 		// TODO: Add check if filepaths exist
 		if (!std::filesystem::exists(name_path))
-			throw std::exception(("Path '" + name_path.string() + "' does not exist!").c_str());
+			throw std::runtime_error(("Path '" + name_path.string() + "' does not exist!").c_str());
 		name_file.read(name_path.string());
 
 		// Read skel
