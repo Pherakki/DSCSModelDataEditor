@@ -121,31 +121,31 @@ namespace FileFormats::DSCS::GeomFile
     template<std::ios_base::openmode openmode_flag> 
     void MeshReadWrite::readWriteHeader(ReadWriter<openmode_flag>& read_writer)
     {
-        read_writer.readWriteData<uint64_t, LE>(this->vertex_data_ptr);
-        read_writer.readWriteData<uint64_t, LE>(this->triangles_ptr);
-        read_writer.readWriteData<uint64_t, LE>(this->skinning_indices_ptr);
-        read_writer.readWriteConstData<uint64_t, LE>(this->VALUE_AND_NAME_OF(padding_0x18));
+        read_writer.template readWriteData<uint64_t, LE>(this->vertex_data_ptr);
+        read_writer.template readWriteData<uint64_t, LE>(this->triangles_ptr);
+        read_writer.template readWriteData<uint64_t, LE>(this->skinning_indices_ptr);
+        read_writer.template readWriteConstData<uint64_t, LE>(this->VALUE_AND_NAME_OF(padding_0x18));
 
-        read_writer.readWriteData<uint64_t, LE>(this->vertex_attribute_definitions_ptr);
-        read_writer.readWriteData<uint16_t, LE>(this->num_skinning_indices);
-        read_writer.readWriteData<uint16_t, LE>(this->num_vertex_attributes);
-        read_writer.readWriteData<uint16_t, LE>(this->bytes_per_vertex);
-        read_writer.readWriteConstData<uint16_t, LE>(this->VALUE_AND_NAME_OF(index_buffer_datatype));
+        read_writer.template readWriteData<uint64_t, LE>(this->vertex_attribute_definitions_ptr);
+        read_writer.template readWriteData<uint16_t, LE>(this->num_skinning_indices);
+        read_writer.template readWriteData<uint16_t, LE>(this->num_vertex_attributes);
+        read_writer.template readWriteData<uint16_t, LE>(this->bytes_per_vertex);
+        read_writer.template readWriteConstData<uint16_t, LE>(this->VALUE_AND_NAME_OF(index_buffer_datatype));
 
-        read_writer.readWriteData<uint8_t, LE>(this->max_skinning_indices_per_vertex);
-        read_writer.readWriteData<uint8_t, LE>(this->mesh_flags);
-        read_writer.readWriteData<TriangleDataType, LE>(this->triangle_data_type);
-        read_writer.readWriteData<uint32_t, LE>(this->name_hash);
-        read_writer.readWriteData<uint32_t, LE>(this->material_id);
-        read_writer.readWriteData<uint32_t, LE>(this->num_vertices);
+        read_writer.template readWriteData<uint8_t, LE>(this->max_skinning_indices_per_vertex);
+        read_writer.template readWriteData<uint8_t, LE>(this->mesh_flags);
+        read_writer.template readWriteData<TriangleDataType, LE>(this->triangle_data_type);
+        read_writer.template readWriteData<uint32_t, LE>(this->name_hash);
+        read_writer.template readWriteData<uint32_t, LE>(this->material_id);
+        read_writer.template readWriteData<uint32_t, LE>(this->num_vertices);
 
-        read_writer.readWriteData<uint32_t, LE>(this->num_elements_in_index_buffer);
-        read_writer.readWriteConstData<uint32_t, LE>(this->VALUE_AND_NAME_OF(padding_0x44));
-        read_writer.readWriteConstData<uint32_t, LE>(this->VALUE_AND_NAME_OF(padding_0x48));
-        read_writer.readWriteData<float, LE>(this->bounding_box_diagonal);
+        read_writer.template readWriteData<uint32_t, LE>(this->num_elements_in_index_buffer);
+        read_writer.template readWriteConstData<uint32_t, LE>(this->VALUE_AND_NAME_OF(padding_0x44));
+        read_writer.template readWriteConstData<uint32_t, LE>(this->VALUE_AND_NAME_OF(padding_0x48));
+        read_writer.template readWriteData<float, LE>(this->bounding_box_diagonal);
 
-        read_writer.readWriteData<std::array<float, 3>, LE>(this->mesh_centre);
-        read_writer.readWriteData<std::array<float, 3>, LE>(this->bounding_box_lengths);
+        read_writer.template readWriteData<std::array<float, 3>, LE>(this->mesh_centre);
+        read_writer.template readWriteData<std::array<float, 3>, LE>(this->bounding_box_lengths);
     }
 
 
@@ -154,28 +154,28 @@ namespace FileFormats::DSCS::GeomFile
     void MeshReadWrite::readWriteVertices(ReadWriter<openmode_flag>& read_writer)
     {
         read_writer.assertFilePointerIsAt(this->vertex_data_ptr);
-        read_writer.readWriteDataVector<uint8_t, LE>(this->vertices);
+        read_writer.template readWriteDataVector<uint8_t, LE>(this->vertices);
     }
 
     template<std::ios_base::openmode openmode_flag> 
     void MeshReadWrite::readWriteSkinningIndices(ReadWriter<openmode_flag>& read_writer)
     {
         read_writer.assertFilePointerIsAt(this->skinning_indices_ptr);
-        read_writer.readWriteDataVector<uint32_t, LE>(this->skinning_indices);
+        read_writer.template readWriteDataVector<uint32_t, LE>(this->skinning_indices);
     }
 
     template<std::ios_base::openmode openmode_flag>
     void MeshReadWrite::readWriteIndexBuffer(ReadWriter<openmode_flag>& read_writer)
     {
         read_writer.assertFilePointerIsAt(this->triangles_ptr);
-        read_writer.readWriteDataVector<uint16_t, LE>(this->index_buffer);
+        read_writer.template readWriteDataVector<uint16_t, LE>(this->index_buffer);
     }
 
     template<std::ios_base::openmode openmode_flag>
     void MeshReadWrite::readWriteVertexAttributes(ReadWriter<openmode_flag>& read_writer)
     {
         read_writer.assertFilePointerIsAt(this->vertex_attribute_definitions_ptr);
-        read_writer.readWriteDataVector<VertexAttribute, LE>(this->vertex_attributes);
+        read_writer.template readWriteDataVector<VertexAttribute, LE>(this->vertex_attributes);
     }
 
     //readWriteBody
