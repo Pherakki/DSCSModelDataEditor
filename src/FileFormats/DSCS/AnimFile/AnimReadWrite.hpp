@@ -82,11 +82,11 @@ namespace FileFormats::DSCS::AnimFile
     void KeyframeChunk::readWriteInitialFrame(ReadWriter<openmode_flag>& read_write)
     {
         readWriteQuaternionVector<openmode_flag>(this->initial_rotations, read_write);
-        read_write.readWriteDataVector<std::array<float, 3>, LE>(this->initial_locations);
-        read_write.readWriteDataVector<std::array<float, 3>, LE>(this->initial_scales);
+        read_write.template readWriteDataVector<std::array<float, 3>, LE>(this->initial_locations);
+        read_write.template readWriteDataVector<std::array<float, 3>, LE>(this->initial_scales);
         if (this->header.frame_0_scales_bytecount)
             read_write.readWritePadBytesLeftInIncompleteChunk(read_write.Tell(), 0x04);
-        read_write.readWriteDataVector<float, LE>(this->initial_shader_channel_values);
+        read_write.template readWriteDataVector<float, LE>(this->initial_shader_channel_values);
     }
 
     // readWriteKeyframes
@@ -95,21 +95,21 @@ namespace FileFormats::DSCS::AnimFile
     {
         readWriteQuaternionVector<openmode_flag>(this->keyframed_rotations, read_write);
 
-        read_write.readWriteDataVector<std::array<float, 3>, LE>(this->keyframed_locations);
-        read_write.readWriteDataVector<std::array<float, 3>, LE>(this->keyframed_scales);
+        read_write.template readWriteDataVector<std::array<float, 3>, LE>(this->keyframed_locations);
+        read_write.template readWriteDataVector<std::array<float, 3>, LE>(this->keyframed_scales);
         if (this->header.keyframed_scales_bytecount)
             read_write.readWritePadBytesLeftInIncompleteChunk(read_write.Tell(), 0x04);
-        read_write.readWriteDataVector<float, LE>(this->keyframed_shader_channel_values);
+        read_write.template readWriteDataVector<float, LE>(this->keyframed_shader_channel_values);
     }
 
     // doReadWrite
     template <std::ios_base::openmode openmode_flag>
     void KeyframeChunk::doReadWrite(ReadWriter<openmode_flag>& read_writer, uint16_t total_bitvector_size, uint16_t num_frames)
     {
-        read_writer.readWriteData<KeyframeChunkHeader, LE>(this->header);
+        read_writer.template readWriteData<KeyframeChunkHeader, LE>(this->header);
         this->initMemberVectorsIfRequired<openmode_flag>(total_bitvector_size);
         readWriteInitialFrame<openmode_flag>(read_writer);
-        read_writer.readWriteDataVector<uint8_t, LE>(this->frame_bitvector);
+        read_writer.template readWriteDataVector<uint8_t, LE>(this->frame_bitvector);
         readWriteKeyframes<openmode_flag>(read_writer);
         read_writer.readWritePadBytesLeftInIncompleteChunk(read_writer.Tell(), 0x10);
         // subarray
@@ -246,7 +246,7 @@ namespace FileFormats::DSCS::AnimFile
     void AnimReadWrite::readWriteHeader(ReadWriter<openmode_flag>& read_writer)
     {
         read_writer.assertFilePointerIsAt(0);
-        read_writer.readWriteData<AnimReadWriteHeader, LE>(this->header);
+        read_writer.template readWriteData<AnimReadWriteHeader, LE>(this->header);
 
         assert(this->header.magic_value == 'EA04');
         assert(this->header.quaternion_precision == 16384);
@@ -270,29 +270,29 @@ namespace FileFormats::DSCS::AnimFile
     template<std::ios_base::openmode openmode_flag>
     void AnimReadWrite::readWriteBonePoseIndices(ReadWriter<openmode_flag>& read_writer)
     {
-        read_writer.readWriteDataVector<uint16_t, LE>(this->static_bone_rotations_idxs);
-        read_writer.readWriteBytesLeftInIncompleteChunk<uint16_t, LE>(read_writer.Tell(), 16, this->header.num_bones);
+        read_writer.template readWriteDataVector<uint16_t, LE>(this->static_bone_rotations_idxs);
+        read_writer.template readWriteBytesLeftInIncompleteChunk<uint16_t, LE>(read_writer.Tell(), 16, this->header.num_bones);
 
-        read_writer.readWriteDataVector<uint16_t, LE>(this->static_bone_locations_idxs);
-        read_writer.readWriteBytesLeftInIncompleteChunk<uint16_t, LE>(read_writer.Tell(), 8, this->header.num_bones);
+        read_writer.template readWriteDataVector<uint16_t, LE>(this->static_bone_locations_idxs);
+        read_writer.template readWriteBytesLeftInIncompleteChunk<uint16_t, LE>(read_writer.Tell(), 8, this->header.num_bones);
 
-        read_writer.readWriteDataVector<uint16_t, LE>(this->static_bone_scales_idxs);
-        read_writer.readWriteBytesLeftInIncompleteChunk<uint16_t, LE>(read_writer.Tell(), 8, this->header.num_bones);
+        read_writer.template readWriteDataVector<uint16_t, LE>(this->static_bone_scales_idxs);
+        read_writer.template readWriteBytesLeftInIncompleteChunk<uint16_t, LE>(read_writer.Tell(), 8, this->header.num_bones);
 
-        read_writer.readWriteDataVector<uint16_t, LE>(this->static_shader_channel_idxs);
-        read_writer.readWriteBytesLeftInIncompleteChunk<uint16_t, LE>(read_writer.Tell(), 8, this->shader_channels_count);
+        read_writer.template readWriteDataVector<uint16_t, LE>(this->static_shader_channel_idxs);
+        read_writer.template readWriteBytesLeftInIncompleteChunk<uint16_t, LE>(read_writer.Tell(), 8, this->shader_channels_count);
 
-        read_writer.readWriteDataVector<uint16_t, LE>(this->animated_bone_rotations_idxs);
-        read_writer.readWriteBytesLeftInIncompleteChunk<uint16_t, LE>(read_writer.Tell(), 8, this->header.num_bones);
+        read_writer.template readWriteDataVector<uint16_t, LE>(this->animated_bone_rotations_idxs);
+        read_writer.template readWriteBytesLeftInIncompleteChunk<uint16_t, LE>(read_writer.Tell(), 8, this->header.num_bones);
 
-        read_writer.readWriteDataVector<uint16_t, LE>(this->animated_bone_locations_idxs);
-        read_writer.readWriteBytesLeftInIncompleteChunk<uint16_t, LE>(read_writer.Tell(), 8, this->header.num_bones);
+        read_writer.template readWriteDataVector<uint16_t, LE>(this->animated_bone_locations_idxs);
+        read_writer.template readWriteBytesLeftInIncompleteChunk<uint16_t, LE>(read_writer.Tell(), 8, this->header.num_bones);
 
-        read_writer.readWriteDataVector<uint16_t, LE>(this->animated_bone_scales_idxs);
-        read_writer.readWriteBytesLeftInIncompleteChunk<uint16_t, LE>(read_writer.Tell(), 8, this->header.num_bones);
+        read_writer.template readWriteDataVector<uint16_t, LE>(this->animated_bone_scales_idxs);
+        read_writer.template readWriteBytesLeftInIncompleteChunk<uint16_t, LE>(read_writer.Tell(), 8, this->header.num_bones);
 
-        read_writer.readWriteDataVector<uint16_t, LE>(this->animated_shader_channel_idxs);
-        read_writer.readWriteBytesLeftInIncompleteChunk<uint16_t, LE>(read_writer.Tell(), 8, this->shader_channels_count);
+        read_writer.template readWriteDataVector<uint16_t, LE>(this->animated_shader_channel_idxs);
+        read_writer.template readWriteBytesLeftInIncompleteChunk<uint16_t, LE>(read_writer.Tell(), 8, this->shader_channels_count);
 
 
         read_writer.readWritePadBytesLeftInIncompleteChunk(read_writer.Tell(), 16);
@@ -307,14 +307,14 @@ namespace FileFormats::DSCS::AnimFile
         read_writer.readWritePadBytesLeftInIncompleteChunk(read_writer.Tell(), 0x10);
 
         read_writer.assertFilePointerIsAt(this->abs_ptr_static_bone_locations);
-        read_writer.readWriteDataVector<std::array<float, 3>, LE>(this->static_bone_locations);
+        read_writer.template readWriteDataVector<std::array<float, 3>, LE>(this->static_bone_locations);
         read_writer.readWritePadBytesLeftInIncompleteChunk(read_writer.Tell(), 0x10);
 
         read_writer.assertFilePointerIsAt(this->abs_ptr_static_bone_scales);
-        read_writer.readWriteDataVector<std::array<float, 3>, LE>(this->static_bone_scales);
+        read_writer.template readWriteDataVector<std::array<float, 3>, LE>(this->static_bone_scales);
 
         read_writer.assertFilePointerIsAt(this->abs_ptr_static_shader_uniform_channels);
-        read_writer.readWriteDataVector<float, LE>(this->static_shader_channels);
+        read_writer.template readWriteDataVector<float, LE>(this->static_shader_channels);
         read_writer.readWritePadBytesLeftInIncompleteChunk(read_writer.Tell(), 0x10);
     }
 
@@ -322,9 +322,9 @@ namespace FileFormats::DSCS::AnimFile
     void AnimReadWrite::readWriteKeyframeChunksLocationData(ReadWriter<openmode_flag>& read_writer)
     {
         read_writer.assertFilePointerIsAt(this->abs_ptr_keyframe_chunks_ptrs);
-        read_writer.readWriteDataVector<KeyframeChunkPointers, LE>(this->keyframe_chunk_pointers);
+        read_writer.template readWriteDataVector<KeyframeChunkPointers, LE>(this->keyframe_chunk_pointers);
         read_writer.assertFilePointerIsAt(this->abs_ptr_keyframe_chunks_counts);
-        read_writer.readWriteDataVector<KeyframeChunkCounts, LE>(this->keyframe_chunk_counts);
+        read_writer.template readWriteDataVector<KeyframeChunkCounts, LE>(this->keyframe_chunk_counts);
 
         read_writer.readWritePadBytesLeftInIncompleteChunk(read_writer.Tell(), 0x10);
     }
@@ -334,9 +334,9 @@ namespace FileFormats::DSCS::AnimFile
     void AnimReadWrite::readWriteUnusedBoneFlags(ReadWriter<openmode_flag>& read_writer)
     {
         read_writer.assertFilePointerIsAt(this->header.unused_bone_flags_ptr);
-        read_writer.readWriteDataVector<char, LE>(this->unused_bones);
+        read_writer.template readWriteDataVector<char, LE>(this->unused_bones);
         read_writer.readWritePadBytesLeftInIncompleteChunk(read_writer.Tell(), 0x04);
-        read_writer.readWriteDataVector<char, LE>(this->unused_shader_channels);
+        read_writer.template readWriteDataVector<char, LE>(this->unused_shader_channels);
         read_writer.readWritePadBytesLeftInIncompleteChunk(read_writer.Tell(), 0x10);
     }
 
