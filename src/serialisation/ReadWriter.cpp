@@ -44,6 +44,20 @@ namespace serialisation
     // ####################### //
     // # ReadWrite Functions # //
     // ####################### //
+
+    // readWriteBytes
+    template<>
+    const void ReadWriter<readmode>::readWriteBytes(ByteVector& bytes_slot)
+    {
+        bytestream.read(reinterpret_cast<char*>(bytes_slot.data()), bytes_slot.size());
+    }
+
+    template<>
+    const void ReadWriter<writemode>::readWriteBytes(ByteVector& bytes_slot)
+    {
+        bytestream.write(reinterpret_cast<char*>(bytes_slot.data()), bytes_slot.size());
+    }
+
     // readWriteAsciiToEOF
     template<>
     const void ReadWriter<readmode>::readWriteAsciiToEOF(std::string& string_slot)
@@ -70,7 +84,7 @@ namespace serialisation
     const void ReadWriter<readmode>::readWriteAscii(std::string& string_slot, size_t string_length)
     {
         ByteVector read_value(string_length);
-        ReadWriter::readWriteBytes(read_value);
+        ReadWriter<readmode>::readWriteBytes(read_value);
         std::string string_value(read_value.begin(), read_value.end());
         string_slot = string_value;
     }
@@ -79,7 +93,7 @@ namespace serialisation
     {
         ByteVector write_value(string_length);
         write_value = ByteVector(string_slot.begin(), string_slot.end());
-        ReadWriter::readWriteBytes(write_value);
+        ReadWriter<writemode>::readWriteBytes(write_value);
     }
     // readWriteConstAscii
     template<>
@@ -98,19 +112,4 @@ namespace serialisation
         std::string temp_string_slot = string_slot;
         ReadWriter<writemode>::readWriteAscii(temp_string_slot, string_slot.size());
     }
-
-    // readWriteBytes
-    template<>
-    const void ReadWriter<readmode>::readWriteBytes(ByteVector& bytes_slot)
-    {
-        bytestream.read(reinterpret_cast<char*>(bytes_slot.data()), bytes_slot.size());
-    }
-
-    template<>
-    const void ReadWriter<writemode>::readWriteBytes(ByteVector& bytes_slot)
-    {
-        bytestream.write(reinterpret_cast<char*>(bytes_slot.data()), bytes_slot.size());
-    }
-
-
 }
