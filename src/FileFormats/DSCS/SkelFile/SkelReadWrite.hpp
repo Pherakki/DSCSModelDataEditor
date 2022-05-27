@@ -81,23 +81,23 @@ namespace FileFormats::DSCS::SkelFile
     void SkelReadWrite::readWriteHeader(ReadWriter<openmode_flag>& read_writer)
     {
         read_writer.readWriteConstAscii(this->VALUE_AND_NAME_OF(magic_value));
-        read_writer.readWriteData<uint32_t, LE>(this->total_bytes);
-        read_writer.readWriteConstData<uint32_t, LE>(this->VALUE_AND_NAME_OF(padding_0x08));
-        read_writer.readWriteData<uint32_t, LE>(this->num_bytes_in_name_hashes_section);
-        read_writer.readWriteData<uint16_t, LE>(this->num_bones);
-        read_writer.readWriteData<uint16_t, LE>(this->num_shader_channels);
-        read_writer.readWriteData<uint16_t, LE>(this->num_bone_hierarchy_data_rows);
-        read_writer.readWriteConstData<uint16_t, LE>(this->VALUE_AND_NAME_OF(padding_0x16));
-        read_writer.readWriteData<uint32_t, LE>(this->rel_ptr_to_rest_pose_data);
-        read_writer.readWriteData<uint32_t, LE>(this->rel_ptr_to_bone_parents);
-        read_writer.readWriteData<uint32_t, LE>(this->rel_ptr_to_bone_name_hashes);
-        read_writer.readWriteData<uint32_t, LE>(this->rel_ptr_to_shader_channel_buffer_offsets);
-        read_writer.readWriteData<uint32_t, LE>(this->rel_ptr_to_shader_channel_name_hashes);
-        read_writer.readWriteData<uint32_t, LE>(this->rel_ptr_to_uv_data_1);
-        read_writer.readWriteConstData<uint32_t, LE>(this->VALUE_AND_NAME_OF(padding_0x30));
-        read_writer.readWriteConstData<uint32_t, LE>(this->VALUE_AND_NAME_OF(padding_0x34));
-        read_writer.readWriteConstData<uint32_t, LE>(this->VALUE_AND_NAME_OF(padding_0x38));
-        read_writer.readWriteConstData<uint32_t, LE>(this->VALUE_AND_NAME_OF(padding_0x3C));
+        read_writer.template readWriteData<uint32_t, LE>(this->total_bytes);
+        read_writer.template readWriteConstData<uint32_t, LE>(this->VALUE_AND_NAME_OF(padding_0x08));
+        read_writer.template readWriteData<uint32_t, LE>(this->num_bytes_in_name_hashes_section);
+        read_writer.template readWriteData<uint16_t, LE>(this->num_bones);
+        read_writer.template readWriteData<uint16_t, LE>(this->num_shader_channels);
+        read_writer.template readWriteData<uint16_t, LE>(this->num_bone_hierarchy_data_rows);
+        read_writer.template readWriteConstData<uint16_t, LE>(this->VALUE_AND_NAME_OF(padding_0x16));
+        read_writer.template readWriteData<uint32_t, LE>(this->rel_ptr_to_rest_pose_data);
+        read_writer.template readWriteData<uint32_t, LE>(this->rel_ptr_to_bone_parents);
+        read_writer.template readWriteData<uint32_t, LE>(this->rel_ptr_to_bone_name_hashes);
+        read_writer.template readWriteData<uint32_t, LE>(this->rel_ptr_to_shader_channel_buffer_offsets);
+        read_writer.template readWriteData<uint32_t, LE>(this->rel_ptr_to_shader_channel_name_hashes);
+        read_writer.template readWriteData<uint32_t, LE>(this->rel_ptr_to_uv_data_1);
+        read_writer.template readWriteConstData<uint32_t, LE>(this->VALUE_AND_NAME_OF(padding_0x30));
+        read_writer.template readWriteConstData<uint32_t, LE>(this->VALUE_AND_NAME_OF(padding_0x34));
+        read_writer.template readWriteConstData<uint32_t, LE>(this->VALUE_AND_NAME_OF(padding_0x38));
+        read_writer.template readWriteConstData<uint32_t, LE>(this->VALUE_AND_NAME_OF(padding_0x3C));
     }
 
 
@@ -106,7 +106,7 @@ namespace FileFormats::DSCS::SkelFile
     template <std::ios_base::openmode openmode_flag>
     void SkelReadWrite::readWriteBoneHierarchy(ReadWriter<openmode_flag>& read_writer)
     {
-        read_writer.readWriteDataVector<std::array<int16_t, 8>, LE>(this->bone_heirarchy);
+        read_writer.template readWriteDataVector<std::array<int16_t, 8>, LE>(this->bone_heirarchy);
     }
 
     // readWriteBoneHierarchy
@@ -114,7 +114,7 @@ namespace FileFormats::DSCS::SkelFile
     void SkelReadWrite::readWriteRestPoseData(ReadWriter<openmode_flag>& read_writer)
     {
         read_writer.assertFilePointerIsAt(this->getAbsPtrToRestPoseData());
-        read_writer.readWriteDataVector<std::array<float, 12>, LE>(this->rest_pose_data);
+        read_writer.template readWriteDataVector<std::array<float, 12>, LE>(this->rest_pose_data);
     }
 
     // readWriteParentBones
@@ -122,7 +122,7 @@ namespace FileFormats::DSCS::SkelFile
     void SkelReadWrite::readWriteParentBones(ReadWriter<openmode_flag>& read_writer)
     {
         read_writer.assertFilePointerIsAt(this->getAbsPtrToBoneParents());
-        read_writer.readWriteDataVector<int16_t, LE>(this->bone_parents);
+        read_writer.template readWriteDataVector<int16_t, LE>(this->bone_parents);
     }
 
     // readWriteUVData1
@@ -130,7 +130,7 @@ namespace FileFormats::DSCS::SkelFile
     void SkelReadWrite::readWriteUVData1(ReadWriter<openmode_flag>& read_writer)
     {
         read_writer.assertFilePointerIsAt(this->getAbsPtrToUVData1());
-        read_writer.readWriteDataVector<uint8_t, LE >(this->shader_channel_flags);
+        read_writer.template readWriteDataVector<uint8_t, LE >(this->shader_channel_flags);
     }
 
     // readWriteBoneNameHashes
@@ -138,7 +138,7 @@ namespace FileFormats::DSCS::SkelFile
     void SkelReadWrite::readWriteBoneNameHashes(ReadWriter<openmode_flag>& read_writer)
     {
         read_writer.assertFilePointerIsAt(this->getAbsPtrToBoneNameHashes());
-        read_writer.readWriteDataVector<uint32_t, LE >(this->bone_name_hashes);
+        read_writer.template readWriteDataVector<uint32_t, LE >(this->bone_name_hashes);
     }
 
     // readWriteShaderChannelBufferOffsets
@@ -146,7 +146,7 @@ namespace FileFormats::DSCS::SkelFile
     void SkelReadWrite::readWriteShaderChannelBufferOffsets(ReadWriter<openmode_flag>& read_writer)
     {
         read_writer.assertFilePointerIsAt(this->getAbsPtrToShaderChannelBufferOffsets());
-        read_writer.readWriteDataVector<uint32_t, LE >(this->shader_channel_buffer_offsets);
+        read_writer.template readWriteDataVector<uint32_t, LE >(this->shader_channel_buffer_offsets);
     }
 
     // readWriteShaderChannelNameHashes
@@ -154,7 +154,7 @@ namespace FileFormats::DSCS::SkelFile
     void SkelReadWrite::readWriteShaderChannelNameHashes(ReadWriter<openmode_flag>& read_writer)
     {
         read_writer.assertFilePointerIsAt(this->getAbsPtrToShaderChannelNameHashes());
-        read_writer.readWriteDataVector<uint32_t, LE >(this->shader_channel_name_hashes);
+        read_writer.template readWriteDataVector<uint32_t, LE >(this->shader_channel_name_hashes);
     }
 
 
