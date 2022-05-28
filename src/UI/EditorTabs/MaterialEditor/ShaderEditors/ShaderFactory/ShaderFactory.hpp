@@ -198,7 +198,7 @@ private:
 			else if (heightmap == "Normal Texture")
 				settings.parallax_heightmap = MapType::NORMAL;
 			else
-				throw std::exception("Error: parallax maptype not diffuse or normal.");
+				throw std::runtime_error("Error: parallax maptype not diffuse or normal.");
 			settings.parallax_heightmap_channel = RGBAChannel::A; // Make this configurable
 		}
 	}
@@ -220,7 +220,7 @@ private:
 			}
 			else
 			{
-				throw std::exception("Unknown vertex color setting");
+				throw std::runtime_error("Unknown vertex color setting");
 			}
 		}
 
