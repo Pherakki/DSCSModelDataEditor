@@ -32,7 +32,7 @@ namespace FileFormats::DSCS
 		                     const std::vector<uint16_t>& element_indices, const std::vector<T>& initial_elements, const std::vector<T>& keyframed_elements)
 	{
 		uint32_t current_element = 0;
-		constexpr uint8_t bitvector_entries_size = sizeof(std::remove_reference_t<decltype(frame_bitvector)>::value_type) * 8;
+		constexpr uint8_t bitvector_entries_size = sizeof(typename std::remove_reference_t<decltype(frame_bitvector)>::value_type) * 8;
 		for (uint32_t j = 0; j < element_indices.size(); ++j)
 		{
 			auto& curr_bone = element_indices[j];
