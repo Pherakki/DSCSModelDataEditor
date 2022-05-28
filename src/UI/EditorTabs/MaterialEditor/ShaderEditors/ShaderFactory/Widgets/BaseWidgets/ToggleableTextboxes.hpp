@@ -59,7 +59,7 @@ signals:
 };
 
 // https://stackoverflow.com/questions/594730/overriding-static-variables-when-subclassing
-template <uint8_t n_boxes>
+template <size_t n_boxes>
 class ToggleableTextboxesWidget : public ToggleableTextboxesWidgetBase
 {
 public:

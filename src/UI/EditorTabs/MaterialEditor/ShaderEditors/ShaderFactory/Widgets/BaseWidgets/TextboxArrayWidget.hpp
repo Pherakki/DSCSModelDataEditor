@@ -6,7 +6,7 @@
 
 #include "EditorTextbox.hpp"
 
-template <uint8_t n_boxes>
+template <size_t n_boxes>
 class TextboxArrayWidget : public QWidget
 {
 public:
