@@ -111,7 +111,7 @@ private:
         else
         {
             // If any of the dependencies exist, don't delete
-            if constexpr (sizeof...(active_ids))
+            if constexpr (sizeof...(active_ids) > 0)
             {
                 for (const auto& id : { active_ids... })
                 {
