@@ -108,29 +108,29 @@ namespace FileFormats::DSCS::GeomFile
     template<std::ios_base::openmode openmode_flag> 
     void GeomReadWrite::readWriteHeader(ReadWriter<openmode_flag> &read_writer)
     {
-        read_writer.readWriteConstData<uint32_t, LE>(this->VALUE_AND_NAME_OF(magic_value));
+        read_writer.template readWriteConstData<uint32_t, LE>(this->VALUE_AND_NAME_OF(magic_value));
         // Lots of section size counts
-        read_writer.readWriteData<uint16_t, LE>(this->num_meshes);
-        read_writer.readWriteData<uint16_t, LE>(this->num_materials);
-        read_writer.readWriteData<uint16_t, LE>(this->sec_4_count);
-        read_writer.readWriteData<uint16_t, LE>(this->sec_5_count);
-        read_writer.readWriteData<uint32_t, LE>(this->num_inv_bind_pose_matrices);
-        read_writer.readWriteData<uint32_t, LE>(this->texture_names_section_bytecount);
+        read_writer.template readWriteData<uint16_t, LE>(this->num_meshes);
+        read_writer.template readWriteData<uint16_t, LE>(this->num_materials);
+        read_writer.template readWriteData<uint16_t, LE>(this->sec_4_count);
+        read_writer.template readWriteData<uint16_t, LE>(this->sec_5_count);
+        read_writer.template readWriteData<uint32_t, LE>(this->num_inv_bind_pose_matrices);
+        read_writer.template readWriteData<uint32_t, LE>(this->texture_names_section_bytecount);
 
         // Bounding Box
-        read_writer.readWriteData<std::array<float, 3>, LE>(this->geom_centre);
-        read_writer.readWriteData<std::array<float, 3>, LE>(this->geom_bounding_box_halflengths);
-        read_writer.readWriteConstData<uint32_t, LE>(this->VALUE_AND_NAME_OF(padding_0x2C));
+        read_writer.template readWriteData<std::array<float, 3>, LE>(this->geom_centre);
+        read_writer.template readWriteData<std::array<float, 3>, LE>(this->geom_bounding_box_halflengths);
+        read_writer.template readWriteConstData<uint32_t, LE>(this->VALUE_AND_NAME_OF(padding_0x2C));
 
         // A bunch of pointers to various sections
-        read_writer.readWriteData<uint64_t, LE>(this->meshes_section_ptr);
-        read_writer.readWriteData<uint64_t, LE>(this->materials_section_ptr);
-        read_writer.readWriteData<uint64_t, LE>(this->sec_4_ptr);
-        read_writer.readWriteData<uint64_t, LE>(this->sec_5_ptr);
-        read_writer.readWriteData<uint64_t, LE>(this->inv_bind_pose_matrices_section_ptr);
-        read_writer.readWriteConstData<uint64_t, LE>(this->VALUE_AND_NAME_OF(padding_0x58));
-        read_writer.readWriteData<uint64_t, LE>(this->texture_names_section_ptr);
-        read_writer.readWriteData<uint64_t, LE>(this->footer_data_section_ptr);
+        read_writer.template readWriteData<uint64_t, LE>(this->meshes_section_ptr);
+        read_writer.template readWriteData<uint64_t, LE>(this->materials_section_ptr);
+        read_writer.template readWriteData<uint64_t, LE>(this->sec_4_ptr);
+        read_writer.template readWriteData<uint64_t, LE>(this->sec_5_ptr);
+        read_writer.template readWriteData<uint64_t, LE>(this->inv_bind_pose_matrices_section_ptr);
+        read_writer.template readWriteConstData<uint64_t, LE>(this->VALUE_AND_NAME_OF(padding_0x58));
+        read_writer.template readWriteData<uint64_t, LE>(this->texture_names_section_ptr);
+        read_writer.template readWriteData<uint64_t, LE>(this->footer_data_section_ptr);
     }
 
 
@@ -169,7 +169,7 @@ namespace FileFormats::DSCS::GeomFile
                                           this->VALUE_AND_NAME_OF(getNumTextures())))
             return; 
         read_writer.assertFilePointerIsAt(this->texture_names_section_ptr);
-        read_writer.readWriteDataVector<std::array<char, 32>, LE>(this->texture_names);
+        read_writer.template readWriteDataVector<std::array<char, 32>, LE>(this->texture_names);
     }
 
     // readWriteSection4Data
@@ -180,7 +180,7 @@ namespace FileFormats::DSCS::GeomFile
                                           this->VALUE_AND_NAME_OF(sec_4_count)))
             return;
         read_writer.assertFilePointerIsAt(this->sec_4_ptr);
-        read_writer.readWriteDataVector<LightSourceDataStruct, LE>(this->sec_4_data);
+        read_writer.template readWriteDataVector<LightSourceDataStruct, LE>(this->sec_4_data);
     }
 
     // readWriteSection5Data
@@ -191,7 +191,7 @@ namespace FileFormats::DSCS::GeomFile
                                           this->VALUE_AND_NAME_OF(sec_5_count)))
             return; 
         read_writer.assertFilePointerIsAt(this->sec_5_ptr);
-        read_writer.readWriteDataVector<CamDataStruct, LE>(this->sec_5_data);
+        read_writer.template readWriteDataVector<CamDataStruct, LE>(this->sec_5_data);
     }
 
     // readWriteInverseBindPoseMatrices
@@ -202,7 +202,7 @@ namespace FileFormats::DSCS::GeomFile
                                           this->VALUE_AND_NAME_OF(num_inv_bind_pose_matrices)))
             return;
         read_writer.assertFilePointerIsAt(this->inv_bind_pose_matrices_section_ptr);
-        read_writer.readWriteDataVector<std::array<float, 12>, LE>(this->inverse_bind_pose_matrices);
+        read_writer.template readWriteDataVector<std::array<float, 12>, LE>(this->inverse_bind_pose_matrices);
     }
 
     // readWriteFooterData
@@ -212,7 +212,7 @@ namespace FileFormats::DSCS::GeomFile
         if (this->footer_data_section_ptr == 0)
             return;
         read_writer.assertFilePointerIsAt(this->footer_data_section_ptr);
-        read_writer.readWriteDataVector<uint8_t, LE>(this->unknown_footer_data);
+        read_writer.template readWriteDataVector<uint8_t, LE>(this->unknown_footer_data);
     }
 
     // doReadWrite
