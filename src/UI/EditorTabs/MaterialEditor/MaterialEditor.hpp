@@ -82,7 +82,7 @@ public:
             for (size_t i = 0; i < selected_model->materials.size(); ++i)
             {
                 auto& material = selected_model->materials[i];
-                this->material_dropdown->addItem(QString::fromStdString(material->name), i);
+                this->material_dropdown->addItem(QString::fromStdString(material->name), QVariant::fromValue(i));
                 this->material_lookup[material] = i;
                 this->material_reverse_lookup[i] = material;
             }
