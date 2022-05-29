@@ -79,6 +79,7 @@ add_executable (${PROJECT_NAME}
                 "UI/EditorTabs/MaterialEditor/ShaderEditors/ShaderFactory/Widgets/SpecularColor.hpp"
                 "UI/EditorTabs/MaterialEditor/ShaderEditors/ShaderFactory/Widgets/TextureLayer1.hpp"
                 "UI/EditorTabs/MaterialEditor/ShaderEditors/ShaderFactory/Widgets/TextureLayer2.hpp"
+                "UI/EditorTabs/MaterialEditor/ShaderEditors/ShaderFactory/Widgets/TextureBlending.hpp"
                 "UI/EditorTabs/MaterialEditor/ShaderEditors/ShaderFactory/Widgets/TextureMap.hpp"
                 "UI/EditorTabs/MaterialEditor/ShaderEditors/ShaderFactory/Widgets/TextureSlot.hpp"
                 "UI/EditorTabs/MaterialEditor/ShaderEditors/ShaderFactory/Widgets/UVSlot.hpp"
