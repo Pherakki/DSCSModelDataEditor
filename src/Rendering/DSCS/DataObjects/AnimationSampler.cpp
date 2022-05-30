@@ -84,7 +84,7 @@ namespace DataBlocks::Animation
 	}
 
 
-	void BaseAnimationSampler::sampleCurrentFrame(std::vector<std::array<float, 4>>& quats, std::vector<std::array<float, 3>>& locs, std::vector<std::array<float, 3>>& scales, std::array<float, 0xA0 * 16>& shader_channels)
+	void BaseAnimationSampler::sampleCurrentFrame(std::vector<std::array<float, 4>>& quats, std::vector<std::array<float, 3>>& locs, std::vector<std::array<float, 3>>& scales)
 	{
 		for (auto& kv : this->skel->getBoneDataBlocks())
 		{
@@ -102,11 +102,6 @@ namespace DataBlocks::Animation
 			locs[kv.first] = kv.second;
 		for (auto& kv : this->anim->getStaticScales())
 			scales[kv.first] = kv.second;
-		for (auto& kv : this->anim->getStaticShaderChannels())
-		{
-			auto& id = this->skel->getShaderChannelDataBlocks().at(kv.first).shader_uniform_id;
-			shader_channels[id] = kv.second;
-		}
 
 		for (auto& kv : this->anim->getAnimatedRotations())
 			quats[kv.first] = get_interpolated_framevalue<std::array<float, 4>, &slerp>(kv.second, this->current_frame);
@@ -114,11 +109,6 @@ namespace DataBlocks::Animation
 			locs[kv.first] = get_interpolated_framevalue<std::array<float, 3>, &lerp>(kv.second, this->current_frame);
 		for (auto& kv : this->anim->getAnimatedScales())
 			scales[kv.first] = get_interpolated_framevalue<std::array<float, 3>, &lerp>(kv.second, this->current_frame);
-		for (auto& kv : this->anim->getAnimatedShaderChannels())
-		{
-			auto& id = this->skel->getShaderChannelDataBlocks().at(kv.first).shader_uniform_id;
-			shader_channels[id] = get_interpolated_framevalue<float, &lerp>(kv.second, this->current_frame);
-		}
 	}
 
 

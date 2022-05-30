@@ -141,8 +141,8 @@ namespace CustomWidgets
 		{
 			auto& model = kv.second;
 			auto& skeleton = model->skeleton;
-			model->base_anim_sampler.sampleCurrentFrame(skeleton.quat_buffer, skeleton.loc_buffer, skeleton.scale_buffer, this->animation_buffer.shader_uniform_buffer);
 			model->anim_sampler.sampleCurrentFrame(skeleton.quat_buffer, skeleton.loc_buffer, skeleton.scale_buffer);
+			model->base_anim_sampler.sampleCurrentFrame(skeleton.quat_buffer, skeleton.loc_buffer, skeleton.scale_buffer);
 			model->skeleton.computeTransformBuffer();
 			auto& bones = model->skeleton.getBoneDataBlocks();
 			for (int j = 0; j < model->meshes.size(); j++)
