@@ -78,8 +78,8 @@ namespace CustomWidgets
 	{
 		auto& model = this->models.at(0);
 		FileFormats::DSCS::loadAnimation<false>(*model, model->skeleton.getShaderChannelDataBlocks().size(), anim_path);
-		model->anim_sampler.setAnim(model->animations[0]);
-		model->anim_sampler.setSkel(model->skeleton);
+		model->anim_sampler_a.setAnim(model->animations[0]);
+		model->anim_sampler_a.setSkel(model->skeleton);
 	}
 
 	RenderWidget::~RenderWidget()
@@ -141,9 +141,7 @@ namespace CustomWidgets
 		{
 			auto& model = kv.second;
 			auto& skeleton = model->skeleton;
-			model->anim_sampler.sampleCurrentFrame(skeleton.quat_buffer, skeleton.loc_buffer, skeleton.scale_buffer);
-			model->base_anim_sampler.sampleCurrentFrame(skeleton.quat_buffer, skeleton.loc_buffer, skeleton.scale_buffer);
-			model->skeleton.computeTransformBuffer();
+			model->sampleSkeletalAnimation();
 			auto& bones = model->skeleton.getBoneDataBlocks();
 			for (int j = 0; j < model->meshes.size(); j++)
 			{
@@ -162,8 +160,7 @@ namespace CustomWidgets
 				// load base uniforms
 				mesh->material->syncAnimationBuffer();
 				// handle animation
-				model->base_anim_sampler.sampleCurrentFrameUniforms(mesh->material->name_hash, this->animation_buffer.shader_uniform_buffer);
-				model->anim_sampler.sampleCurrentFrameUniforms(mesh->material->name_hash, this->animation_buffer.shader_uniform_buffer);
+				model->sampleShaderUniformAnimation(mesh->material, this->animation_buffer);
 				// upload
 				mesh->material->bind();
 				mesh->checkGLError();
@@ -182,17 +179,16 @@ namespace CustomWidgets
 			}
 
 			// Advance animation time
-			model->base_anim_sampler.tick();
-			model->anim_sampler.tick();
-			
-			// Rotate the light in a circle, just to test the illumination render
-			float whole_part;
-			auto angle = 2*3.14*std::modf(this->increment_test/2, &whole_part);
-			this->animation_buffer.DirLamp01Dir->set({ 2.f * std::sinf(angle), 0.5f, 2.f * std::cosf(angle)});
-
-			//this->increment_test = std::modf(this->increment_test, &whole_part);
-			(*this->animation_buffer.Time)[0] = this->increment_test;
+			model->tickSamplers();
 		}
+
+		// Rotate the light in a circle, just to test the illumination render
+		float whole_part;
+		//auto angle = 2*3.14*std::modf(this->increment_test/2, &whole_part);
+		//this->animation_buffer.DirLamp01Dir->set({ 2.f * std::sinf(angle), 0.5f, 2.f * std::cosf(angle)});
+
+		//this->increment_test = std::modf(this->increment_test, &whole_part);
+		(*this->animation_buffer.Time)[0] = this->increment_test;
 
 	}
 }

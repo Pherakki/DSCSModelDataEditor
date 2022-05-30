@@ -23,8 +23,38 @@ namespace Rendering::DSCS::DataObjects
 
 		DataBlocks::Animation::AnimationDataBlock base_animation;
 		std::vector<DataBlocks::Animation::AnimationDataBlock> animations;
-		DataBlocks::Animation::AnimationSampler anim_sampler;
 		DataBlocks::Animation::BaseAnimationSampler base_anim_sampler;
+		DataBlocks::Animation::AnimationSampler anim_sampler_a;
+		DataBlocks::Animation::AnimationSampler anim_sampler_b;
+		DataBlocks::Animation::AnimationSampler anim_sampler_c;
 
+		#define safeCallSampler(sampler, method, ...) \
+			if (sampler.isActive())                   \
+				sampler. method (__VA_ARGS__);
+
+		#define callOnSamplers(method, ...)                             \
+			this->base_anim_sampler. method (__VA_ARGS__);              \
+			safeCallSampler(this->anim_sampler_a, method, __VA_ARGS__); \
+			safeCallSampler(this->anim_sampler_b, method, __VA_ARGS__)  \
+			safeCallSampler(this->anim_sampler_c, method, __VA_ARGS__);
+
+		void tickSamplers()
+		{
+			callOnSamplers(tick,)
+		}
+
+		void sampleSkeletalAnimation()
+		{
+			callOnSamplers(sampleCurrentFrame, this->skeleton.quat_buffer, this->skeleton.loc_buffer, this->skeleton.scale_buffer);
+			this->skeleton.computeTransformBuffer();
+		}
+
+		void sampleShaderUniformAnimation(std::shared_ptr<Rendering::DSCS::DataObjects::OpenGLDSCSMaterial>& material, Rendering::DSCS::AnimationBuffer& animation_buffer)
+		{
+			callOnSamplers(sampleCurrentFrameUniforms, material->name_hash, animation_buffer.shader_uniform_buffer);
+		}
+
+		#undef callOnSamplers
+		#undef safeCallSampler
 	};
 }

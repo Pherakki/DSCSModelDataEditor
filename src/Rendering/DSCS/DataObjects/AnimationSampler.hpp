@@ -44,9 +44,11 @@ namespace DataBlocks::Animation
 		return (*interp_func)(prev_value, next_value, (current_frame - prev_frame) / (next_frame - prev_frame));
 	}
 
+
 	class AnimationSampler
 	{
 	public:
+		bool isActive() { return this->is_active; }
 		void tick();
 		void setAnim(AnimationDataBlock& anim) { this->anim = &anim; this->current_frame = 0.f; this->is_active = true; };
 		void setSkel(Skeleton::SkeletonDataBlock& skel)
