@@ -8,9 +8,17 @@ class ShaderFactoryTextureLayer2 : public QWidget
 {
 	Q_OBJECT;
 private:
+	void toggleOverlay()
+	{
+		this->blockSignals(true);
+		this->overlay_strength->setEnabled(this->diffuse_texture_settings->isActive() || this->normal_texture_settings->isActive());
+		this->blockSignals(false);
+	}
 	void toggleBump()
 	{
+		this->blockSignals(true);
 		this->bumpmap_settings->toggle(this->normal_texture_settings->checkbox->isChecked());
+		this->blockSignals(false);
 	}
 
 
@@ -46,6 +54,8 @@ public:
 		this->setLayout(_layout);
 		this->toggleBump();
 
+		connect(this->diffuse_texture_settings->checkbox, &QCheckBox::stateChanged, this, &ShaderFactoryTextureLayer2::toggleOverlay);
+		connect(this->normal_texture_settings->checkbox, &QCheckBox::stateChanged, this, &ShaderFactoryTextureLayer2::toggleOverlay);
 		connect(this->normal_texture_settings->checkbox, &QCheckBox::stateChanged, this, &ShaderFactoryTextureLayer2::toggleBump);
 
 		connect(this->diffuse_texture_settings, &ShaderFactoryTextureSlot::settingsUpdated, this, &ShaderFactoryTextureLayer2::settingsUpdated);
