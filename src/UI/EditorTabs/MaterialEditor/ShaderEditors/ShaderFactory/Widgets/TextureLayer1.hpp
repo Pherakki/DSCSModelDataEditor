@@ -52,6 +52,7 @@ public:
 	ShaderFactoryTextureSlot* normal_texture_settings;
 	ShaderFactoryTextureLayerParallaxBox* parallax_settings;
 	ShaderFactoryTextureLayerBumpmapBox* bumpmap_settings;
+	ToggleableTextboxesWidget<1>* distortion;
 
 	ShaderFactoryTextureLayer1(QString title_text, QWidget* parent = nullptr) : QWidget(parent)
 	{
@@ -73,7 +74,8 @@ public:
 				normal_mapping_layout->addWidget(this->parallax_settings);
 			}
 			_layout->addItem(normal_mapping_layout);
-
+			this->distortion = new ToggleableTextboxesWidget<1>("Distortion", this);
+			_layout->addWidget(this->distortion);
 		}
 		this->setLayout(_layout);
 		this->toggleParallax();
@@ -86,6 +88,7 @@ public:
 		connect(this->diffuse_texture_settings, &ShaderFactoryTextureSlot::settingsUpdated, this, &ShaderFactoryTextureLayer1::settingsUpdated);
 		connect(this->normal_texture_settings, &ShaderFactoryTextureSlot::settingsUpdated, this, &ShaderFactoryTextureLayer1::settingsUpdated);
 		connect(this->parallax_settings, &ShaderFactoryTextureLayerParallaxBox::settingsUpdated, this, &ShaderFactoryTextureLayer1::settingsUpdated);
+		connect(this->distortion, &ToggleableTextboxesWidget<1>::settingsUpdated, this, &ShaderFactoryTextureLayer1::settingsUpdated);
 	}
 
 signals:
