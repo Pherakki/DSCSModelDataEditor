@@ -19,6 +19,7 @@ public:
 	ShaderFactoryTextureSlot* diffuse_texture_settings;
 	ShaderFactoryTextureSlot* normal_texture_settings;
 	ShaderFactoryTextureLayerBumpmapBox* bumpmap_settings;
+	ToggleableTextboxesWidget<1>* overlay_strength;
 
 	ShaderFactoryTextureLayer2(QString title_text, QWidget* parent = nullptr) : QWidget(parent)
 	{
@@ -38,6 +39,8 @@ public:
 				normal_mapping_layout->addWidget(this->bumpmap_settings);
 			}
 			_layout->addItem(normal_mapping_layout);
+			this->overlay_strength = new ToggleableTextboxesWidget<1>("Overlay Strength", this);
+			_layout->addWidget(this->overlay_strength);
 
 		}
 		this->setLayout(_layout);
@@ -47,6 +50,7 @@ public:
 
 		connect(this->diffuse_texture_settings, &ShaderFactoryTextureSlot::settingsUpdated, this, &ShaderFactoryTextureLayer2::settingsUpdated);
 		connect(this->normal_texture_settings, &ShaderFactoryTextureSlot::settingsUpdated, this, &ShaderFactoryTextureLayer2::settingsUpdated);
+		connect(this->overlay_strength, &ToggleableTextboxesWidget<1>::settingsUpdated, this, &ShaderFactoryTextureLayer2::settingsUpdated);
 	}
 
 signals:
