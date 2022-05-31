@@ -111,9 +111,9 @@ private:
 
 	bool anyLayer1SamplerEnabled()
 	{
-		return this->texture_layer_1->diffuse_texture_settings->checkbox->isChecked()
-			|| this->texture_layer_1->normal_texture_settings->checkbox->isChecked()
-			|| this->diffuse_color_settings->light_sampler->checkbox->isChecked();
+		return this->texture_layer_1->diffuse_texture_settings->isActive()
+			|| this->texture_layer_1->normal_texture_settings->isActive()
+			|| this->diffuse_color_settings->light_sampler->isActive();
 	}
 
 	void updateTexturesOn(QComboBox* combobox, TextureLibrary::TextureSubLibrary_t& tex_sublib)
@@ -178,11 +178,11 @@ private:
 
 	void createUVSettings(TexSlot& uv_slot, const ShaderFactoryUVSettingsWidget& uv_ui)
 	{
-		uv_slot.is_projection = uv_ui.widget_projection->checkbox->isChecked();
-		uv_slot.scroll = uv_ui.widget_scrollspeed->checkbox->isChecked();
-		uv_slot.offset = uv_ui.widget_offset->checkbox->isChecked();
-		uv_slot.rotation = uv_ui.widget_rotation->checkbox->isChecked();
-		uv_slot.scale = uv_ui.widget_scale->checkbox->isChecked();
+		uv_slot.is_projection = uv_ui.widget_projection->isActive();
+		uv_slot.scroll = uv_ui.widget_scrollspeed->isActive();
+		uv_slot.offset = uv_ui.widget_offset->isActive();
+		uv_slot.rotation = uv_ui.widget_rotation->isActive();
+		uv_slot.scale = uv_ui.widget_scale->isActive();
 	}
 
 	void createParallaxSettings(FactorySettings& settings)
@@ -205,7 +205,7 @@ private:
 
 	void createDiffuseColorSettings(FactorySettings& settings)
 	{
-		if (this->diffuse_color_settings->vertex_colors_widget->checkbox->isChecked())
+		if (this->diffuse_color_settings->vertex_colors_widget->isActive())
 		{
 			settings.use_vertex_colors = true;
 			auto vertex_color_setting = this->diffuse_color_settings->vertex_colors_widget->combobox->currentText();
@@ -295,8 +295,8 @@ private:
 	void createVertexSettings(FactorySettings& settings)
 	{
 		settings.calculate_binormal = this->position_settings->calculate_binormal;
-		settings.fat = this->position_settings->fat->checkbox->isChecked();
-		settings.zbias = this->position_settings->zbias->checkbox->isChecked();
+		settings.fat = this->position_settings->fat->isActive();
+		settings.zbias = this->position_settings->zbias->isActive();
 		settings.is_billboard = this->position_settings->billboard_checkbox->isActive();
 		settings.align_with_y = this->position_settings->billboard_align_y_checkbox->isActive();
 	}
@@ -907,7 +907,7 @@ private:
 
 	bool uvSlotInUse(ShaderFactoryTextureSlot*& slot, size_t idx)
 	{
-		return slot->checkbox->isChecked() && (slot->uv_slot_combobox->currentIndex() == idx);
+		return slot->isActive() && (slot->uv_slot_combobox->currentIndex() == idx);
 	}
 
 	bool getUVSlot(size_t idx)
