@@ -493,8 +493,8 @@ private:
 			material->setUniformValue(0x46, this->sanitiseTextChanged(t));
 		}
 		{ // OverlayStrength
-			//auto& t = this->texture_layer_2->bumpmap_settings->bump_strength;
-			//material->setUniformValue(0x47, this->sanitiseTextChanged(t));
+			auto& t = this->texture_layer_2->overlay_strength;
+			material->setUniformValue(0x47, this->sanitiseTextChanged(*t));
 		}
 		{ // GlassStrength
 			//auto& t = this->texture_layer_2->bumpmap_settings->bump_strength;
@@ -565,8 +565,8 @@ private:
 			material->setUniformValue(0x87, this->sanitiseTextChanged(*t));
 		}
 		{ // DistortionStrength
-			//auto& t = this->uv_settings_3->widget_offset;
-			//material->setUniformValue(0x64, this->sanitiseTextChanged(*t));
+			auto& t = this->texture_layer_1->distortion;
+			material->setUniformValue(0x64, this->sanitiseTextChanged(*t));
 		}
 		{ // LightMapPower
 			auto& t = this->diffuse_color_settings->light_power_textbox->textboxes;
@@ -682,8 +682,8 @@ private:
 			this->readbackUniformToUI(material, 0x46, t);
 		}
 		{ // OverlayStrength
-			//auto& t = this->texture_layer_2->bumpmap_settings->bump_strength;
-			//this->readbackUniformToUI(material, 0x47, t);
+			auto& t = this->texture_layer_2->overlay_strength;
+			this->readbackUniformToUI(material, 0x47, *t);
 		}
 		{ // GlassStrength
 			//auto& t = this->texture_layer_2->bumpmap_settings->bump_strength;
@@ -754,8 +754,8 @@ private:
 			this->readbackUniformToUI(material, 0x87, *t);
 		}
 		{ // DistortionStrength
-			//auto& t = this->uv_settings_3->widget_offset;
-			//material->setUniformValue(0x64, this->sanitiseTextChanged(*t));
+			auto& t = this->texture_layer_1->distortion;
+			material->setUniformValue(0x64, this->sanitiseTextChanged(*t));
 		}
 		{ // LightMapPower
 			auto& t = this->diffuse_color_settings->light_power_textbox->textboxes;
@@ -1206,8 +1206,8 @@ private:
 			this->hookUniformValueUpdate(0x46, t);
 		}
 		{ // OverlayStrength
-			//auto& t = this->texture_layer_2->bumpmap_settings->bump_strength;
-			//this->hookUniformValueUpdate(0x47, t);
+			auto& t = this->texture_layer_2->overlay_strength;
+			this->hookUniformValueUpdate(0x47, *t);
 		}
 		{ // GlassStrength
 			//auto& t = this->texture_layer_2->bumpmap_settings->bump_strength;
@@ -1278,8 +1278,8 @@ private:
 			this->hookUniformValueUpdate(0x87, *t);
 		}
 		{ // DistortionStrength
-			//auto& t = this->uv_settings_3->widget_offset;
-			//material->hookUniformValueUpdate(0x64, *t);
+			auto& t = this->texture_layer_1->distortion;
+			this->hookUniformValueUpdate(0x64, *t);
 		}
 		{ // LightMapPower
 			auto& t = this->diffuse_color_settings->light_power_textbox->textboxes;
