@@ -94,11 +94,12 @@ DSCSModelDataEditorWindow::DSCSModelDataEditorWindow(QWidget* parent = Q_NULLPTR
 void DSCSModelDataEditorWindow::testInit()
 {
     std::string test_path = "data/chr065";
-    std::string anim_path2 = test_path;
-    anim_path2 += "_bn01.anim";
+    std::string anim_path = test_path;
+    anim_path += "_bn01.anim";
 
     this->loadModel(QString::fromStdString(test_path));
-    this->loadAnim(QString::fromStdString(anim_path2));
+    if (std::filesystem::exists(anim_path))
+        this->loadAnim(QString::fromStdString(anim_path));
 }
 
 void DSCSModelDataEditorWindow::openLoadModelDialog()
