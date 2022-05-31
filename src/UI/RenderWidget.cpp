@@ -141,14 +141,16 @@ namespace CustomWidgets
 		{
 			auto& model = kv.second;
 			auto& skeleton = model->skeleton;
+			// Calculate the model's skeleton position for this frame
 			model->sampleSkeletalAnimation();
 			auto& bones = model->skeleton.getBoneDataBlocks();
+			// Now render each mesh
 			for (int j = 0; j < model->meshes.size(); j++)
 			{
 				auto& mesh = model->meshes[j];
 				mesh->checkGLError();
 
-				// Set up matrix palette
+				// Load up the matrix palette with skeletal bone matrices
 				for (uint16_t idx = 0; idx < mesh->used_bones.size(); ++idx)
 				{
 					for (uint8_t k = 0; k < 12; ++k)
@@ -157,11 +159,11 @@ namespace CustomWidgets
 					}
 				}
 
-				// load base uniforms
+				// upload default shader uniform values to the animation buffer
 				mesh->material->syncAnimationBuffer();
-				// handle animation
+				// calculate shader uniform animations
 				model->sampleShaderUniformAnimation(mesh->material, this->animation_buffer);
-				// upload
+				// upload shader uniform animation values
 				mesh->material->bind();
 				mesh->checkGLError();
 
