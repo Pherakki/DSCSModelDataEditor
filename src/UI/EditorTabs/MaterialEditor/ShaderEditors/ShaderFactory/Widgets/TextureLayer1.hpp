@@ -40,9 +40,19 @@ private:
 
 		this->blockSignals(false);
 	}
+
+	void toggleDistortion()
+	{
+		this->blockSignals(true);
+		this->distortion->setEnabled(this->diffuse_texture_settings->isActive() || this->normal_texture_settings->isActive());
+		this->blockSignals(false);
+	}
+
 	void toggleBump()
 	{
+		this->blockSignals(true);
 		this->bumpmap_settings->toggle(this->normal_texture_settings->checkbox->isChecked());
+		this->blockSignals(false);
 	}
 
 
@@ -79,10 +89,13 @@ public:
 		}
 		this->setLayout(_layout);
 		this->toggleParallax();
+		this->toggleDistortion();
 		this->toggleBump();
 
 		connect(this->diffuse_texture_settings->checkbox, &QCheckBox::stateChanged, this, &ShaderFactoryTextureLayer1::toggleParallax);
 		connect(this->normal_texture_settings->checkbox, &QCheckBox::stateChanged, this, &ShaderFactoryTextureLayer1::toggleParallax);
+		connect(this->diffuse_texture_settings->checkbox, &QCheckBox::stateChanged, this, &ShaderFactoryTextureLayer1::toggleDistortion);
+		connect(this->normal_texture_settings->checkbox, &QCheckBox::stateChanged, this, &ShaderFactoryTextureLayer1::toggleDistortion);
 		connect(this->normal_texture_settings->checkbox, &QCheckBox::stateChanged, this, &ShaderFactoryTextureLayer1::toggleBump);
 
 		connect(this->diffuse_texture_settings, &ShaderFactoryTextureSlot::settingsUpdated, this, &ShaderFactoryTextureLayer1::settingsUpdated);
