@@ -46,6 +46,12 @@ public:
 		connect(this->checkbox, &QCheckBox::stateChanged, this, &ToggleableCombobox::settingsUpdated);
 		connect(this->combobox, static_cast<void(QComboBox::*)(int)>(&QComboBox::currentIndexChanged), this, [&]() {this->settingsUpdated(true); });
 	}
+
+	bool isActive()
+	{
+		return this->checkbox->isChecked() && this->checkbox->isEnabled();
+	}
+
 signals:
 	void settingsUpdated(bool);
 };

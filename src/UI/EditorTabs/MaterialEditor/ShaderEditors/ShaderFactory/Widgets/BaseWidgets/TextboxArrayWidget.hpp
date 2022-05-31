@@ -33,4 +33,10 @@ public:
 		this->setLayout(layout);
 		this->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
 	}
+
+	bool isActive()
+	{
+		return this->checkbox->isChecked() && this->checkbox->isEnabled();
+	}
+
 };

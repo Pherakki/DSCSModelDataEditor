@@ -54,6 +54,11 @@ public:
 		connect(this->checkbox, &QCheckBox::stateChanged, this, &ToggleableTextboxesWidgetBase::settingsUpdated);
 	}
 
+	bool isActive()
+	{
+		return this->checkbox->isChecked() && this->checkbox->isEnabled();
+	}
+
 signals:
 	void settingsUpdated(bool);
 };
