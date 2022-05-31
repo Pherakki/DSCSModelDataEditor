@@ -957,8 +957,10 @@ private:
 
 		this->texture_layer_1->parallax_settings->bias_xy->textboxes[0]->blockSignals(active);
 		this->texture_layer_1->parallax_settings->bias_xy->textboxes[1]->blockSignals(active);
+		this->texture_layer_1->distortion->textboxes[0]->blockSignals(active);
 		this->texture_layer_1->bumpmap_settings->bump_strength->textboxes[0]->blockSignals(active);
 		this->texture_layer_2->bumpmap_settings->bump_strength->textboxes[0]->blockSignals(active);
+		this->texture_layer_2->overlay_strength->textboxes[0]->blockSignals(active);
 		this->diffuse_color_settings->diffuse_color_widget->textboxes[0]->blockSignals(active);
 		this->diffuse_color_settings->diffuse_color_widget->textboxes[1]->blockSignals(active);
 		this->diffuse_color_settings->diffuse_color_widget->textboxes[2]->blockSignals(active);
