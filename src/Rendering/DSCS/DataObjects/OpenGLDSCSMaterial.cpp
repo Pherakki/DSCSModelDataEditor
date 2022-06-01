@@ -105,17 +105,17 @@ namespace Rendering::DSCS::DataObjects
 		this->local_uniform_buffer[uniform_type_id] = uniform_data;
 	}
 
-	void OpenGLDSCSMaterial::setTextureHandler(uint8_t id, const CGparameter& param, std::map<uint8_t, std::unique_ptr<ShaderUniforms::AbstractcgGLTextureReference>>& holder)
+	void OpenGLDSCSMaterial::setTextureHandler(uint8_t id, const CGparameter& param)
 	{
 		CGtype param_type = cgGetParameterType(param);
 		switch (param_type)
 		{
 			// Do we even need to make this distinction any more now that the texture parameters are fixed?
 		case CG_SAMPLER2D:
-			holder.emplace(id, std::make_unique<ShaderUniforms::Tex2DUniform>(param, 0));
+			this->texture_refs.emplace(id, std::make_unique<ShaderUniforms::Tex2DUniform>(param, 0));
 			break;
 		case CG_SAMPLERCUBE:
-			holder.emplace(id, std::make_unique<ShaderUniforms::TexCubeUniform>(param, 0));
+			this->texture_refs.emplace(id, std::make_unique<ShaderUniforms::TexCubeUniform>(param, 0));
 			break;
 		default:
 			std::string error_msg = "Unhandled shader parameter type: ";
@@ -147,7 +147,7 @@ namespace Rendering::DSCS::DataObjects
 			if (unlinked_uniforms.contains(texture_id))
 			{
 				const CGparameter& param = unlinked_uniforms[texture_id];
-				this->setTextureHandler(texture_id, param, this->texture_refs);
+				this->setTextureHandler(texture_id, param);
 				unlinked_uniforms.erase(texture_id);
 			}
 		}

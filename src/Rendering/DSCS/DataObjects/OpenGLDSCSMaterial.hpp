@@ -54,7 +54,7 @@ namespace Rendering::DSCS::DataObjects
 		uint16_t getTextureType(uint8_t id);
 		void setTextureName(uint8_t id, const std::string& img_name);
 		void setTextureBuffer(uint8_t id, uint16_t buffer_id);
-		void setTextureHandler(uint8_t id, const CGparameter& param, std::map<uint8_t, std::unique_ptr<ShaderUniforms::AbstractcgGLTextureReference>>& holder);
+		void setTextureHandler(uint8_t id, const CGparameter& param);
 		template<typename T>
 		void setParamHandler(uint8_t id, const CGparameter& param, T& holder, const std::array<float*, 0xA0>& uniform_dispatch_buffer);
 		void setUniformValue(uint8_t uniform_type_id, const std::array<float, 4>& uniform_data);
