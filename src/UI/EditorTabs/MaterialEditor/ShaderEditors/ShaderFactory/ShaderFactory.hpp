@@ -331,6 +331,10 @@ private:
 			textures.isSphere = this->reflection_settings->isSphereMap();
 		}
 
+		// Handle texure later specific things
+		settings.texlayer_1_distort = this->texture_layer_1->distortion->isActive();
+		settings.texlayer_2.colorsampler.enabled = this->texture_layer_2->overlay_strength->isActive();
+
 		// Handle UV adjustments
 		this->createUVSettings(settings.uv_slots[0], *this->uv_settings_1);
 		this->createUVSettings(settings.uv_slots[1], *this->uv_settings_2);
@@ -1044,6 +1048,8 @@ private:
 			this->specular_color_settings->specular_map->removeLightMap();
 			this->illumination_settings->ambient_occlusion_map->removeLightMap();
 		}
+
+		this->texture_layer_2->diffuse_texture_settings->setEnabled(this->texture_layer_1->diffuse_texture_settings->isActive());
 
 		// Diffuse 2
 		if (this->texture_layer_2->diffuse_texture_settings->isActive())
