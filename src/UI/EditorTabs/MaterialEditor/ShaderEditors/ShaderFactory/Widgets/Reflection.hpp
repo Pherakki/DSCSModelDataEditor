@@ -7,6 +7,7 @@
 
 class ReflectionSettings : public CheckableWidget
 {
+	Q_OBJECT
 public:
 	static enum class EnvMapType
 	{
@@ -48,6 +49,10 @@ public:
 		this->setContents(contents_layout);
 
 		connect(this->checkbox, &QCheckBox::stateChanged, this, &ReflectionSettings::toggle);
+		connect(this->checkbox, &QCheckBox::stateChanged, this, &ReflectionSettings::settingsUpdated);
+		connect(this->env_texture, &ShaderFactoryComboboxTextureSlot::settingsUpdated, this, &ReflectionSettings::settingsUpdated);
+		connect(this->fresnel, &CheckableWidget::stateChanged, this, &ReflectionSettings::settingsUpdated);
+		connect(this, &CheckableWidget::stateChanged, this, &ReflectionSettings::settingsUpdated);
 	}
 
 	EnvMapType getMapType()
@@ -59,6 +64,8 @@ public:
 	{
 		return this->getMapType() == EnvMapType::SphereMap;
 	}
+signals:
+	void settingsUpdated(bool);
 private:
 	void toggle(bool active)
 	{
