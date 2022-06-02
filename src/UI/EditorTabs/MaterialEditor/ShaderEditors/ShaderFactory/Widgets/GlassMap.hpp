@@ -1,19 +1,26 @@
 #pragma once
 
-#include "BaseWidgets/TitleWidget.hpp"
+#include "BaseWidgets/CheckableWidget.hpp"
+#include "BaseWidgets/TextboxArrayWidget.hpp"
 
-class GlassMapSettings : public QWidget
+class GlassMapSettings : public CheckableWidget
 {
+	Q_OBJECT
 public:
-	TitleWidget* title_widget;
-	GlassMapSettings(QWidget* parent = Q_NULLPTR) : QWidget(parent)
-	{
-		auto _layout = new QVBoxLayout;
-		{
-			this->title_widget = new TitleWidget("Glass Map", this);
+	TextboxArrayWidget<1>* glass_strength = new TextboxArrayWidget<1>("Strength", this);
+	TextboxArrayWidget<1>* curvature      = new TextboxArrayWidget<1>("Curvature", this);
 
-			_layout->addWidget(this->title_widget);
+	GlassMapSettings(QWidget* parent = Q_NULLPTR) : CheckableWidget("Glass Map", parent)
+	{
+		auto contents_layout = new QVBoxLayout;
+		{
+			contents_layout->addWidget(this->glass_strength);
+			contents_layout->addWidget(this->curvature);
 		}
-		this->setLayout(_layout);
+		this->setContents(contents_layout);
+
+		connect(this, &CheckableWidget::stateChanged, this, &GlassMapSettings::settingsUpdated);
 	}
+signals:
+	void settingsUpdated(bool);
 };

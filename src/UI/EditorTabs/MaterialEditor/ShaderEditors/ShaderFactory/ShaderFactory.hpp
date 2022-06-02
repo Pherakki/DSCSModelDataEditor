@@ -501,12 +501,12 @@ private:
 			material->setUniformValue(0x47, this->sanitiseTextChanged(*t));
 		}
 		{ // GlassStrength
-			//auto& t = this->texture_layer_2->bumpmap_settings->bump_strength;
-			//material->setUniformValue(0x4B, this->sanitiseTextChanged(t));
+			auto& t = this->glassmap_settings->glass_strength->textboxes;
+			material->setUniformValue(0x4B, this->sanitiseTextChanged(t));
 		}
 		{ // Curvature
-			//auto& t = this->texture_layer_2->bumpmap_settings->bump_strength;
-			//material->setUniformValue(0x4C, this->sanitiseTextChanged(t));
+			auto& t = this->glassmap_settings->curvature->textboxes;
+			material->setUniformValue(0x4C, this->sanitiseTextChanged(t));
 		}
 		{ // UpsideDown
 			//auto& t = this->texture_layer_2->bumpmap_settings->bump_strength;
@@ -690,12 +690,12 @@ private:
 			this->readbackUniformToUI(material, 0x47, *t);
 		}
 		{ // GlassStrength
-			//auto& t = this->texture_layer_2->bumpmap_settings->bump_strength;
-			//this->readbackUniformToUI(material, 0x4B, t);
+			auto& t = this->glassmap_settings->glass_strength->textboxes;
+			this->readbackUniformToUI(material, 0x4B, t);
 		}
 		{ // Curvature
-			//auto& t = this->texture_layer_2->bumpmap_settings->bump_strength;
-			//this->readbackUniformToUI(material, 0x4C, t);
+			auto& t = this->glassmap_settings->curvature->textboxes;
+			this->readbackUniformToUI(material, 0x4C, t);
 		}
 		{ // UpsideDown
 			//auto& t = this->texture_layer_2->bumpmap_settings->bump_strength;
@@ -1104,7 +1104,7 @@ private:
 		connectUIUpdate(this->specular_color_settings);
 		connectUIUpdate(this->reflection_settings);
 		connectUIUpdate(this->illumination_settings);
-		// connectUIUpdate(this->glassmap_settings); // Still needs to be implemented
+		connectUIUpdate(this->glassmap_settings);
 		connectUIUpdate(this->position_settings);
 	}
 
@@ -1216,12 +1216,12 @@ private:
 			this->hookUniformValueUpdate(0x47, *t);
 		}
 		{ // GlassStrength
-			//auto& t = this->texture_layer_2->bumpmap_settings->bump_strength;
-			//this->hookUniformValueUpdate(0x4B, t);
+			auto& t = this->glassmap_settings->glass_strength->textboxes;
+			this->hookUniformValueUpdate(0x4B, t);
 		}
 		{ // Curvature
-			//auto& t = this->texture_layer_2->bumpmap_settings->bump_strength;
-			//this->hookUniformValueUpdate(0x4C, t);
+			auto& t = this->glassmap_settings->curvature->textboxes;
+			this->hookUniformValueUpdate(0x4C, t);
 		}
 		{ // UpsideDown
 			//auto& t = this->texture_layer_2->bumpmap_settings->bump_strength;
