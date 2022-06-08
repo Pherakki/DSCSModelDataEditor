@@ -112,7 +112,7 @@ void DSCSModelDataEditorWindow::openLoadModelDialog()
     {
         QString name_file = dialog.selectedFiles().first();
         // Remove file extension
-        this->loadModel(name_file.chopped(name_file.mid(name_file.lastIndexOf(".")).size()));
+        auto& model = this->loadModel(name_file.chopped(name_file.mid(name_file.lastIndexOf(".")).size()));
         dialog.close();
 
         QFileDialog dialog_anim(this);
@@ -120,7 +120,7 @@ void DSCSModelDataEditorWindow::openLoadModelDialog()
         dialog_anim.setAcceptMode(QFileDialog::AcceptOpen);
         dialog_anim.setNameFilter(tr("DSCS Animations (*.anim)"));
         if (dialog_anim.exec() == QDialog::Accepted)
-            this->loadAnim(dialog_anim.selectedFiles().first());
+            this->loadAnim(model, dialog_anim.selectedFiles().first());
         dialog_anim.close();
     }
     else
@@ -132,7 +132,7 @@ void DSCSModelDataEditorWindow::openLoadModelDialog()
 /*
 Asset loaders
 */
-void DSCSModelDataEditorWindow::loadModel(const QString& fileName)
+DSCSModelDataEditorWindow::ModelPtr& DSCSModelDataEditorWindow::loadModel(const QString& fileName)
 {
     auto model = this->render_widget->loadModel(fileName.toStdString());
     this->selected_objects.registerNewModel(model);
@@ -143,11 +143,12 @@ void DSCSModelDataEditorWindow::loadModel(const QString& fileName)
         this->selected_objects.setSelectedMesh(mesh);
         this->selected_objects.setSelectedMaterial(mesh->material);
     }
+    return model;
 }
 
-void DSCSModelDataEditorWindow::loadAnim(const QString& fileName)
+void DSCSModelDataEditorWindow::loadAnim(const ModelPtr& model, const QString& fileName)
 {
-    this->render_widget->loadAnim(fileName.toStdString());
+    this->render_widget->loadAnim(model, fileName.toStdString());
 }
 
 void DSCSModelDataEditorWindow::loadShaderHashes(const QString& directory)

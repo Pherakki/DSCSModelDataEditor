@@ -30,6 +30,7 @@ public:
     DSCSModelDataEditorWindow(QWidget* parent);
     ~DSCSModelDataEditorWindow() { };
 private:
+    typedef std::shared_ptr<Rendering::DSCS::DataObjects::OpenGLDSCSModel> ModelPtr;
     typedef std::shared_ptr<Rendering::DSCS::DataObjects::OpenGLDSCSMaterial> MaterialPtr;
 
     CustomWidgets::RenderWidget* render_widget;
@@ -38,8 +39,8 @@ private:
     QPlainTextEdit* fragment_shader_textedit;
 
     void initToolbar();
-    void loadModel(const QString& fileName);
-    void loadAnim(const QString& fileName);
+    DSCSModelDataEditorWindow::ModelPtr& loadModel(const QString& fileName);
+    void loadAnim(const ModelPtr& model, const QString& fileName);
     void loadShaderHashes(const QString& directory);
 private slots:
     void testInit();

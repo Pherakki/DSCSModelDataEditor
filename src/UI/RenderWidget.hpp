@@ -129,7 +129,7 @@ namespace CustomWidgets
 		RenderWidget(QWidget* parent);
 		~RenderWidget();
 		ModelPtr loadModel(const std::string& path);
-		void loadAnim(const std::string& anim_path);
+		void loadAnim(const ModelPtr& model, const std::string& anim_path);
 		ModelList_t models;
 		TextureLibrary texture_library;
 		Rendering::DSCS::AnimationBuffer animation_buffer;
