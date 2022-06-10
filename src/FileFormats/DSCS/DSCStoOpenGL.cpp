@@ -89,13 +89,15 @@ namespace FileFormats::DSCS
 		// Read skel
 		std::filesystem::path skel_path = filepath;
 		skel_path += ".skel";
-		// TODO: Add check if filepaths exist
+		if (!std::filesystem::exists(skel_path))
+			throw std::runtime_error(("Path '" + skel_path.string() + "' does not exist!").c_str());
 		skel_file.read(skel_path.string());
 
 		// Read geom
 		std::filesystem::path geom_path = filepath;
 		geom_path += ".geom";
-		// TODO: Add check if filepaths exist
+		if (!std::filesystem::exists(geom_path))
+			throw std::runtime_error(("Path '" + geom_path.string() + "' does not exist!").c_str());
 		geom_file.read(geom_path.string());
 
 		auto model = Rendering::DSCS::DataObjects::OpenGLDSCSModel();
@@ -108,6 +110,8 @@ namespace FileFormats::DSCS
 
 		std::filesystem::path anim_path = filepath;
 		anim_path += ".anim";
+		if (!std::filesystem::exists(anim_path))
+			throw std::runtime_error(("Path '" + anim_path.string() + "' does not exist!").c_str());
 		loadAnimation<true>(model, skel_file.getNumShaderChannels(), anim_path);
 
 		// Materials
