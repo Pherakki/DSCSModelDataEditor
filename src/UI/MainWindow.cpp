@@ -97,9 +97,10 @@ void DSCSModelDataEditorWindow::testInit()
     std::string anim_path = test_path;
     anim_path += "_bn01.anim";
 
-    this->loadModel(QString::fromStdString(test_path));
-    if (std::filesystem::exists(anim_path))
-        this->loadAnim(QString::fromStdString(anim_path));
+        auto model = this->loadModel(QString::fromStdString(test_path));
+        if (std::filesystem::exists(anim_path))
+            this->loadAnim(model, QString::fromStdString(anim_path));
+    }
 }
 
 void DSCSModelDataEditorWindow::openLoadModelDialog()
