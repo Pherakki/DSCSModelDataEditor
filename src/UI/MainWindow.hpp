@@ -39,7 +39,7 @@ private:
     QPlainTextEdit* fragment_shader_textedit;
 
     void initToolbar();
-    DSCSModelDataEditorWindow::ModelPtr& loadModel(const QString& fileName);
+    DSCSModelDataEditorWindow::ModelPtr loadModel(const QString& fileName);
     void loadAnim(const ModelPtr& model, const QString& fileName);
     void loadShaderHashes(const QString& directory);
 private slots:

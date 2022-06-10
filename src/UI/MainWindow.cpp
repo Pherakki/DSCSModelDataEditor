@@ -112,7 +112,7 @@ void DSCSModelDataEditorWindow::openLoadModelDialog()
     {
         QString name_file = dialog.selectedFiles().first();
         // Remove file extension
-        auto& model = this->loadModel(name_file.chopped(name_file.mid(name_file.lastIndexOf(".")).size()));
+        auto model = this->loadModel(name_file.chopped(name_file.mid(name_file.lastIndexOf(".")).size()));
         dialog.close();
 
         QFileDialog dialog_anim(this);
@@ -132,7 +132,7 @@ void DSCSModelDataEditorWindow::openLoadModelDialog()
 /*
 Asset loaders
 */
-DSCSModelDataEditorWindow::ModelPtr& DSCSModelDataEditorWindow::loadModel(const QString& fileName)
+DSCSModelDataEditorWindow::ModelPtr DSCSModelDataEditorWindow::loadModel(const QString& fileName)
 {
     auto model = this->render_widget->loadModel(fileName.toStdString());
     this->selected_objects.registerNewModel(model);
