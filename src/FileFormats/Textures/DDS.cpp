@@ -40,19 +40,6 @@ GLuint DDSLoader::texture_loadDDS(const char* path, TextureType tex_type)
     // a 4-byte array of chars
     char* fourCC = (char*)&(header[80]);
 
-    // 'the sum of all the mipmap's byte-size' is never greater than 'two times the biggest mipmap byte-size'
-    unsigned int buffer_size = (mipMapCount > 1 ? linearSize + linearSize : linearSize);
-    unsigned char* buffer = (unsigned char*)malloc(buffer_size * sizeof(unsigned char));
-    if (buffer == 0) {
-        // Handle OOM
-        // Replace with something catchable
-        throw std::runtime_error("BUFFER HAS 0 SIZE");
-    }
-
-    fread(buffer, 1, buffer_size, f);
-
-    fclose(f);
-
     // decide byte format and block size from type
     // probably should check if the EXT is available
     unsigned int blockSize;
@@ -78,11 +65,25 @@ GLuint DDSLoader::texture_loadDDS(const char* path, TextureType tex_type)
     }
     else {
         // unhandled type
-        free(buffer);
         // Replace with something catchable
         std::string debug_string = "Unknown compression type \'" + std::string(fourCC) + "\'";
         throw std::runtime_error(debug_string.c_str());
     }
+
+    // 'the sum of all the mipmap's byte-size' is never greater than 'two times the biggest mipmap byte-size'
+    if (!compressed)
+        linearSize = 4 * width * height;
+    unsigned int buffer_size = (mipMapCount > 1 ? linearSize + linearSize : linearSize);
+    unsigned char* buffer = (unsigned char*)malloc(buffer_size * sizeof(unsigned char));
+    if (buffer == 0) {
+        // Handle OOM
+        // Replace with something catchable
+        throw std::runtime_error("BUFFER HAS 0 SIZE");
+    }
+
+    fread(buffer, 1, buffer_size, f);
+
+    fclose(f);
 
     // glGenTextures() CAN return 0 on error, see docs - probably won't happen unless you are bad
     GLuint tid;
@@ -240,3 +241,7 @@ struct DDSPixelFormat
     uint32_t dwRBitMask;
     uint32_t dwGBitMask;
     uint32_t dwBBitMask;
+    uint32_t dwABitMask;
+
+};
+
