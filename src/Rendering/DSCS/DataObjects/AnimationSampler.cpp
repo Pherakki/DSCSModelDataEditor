@@ -18,6 +18,10 @@ namespace DataBlocks::Animation
 		return lerp(quat_1, { quat_2[0], quat_2[1], quat_2[2], quat_2[3] }, interp_fac);
 	}
 
+	void AnimationSampler::setFrame(float frame)
+	{
+		this->current_frame = frame;
+	}
 
 	void AnimationSampler::sampleCurrentFrame(std::vector<std::array<float, 4>>& quats, std::vector<std::array<float, 3>>& locs, std::vector<std::array<float, 3>>& scales)
 	{
@@ -83,6 +87,10 @@ namespace DataBlocks::Animation
 			this->current_frame -= this->anim->getFrameCount();
 	}
 
+	void BaseAnimationSampler::setFrame(float frame)
+	{
+		this->current_frame = frame;
+	}
 
 	void BaseAnimationSampler::sampleCurrentFrame(std::vector<std::array<float, 4>>& quats, std::vector<std::array<float, 3>>& locs, std::vector<std::array<float, 3>>& scales)
 	{

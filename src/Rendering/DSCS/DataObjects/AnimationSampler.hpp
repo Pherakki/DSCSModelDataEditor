@@ -49,6 +49,8 @@ namespace DataBlocks::Animation
 	{
 	public:
 		bool isActive() { return this->is_active; }
+		void setFrame(float frame);
+		float getFrame() { return this->current_frame; }
 		void tick();
 		void setAnim(AnimationDataBlock& anim) { this->anim = &anim; this->current_frame = 0.f; this->is_active = true; };
 		void setSkel(Skeleton::SkeletonDataBlock& skel)
@@ -70,6 +72,8 @@ namespace DataBlocks::Animation
 	class BaseAnimationSampler
 	{
 	public:
+		void setFrame(float frame);
+		float getFrame() { return this->current_frame; }
 		void tick();
 		void setAnim(AnimationDataBlock& anim) { this->anim = &anim; };
 		void setSkel(Skeleton::SkeletonDataBlock& skel) 

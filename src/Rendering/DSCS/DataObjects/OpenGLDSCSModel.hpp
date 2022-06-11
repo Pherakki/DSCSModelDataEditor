@@ -38,6 +38,11 @@ namespace Rendering::DSCS::DataObjects
 			safeCallSampler(this->anim_sampler_b, method, __VA_ARGS__)  \
 			safeCallSampler(this->anim_sampler_c, method, __VA_ARGS__);
 
+		void setSamplersFrame(float frame)
+		{
+			callOnSamplers(setFrame, frame);
+		}
+
 		void tickSamplers()
 		{
 			callOnSamplers(tick,)
