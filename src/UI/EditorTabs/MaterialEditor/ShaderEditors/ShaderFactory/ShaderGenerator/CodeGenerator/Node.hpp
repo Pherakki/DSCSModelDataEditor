@@ -5,7 +5,6 @@
 // Dummy for now; should provide a method that switches something on or off on a contained item
 class Toggleable
 {
-	std::shared_ptr<ToggleableBase> internal_obj;
 
 	struct ToggleableBase
 	{
@@ -20,7 +19,7 @@ class Toggleable
 		toggle(bool active) { this->obj.toggle(active) }
 	};
 
-
+	std::shared_ptr<ToggleableBase> internal_obj;
 public:
 	template <class T>
 	Toggleable(T obj) : internal_obj{ new Holder<T>(obj) }
