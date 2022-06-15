@@ -87,7 +87,7 @@ add_executable (${PROJECT_NAME}
                 "UI/EditorTabs/MaterialEditor/ShaderEditors/ShaderFactory/Widgets/UVSlot.hpp"
                 "UI/EditorTabs/MaterialEditor/ShaderEditors/TabMaterials.hpp"
                 "UI/SelectedObjectReferences.hpp"
-                "UI/TextureLibrary.hpp" )
+                "UI/TextureLibrary.hpp"  "UI/EditorTabs/MaterialEditor/ShaderEditors/ShaderFactory/ShaderGenerator/CodeGenerator/VertexShader/VertexShader.hpp" "UI/EditorTabs/MaterialEditor/ShaderEditors/ShaderFactory/ShaderGenerator/CodeGenerator/VertexShader/VertexShader.cpp")
 
 # Allow CMake to build libraries
 cmake_policy(SET CMP0079 NEW)
