@@ -47,6 +47,7 @@ add_executable (${PROJECT_NAME}
                 "UI/EditorTabs/MaterialEditor/ShaderEditors/CodeEditor.hpp"
                 "UI/EditorTabs/MaterialEditor/ShaderEditors/ShaderEditorTabs.hpp"
                 "UI/EditorTabs/MaterialEditor/ShaderEditors/PrebuiltShaders.hpp"
+                "UI/EditorTabs/MaterialEditor/ShaderEditors/ShaderFactory/ShaderFactory.hpp" 
                 "UI/EditorTabs/MaterialEditor/ShaderEditors/ShaderFactory/ShaderFactory.cpp" 
                 "UI/EditorTabs/MaterialEditor/ShaderEditors/ShaderFactory/ShaderGenerator/VertexShader.hpp" 
                 "UI/EditorTabs/MaterialEditor/ShaderEditors/ShaderFactory/ShaderGenerator/Utils.hpp" 

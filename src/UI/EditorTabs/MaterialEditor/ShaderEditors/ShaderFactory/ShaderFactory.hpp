@@ -1108,51 +1108,26 @@ private:
 		connectUIUpdate(this->position_settings);
 	}
 
+	void hookUniformValueUpdateOnTextbox(size_t idx, EditorTextbox*& textbox);
 
-	template<size_t N>
+	template<int N>
 	void hookUniformValueUpdate(size_t idx, std::array<EditorTextbox*, N>& textboxes)
 	{
-		for (const auto& textbox : textboxes)
-		{
-			connect(textbox, &EditorTextbox::textChanged, this, [this, idx, &textboxes]()
-				{
-					auto& material_resource = this->selected_objects.getEditableSelectedMaterialResource();
-					auto& material = material_resource.getFactoryMaterial();
-					material->setUniformValue(idx, this->sanitiseTextChanged(textboxes));
-					if (material_resource.isFactoryActive())
-						material_resource.updateMainMaterialBuffer(idx, this->sanitiseTextChanged(textboxes));
-				}
-			);
-		}
+		for (auto& textbox : textboxes)
+			this->hookUniformValueUpdateOnTextbox(idx, textbox);
 	}
-	template<size_t N>
+	template<int N>
 	void hookUniformValueUpdate(size_t idx, ToggleableTextboxesWidget<N>& widget)
 	{
-		for (const auto& textbox : widget.textboxes)
-		{
-			connect(textbox, &EditorTextbox::textChanged, this, [this, idx, &widget]()
-				{
-					auto& material_resource = this->selected_objects.getEditableSelectedMaterialResource();
-					auto& material = material_resource.getFactoryMaterial();
-					material->setUniformValue(idx, this->sanitiseTextChanged(widget));
-					if (material_resource.isFactoryActive())
-						material_resource.updateMainMaterialBuffer(idx, this->sanitiseTextChanged(widget));
-				}
-			);
-		}
+		for (auto& textbox : widget.textboxes)
+			this->hookUniformValueUpdateOnTextbox(idx, textbox);
 	}
+
 	void hookUniformValueUpdate(size_t idx, EditorTextbox*& textbox)
 	{
-		connect(textbox, &EditorTextbox::textChanged, this, [this, idx, &textbox]()
-			{
-				auto& material_resource = this->selected_objects.getEditableSelectedMaterialResource();
-				auto& material = material_resource.getFactoryMaterial();
-				material->setUniformValue(idx, this->sanitiseTextChanged(textbox));
-				if (material_resource.isFactoryActive())
-					material_resource.updateMainMaterialBuffer(idx, this->sanitiseTextChanged(textbox));
-			}
-		);
+		this->hookUniformValueUpdateOnTextbox(idx, textbox);
 	}
+
 
 
 	void hookUniformUpdates()
