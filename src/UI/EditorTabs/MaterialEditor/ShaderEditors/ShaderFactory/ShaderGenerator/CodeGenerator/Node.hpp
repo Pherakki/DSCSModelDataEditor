@@ -16,7 +16,7 @@ class Toggleable
 	{
 		T& obj;
 		Holder(T& obj) : obj{ obj } {}
-		toggle(bool active) { this->obj.toggle(active) }
+		void toggle(bool active) { this->obj.toggle(active); }
 	};
 
 	std::shared_ptr<ToggleableBase> internal_obj;
