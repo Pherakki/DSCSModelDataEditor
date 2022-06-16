@@ -1110,30 +1110,21 @@ private:
 
 	void hookUniformValueUpdateOnTextbox(size_t idx, EditorTextbox*& textbox);
 
-	template<int N>
-	void hookUniformValueUpdate(size_t idx, std::array<EditorTextbox*, N>& textboxes)
+	template<typename T>
+	void hookUniformValueUpdate(size_t idx, T& textboxes)
 	{
 		for (auto& textbox : textboxes)
 			this->hookUniformValueUpdateOnTextbox(idx, textbox);
 	}
-	template<int N>
-	void hookUniformValueUpdate(size_t idx, ToggleableTextboxesWidget<N>& widget)
-	{
-		for (auto& textbox : widget.textboxes)
-			this->hookUniformValueUpdateOnTextbox(idx, textbox);
-	}
 
+	template<>
 	void hookUniformValueUpdate(size_t idx, EditorTextbox*& textbox)
 	{
 		this->hookUniformValueUpdateOnTextbox(idx, textbox);
 	}
 
-
-
 	void hookUniformUpdates()
 	{
-		//auto& material = this->selected_objects.getEditableSelectedMaterialResource().getEditableFactoryMaterial();
-
 		{ // DiffuseColor
 			auto& t = this->diffuse_color_settings->diffuse_color_widget->textboxes;
 			this->hookUniformValueUpdate(0x33, t);
@@ -1187,8 +1178,8 @@ private:
 			this->hookUniformValueUpdate(0x46, t);
 		}
 		{ // OverlayStrength
-			auto& t = this->texture_layer_2->overlay_strength;
-			this->hookUniformValueUpdate(0x47, *t);
+			auto& t = this->texture_layer_2->overlay_strength->textboxes;
+			this->hookUniformValueUpdate(0x47, t);
 		}
 		{ // GlassStrength
 			auto& t = this->glassmap_settings->glass_strength->textboxes;
@@ -1211,56 +1202,56 @@ private:
 			this->hookUniformValueUpdate(0x50, t);
 		}
 		{ // ScrollSpeedSet1
-			auto& t = this->uv_settings_1->widget_scrollspeed;
-			this->hookUniformValueUpdate(0x55, *t);
+			auto& t = this->uv_settings_1->widget_scrollspeed->textboxes;
+			this->hookUniformValueUpdate(0x55, t);
 		}
 		{ // ScrollSpeedSet2
-			auto& t = this->uv_settings_2->widget_scrollspeed;
-			this->hookUniformValueUpdate(0x58, *t);
+			auto& t = this->uv_settings_2->widget_scrollspeed->textboxes;
+			this->hookUniformValueUpdate(0x58, t);
 		}
 		{ // ScrollSpeedSet3
-			auto& t = this->uv_settings_3->widget_scrollspeed;
-			this->hookUniformValueUpdate(0x5B, *t);
+			auto& t = this->uv_settings_3->widget_scrollspeed->textboxes;
+			this->hookUniformValueUpdate(0x5B, t);
 		}
 		{ // OffsetSet1
-			auto& t = this->uv_settings_1->widget_offset;
-			this->hookUniformValueUpdate(0x5E, *t);
+			auto& t = this->uv_settings_1->widget_offset->textboxes;
+			this->hookUniformValueUpdate(0x5E, t);
 		}
 		{ // OffsetSet2
-			auto& t = this->uv_settings_2->widget_offset;
-			this->hookUniformValueUpdate(0x61, *t);
+			auto& t = this->uv_settings_2->widget_offset->textboxes;
+			this->hookUniformValueUpdate(0x61, t);
 		}
 		{ // OffsetSet3
-			auto& t = this->uv_settings_3->widget_offset;
-			this->hookUniformValueUpdate(0x74, *t);
+			auto& t = this->uv_settings_3->widget_offset->textboxes;
+			this->hookUniformValueUpdate(0x74, t);
 		}
 		{ // RotationSet1
-			auto& t = this->uv_settings_1->widget_rotation;
-			this->hookUniformValueUpdate(0x78, *t);
+			auto& t = this->uv_settings_1->widget_rotation->textboxes;
+			this->hookUniformValueUpdate(0x78, t);
 		}
 		{ // RotationSet2
-			auto& t = this->uv_settings_2->widget_rotation;
-			this->hookUniformValueUpdate(0x7B, *t);
+			auto& t = this->uv_settings_2->widget_rotation->textboxes;
+			this->hookUniformValueUpdate(0x7B, t);
 		}
 		{ // RotationSet3
-			auto& t = this->uv_settings_3->widget_rotation;
-			this->hookUniformValueUpdate(0x7E, *t);
+			auto& t = this->uv_settings_3->widget_rotation->textboxes;
+			this->hookUniformValueUpdate(0x7E, t);
 		}
 		{ // ScaleSet1
-			auto& t = this->uv_settings_1->widget_scale;
-			this->hookUniformValueUpdate(0x81, *t);
+			auto& t = this->uv_settings_1->widget_scale->textboxes;
+			this->hookUniformValueUpdate(0x81, t);
 		}
 		{ // ScaleSet2
-			auto& t = this->uv_settings_2->widget_scale;
-			this->hookUniformValueUpdate(0x84, *t);
+			auto& t = this->uv_settings_2->widget_scale->textboxes;
+			this->hookUniformValueUpdate(0x84, t);
 		}
 		{ // ScaleSet3
-			auto& t = this->uv_settings_3->widget_scale;
-			this->hookUniformValueUpdate(0x87, *t);
+			auto& t = this->uv_settings_3->widget_scale->textboxes;
+			this->hookUniformValueUpdate(0x87, t);
 		}
 		{ // DistortionStrength
-			auto& t = this->texture_layer_1->distortion;
-			this->hookUniformValueUpdate(0x64, *t);
+			auto& t = this->texture_layer_1->distortion->textboxes;
+			this->hookUniformValueUpdate(0x64, t);
 		}
 		{ // LightMapPower
 			auto& t = this->diffuse_color_settings->light_power_textbox->textboxes;
@@ -1271,12 +1262,12 @@ private:
 			this->hookUniformValueUpdate(0x72, t);
 		}
 		{ // Fat
-			auto& t = this->position_settings->fat;
-			this->hookUniformValueUpdate(0x77, *t);
+			auto& t = this->position_settings->fat->textboxes;
+			this->hookUniformValueUpdate(0x77, t);
 		}
 		{ // ZBias
-			auto& t = this->position_settings->zbias;
-			this->hookUniformValueUpdate(0x8D, *t);
+			auto& t = this->position_settings->zbias->textboxes;
+			this->hookUniformValueUpdate(0x8D, t);
 		}
 
 	}
