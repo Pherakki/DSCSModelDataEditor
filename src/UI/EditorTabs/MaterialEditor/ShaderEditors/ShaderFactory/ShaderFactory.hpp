@@ -1097,157 +1097,43 @@ private:
 	}
 
 
-	void hookUniformUpdates()
+	void hookUniformValueUpdate(size_t idx, EditorTextbox* textbox)
 	{
-		{ // DiffuseColor
-			auto& t = this->diffuse_color_settings->diffuse_color_widget->textboxes;
-			this->hookUniformValueUpdate(0x33, t);
-		}
-		{ // Bumpiness
-			auto& t = this->texture_layer_1->bumpmap_settings->bump_strength->textboxes;
-			this->hookUniformValueUpdate(0x36, t);
-		}
-		{ // SpecularStrength
-			auto& t = this->specular_color_settings->specular_strength->textboxes;
-			this->hookUniformValueUpdate(0x38, t);
-		}
-		{ // SpecularPower
-			auto& t = this->specular_color_settings->specular_power->textboxes;
-			this->hookUniformValueUpdate(0x39, t);
-		}
-		{ // ReflectionStrength
-			auto& t = this->reflection_settings->reflection_strength->textboxes;
-			this->hookUniformValueUpdate(0x3B, t);
-		}
-		{ // FresnelMin
-			auto& t = this->reflection_settings->fresnel_min->textboxes;
-			this->hookUniformValueUpdate(0x3C, t);
-		}
-		{ // FresnelExp
-			auto& t = this->reflection_settings->fresnel_exp->textboxes;
-			this->hookUniformValueUpdate(0x3D, t);
-		}
-		{ // SurfaceColor
-			auto& t = this->illumination_settings->surface_color->textboxes;
-			this->hookUniformValueUpdate(0x3E, t);
-		}
-		{ // FuzzySpecColor
-			auto& t = this->illumination_settings->fuzzy_spec_color->textboxes;
-			this->hookUniformValueUpdate(0x3F, t);
-		}
-		{ // SubColor
-			auto& t = this->illumination_settings->sub_color->textboxes;
-			this->hookUniformValueUpdate(0x40, t);
-		}
-		{ // RollOff
-			auto& t = this->illumination_settings->rolloff->textboxes;
-			this->hookUniformValueUpdate(0x41, t);
-		}
-		{ // VelvetStrength
-			auto& t = this->illumination_settings->velvet_strength->textboxes;
-			this->hookUniformValueUpdate(0x42, t);
-		}
-		{ // OverlayBumpiness
-			auto& t = this->texture_layer_2->bumpmap_settings->bump_strength->textboxes;
-			this->hookUniformValueUpdate(0x46, t);
-		}
-		{ // OverlayStrength
-			auto& t = this->texture_layer_2->overlay_strength->textboxes;
-			this->hookUniformValueUpdate(0x47, t);
-		}
-		{ // GlassStrength
-			auto& t = this->glassmap_settings->glass_strength->textboxes;
-			this->hookUniformValueUpdate(0x4B, t);
-		}
-		{ // Curvature
-			auto& t = this->glassmap_settings->curvature->textboxes;
-			this->hookUniformValueUpdate(0x4C, t);
-		}
-		{ // UpsideDown
-			//auto& t = this->texture_layer_2->bumpmap_settings->bump_strength;
-			//this->hookUniformValueUpdate(0x4D, t);
-		}
-		{ // ParallaxBiasX
-			auto& t = this->texture_layer_1->parallax_settings->bias_xy->textboxes[0];
-			this->hookUniformValueUpdate(0x4F, { t });
-		}
-		{ // ParallaxBiasY
-			auto& t = this->texture_layer_1->parallax_settings->bias_xy->textboxes[1];
-			this->hookUniformValueUpdate(0x50, { t });
-		}
-		{ // ScrollSpeedSet1
-			auto& t = this->uv_settings_1->widget_scrollspeed->textboxes;
-			this->hookUniformValueUpdate(0x55, t);
-		}
-		{ // ScrollSpeedSet2
-			auto& t = this->uv_settings_2->widget_scrollspeed->textboxes;
-			this->hookUniformValueUpdate(0x58, t);
-		}
-		{ // ScrollSpeedSet3
-			auto& t = this->uv_settings_3->widget_scrollspeed->textboxes;
-			this->hookUniformValueUpdate(0x5B, t);
-		}
-		{ // OffsetSet1
-			auto& t = this->uv_settings_1->widget_offset->textboxes;
-			this->hookUniformValueUpdate(0x5E, t);
-		}
-		{ // OffsetSet2
-			auto& t = this->uv_settings_2->widget_offset->textboxes;
-			this->hookUniformValueUpdate(0x61, t);
-		}
-		{ // OffsetSet3
-			auto& t = this->uv_settings_3->widget_offset->textboxes;
-			this->hookUniformValueUpdate(0x74, t);
-		}
-		{ // RotationSet1
-			auto& t = this->uv_settings_1->widget_rotation->textboxes;
-			this->hookUniformValueUpdate(0x78, t);
-		}
-		{ // RotationSet2
-			auto& t = this->uv_settings_2->widget_rotation->textboxes;
-			this->hookUniformValueUpdate(0x7B, t);
-		}
-		{ // RotationSet3
-			auto& t = this->uv_settings_3->widget_rotation->textboxes;
-			this->hookUniformValueUpdate(0x7E, t);
-		}
-		{ // ScaleSet1
-			auto& t = this->uv_settings_1->widget_scale->textboxes;
-			this->hookUniformValueUpdate(0x81, t);
-		}
-		{ // ScaleSet2
-			auto& t = this->uv_settings_2->widget_scale->textboxes;
-			this->hookUniformValueUpdate(0x84, t);
-		}
-		{ // ScaleSet3
-			auto& t = this->uv_settings_3->widget_scale->textboxes;
-			this->hookUniformValueUpdate(0x87, t);
-		}
-		{ // DistortionStrength
-			auto& t = this->texture_layer_1->distortion->textboxes;
-			this->hookUniformValueUpdate(0x64, t);
-		}
-		{ // LightMapPower
-			auto& t = this->diffuse_color_settings->light_power_textbox->textboxes;
-			this->hookUniformValueUpdate(0x71, t);
-		}
-		{ // LightMapStrength
-			auto& t = this->diffuse_color_settings->light_strength_textbox->textboxes;
-			this->hookUniformValueUpdate(0x72, t);
-		}
-		{ // Fat
-			auto& t = this->position_settings->fat->textboxes;
-			this->hookUniformValueUpdate(0x77, t);
-		}
-		{ // ZBias
-			auto& t = this->position_settings->zbias->textboxes;
-			this->hookUniformValueUpdate(0x8D, t);
-		}
-
+		connect(textbox, &EditorTextbox::textChanged, this, [this, idx, textbox]()
+			{
+				auto& material_resource = this->selected_objects.getEditableSelectedMaterialResource();
+				auto& material = material_resource.getFactoryMaterial();
+				material->setUniformValue(idx, this->sanitiseTextChanged({ textbox }));
+				if (material_resource.isFactoryActive())
+					material_resource.updateMainMaterialBuffer(idx, this->sanitiseTextChanged({ textbox }));
+			}
+		);
 	}
 
-	template<typename func>
-	void applyOnTextboxes()
+	void hookUniformUpdates()
+	{
+		struct Functor
+		{
+			ShaderFactory& obj;
+			Functor(ShaderFactory& obj) : obj{ obj } {};
+
+			void operator()(size_t idx, EditorTextbox* textbox) const
+			{
+				this->obj.hookUniformValueUpdate(idx, textbox);
+			}
+
+			void operator()(size_t idx, const std::vector<EditorTextbox*>& textboxes) const
+			{
+				for (auto& textbox : textboxes)
+					this->obj.hookUniformValueUpdate(idx, textbox);
+			}
+		};
+
+		this->applyOnTextboxes(Functor(*this));
+	}
+
+	template<typename T>
+	void applyOnTextboxes(T&& func)
 	{
 		func(0x33, this->diffuse_color_settings->diffuse_color_widget->textboxes);       // DiffuseColor
 		func(0x36, this->texture_layer_1->bumpmap_settings->bump_strength->textboxes);   // Bumpiness
