@@ -11,11 +11,14 @@ class TextboxArrayWidget : public QWidget
 {
 public:
 	QLabel* label;
-	std::array<EditorTextbox*, n_boxes> textboxes;
+	// Should be array, but need to define a consistent API...
+	//std::array<EditorTextbox*, n_boxes> textboxes;
+	std::vector<EditorTextbox*> textboxes;
 
 	explicit TextboxArrayWidget(const QString& label_text, QWidget* parent = Q_NULLPTR) : QWidget(parent)
 	{
 		auto layout = new QHBoxLayout;
+		this->textboxes.resize(n_boxes);
 
 		this->label = new QLabel(label_text);
 		layout->addWidget(this->label);

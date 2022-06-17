@@ -417,28 +417,18 @@ private:
 		return f_value;
 	}
 
-	template<size_t N>
-	auto sanitiseTextChanged(std::array<EditorTextbox*, N>& textboxes)
+	auto sanitiseTextChanged(const std::vector<EditorTextbox*>& textboxes)
 	{
 		std::array<float, 4> out{};
-		for (size_t i=0; i < N; ++i)
+		for (size_t i = 0; i < textboxes.size(); ++i)
 			out[i] = this->safeStof(textboxes[i]->text());
 		return out;
 	}
-	template<size_t N>
-	auto sanitiseTextChanged(ToggleableTextboxesWidget<N>& widget)
-	{
-		std::array<float, 4> out{};
-		for (size_t i = 0; i < N; ++i)
-			out[i] = this->safeStof(widget.textboxes[i]->text());
-		return out;
-	}
-	auto sanitiseTextChanged(EditorTextbox*& textbox)
-	{
-		std::array<float, 4> out{};
-		out[0] = this->safeStof(textbox->text());
-		return out;
-	}
+
+	//auto sanitiseTextChanged(EditorTextbox* textbox)
+	//{
+	//	return this->safeStof(textbox->text());
+	//}
 
 	void assignUniformValues(MaterialPtr& material)
 	{
@@ -497,8 +487,8 @@ private:
 			material->setUniformValue(0x46, this->sanitiseTextChanged(t));
 		}
 		{ // OverlayStrength
-			auto& t = this->texture_layer_2->overlay_strength;
-			material->setUniformValue(0x47, this->sanitiseTextChanged(*t));
+			auto& t = this->texture_layer_2->overlay_strength->textboxes;
+			material->setUniformValue(0x47, this->sanitiseTextChanged(t));
 		}
 		{ // GlassStrength
 			auto& t = this->glassmap_settings->glass_strength->textboxes;
@@ -514,63 +504,63 @@ private:
 		}
 		{ // ParallaxBiasX
 			auto& t = this->texture_layer_1->parallax_settings->bias_xy->textboxes[0];
-			material->setUniformValue(0x4F, this->sanitiseTextChanged(t));
+			material->setUniformValue(0x4F, this->sanitiseTextChanged({ t }));
 		}
 		{ // ParallaxBiasY
 			auto& t = this->texture_layer_1->parallax_settings->bias_xy->textboxes[1];
-			material->setUniformValue(0x50, this->sanitiseTextChanged(t));
+			material->setUniformValue(0x50, this->sanitiseTextChanged({ t }));
 		}
 		{ // ScrollSpeedSet1
-			auto& t = this->uv_settings_1->widget_scrollspeed;
-			material->setUniformValue(0x55, this->sanitiseTextChanged(*t));
+			auto& t = this->uv_settings_1->widget_scrollspeed->textboxes;
+			material->setUniformValue(0x55, this->sanitiseTextChanged(t));
 		}
 		{ // ScrollSpeedSet2
-			auto& t = this->uv_settings_2->widget_scrollspeed;
-			material->setUniformValue(0x58, this->sanitiseTextChanged(*t));
+			auto& t = this->uv_settings_2->widget_scrollspeed->textboxes;
+			material->setUniformValue(0x58, this->sanitiseTextChanged(t));
 		}
 		{ // ScrollSpeedSet3
-			auto& t = this->uv_settings_3->widget_scrollspeed;
-			material->setUniformValue(0x5B, this->sanitiseTextChanged(*t));
+			auto& t = this->uv_settings_3->widget_scrollspeed->textboxes;
+			material->setUniformValue(0x5B, this->sanitiseTextChanged(t));
 		} 
 		{ // OffsetSet1
-			auto& t = this->uv_settings_1->widget_offset;
-			material->setUniformValue(0x5E, this->sanitiseTextChanged(*t));
+			auto& t = this->uv_settings_1->widget_offset->textboxes;
+			material->setUniformValue(0x5E, this->sanitiseTextChanged(t));
 		}
 		{ // OffsetSet2
-			auto& t = this->uv_settings_2->widget_offset;
-			material->setUniformValue(0x61, this->sanitiseTextChanged(*t));
+			auto& t = this->uv_settings_2->widget_offset->textboxes;
+			material->setUniformValue(0x61, this->sanitiseTextChanged(t));
 		}
 		{ // OffsetSet3
-			auto& t = this->uv_settings_3->widget_offset;
-			material->setUniformValue(0x74, this->sanitiseTextChanged(*t));
+			auto& t = this->uv_settings_3->widget_offset->textboxes;
+			material->setUniformValue(0x74, this->sanitiseTextChanged(t));
 		}
 		{ // RotationSet1
-			auto& t = this->uv_settings_1->widget_rotation;
-			material->setUniformValue(0x78, this->sanitiseTextChanged(*t));
+			auto& t = this->uv_settings_1->widget_rotation->textboxes;
+			material->setUniformValue(0x78, this->sanitiseTextChanged(t));
 		}
 		{ // RotationSet2
-			auto& t = this->uv_settings_2->widget_rotation;
-			material->setUniformValue(0x7B, this->sanitiseTextChanged(*t));
+			auto& t = this->uv_settings_2->widget_rotation->textboxes;
+			material->setUniformValue(0x7B, this->sanitiseTextChanged(t));
 		}
 		{ // RotationSet3
-			auto& t = this->uv_settings_3->widget_rotation;
-			material->setUniformValue(0x7E, this->sanitiseTextChanged(*t));
+			auto& t = this->uv_settings_3->widget_rotation->textboxes;
+			material->setUniformValue(0x7E, this->sanitiseTextChanged(t));
 		}
 		{ // ScaleSet1
-			auto& t = this->uv_settings_1->widget_scale;
-			material->setUniformValue(0x81, this->sanitiseTextChanged(*t));
+			auto& t = this->uv_settings_1->widget_scale->textboxes;
+			material->setUniformValue(0x81, this->sanitiseTextChanged(t));
 		}
 		{ // ScaleSet2
-			auto& t = this->uv_settings_2->widget_scale;
-			material->setUniformValue(0x84, this->sanitiseTextChanged(*t));
+			auto& t = this->uv_settings_2->widget_scale->textboxes;
+			material->setUniformValue(0x84, this->sanitiseTextChanged(t));
 		}
 		{ // ScaleSet3
-			auto& t = this->uv_settings_3->widget_scale;
-			material->setUniformValue(0x87, this->sanitiseTextChanged(*t));
+			auto& t = this->uv_settings_3->widget_scale->textboxes;
+			material->setUniformValue(0x87, this->sanitiseTextChanged(t));
 		}
 		{ // DistortionStrength
-			auto& t = this->texture_layer_1->distortion;
-			material->setUniformValue(0x64, this->sanitiseTextChanged(*t));
+			auto& t = this->texture_layer_1->distortion->textboxes;
+			material->setUniformValue(0x64, this->sanitiseTextChanged(t));
 		}
 		{ // LightMapPower
 			auto& t = this->diffuse_color_settings->light_power_textbox->textboxes;
@@ -581,12 +571,12 @@ private:
 			material->setUniformValue(0x72, this->sanitiseTextChanged(t));
 		}
 		{ // Fat
-			auto& t = this->position_settings->fat;
-			material->setUniformValue(0x77, this->sanitiseTextChanged(*t));
+			auto& t = this->position_settings->fat->textboxes;
+			material->setUniformValue(0x77, this->sanitiseTextChanged(t));
 		}
 		{ // ZBias
-			auto& t = this->position_settings->zbias;
-			material->setUniformValue(0x8D, this->sanitiseTextChanged(*t));
+			auto& t = this->position_settings->zbias->textboxes;
+			material->setUniformValue(0x8D, this->sanitiseTextChanged(t));
 		}
 
 	}
@@ -600,39 +590,20 @@ private:
 		textbox->insert(QString::fromStdString(stream.str()));
 	}
 
-	template<size_t N>
-	void readbackUniformToUI(const MaterialPtr& material, size_t idx, std::array<EditorTextbox*, N>& textboxes)
+
+	void readbackUniformToUI(const MaterialPtr& material, size_t idx, const std::vector<EditorTextbox*>& textboxes)
 	{
 		auto& buf = material->local_uniform_buffer;
-		for (size_t i = 0; i < N; ++i)
+		for (size_t i = 0; i < textboxes.size(); ++i)
 		{
 			auto& textbox = textboxes[i];
 			this->readbackUniformToUIBase(textbox, buf[idx][i]);
 			textbox->setCursorPosition(0);
 		}
 	}
-	template<size_t N>
-	void readbackUniformToUI(const MaterialPtr& material, size_t idx, ToggleableTextboxesWidget<N>& widget)
-	{
-		auto& buf = material->local_uniform_buffer;
-		for (size_t i = 0; i < N; ++i)
-		{
-			auto& textbox = widget.textboxes[i];
-			this->readbackUniformToUIBase(textbox, buf[idx][i]);
-			textbox->setCursorPosition(0);
-		}
-	}
-	void readbackUniformToUI(const MaterialPtr& material, size_t idx, EditorTextbox*& textbox)
-	{
-		auto& buf = material->local_uniform_buffer;
-		this->readbackUniformToUIBase(textbox, buf[idx][0]);
-		textbox->setCursorPosition(0);
-	}
 
 	void readbackUniformValues(const MaterialPtr& material)
 	{
-		//auto& material = this->selected_objects.getEditableSelectedMaterialResource().getEditableFactoryMaterial();
-
 		{ // DiffuseColor
 			auto& t = this->diffuse_color_settings->diffuse_color_widget->textboxes;
 			this->readbackUniformToUI(material, 0x33, t);
@@ -686,8 +657,8 @@ private:
 			this->readbackUniformToUI(material, 0x46, t);
 		}
 		{ // OverlayStrength
-			auto& t = this->texture_layer_2->overlay_strength;
-			this->readbackUniformToUI(material, 0x47, *t);
+			auto& t = this->texture_layer_2->overlay_strength->textboxes;
+			this->readbackUniformToUI(material, 0x47, t);
 		}
 		{ // GlassStrength
 			auto& t = this->glassmap_settings->glass_strength->textboxes;
@@ -703,63 +674,63 @@ private:
 		}
 		{ // ParallaxBiasX
 			auto& t = this->texture_layer_1->parallax_settings->bias_xy->textboxes[0];
-			this->readbackUniformToUI(material, 0x4F, t);
+			this->readbackUniformToUI(material, 0x4F, { t });
 		}
 		{ // ParallaxBiasY
 			auto& t = this->texture_layer_1->parallax_settings->bias_xy->textboxes[1];
-			this->readbackUniformToUI(material, 0x50, t);
+			this->readbackUniformToUI(material, 0x50, { t });
 		}
 		{ // ScrollSpeedSet1
-			auto& t = this->uv_settings_1->widget_scrollspeed;
-			this->readbackUniformToUI(material, 0x55, *t);
+			auto& t = this->uv_settings_1->widget_scrollspeed->textboxes;
+			this->readbackUniformToUI(material, 0x55, t);
 		}
 		{ // ScrollSpeedSet2
-			auto& t = this->uv_settings_2->widget_scrollspeed;
-			this->readbackUniformToUI(material, 0x58, *t);
+			auto& t = this->uv_settings_2->widget_scrollspeed->textboxes;
+			this->readbackUniformToUI(material, 0x58, t);
 		}
 		{ // ScrollSpeedSet3
-			auto& t = this->uv_settings_3->widget_scrollspeed;
-			this->readbackUniformToUI(material, 0x5B, *t);
+			auto& t = this->uv_settings_3->widget_scrollspeed->textboxes;
+			this->readbackUniformToUI(material, 0x5B, t);
 		}
 		{ // OffsetSet1
-			auto& t = this->uv_settings_1->widget_offset;
-			this->readbackUniformToUI(material, 0x5E, *t);
+			auto& t = this->uv_settings_1->widget_offset->textboxes;
+			this->readbackUniformToUI(material, 0x5E, t);
 		}
 		{ // OffsetSet2
-			auto& t = this->uv_settings_2->widget_offset;
-			this->readbackUniformToUI(material, 0x61, *t);
+			auto& t = this->uv_settings_2->widget_offset->textboxes;
+			this->readbackUniformToUI(material, 0x61, t);
 		}
 		{ // OffsetSet3
-			auto& t = this->uv_settings_3->widget_offset;
-			this->readbackUniformToUI(material, 0x74, *t);
+			auto& t = this->uv_settings_3->widget_offset->textboxes;
+			this->readbackUniformToUI(material, 0x74, t);
 		}
 		{ // RotationSet1
-			auto& t = this->uv_settings_1->widget_rotation;
-			this->readbackUniformToUI(material, 0x78, *t);
+			auto& t = this->uv_settings_1->widget_rotation->textboxes;
+			this->readbackUniformToUI(material, 0x78, t);
 		}
 		{ // RotationSet2
-			auto& t = this->uv_settings_2->widget_rotation;
-			this->readbackUniformToUI(material, 0x7B, *t);
+			auto& t = this->uv_settings_2->widget_rotation->textboxes;
+			this->readbackUniformToUI(material, 0x7B, t);
 		}
 		{ // RotationSet3
-			auto& t = this->uv_settings_3->widget_rotation;
-			this->readbackUniformToUI(material, 0x7E, *t);
+			auto& t = this->uv_settings_3->widget_rotation->textboxes;
+			this->readbackUniformToUI(material, 0x7E, t);
 		}
 		{ // ScaleSet1
-			auto& t = this->uv_settings_1->widget_scale;
-			this->readbackUniformToUI(material, 0x81, *t);
+			auto& t = this->uv_settings_1->widget_scale->textboxes;
+			this->readbackUniformToUI(material, 0x81, t);
 		}
 		{ // ScaleSet2
-			auto& t = this->uv_settings_2->widget_scale;
-			this->readbackUniformToUI(material, 0x84, *t);
+			auto& t = this->uv_settings_2->widget_scale->textboxes;
+			this->readbackUniformToUI(material, 0x84, t);
 		}
 		{ // ScaleSet3
-			auto& t = this->uv_settings_3->widget_scale;
-			this->readbackUniformToUI(material, 0x87, *t);
+			auto& t = this->uv_settings_3->widget_scale->textboxes;
+			this->readbackUniformToUI(material, 0x87, t);
 		}
 		{ // DistortionStrength
-			auto& t = this->texture_layer_1->distortion;
-			material->setUniformValue(0x64, this->sanitiseTextChanged(*t));
+			auto& t = this->texture_layer_1->distortion->textboxes;
+			material->setUniformValue(0x64, this->sanitiseTextChanged(t));
 		}
 		{ // LightMapPower
 			auto& t = this->diffuse_color_settings->light_power_textbox->textboxes;
@@ -770,12 +741,12 @@ private:
 			this->readbackUniformToUI(material, 0x72, t);
 		}
 		{ // Fat
-			auto& t = this->position_settings->fat;
-			this->readbackUniformToUI(material, 0x77, *t);
+			auto& t = this->position_settings->fat->textboxes;
+			this->readbackUniformToUI(material, 0x77, t);
 		}
 		{ // ZBias
-			auto& t = this->position_settings->zbias;
-			this->readbackUniformToUI(material, 0x8D, *t);
+			auto& t = this->position_settings->zbias->textboxes;
+			this->readbackUniformToUI(material, 0x8D, t);
 		}
 
 	}
@@ -1108,20 +1079,23 @@ private:
 		connectUIUpdate(this->position_settings);
 	}
 
-	void hookUniformValueUpdateOnTextbox(size_t idx, EditorTextbox*& textbox);
 
-	template<typename T>
-	void hookUniformValueUpdate(size_t idx, T& textboxes)
+	void hookUniformValueUpdate(size_t idx, const std::vector<EditorTextbox*>& textboxes)
 	{
 		for (auto& textbox : textboxes)
-			this->hookUniformValueUpdateOnTextbox(idx, textbox);
+		{
+			connect(textbox, &EditorTextbox::textChanged, this, [this, idx, &textbox]()
+				{
+					auto& material_resource = this->selected_objects.getEditableSelectedMaterialResource();
+					auto& material = material_resource.getFactoryMaterial();
+					material->setUniformValue(idx, this->sanitiseTextChanged({ textbox }));
+					if (material_resource.isFactoryActive())
+						material_resource.updateMainMaterialBuffer(idx, this->sanitiseTextChanged({ textbox }));
+				}
+			);
+		}
 	}
 
-	template<>
-	void hookUniformValueUpdate(size_t idx, EditorTextbox*& textbox)
-	{
-		this->hookUniformValueUpdateOnTextbox(idx, textbox);
-	}
 
 	void hookUniformUpdates()
 	{
@@ -1195,11 +1169,11 @@ private:
 		}
 		{ // ParallaxBiasX
 			auto& t = this->texture_layer_1->parallax_settings->bias_xy->textboxes[0];
-			this->hookUniformValueUpdate(0x4F, t);
+			this->hookUniformValueUpdate(0x4F, { t });
 		}
 		{ // ParallaxBiasY
 			auto& t = this->texture_layer_1->parallax_settings->bias_xy->textboxes[1];
-			this->hookUniformValueUpdate(0x50, t);
+			this->hookUniformValueUpdate(0x50, { t });
 		}
 		{ // ScrollSpeedSet1
 			auto& t = this->uv_settings_1->widget_scrollspeed->textboxes;
