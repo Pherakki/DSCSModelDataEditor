@@ -581,177 +581,6 @@ private:
 
 	}
 
-	template <typename T>
-	inline void readbackUniformToUIBase(T* textbox, float val)
-	{
-		std::stringstream stream;
-		stream << std::fixed << std::setprecision(textbox->getNumDigits()) << val;
-		textbox->clear();
-		textbox->insert(QString::fromStdString(stream.str()));
-	}
-
-
-	void readbackUniformToUI(const MaterialPtr& material, size_t idx, const std::vector<EditorTextbox*>& textboxes)
-	{
-		auto& buf = material->local_uniform_buffer;
-		for (size_t i = 0; i < textboxes.size(); ++i)
-		{
-			auto& textbox = textboxes[i];
-			this->readbackUniformToUIBase(textbox, buf[idx][i]);
-			textbox->setCursorPosition(0);
-		}
-	}
-
-	void readbackUniformValues(const MaterialPtr& material)
-	{
-		{ // DiffuseColor
-			auto& t = this->diffuse_color_settings->diffuse_color_widget->textboxes;
-			this->readbackUniformToUI(material, 0x33, t);
-		}
-		{ // Bumpiness
-			auto& t = this->texture_layer_1->bumpmap_settings->bump_strength->textboxes;
-			this->readbackUniformToUI(material, 0x36, t);
-		}
-		{ // SpecularStrength
-			auto& t = this->specular_color_settings->specular_strength->textboxes;
-			this->readbackUniformToUI(material, 0x38, t);
-		}
-		{ // SpecularPower
-			auto& t = this->specular_color_settings->specular_power->textboxes;
-			this->readbackUniformToUI(material, 0x39, t);
-		}
-		{ // ReflectionStrength
-			auto& t = this->reflection_settings->reflection_strength->textboxes;
-			this->readbackUniformToUI(material, 0x3B, t);
-		}
-		{ // FresnelMin
-			auto& t = this->reflection_settings->fresnel_min->textboxes;
-			this->readbackUniformToUI(material, 0x3C, t);
-		}
-		{ // FresnelExp
-			auto& t = this->reflection_settings->fresnel_exp->textboxes;
-			this->readbackUniformToUI(material, 0x3D, t);
-		}
-		{ // SurfaceColor
-			auto& t = this->illumination_settings->surface_color->textboxes;
-			this->readbackUniformToUI(material, 0x3E, t);
-		}
-		{ // FuzzySpecColor
-			auto& t = this->illumination_settings->fuzzy_spec_color->textboxes;
-			this->readbackUniformToUI(material, 0x3F, t);
-		}
-		{ // SubColor
-			auto& t = this->illumination_settings->sub_color->textboxes;
-			this->readbackUniformToUI(material, 0x40, t);
-		}
-		{ // RollOff
-			auto& t = this->illumination_settings->rolloff->textboxes;
-			this->readbackUniformToUI(material, 0x41, t);
-		}
-		{ // VelvetStrength
-			auto& t = this->illumination_settings->velvet_strength->textboxes;
-			this->readbackUniformToUI(material, 0x42, t);
-		}
-		{ // OverlayBumpiness
-			auto& t = this->texture_layer_2->bumpmap_settings->bump_strength->textboxes;
-			this->readbackUniformToUI(material, 0x46, t);
-		}
-		{ // OverlayStrength
-			auto& t = this->texture_layer_2->overlay_strength->textboxes;
-			this->readbackUniformToUI(material, 0x47, t);
-		}
-		{ // GlassStrength
-			auto& t = this->glassmap_settings->glass_strength->textboxes;
-			this->readbackUniformToUI(material, 0x4B, t);
-		}
-		{ // Curvature
-			auto& t = this->glassmap_settings->curvature->textboxes;
-			this->readbackUniformToUI(material, 0x4C, t);
-		}
-		{ // UpsideDown
-			//auto& t = this->texture_layer_2->bumpmap_settings->bump_strength;
-			//this->readbackUniformToUI(material, 0x4D, t);
-		}
-		{ // ParallaxBiasX
-			auto& t = this->texture_layer_1->parallax_settings->bias_xy->textboxes[0];
-			this->readbackUniformToUI(material, 0x4F, { t });
-		}
-		{ // ParallaxBiasY
-			auto& t = this->texture_layer_1->parallax_settings->bias_xy->textboxes[1];
-			this->readbackUniformToUI(material, 0x50, { t });
-		}
-		{ // ScrollSpeedSet1
-			auto& t = this->uv_settings_1->widget_scrollspeed->textboxes;
-			this->readbackUniformToUI(material, 0x55, t);
-		}
-		{ // ScrollSpeedSet2
-			auto& t = this->uv_settings_2->widget_scrollspeed->textboxes;
-			this->readbackUniformToUI(material, 0x58, t);
-		}
-		{ // ScrollSpeedSet3
-			auto& t = this->uv_settings_3->widget_scrollspeed->textboxes;
-			this->readbackUniformToUI(material, 0x5B, t);
-		}
-		{ // OffsetSet1
-			auto& t = this->uv_settings_1->widget_offset->textboxes;
-			this->readbackUniformToUI(material, 0x5E, t);
-		}
-		{ // OffsetSet2
-			auto& t = this->uv_settings_2->widget_offset->textboxes;
-			this->readbackUniformToUI(material, 0x61, t);
-		}
-		{ // OffsetSet3
-			auto& t = this->uv_settings_3->widget_offset->textboxes;
-			this->readbackUniformToUI(material, 0x74, t);
-		}
-		{ // RotationSet1
-			auto& t = this->uv_settings_1->widget_rotation->textboxes;
-			this->readbackUniformToUI(material, 0x78, t);
-		}
-		{ // RotationSet2
-			auto& t = this->uv_settings_2->widget_rotation->textboxes;
-			this->readbackUniformToUI(material, 0x7B, t);
-		}
-		{ // RotationSet3
-			auto& t = this->uv_settings_3->widget_rotation->textboxes;
-			this->readbackUniformToUI(material, 0x7E, t);
-		}
-		{ // ScaleSet1
-			auto& t = this->uv_settings_1->widget_scale->textboxes;
-			this->readbackUniformToUI(material, 0x81, t);
-		}
-		{ // ScaleSet2
-			auto& t = this->uv_settings_2->widget_scale->textboxes;
-			this->readbackUniformToUI(material, 0x84, t);
-		}
-		{ // ScaleSet3
-			auto& t = this->uv_settings_3->widget_scale->textboxes;
-			this->readbackUniformToUI(material, 0x87, t);
-		}
-		{ // DistortionStrength
-			auto& t = this->texture_layer_1->distortion->textboxes;
-			material->setUniformValue(0x64, this->sanitiseTextChanged(t));
-		}
-		{ // LightMapPower
-			auto& t = this->diffuse_color_settings->light_power_textbox->textboxes;
-			this->readbackUniformToUI(material, 0x71, t);
-		}
-		{ // LightMapStrength
-			auto& t = this->diffuse_color_settings->light_strength_textbox->textboxes;
-			this->readbackUniformToUI(material, 0x72, t);
-		}
-		{ // Fat
-			auto& t = this->position_settings->fat->textboxes;
-			this->readbackUniformToUI(material, 0x77, t);
-		}
-		{ // ZBias
-			auto& t = this->position_settings->zbias->textboxes;
-			this->readbackUniformToUI(material, 0x8D, t);
-		}
-
-	}
-
-
 	void readbackUISettings()
 	{
 		auto& selected_material = this->selected_objects.getEditableSelectedMaterialResource().getFactoryMaterial();
@@ -1079,21 +908,40 @@ private:
 		connectUIUpdate(this->position_settings);
 	}
 
-
-	void hookUniformValueUpdate(size_t idx, const std::vector<EditorTextbox*>& textboxes)
+	void readbackUniformToUI(const MaterialPtr& material, int textbox_idx, size_t idx, EditorTextbox* textbox)
 	{
-		for (auto& textbox : textboxes)
+		auto& buf = material->local_uniform_buffer;
+		std::stringstream stream;
+		stream << std::fixed << std::setprecision(textbox->getNumDigits()) << buf[idx][textbox_idx];
+		textbox->clear();
+		textbox->insert(QString::fromStdString(stream.str()));
+		textbox->setCursorPosition(0);
+	}
+
+	void readbackUniformValues(const MaterialPtr& material)
+	{
+		struct Functor
 		{
-			connect(textbox, &EditorTextbox::textChanged, this, [this, idx, &textbox]()
-				{
-					auto& material_resource = this->selected_objects.getEditableSelectedMaterialResource();
-					auto& material = material_resource.getFactoryMaterial();
-					material->setUniformValue(idx, this->sanitiseTextChanged({ textbox }));
-					if (material_resource.isFactoryActive())
-						material_resource.updateMainMaterialBuffer(idx, this->sanitiseTextChanged({ textbox }));
-				}
-			);
-		}
+			ShaderFactory& obj;
+			const MaterialPtr& material;
+			Functor(ShaderFactory& obj, const MaterialPtr& material) 
+				: obj{ obj }
+				, material{ material }
+			{};
+
+			void operator()(size_t idx, EditorTextbox* textbox) const
+			{
+				this->obj.readbackUniformToUI(this->material, 0, idx, textbox);
+			}
+
+			void operator()(size_t idx, const std::vector<EditorTextbox*>& textboxes) const
+			{
+				for (int i=0; i < textboxes.size(); ++i)
+					this->obj.readbackUniformToUI(this->material, i, idx, textboxes[i]);
+			}
+		};
+
+		this->applyOnTextboxes(Functor(*this, material));
 	}
 
 
