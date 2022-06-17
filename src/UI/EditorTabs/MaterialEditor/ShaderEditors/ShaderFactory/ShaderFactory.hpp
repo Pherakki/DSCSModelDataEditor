@@ -958,6 +958,20 @@ private:
 		);
 	}
 
+	void hookUniformValueUpdate(size_t idx, const std::vector<EditorTextbox*>& textboxes)
+	{
+		for (auto& textbox : textboxes)
+			connect(textbox, &EditorTextbox::textChanged, this, [this, idx, textboxes]()
+				{
+					auto& material_resource = this->selected_objects.getEditableSelectedMaterialResource();
+					auto& material = material_resource.getFactoryMaterial();
+					material->setUniformValue(idx, this->sanitiseTextChanged(textboxes));
+					if (material_resource.isFactoryActive())
+						material_resource.updateMainMaterialBuffer(idx, this->sanitiseTextChanged(textboxes));
+				}
+			);
+	}
+
 	void hookUniformUpdates()
 	{
 		struct Functor
@@ -972,8 +986,7 @@ private:
 
 			void operator()(size_t idx, const std::vector<EditorTextbox*>& textboxes) const
 			{
-				for (auto& textbox : textboxes)
-					this->obj.hookUniformValueUpdate(idx, textbox);
+				this->obj.hookUniformValueUpdate(idx, textboxes);
 			}
 		};
 
