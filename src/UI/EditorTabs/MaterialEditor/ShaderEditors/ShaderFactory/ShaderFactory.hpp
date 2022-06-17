@@ -705,6 +705,8 @@ private:
 	template <typename T>
 	auto getSettingsUpdated(T* widget)
 	{
+		// Gets a function pointer to a function called "settingsUpdated" on the type T
+		// Will cause a compile error if no function exists on T, which is what should happen
 		return &std::remove_reference<decltype(*widget)>::type::settingsUpdated;
 	}
 
@@ -728,8 +730,6 @@ private:
 		connectUIUpdate(this->glassmap_settings);
 		connectUIUpdate(this->position_settings);
 	}
-
-
 
 	float safeStof(const QString& value) const noexcept
 	{
