@@ -827,9 +827,9 @@ private:
 			{
 				auto& material_resource = this->selected_objects.getEditableSelectedMaterialResource();
 				auto& material = material_resource.getFactoryMaterial();
-				material->setUniformValue(idx, this->sanitiseTextChanged({ textbox }));
+				material->setUniformValue(idx, { this->sanitiseTextChanged(textbox) });
 				if (material_resource.isFactoryActive())
-					material_resource.updateMainMaterialBuffer(idx, this->sanitiseTextChanged({ textbox }));
+					material_resource.updateMainMaterialBuffer(idx, { this->sanitiseTextChanged(textbox) });
 			}
 		);
 	}
