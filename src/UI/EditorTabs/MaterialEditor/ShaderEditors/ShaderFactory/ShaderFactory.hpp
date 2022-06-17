@@ -1152,8 +1152,8 @@ private:
 		func(0x4B, this->glassmap_settings->glass_strength->textboxes);                  // GlassStrength
 		func(0x4C, this->glassmap_settings->curvature->textboxes);                       // Curvature
 		//func(0x4D, this->texture_layer_2->bumpmap_settings->bump_strength);              // UpsideDown
-		func(0x4F, { this->texture_layer_1->parallax_settings->bias_xy->textboxes[0] }); // ParallaxBiasX
-		func(0x50, { this->texture_layer_1->parallax_settings->bias_xy->textboxes[1] }); // ParallaxBiasY
+		func(0x4F, this->texture_layer_1->parallax_settings->bias_xy->textboxes[0]);     // ParallaxBiasX
+		func(0x50, this->texture_layer_1->parallax_settings->bias_xy->textboxes[1]);     // ParallaxBiasY
 		func(0x55, this->uv_settings_1->widget_scrollspeed->textboxes);                  // ScrollSpeedSet1
 		func(0x58, this->uv_settings_2->widget_scrollspeed->textboxes);                  // ScrollSpeedSet2
 		func(0x5B, this->uv_settings_3->widget_scrollspeed->textboxes);                  // ScrollSpeedSet3
