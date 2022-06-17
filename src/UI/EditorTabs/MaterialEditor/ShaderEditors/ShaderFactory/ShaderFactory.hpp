@@ -1245,6 +1245,48 @@ private:
 		}
 
 	}
+
+	template<typename func>
+	void applyOnTextboxes()
+	{
+		func(0x33, this->diffuse_color_settings->diffuse_color_widget->textboxes);       // DiffuseColor
+		func(0x36, this->texture_layer_1->bumpmap_settings->bump_strength->textboxes);   // Bumpiness
+		func(0x38, this->specular_color_settings->specular_strength->textboxes);         // SpecularStrength
+		func(0x39, this->specular_color_settings->specular_power->textboxes);            // SpecularPower
+		func(0x3B, this->reflection_settings->reflection_strength->textboxes);           // ReflectionStrength
+		func(0x3C, this->reflection_settings->fresnel_min->textboxes);                   // FresnelMin
+		func(0x3D, this->reflection_settings->fresnel_exp->textboxes);                   // FresnelExp
+		func(0x3E, this->illumination_settings->surface_color->textboxes);               // SurfaceColor
+		func(0x3F, this->illumination_settings->fuzzy_spec_color->textboxes);            // FuzzySpecColor
+		func(0x40, this->illumination_settings->sub_color->textboxes);                   // SubColor
+		func(0x41, this->illumination_settings->rolloff->textboxes);                     // RollOff
+		func(0x42, this->illumination_settings->velvet_strength->textboxes);             // VelvetStrength
+		func(0x46, this->texture_layer_2->bumpmap_settings->bump_strength->textboxes);   // OverlayBumpiness
+		func(0x47, this->texture_layer_2->overlay_strength->textboxes);                  // OverlayStrength
+		func(0x4B, this->glassmap_settings->glass_strength->textboxes);                  // GlassStrength
+		func(0x4C, this->glassmap_settings->curvature->textboxes);                       // Curvature
+		//func(0x4D, this->texture_layer_2->bumpmap_settings->bump_strength);              // UpsideDown
+		func(0x4F, { this->texture_layer_1->parallax_settings->bias_xy->textboxes[0] }); // ParallaxBiasX
+		func(0x50, { this->texture_layer_1->parallax_settings->bias_xy->textboxes[1] }); // ParallaxBiasY
+		func(0x55, this->uv_settings_1->widget_scrollspeed->textboxes);                  // ScrollSpeedSet1
+		func(0x58, this->uv_settings_2->widget_scrollspeed->textboxes);                  // ScrollSpeedSet2
+		func(0x5B, this->uv_settings_3->widget_scrollspeed->textboxes);                  // ScrollSpeedSet3
+		func(0x5E, this->uv_settings_1->widget_offset->textboxes);                       // OffsetSet1
+		func(0x61, this->uv_settings_2->widget_offset->textboxes);                       // OffsetSet2
+		func(0x74, this->uv_settings_3->widget_offset->textboxes);                       // OffsetSet3
+		func(0x78, this->uv_settings_1->widget_rotation->textboxes);                     // RotationSet1
+		func(0x7B, this->uv_settings_2->widget_rotation->textboxes);                     // RotationSet2
+		func(0x7E, this->uv_settings_3->widget_rotation->textboxes);                     // RotationSet3
+		func(0x81, this->uv_settings_1->widget_scale->textboxes);                        // ScaleSet1
+		func(0x84, this->uv_settings_2->widget_scale->textboxes);                        // ScaleSet2
+		func(0x87, this->uv_settings_3->widget_scale->textboxes);                        // ScaleSet3
+		func(0x64, this->texture_layer_1->distortion->textboxes);                        // DistortionStrength
+		func(0x71, this->diffuse_color_settings->light_power_textbox->textboxes);        // LightMapPower
+		func(0x72, this->diffuse_color_settings->light_strength_textbox->textboxes);     // LightMapStrength
+		func(0x77, this->position_settings->fat->textboxes);                             // Fat
+		func(0x8D, this->position_settings->zbias->textboxes);                           // ZBias
+	}
+
 public:
 	explicit ShaderFactory(SelectedObjectReferences& sor, TabMaterialsLibrary& tab_materials, ShaderBackend_t& shader_backend, Rendering::DSCS::AnimationBuffer& animation_buffer, QWidget* parent = nullptr)
 		: QWidget(parent)
