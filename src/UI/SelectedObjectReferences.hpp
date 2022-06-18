@@ -37,10 +37,12 @@ public:
 	const auto& getMaterial()           const noexcept { return this->main_material; }
 	const auto& getPrebuiltMaterial()   const noexcept { return this->tab_materials.prebuilt_material; }
 	const auto& getFactoryMaterial()    const noexcept { return this->tab_materials.factory_material; }
+	const auto& getFactorySettings()    const noexcept { return this->tab_materials.settings; }
 	const auto& getCustomCodeMaterial() const noexcept { return this->tab_materials.custom_code_material; }
 	auto& getEditableMaterial()           noexcept { return this->main_material; } // This needs to go in favour of automatic updates
 	auto& getEditablePrebuiltMaterial()   noexcept { return this->tab_materials.prebuilt_material; }
 	auto& getEditableFactoryMaterial()    noexcept { return this->tab_materials.factory_material; }
+	auto& getEditableFactorySettings()    noexcept { return this->tab_materials.settings; }
 	auto& getEditableCustomCodeMaterial() noexcept { return this->tab_materials.custom_code_material; }
 
 	const bool isPrebuiltActive()   const noexcept { return this->active_material == this->tab_materials.prebuilt_material; }

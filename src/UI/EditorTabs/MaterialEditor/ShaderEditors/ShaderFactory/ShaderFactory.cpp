@@ -333,7 +333,7 @@ bool ShaderFactory::getUVSlot(size_t idx)
 
 void ShaderFactory::regenerateMaterial()
 {
-	FactorySettings settings;
+	auto& settings = this->selected_objects.getEditableSelectedMaterialResource().getEditableFactorySettings();
 	TextureRefs textures;
 	this->createSettingsFromUI(settings, textures);
 
