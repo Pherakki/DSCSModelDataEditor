@@ -18,6 +18,9 @@ add_executable (${PROJECT_NAME}
                 "FileFormats/DSCS/NameFile/NameReadWrite.cpp"
                 "FileFormats/DSCS/SkelFile/SkelReadWrite.cpp"
                 "FileFormats/Textures/DDS.cpp"
+                "glad/include/glad/glad.h"
+                "glad/include/KHR/khrplatform.h"
+                "glad/src/glad.c"
                 "Rendering/DSCS/DataObjects/AnimationSampler.cpp" 
                 "Rendering/DSCS/DataObjects/OpenGLDSCSTexture.cpp" 
                 "Rendering/DSCS/DataObjects/OpenGLDSCSMesh.cpp" 
@@ -107,7 +110,6 @@ set(CMAKE_INCLUDE_CURRENT_DIR ON)
 find_package(Qt5 COMPONENTS Core REQUIRED)
 find_package(Qt5 COMPONENTS Gui REQUIRED)
 find_package(Qt5 COMPONENTS Widgets REQUIRED)
-
 
 target_link_libraries(${PROJECT_NAME}
   Qt5::Core

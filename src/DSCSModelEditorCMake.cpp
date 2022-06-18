@@ -1,7 +1,6 @@
 ﻿// DSCSModelEditorCMake.cpp : Defines the entry point for the application.
 //
 #include <iostream>
-
 #include <QtWidgets/QApplication>
 #include "serialisation/ReadWriter.hpp"
 #include "UI/MainWindow.hpp"
