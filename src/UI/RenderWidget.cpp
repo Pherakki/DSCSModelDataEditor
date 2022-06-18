@@ -1,5 +1,7 @@
 #include "RenderWidget.hpp"
 
+#include "../Utils/OpenGL.hpp"
+
 typedef Rendering::DSCS::DataObjects::OpenGLDSCSModel Model;
 typedef std::shared_ptr<Model> ModelPtr;
 
@@ -54,6 +56,7 @@ namespace CustomWidgets
 
 	void RenderWidget::initializeGL()
 	{
+		initGLAD();
 		initializeOpenGLFunctions();
 		glClearColor(0.4f, 0.4f, 0.4f, 1.0f);
 		this->refreshRenderSettings();

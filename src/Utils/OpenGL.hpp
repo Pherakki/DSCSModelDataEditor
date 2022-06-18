@@ -6,8 +6,8 @@
 class OpenGLErrorChecker
 {
 public:
-	OpenGLErrorChecker();
 	void checkGLError();
 };
 
 void checkGLError();
+void initGLAD();
