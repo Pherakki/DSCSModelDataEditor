@@ -706,6 +706,12 @@ void ShaderFactory::readbackUISettings()
 	this->readbackUniformValues(selected_material);
 }
 
+void ShaderFactory::createUIFromSettings()
+{
+	auto& settings = this->selected_objects.getEditableSelectedMaterialResource().getEditableFactorySettings();
+
+	this->texture_layer_1->diffuse_texture_settings->checkbox->setChecked(settings.texlayer_1.colorsampler.enabled);
+}
 
 // ######################## //
 // Texture Update Functions //

@@ -45,7 +45,6 @@
 #include "Widgets/BaseWidgets/ToggleableTextboxes.hpp"
 
 
-
 struct TextureRefs
 {
 	typedef std::shared_ptr<Rendering::DataObjects::OpenGLDSCSTexture> Texture;
@@ -142,6 +141,7 @@ private:
 	// UI Readback Functions
 	void updateReadbackSettings();
 	void readbackUISettings();
+	void createUIFromSettings();
 
 	// Texture Update Functions
 	void updateTexturesOn(QComboBox* combobox, TextureLibrary::TextureSubLibrary_t& tex_sublib);
