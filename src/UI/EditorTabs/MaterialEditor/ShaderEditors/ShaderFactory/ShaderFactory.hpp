@@ -110,7 +110,6 @@ private:
 	MaterialPtr active_local_material = nullptr;
 	ShaderBackend_t& shader_backend;
 	SelectedObjectReferences& selected_objects;
-	TabMaterialsLibrary& tab_materials;
 	bool setting_update_in_progress = false;
 
 	bool anyLayer1SamplerEnabled()
@@ -177,12 +176,11 @@ private:
 	void applyOnTextboxes(T&& func);
 
 public:
-	explicit ShaderFactory(SelectedObjectReferences& sor, TabMaterialsLibrary& tab_materials, ShaderBackend_t& shader_backend, Rendering::DSCS::AnimationBuffer& animation_buffer, QWidget* parent = nullptr)
+	explicit ShaderFactory(SelectedObjectReferences& sor, ShaderBackend_t& shader_backend, Rendering::DSCS::AnimationBuffer& animation_buffer, QWidget* parent = nullptr)
 		: QWidget(parent)
 		, shader_backend{ shader_backend }
 		, animation_buffer{ animation_buffer }
 		, selected_objects{ sor }
-		, tab_materials{ tab_materials }
 	{
 		auto _layout = new QVBoxLayout;
 		{

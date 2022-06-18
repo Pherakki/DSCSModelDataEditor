@@ -27,7 +27,6 @@ private:
     ShaderFactory* factory_tab;
     CodeEditor* code_tab;
 
-    TabMaterialsLibrary editor_materials;
     SelectedObjectReferences& selected_objects;
 signals:
     void overwriteCurrentMaterial(MaterialPtr material_ptr);
@@ -35,13 +34,13 @@ public:
     ShaderEditorTabs(SelectedObjectReferences& sor, ShaderBackend_t& backend, AnimBuf_t& animation_buffer, QWidget* parent = Q_NULLPTR)
         : QTabWidget(parent)
         , selected_objects(sor)
-        , prebuilts_tab{ new PrebuiltTab(sor, this->editor_materials, animation_buffer, this) }
-        , factory_tab{ new ShaderFactory(sor, this->editor_materials, backend, animation_buffer, this) }
+        , prebuilts_tab{ new PrebuiltTab(sor, animation_buffer, this) }
+        , factory_tab{ new ShaderFactory(sor, backend, animation_buffer, this) }
     {
         //this->shader_factory_scroll_area->setWidgetResizable(true);
         //this->shader_factory_scroll_area->setWidget(this->factory_tab);
 
-        this->code_tab = new CodeEditor(this->selected_objects, this->editor_materials, this);
+        this->code_tab = new CodeEditor(this->selected_objects, this);
 
         this->addTab(this->prebuilts_tab, "Pre-Built");
         this->addTab(this->factory_tab, "Shader Factory");

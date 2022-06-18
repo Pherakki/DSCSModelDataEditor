@@ -30,7 +30,6 @@ private:
 	QWidget* vector_uniforms_widget = new QWidget(this->uniform_lists_widget);
 
 	SelectedObjectReferences& selected_objects;
-	TabMaterialsLibrary& tab_materials;
 	AnimationBuffer& anim_buffer;
 	
 
@@ -48,10 +47,9 @@ private:
 	}
 
 public:
-	PrebuiltTab(SelectedObjectReferences& sor, TabMaterialsLibrary& tab_materials, AnimationBuffer& anim_buffer, QWidget* parent = Q_NULLPTR)
+	PrebuiltTab(SelectedObjectReferences& sor, AnimationBuffer& anim_buffer, QWidget* parent = Q_NULLPTR)
 		: QWidget(parent)
 		, selected_objects{sor}
-		, tab_materials{tab_materials}
 		, anim_buffer{ anim_buffer }
 	{
 		QVBoxLayout* layout = new QVBoxLayout(this);
