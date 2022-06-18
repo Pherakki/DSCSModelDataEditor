@@ -4,7 +4,7 @@
 
 OpenGLErrorChecker::OpenGLErrorChecker()
 { 
-	gladLoadGL();
+	gladLoadGL(); // This should only be called once in main, but since the code currently mixes GLAD and Qt5, need to do it here
 }
 
 void OpenGLErrorChecker::checkGLError()
