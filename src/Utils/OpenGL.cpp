@@ -9,6 +9,11 @@ OpenGLErrorChecker::OpenGLErrorChecker()
 
 void OpenGLErrorChecker::checkGLError()
 {
+	::checkGLError();
+}
+
+void checkGLError()
+{
 	GLenum err;
 	bool throw_error = false;
 	std::stringstream ss;

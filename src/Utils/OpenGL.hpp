@@ -9,3 +9,5 @@ public:
 	OpenGLErrorChecker();
 	void checkGLError();
 };
+
+void checkGLError();
