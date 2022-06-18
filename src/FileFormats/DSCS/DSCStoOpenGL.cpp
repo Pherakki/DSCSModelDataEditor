@@ -104,7 +104,6 @@ namespace FileFormats::DSCS
 		auto model_textures = std::vector<std::shared_ptr<Rendering::DataObjects::OpenGLDSCSTexture>>(geom_file.texture_names.size());
 		// Textures
 		// This isn't correct - needs to load uncompressed textures + cubemaps, and be told which is which by the DDS header - but this will do for now
-		OpenGLErrorChecker gl_error_checker;
 
 		// Anim path
 
@@ -175,7 +174,7 @@ namespace FileFormats::DSCS
 				}
 				else
 					material->setUniformValue(geom_mat_uniform.shader_uniform_type, geom_mat_uniform.payload);
-				gl_error_checker.checkGLError();
+				checkGLError();
 			}
 
 			// Init OpenGL settings
@@ -183,7 +182,7 @@ namespace FileFormats::DSCS
 			{
 				auto& geom_mat_ogl_setting = geom_mat.opengl_settings[j];
 				material->addOpenGLSetting(geom_mat_ogl_setting.setting_type, geom_mat_ogl_setting.payload);
-				gl_error_checker.checkGLError();
+				checkGLError();
 			}
 
 			// Save the result

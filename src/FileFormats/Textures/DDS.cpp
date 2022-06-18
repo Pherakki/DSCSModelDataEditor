@@ -12,8 +12,6 @@ DDSLoader::DDSLoader()
 
 GLuint DDSLoader::texture_loadDDS(const char* path, TextureType tex_type)
 {
-
-    OpenGLErrorChecker gl_error_checker;
     FILE* f;
     f = fopen(path, "rb");
     if (f == 0)
@@ -93,7 +91,7 @@ GLuint DDSLoader::texture_loadDDS(const char* path, TextureType tex_type)
         // Replace with something catchable
         throw std::runtime_error("GEN TEXTURES RETURNED 0");
     }
-    gl_error_checker.checkGLError();
+    checkGLError();
 
     uint16_t texture_slot;
     switch (tex_type)
@@ -141,7 +139,7 @@ GLuint DDSLoader::texture_loadDDS(const char* path, TextureType tex_type)
     default:
         throw std::runtime_error("Unknown Texture Type");
     }
-    gl_error_checker.checkGLError();
+    checkGLError();
 
 
 
@@ -166,22 +164,22 @@ GLuint DDSLoader::texture_loadDDS(const char* path, TextureType tex_type)
             {
             case TextureType::Texture2D:
                 glCompressedTexImage2D(texture_slot, level, format, width, height, 0, size, buffer + offset);
-                gl_error_checker.checkGLError();
+                checkGLError();
                 break;
             case TextureType::TextureCLUT:
                 glCompressedTexImage2D(texture_slot, level, format, width, height, 0, size, buffer + offset);
-                gl_error_checker.checkGLError();
+                checkGLError();
                 break;
             case TextureType::TextureLuminance:
                 glCompressedTexImage2D(texture_slot, level, format, width, height, 0, size, buffer + offset);
-                gl_error_checker.checkGLError();
+                checkGLError();
                 break;
             case TextureType::TextureCube:
                 // Just dump the same texture into all three sides of the cube
                 for (uint8_t i = 0; i < 6; ++i)
                 {
                     glCompressedTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, level, format, width, height, 0, size, buffer + offset);
-                    gl_error_checker.checkGLError();
+                    checkGLError();
                 }
                 break;
             default:
@@ -195,22 +193,22 @@ GLuint DDSLoader::texture_loadDDS(const char* path, TextureType tex_type)
             {
             case TextureType::Texture2D:
                 glTexImage2D(texture_slot, level, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, buffer + offset);
-                gl_error_checker.checkGLError();
+                checkGLError();
                 break;
             case TextureType::TextureCLUT:
                 glTexImage2D(texture_slot, level, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, buffer + offset);
-                gl_error_checker.checkGLError();
+                checkGLError();
                 break;
             case TextureType::TextureLuminance:
                 glTexImage2D(texture_slot, level, GL_LUMINANCE, width, height, 0, GL_LUMINANCE, GL_UNSIGNED_BYTE, buffer + offset);
-                gl_error_checker.checkGLError();
+                checkGLError();
                 break;
             case TextureType::TextureCube:
                 // Just dump the same texture into all three sides of the cube
                 for (uint8_t i = 0; i < 6; ++i)
                 {
                     glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, buffer + offset);
-                    gl_error_checker.checkGLError();
+                    checkGLError();
                 }
                 break;
             default:

@@ -2,11 +2,6 @@
 
 #include "OpenGL.hpp"
 
-void OpenGLErrorChecker::checkGLError()
-{
-	::checkGLError();
-}
-
 void checkGLError()
 {
 	GLenum err;

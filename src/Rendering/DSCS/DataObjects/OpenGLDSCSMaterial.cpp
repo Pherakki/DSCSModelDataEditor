@@ -1,5 +1,7 @@
 #include "OpenGLDSCSMaterial.hpp"
 
+#include "../../../Utils/OpenGL.hpp"
+
 namespace Rendering::DSCS::DataObjects
 {
 	typedef std::vector<std::unique_ptr<ShaderUniforms::AbstractcgGLShaderUniform>> ShaderUniformVec_t;
@@ -34,7 +36,6 @@ namespace Rendering::DSCS::DataObjects
 		this->material_uniforms.swap(empty_materials);
 
 		this->shader = shader;
-		this->errorChecker = OpenGLErrorChecker();
 		this->initShaderUniforms(uniform_dispatch_buffer);
 	}
 
@@ -45,22 +46,22 @@ namespace Rendering::DSCS::DataObjects
 		for (auto& uniform : this->world_uniforms)
 		{
 			uniform->attach();
-			this->errorChecker.checkGLError();
+			checkGLError();
 		}
 		for (auto& uniform : this->material_uniforms)
 		{
 			uniform->attach();
-			this->errorChecker.checkGLError();
+			checkGLError();
 		}
 		for (auto& kv : this->texture_refs)
 		{
 			kv.second->bind();
-			this->errorChecker.checkGLError();
+			checkGLError();
 		}
 		for (int i = 0; i < this->opengl_settings.size(); ++i)
 		{
 			this->opengl_settings[i]->set();
-			this->errorChecker.checkGLError();
+			checkGLError();
 		}
 	}
 

@@ -16,7 +16,6 @@
 #include "../ShaderSystem/cgGL/ShaderUniforms/BaseTexture.hpp"
 #include "../ShaderSystem/cgGL/ShaderUniforms/Tex2D.hpp"
 #include "../ShaderSystem/cgGL/ShaderUniforms/TexCube.hpp"
-#include "../../../Utils/OpenGL.hpp"
 
 namespace Rendering::DSCS::DataObjects
 {
@@ -46,7 +45,6 @@ namespace Rendering::DSCS::DataObjects
 		std::string name;
 		uint32_t name_hash;
 		ShaderPtr shader = nullptr;
-		OpenGLErrorChecker errorChecker;
 
 		void bind();
 		void unbind();
