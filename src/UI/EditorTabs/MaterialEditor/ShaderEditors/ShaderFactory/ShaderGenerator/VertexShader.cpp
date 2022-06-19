@@ -325,7 +325,7 @@ void makeJointTransform(const FactorySettings& settings, std::stringstream& ss, 
 		ss << "\t" << output_position << " " << op << "= " << tmp_position << "*Weights." << dim << ";\n";
 		break;
 	default:
-		throw std::exception("Bad joint");
+		throw std::runtime_error("Bad joint");
 	}
 
 	if (settings.use_normals)
@@ -383,7 +383,7 @@ void makeBillboardTransform(const FactorySettings& settings, std::stringstream& 
 		ss << "\t" << output_position << ".xyz " << op << "= " << tmp_position << "*" << "Weights" << "." << dim << ";\n";
 		break;
 	default:
-		throw std::exception("Bad billboard");
+		throw std::runtime_error("Bad billboard");
 	}
 
 	if (op == "")

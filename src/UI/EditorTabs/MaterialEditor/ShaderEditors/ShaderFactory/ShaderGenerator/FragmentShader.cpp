@@ -19,7 +19,7 @@ std::string parseOp(const Operation& op)
     case (Operation::DIV):
         return "/";
     default:
-        throw std::exception("Bad operation");
+        throw std::runtime_error("Bad operation");
     }
 }
 
@@ -47,7 +47,7 @@ std::string parseMap(const TexMap& map)
         src = "vColor";
         break;
     default:
-        throw std::exception("Bad maptype in transparency map.");
+        throw std::runtime_error("Bad maptype in transparency map.");
     }
 
     std::string channel;
@@ -66,7 +66,7 @@ std::string parseMap(const TexMap& map)
         channel = "a";
         break;
     default:
-        throw std::exception("Bad channel in transparency map.");
+        throw std::runtime_error("Bad channel in transparency map.");
     }
 
     //return std::format("{0}.{1}", src, channel);
@@ -97,7 +97,7 @@ std::string parseMapWXYZ(const TexMap& map)
         src = "vColor";
         break;
     default:
-        throw std::exception("Bad maptype in transparency map.");
+        throw std::runtime_error("Bad maptype in transparency map.");
     }
 
     std::string channel;
@@ -116,7 +116,7 @@ std::string parseMapWXYZ(const TexMap& map)
         channel = "w";
         break;
     default:
-        throw std::exception("Bad channel in transparency map.");
+        throw std::runtime_error("Bad channel in transparency map.");
     }
 
     //return std::format("{0}.{1}", src, channel);
@@ -411,7 +411,7 @@ std::string initParallax(const FactorySettings& settings)
                 tex_coord = "vTexcoord0.xy";
             break;
         default:
-            throw std::exception("Bad Sampler selection in parallax generation.");
+            throw std::runtime_error("Bad Sampler selection in parallax generation.");
         }
 
         switch (settings.parallax_heightmap_channel)
@@ -429,7 +429,7 @@ std::string initParallax(const FactorySettings& settings)
             channel = "a";
             break;
         default:
-            throw std::exception("Bad channel selection in parallax generation.");
+            throw std::runtime_error("Bad channel selection in parallax generation.");
         }
 
         //text += std::format("\thalf2 parallax = ( tex2D({0},{1}).{2} * ParallaxBiasX + ParallaxBiasY) * vv.xy;\n", sampler, tex_coord, channel);
@@ -556,7 +556,7 @@ std::string calculateDiffuseContribution(const FactorySettings& settings)
             transparency_src = "lightRGBA";
             break;
         default:
-            throw std::exception("Bad maptype in transparency map.");
+            throw std::runtime_error("Bad maptype in transparency map.");
         }
 
         std::string transparency_channel;
@@ -575,7 +575,7 @@ std::string calculateDiffuseContribution(const FactorySettings& settings)
             transparency_channel = "a";
             break;
         default:
-            throw std::exception("Bad channel in transparency map.");
+            throw std::runtime_error("Bad channel in transparency map.");
         }
         //text += std::format("\tdiffuseColor.a = {0}.{1};\n", transparency_src, transparency_channel);
         text += "\tdiffuseColor.a = " + transparency_src + "." + transparency_channel + ";\n";
