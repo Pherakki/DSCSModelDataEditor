@@ -4,7 +4,7 @@
 #include <string>
 #include <vector>
 
-#include "../../../../serialisation/ReadWriter.hpp"
+#include "../../../serialisation/ReadWriter.hpp"
 
 using namespace serialisation;
 

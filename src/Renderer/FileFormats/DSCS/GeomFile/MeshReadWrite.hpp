@@ -2,8 +2,8 @@
 
 #include <array>
 #include <vector>
-#include "../../../../serialisation/Macros.hpp"
-#include "../../../../serialisation/ReadWriter.hpp"
+#include "../../../serialisation/Macros.hpp"
+#include "../../../serialisation/ReadWriter.hpp"
 
 #include "GeomForwardDeclarations.hpp"
 

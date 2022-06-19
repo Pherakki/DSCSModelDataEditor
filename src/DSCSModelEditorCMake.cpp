@@ -2,7 +2,6 @@
 //
 #include <iostream>
 #include <QtWidgets/QApplication>
-#include "serialisation/ReadWriter.hpp"
 #include "UI/MainWindow.hpp"
 
 using namespace std;

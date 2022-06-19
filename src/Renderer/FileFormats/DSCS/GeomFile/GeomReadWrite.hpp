@@ -2,9 +2,9 @@
 
 #include <array>
 
-#include "../../../../serialisation/Exceptions.hpp"
-#include "../../../../serialisation/ReadWriter.hpp"
-#include "../../../../serialisation/Macros.hpp"
+#include "../../../serialisation/Exceptions.hpp"
+#include "../../../serialisation/ReadWriter.hpp"
+#include "../../../serialisation/Macros.hpp"
 
 #include "../DSCSModelForwardDeclaration.hpp"
 #include "MeshReadWrite.hpp"

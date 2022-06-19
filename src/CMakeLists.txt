@@ -20,9 +20,7 @@ add_executable (${PROJECT_NAME}
                 "Rendering/DSCS/DataObjects/SkeletonDataBlocks.cpp"
                 "Rendering/DSCS/ShaderSystem/cgGL/cgGLShaderObject.cpp" 
                 "Rendering/DSCS/ShaderSystem/cgGL/cgGLShaderBackend.cpp"
-                "Rendering/DSCS/ShaderSystem/cgGL/Utils.cpp" 
-                "serialisation/Exceptions.cpp"
-                "serialisation/ReadWriter.cpp" 
+                "Rendering/DSCS/ShaderSystem/cgGL/Utils.cpp"
                 "Utils/Hashing.cpp" 
                 "Utils/Matrix.cpp" 
                 "Utils/Vector.cpp" 
@@ -107,7 +105,7 @@ add_executable (${PROJECT_NAME}
                 "Renderer/FileFormats/DSCS/SkelFile/SkelReadWrite.cpp" 
                 "Renderer/FileFormats/DSCS/SkelFile/SkelReadWrite.hpp" 
                 "Renderer/FileFormats/Textures/DDS.cpp" 
-                "Renderer/FileFormats/Textures/DDS.hpp")
+                "Renderer/FileFormats/Textures/DDS.hpp" "Renderer/serialisation/Exceptions.cpp" "Renderer/serialisation/Exceptions.hpp" "Renderer/serialisation/Macros.hpp" "Renderer/serialisation/ReadWriter.cpp" "Renderer/serialisation/ReadWriter.hpp" "Renderer/serialisation/serialisation.hpp")
 
 # Allow CMake to build libraries
 cmake_policy(SET CMP0079 NEW)
