@@ -16,6 +16,16 @@ namespace serialisation
     using ByteArray = std::array<unsigned char, size>;
     using ByteVector = std::vector<unsigned char>;
 
+    template<typename T, std::endian endianness>
+    ByteVector flipEndiannessIfRequired(const ByteVector& bytes)
+    {
+        ByteVector out(sizeof(T));
+        out = bytes;
+        // This is supposed to make sure the result of memcpy is the right way around
+        if constexpr (endianness != std::endian::native)
+            std::reverse(out.begin(), out.end());
+        return out;
+    }
 
     // Functions
     template<size_t size>
@@ -80,17 +90,6 @@ namespace serialisation
             for (int j = 0; j < sizeof(T); j++)
                 out[i * sizeof(T) + j] = bytes_to_send[j];
         }
-        return out;
-    }
-
-    template<typename T, std::endian endianness>
-    ByteVector flipEndiannessIfRequired(const ByteVector& bytes)
-    {
-        ByteVector out(sizeof(T));
-        out = bytes;
-        // This is supposed to make sure the result of memcpy is the right way around
-        if constexpr (endianness != std::endian::native)
-            std::reverse(out.begin(), out.end());
         return out;
     }
 }
