@@ -12,7 +12,7 @@
 #include "Types.hpp"
 #include "TextureLibrary.hpp"
 #include "../Rendering/DSCS/Renderer.hpp"
-#include "../FileFormats/DSCS/DSCStoOpenGL.hpp"
+#include "../Renderer/FileFormats/DSCS/DSCStoOpenGL.hpp"
 #include "../Rendering/DSCS/DataObjects/OpenGLDSCSModel.hpp"
 #include "../Rendering/DSCS/ShaderSystem/cgGL/cgGLShaderBackend.hpp"
 #include "../Rendering/DSCS/ShaderSystem/cgGL/cgGLShaderObject.hpp"

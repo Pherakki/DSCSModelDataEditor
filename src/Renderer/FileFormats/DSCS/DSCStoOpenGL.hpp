@@ -6,14 +6,14 @@
 #include "SkelFile/SkelReadWrite.hpp"
 #include "AnimFile/AnimReadWrite.hpp"
 #include "../Textures/DDS.hpp"
-#include "../../UI/TextureLibrary.hpp"
-#include "../../Rendering/DSCS/Renderer.hpp"
-#include "../../Rendering/DSCS/DataObjects/OpenGLDSCSModel.hpp"
-#include "../../Rendering/DSCS/ShaderSystem/cgGL/cgGLShaderBackend.hpp"
-#include "../../Rendering/DSCS/ShaderSystem/cgGL/cgGLShaderObject.hpp"
-#include "../../Utils/BitManip.hpp"
-#include "../../Utils/OpenGL.hpp"
-#include "../../Utils/Matrix.hpp"
+#include "../../../UI/TextureLibrary.hpp"
+#include "../../../Rendering/DSCS/Renderer.hpp"
+#include "../../../Rendering/DSCS/DataObjects/OpenGLDSCSModel.hpp"
+#include "../../../Rendering/DSCS/ShaderSystem/cgGL/cgGLShaderBackend.hpp"
+#include "../../../Rendering/DSCS/ShaderSystem/cgGL/cgGLShaderObject.hpp"
+#include "../../../Utils/BitManip.hpp"
+#include "../../../Utils/OpenGL.hpp"
+#include "../../../Utils/Matrix.hpp"
 
 #include <filesystem>
 #include <iomanip>

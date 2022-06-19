@@ -1,7 +1,7 @@
 #pragma once
 #include <array>
 #include <QOpenGLFunctions>
-#include "../../../FileFormats/DSCS/GeomFile/MeshReadWrite.hpp"
+#include "../../../Renderer/FileFormats/DSCS/GeomFile/MeshReadWrite.hpp"
 #include "OpenGLDSCSMaterial.hpp"
 
 

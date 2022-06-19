@@ -1,3 +1,5 @@
+#include <fstream>
+
 #include "DDS.hpp"
 #include "serialisation/ReadWriter.hpp"
 #include "../../../Cg/cg.h"
@@ -243,3 +245,38 @@ struct DDSPixelFormat
 
 };
 
+struct DDSHeader
+{
+    uint32_t magicValue;
+    uint32_t dwSize;
+    uint32_t dwFlags;
+    uint32_t dwHeight;
+    uint32_t dwWidth;
+    uint32_t dwPitchOrLinearSize;
+    uint32_t dwDepth;
+    uint32_t dwMipMapCount;
+    uint32_t dwReserved1[11];
+    DDSPixelFormat ddspf;
+    uint32_t dwCaps;
+    uint32_t dwCaps2;
+    uint32_t dwCaps3;
+    uint32_t dwCaps4;
+    uint32_t dwReserved2;
+};
+
+
+class DDSReader
+{
+public:
+    DDSHeader header;
+    std::vector<unsigned char> buf;
+    DDSReader(const std::string& path)
+    {
+        auto rw = serialisation::ReadWriter<serialisation::readmode>(path);
+        rw.readWriteData<DDSHeader, serialisation::LE>(header);
+        auto buffer_size = (header.dwMipMapCount > 1 ? header.dwPitchOrLinearSize + header.dwPitchOrLinearSize : header.dwPitchOrLinearSize);
+
+        buf.reserve(buffer_size);
+        rw.readWriteBytes(buf);
+    }
+};
