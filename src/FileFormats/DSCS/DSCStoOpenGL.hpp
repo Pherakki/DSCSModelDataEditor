@@ -11,6 +11,7 @@
 #include "../../Rendering/DSCS/DataObjects/OpenGLDSCSModel.hpp"
 #include "../../Rendering/DSCS/ShaderSystem/cgGL/cgGLShaderBackend.hpp"
 #include "../../Rendering/DSCS/ShaderSystem/cgGL/cgGLShaderObject.hpp"
+#include "../../Utils/BitManip.hpp"
 #include "../../Utils/OpenGL.hpp"
 #include "../../Utils/Matrix.hpp"
 
@@ -46,7 +47,7 @@ namespace FileFormats::DSCS
 			while (current_frame <= num_contained_frames)
 			{
 				// Find next '1' in the piece of the bitvector we're looking at
-				bool found_frame = _BitScanReverse(&skipped_frames_reversed, current_frame_bitvector_piece);
+				bool found_frame = UtilBitScanReverse(&skipped_frames_reversed, current_frame_bitvector_piece);
 				if (found_frame)
 				{
 					skipped_frames = (bitvector_entries_size - 1) - skipped_frames_reversed;
