@@ -11,11 +11,11 @@
 #include "InputHandler.hpp"
 #include "Types.hpp"
 #include "TextureLibrary.hpp"
-#include "../Rendering/DSCS/Renderer.hpp"
+#include "../Renderer/DSCS/Renderer.hpp"
 #include "../Renderer/FileFormats/DSCS/DSCStoOpenGL.hpp"
-#include "../Rendering/DSCS/DataObjects/OpenGLDSCSModel.hpp"
-#include "../Rendering/DSCS/ShaderSystem/cgGL/cgGLShaderBackend.hpp"
-#include "../Rendering/DSCS/ShaderSystem/cgGL/cgGLShaderObject.hpp"
+#include "../Renderer/DSCS/DataObjects/OpenGLDSCSModel.hpp"
+#include "../Renderer/DSCS/ShaderSystem/cgGL/cgGLShaderBackend.hpp"
+#include "../Renderer/DSCS/ShaderSystem/cgGL/cgGLShaderObject.hpp"
 #include "../Utils/Matrix.hpp"
 
 

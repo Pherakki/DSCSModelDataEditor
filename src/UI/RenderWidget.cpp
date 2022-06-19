@@ -1,7 +1,5 @@
 #include "RenderWidget.hpp"
 
-#include "../Utils/OpenGL.hpp"
-
 typedef Rendering::DSCS::DataObjects::OpenGLDSCSModel Model;
 typedef std::shared_ptr<Model> ModelPtr;
 

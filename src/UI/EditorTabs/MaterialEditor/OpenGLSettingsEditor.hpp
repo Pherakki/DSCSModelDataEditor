@@ -5,7 +5,7 @@
 #include <QValidator>
 #include <QWidget>
 
-#include "../../../Rendering/DSCS/DataObjects/OpenGLDSCSMaterial.hpp"
+#include "../../../Renderer/DSCS/DataObjects/OpenGLDSCSMaterial.hpp"
 #include "UI/SelectedObjectReferences.hpp"
 
 struct identity

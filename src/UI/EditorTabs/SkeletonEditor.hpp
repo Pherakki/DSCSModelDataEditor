@@ -3,7 +3,7 @@
 #include <QtWidgets/QWidget>
 
 #include "../Types.hpp"
-#include "../../Rendering/DSCS/DataObjects/SkeletonDataBlocks.hpp"
+#include "../../Renderer/DSCS/DataObjects/SkeletonDataBlocks.hpp"
 
 class SkeletonEditorTab : QWidget
 {

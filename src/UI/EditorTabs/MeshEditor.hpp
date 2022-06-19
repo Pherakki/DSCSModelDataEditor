@@ -8,7 +8,7 @@
 
 #include "../SelectedObjectReferences.hpp"
 #include "../Types.hpp"
-#include "../../Rendering/DSCS/DataObjects/OpenGLDSCSMesh.hpp"
+#include "../../Renderer/DSCS/DataObjects/OpenGLDSCSMesh.hpp"
 
 class MeshEditorTab : public QWidget
 {

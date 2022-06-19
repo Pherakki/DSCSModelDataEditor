@@ -4,7 +4,7 @@
 #include <QtWidgets/QLineEdit>
 
 #include "../Types.hpp"
-#include "../../Rendering/DSCS/DataObjects/SkeletonDataBlocks.hpp"
+#include "../../Renderer/DSCS/DataObjects/SkeletonDataBlocks.hpp"
 
 class AnimationEditorTab : public QWidget
 {
