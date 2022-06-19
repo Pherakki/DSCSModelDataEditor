@@ -107,9 +107,9 @@ set_target_properties(${PROJECT_NAME} PROPERTIES AUTOUIC TRUE)
 
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
-find_package(Qt5 COMPONENTS Core REQUIRED)
-find_package(Qt5 COMPONENTS Gui REQUIRED)
-find_package(Qt5 COMPONENTS Widgets REQUIRED)
+find_package(Qt5Core 5.10 REQUIRED)
+find_package(Qt5Gui 5.10 REQUIRED)
+find_package(Qt5Widgets 5.10 REQUIRED)
 
 target_link_libraries(${PROJECT_NAME}
   Qt5::Core
