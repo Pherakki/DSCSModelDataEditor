@@ -146,7 +146,7 @@ public:
 		connect(this->uv_slot_combobox, static_cast<void(QComboBox::*)(int)>(&QComboBox::currentIndexChanged), this, &ShaderFactoryTextureSlot::settingsUpdated);
 	}
 
-	bool isActive()
+	bool isActive() const
 	{
 		return this->checkbox->isEnabled() && this->checkbox->isChecked();
 	}

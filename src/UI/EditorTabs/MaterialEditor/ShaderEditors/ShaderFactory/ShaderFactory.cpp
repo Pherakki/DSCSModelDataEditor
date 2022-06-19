@@ -460,16 +460,26 @@ void ShaderFactory::assignTextureReferences(MaterialPtr& material, TextureRefs& 
 void ShaderFactory::createSettingsFromUI(FactorySettings& settings, TextureRefs& textures)
 {
 	// Load textures
-	if (const auto& tex_ui = this->texture_layer_1->diffuse_texture_settings; tex_ui->isActive())
+	{
+		const auto& tex_ui = this->texture_layer_1->diffuse_texture_settings;
 		this->createTexSettings2D(settings, settings.texlayer_1.colorsampler, textures.c1_texture_name, textures.c1_texture, *tex_ui);
-	if (const auto& tex_ui = this->texture_layer_1->normal_texture_settings; tex_ui->isActive())
+	}
+	{
+		const auto& tex_ui = this->texture_layer_1->normal_texture_settings;
 		this->createTexSettings2D(settings, settings.texlayer_1.normalsampler, textures.n1_texture_name, textures.n1_texture, *tex_ui);
-	if (const auto& tex_ui = this->texture_layer_2->diffuse_texture_settings; tex_ui->isActive())
+	}
+	{
+		const auto& tex_ui = this->texture_layer_2->diffuse_texture_settings;
 		this->createTexSettings2D(settings, settings.texlayer_2.colorsampler, textures.c2_texture_name, textures.c2_texture, *tex_ui);
-	if (const auto& tex_ui = this->texture_layer_2->normal_texture_settings; tex_ui->isActive())
+	}
+	{
+		const auto& tex_ui = this->texture_layer_2->normal_texture_settings;
 		this->createTexSettings2D(settings, settings.texlayer_2.normalsampler, textures.n2_texture_name, textures.n2_texture, *tex_ui);
-	if (const auto& tex_ui = this->diffuse_color_settings->light_sampler; tex_ui->isActive())
+	}
+	{
+		const auto& tex_ui = this->diffuse_color_settings->light_sampler;
 		this->createTexSettingsLum(settings, settings.lightsampler, textures.light_texture_name, textures.light_texture, *tex_ui);
+	}
 	if (const auto& tex_ui = this->illumination_settings->clut; tex_ui->isActive())
 	{
 		auto texname = tex_ui->file_combo_box->combobox->currentText().toStdString();
@@ -513,12 +523,15 @@ void ShaderFactory::createSettingsFromUI(FactorySettings& settings, TextureRefs&
 
 void ShaderFactory::createTexSettings(FactorySettings& settings, Sampler& sampler, std::string& texname, uint32_t& texture, const ShaderFactoryTextureSlot& tex_ui, TextureLibrary::TextureSubLibrary_t& sublib)
 {
-	sampler.enabled = true;
+	sampler.enabled = tex_ui.isActive();
 	sampler.uv_slot = tex_ui.uv_slot_combobox->currentIndex();
-	settings.uv_slots[sampler.uv_slot].enabled = true;
+	settings.uv_slots[sampler.uv_slot].enabled = tex_ui.isActive();
 	sampler.combined_channels = true; // Change later
-	texname = tex_ui.file_combo_box->combobox->currentText().toStdString();
-	texture = sublib.at(texname);
+	if (tex_ui.isActive())
+	{
+		texname = tex_ui.file_combo_box->combobox->currentText().toStdString();
+		texture = sublib.at(texname);
+	}
 }
 
 void ShaderFactory::createTexSettings2D(FactorySettings& settings, Sampler& sampler, std::string& texname, uint32_t& texture, const ShaderFactoryTextureSlot& tex_ui)
