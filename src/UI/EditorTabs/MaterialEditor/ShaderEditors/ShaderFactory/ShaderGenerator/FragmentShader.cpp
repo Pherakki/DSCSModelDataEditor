@@ -1,6 +1,7 @@
 #include <array>
-#include <format>
+#include <functional>
 #include <iostream>
+#include <sstream>
 #include <string>
 
 #include "FragmentShader.hpp"
@@ -68,7 +69,8 @@ std::string parseMap(const TexMap& map)
         throw std::exception("Bad channel in transparency map.");
     }
 
-    return std::format("{0}.{1}", src, channel);
+    //return std::format("{0}.{1}", src, channel);
+    return src + "." + channel;
 }
 
 std::string parseMapWXYZ(const TexMap& map)
@@ -117,7 +119,8 @@ std::string parseMapWXYZ(const TexMap& map)
         throw std::exception("Bad channel in transparency map.");
     }
 
-    return std::format("{0}.{1}", src, channel);
+    //return std::format("{0}.{1}", src, channel);
+    return src + "." + channel;
 }
 
 std::string createHeader(const FactorySettings& settings)
@@ -302,47 +305,55 @@ std::string createHeader(const FactorySettings& settings)
         if (slot.enabled)
         {
             text += delim;
-            text += std::format("in half{0} vTexcoord{1} : TEXCOORD{2}", slot.vec_size, i, num_texcoords);
+            //text += std::format("in half{0} vTexcoord{1} : TEXCOORD{2}", slot.vec_size, i, num_texcoords);
+            text += "in half" + std::to_string(slot.vec_size) + " vTexcoord" + std::to_string(i) + " : TEXCOORD" + std::to_string(num_texcoords);
             ++num_texcoords;
         }
     }
     if (settings.use_normals)
     {
         text += delim;
-        text += std::format("in half{0} vNormal : TEXCOORD{1}", settings.fragment_normal_vec_size, num_texcoords);
+        //text += std::format("in half{0} vNormal : TEXCOORD{1}", settings.fragment_normal_vec_size, num_texcoords);
+        text += "in half" + std::to_string(settings.fragment_normal_vec_size) + " vNormal : TEXCOORD" + std::to_string(num_texcoords);
         ++num_texcoords;
     }
     if (settings.use_tangents)
     {
         text += delim;
-        text += std::format("in half3 vTangent : TEXCOORD{0}", num_texcoords);
+        //text += std::format("in half3 vTangent : TEXCOORD{0}", num_texcoords);
+        text += "in half3 vTangent : TEXCOORD" + std::to_string(num_texcoords);
         ++num_texcoords;
         text += delim;
-        text += std::format("in half3 vBinormal : TEXCOORD{0}", num_texcoords);
+        //text += std::format("in half3 vBinormal : TEXCOORD{0}", num_texcoords);
+        text += "in half3 vBinormal : TEXCOORD" + std::to_string(num_texcoords);
         ++num_texcoords;
     }
     if (settings.view_matrix)
     {
         text += delim;
-        text += std::format("in half3 vView : TEXCOORD{0}", num_texcoords);
+        //text += std::format("in half3 vView : TEXCOORD{0}", num_texcoords);
+        text += "in half3 vView : TEXCOORD" + std::to_string(num_texcoords);
         ++num_texcoords;
     }
     if (settings.requires_screenpos)
     {
         text += delim;
-        text += std::format("in half4 vScreenPos : TEXCOORD{0}", num_texcoords);
+        //text += std::format("in half4 vScreenPos : TEXCOORD{0}", num_texcoords);
+        text += "in half4 vScreenPos : TEXCOORD" + std::to_string(num_texcoords);
         ++num_texcoords;
     }
     if (settings.receive_shadows)
     {
         text += delim;
-        text += std::format("in half4 vShadowMapCoord : TEXCOORD{0}", num_texcoords);
+        //text += std::format("in half4 vShadowMapCoord : TEXCOORD{0}", num_texcoords);
+        text += "in half4 vShadowMapCoord : TEXCOORD" + std::to_string(num_texcoords);
         ++num_texcoords;
     }
     if (settings.fog and not settings.texlayer_1.colorsampler.enabled)
     {
         text += delim;
-        text += std::format("in half vFogFactor : TEXCOORD{0}", num_texcoords);
+        //text += std::format("in half vFogFactor : TEXCOORD{0}", num_texcoords);
+        text + "in half vFogFactor : TEXCOORD" + std::to_string(num_texcoords);
     }
 
     // SHADER OUTPUT
@@ -384,16 +395,20 @@ std::string initParallax(const FactorySettings& settings)
         case MapType::DIFFUSE:
             sampler = "ColorSampler";
             if (settings.texlayer_1.colorsampler.combined_channels)
-                tex_coord = std::format("vTexcoord{0}.xy", settings.texlayer_1.colorsampler.uv_slot);
+                //tex_coord = std::format("vTexcoord{0}.xy", settings.texlayer_1.colorsampler.uv_slot);
+                tex_coord = "vTexcoord" + std::to_string(settings.texlayer_1.colorsampler.uv_slot) + ".xy";
             else
-                tex_coord = std::format("vTexcoord{0}.xy", "0");
+                //tex_coord = std::format("vTexcoord{0}.xy", "0");
+                tex_coord = "vTexcoord0.xy";
             break;
         case MapType::NORMAL:
             sampler = "NormalSampler";
             if (settings.texlayer_1.normalsampler.combined_channels)
-                tex_coord = std::format("vTexcoord{0}.xy", settings.texlayer_1.normalsampler.uv_slot);
+                //tex_coord = std::format("vTexcoord{0}.xy", settings.texlayer_1.normalsampler.uv_slot);
+                tex_coord = "vTexcoord" + std::to_string(settings.texlayer_1.normalsampler.uv_slot) + ".xy";
             else
-                tex_coord = std::format("vTexcoord{0}.xy", "0");
+                //tex_coord = std::format("vTexcoord{0}.xy", "0");
+                tex_coord = "vTexcoord0.xy";
             break;
         default:
             throw std::exception("Bad Sampler selection in parallax generation.");
@@ -417,14 +432,16 @@ std::string initParallax(const FactorySettings& settings)
             throw std::exception("Bad channel selection in parallax generation.");
         }
 
-        text += std::format("\thalf2 parallax = ( tex2D({0},{1}).{2} * ParallaxBiasX + ParallaxBiasY) * vv.xy;\n", sampler, tex_coord, channel);
+        //text += std::format("\thalf2 parallax = ( tex2D({0},{1}).{2} * ParallaxBiasX + ParallaxBiasY) * vv.xy;\n", sampler, tex_coord, channel);
+        text += "\thalf2 parallax = ( tex2D(" + sampler + "," + tex_coord + ")." + channel + " * ParallaxBiasX + ParallaxBiasY) * vv.xy;\n";
     }
     return text;
 }
 
 std::string generateTextureSample(const std::string& sampler_name, const std::string& channels, const std::string& output_name, const std::string& space, const std::string& coordinate)
 {
-    return std::format("\t{4}{3} = tex2D({0},{1}{2}){3};\n", sampler_name, coordinate, space, channels, output_name);
+    //return std::format("\t{4}{3} = tex2D({0},{1}{2}){3};\n", sampler_name, coordinate, space, channels, output_name);
+    return "\t" + output_name + channels + " = tex2D(" + sampler_name + "," + coordinate + space + ")" + channels + ";\n";
 }
 
 std::string generateTexcoordTransform(const std::string& coordinate_name, bool use_distortion, const std::string& distortion_variable, bool use_parallax, const std::string& parallax_variable)
@@ -453,12 +470,14 @@ std::string sampleTexture(const Sampler& sampler, const std::string& sampler_nam
         text += "\thalf4 " + output_name + ";\n";
         if (sampler.combined_channels)
         {
-            text += generateTextureSample(sampler_name, "", output_name, space, generateTexcoordTransform(std::format("vTexcoord{0}.xy", sampler.uv_slot), use_distortion, distortion_variable, use_parallax, parallax_variable));
+            text += generateTextureSample(sampler_name, "", output_name, space, generateTexcoordTransform("vTexcoord" + std::to_string(sampler.uv_slot) + ".xy", use_distortion, distortion_variable, use_parallax, parallax_variable));
         }
         else
         {
-            text += generateTextureSample(sampler_name, ".rgb", output_name, space, generateTexcoordTransform(std::format("vTexcoord{0}.xy", sampler.uv_slot), use_distortion, distortion_variable, use_parallax, parallax_variable));
-            text += generateTextureSample(sampler_name, ".a", output_name, space, generateTexcoordTransform(std::format("vTexcoord{0}.xy", "0"), use_distortion, distortion_variable, use_parallax, parallax_variable));
+            //text += generateTextureSample(sampler_name, ".rgb", output_name, space, generateTexcoordTransform(std::format("vTexcoord{0}.xy", sampler.uv_slot), use_distortion, distortion_variable, use_parallax, parallax_variable));
+            //text += generateTextureSample(sampler_name, ".a", output_name, space, generateTexcoordTransform(std::format("vTexcoord{0}.xy", "0"), use_distortion, distortion_variable, use_parallax, parallax_variable));
+            text += generateTextureSample(sampler_name, ".rgb", output_name, space, generateTexcoordTransform("vTexcoord" + std::to_string(sampler.uv_slot) + ".xy", use_distortion, distortion_variable, use_parallax, parallax_variable));
+            text += generateTextureSample(sampler_name, ".a", output_name, space, generateTexcoordTransform("vTexcoord0.xy", use_distortion, distortion_variable, use_parallax, parallax_variable));
         }
     }
     return text;
@@ -479,7 +498,8 @@ std::string initOverlayStrength(const FactorySettings& settings)
     if (use_overlay)
     {
         text += "\thalf overlayStlength = OverlayStrength;\n";
-        text += std::format("\toverlayStlength *= {0};\n", parseMap(settings.layer_2_diffuse_map));
+        //text += std::format("\toverlayStlength *= {0};\n", parseMap(settings.layer_2_diffuse_map));
+        text += "\toverlayStlength *= " + parseMap(settings.layer_2_diffuse_map) + ";\n";
         if (settings.layer_2_vertex_alpha)
             text += "\toverlayStlength *= vColor.a;\n";
     }
@@ -557,7 +577,8 @@ std::string calculateDiffuseContribution(const FactorySettings& settings)
         default:
             throw std::exception("Bad channel in transparency map.");
         }
-        text += std::format("\tdiffuseColor.a = {0}.{1};\n", transparency_src, transparency_channel);
+        //text += std::format("\tdiffuseColor.a = {0}.{1};\n", transparency_src, transparency_channel);
+        text += "\tdiffuseColor.a = " + transparency_src + "." + transparency_channel + ";\n";
     }
 
     if (settings.texlayer_2.colorsampler.enabled)
@@ -579,7 +600,8 @@ std::string calculateDiffuseContribution(const FactorySettings& settings)
         if (settings.diffuse_map.enabled && settings.diffuse_map.type != MapType::NONE)
         {
             std::string map_src = parseMap(settings.diffuse_map);
-            text += std::format("\tdiffuseColor *= (half4(1.0,1.0,1.0,1.0)+(DiffuseColor-half4(1.0,1.0,1.0,1.0))*{0});\n", map_src);
+            //text += std::format("\tdiffuseColor *= (half4(1.0,1.0,1.0,1.0)+(DiffuseColor-half4(1.0,1.0,1.0,1.0))*{0});\n", map_src);
+            text += "\tdiffuseColor *= (half4(1.0,1.0,1.0,1.0)+(DiffuseColor-half4(1.0,1.0,1.0,1.0))*" + map_src + ");\n";
         }
         else
         {
@@ -599,9 +621,11 @@ std::string calculateSpecularContribution(const FactorySettings& settings)
     if (settings.specular_input)
     {
         if (settings.specular_map.enabled)
-            text += std::format("\thalf spStr = {0};\n", parseMap(settings.specular_map));
+            //text += std::format("\thalf spStr = {0};\n", parseMap(settings.specular_map));
+            text += "\thalf spStr = " + parseMap(settings.specular_map) + ";\n";
         else
-            text += std::format("\thalf spStr = {0};\n", "SpecularStrength");
+            //text += std::format("\thalf spStr = {0};\n", "SpecularStrength");
+            text += "\thalf spStr = SpecularStrength;\n";
 
         // Something similar for layer 2, just with spStr = spStr(1.0-overlayStlength) + <map channel> * overlayStlength;"
     }
@@ -716,9 +740,9 @@ std::string calculateSpecularContribution(const FactorySettings& settings)
         if (settings.specular_map.enabled)
         {
             if (settings.specular_map.type == MapType::NORMAL)
-                text += std::format("\thalf rfStr = normalRGBA.w;\n");
+                text += "\thalf rfStr = normalRGBA.w;\n";
             else
-                text += std::format("\thalf rfStr = diffuseColor.a;\n");
+                text += "\thalf rfStr = diffuseColor.a;\n";
             text += "\trfStr *= ReflectionStrength;\n";
         }
         else
@@ -788,7 +812,8 @@ std::string createShadows(const FactorySettings& settings)
 std::string createAmbientOcclusion(const FactorySettings& settings)
 {
     if (settings.ambient_occlusion.enabled)
-        return std::format("\tobscure *= {0};\n", parseMapWXYZ(settings.ambient_occlusion));
+        //return std::format("\tobscure *= {0};\n", parseMapWXYZ(settings.ambient_occlusion));
+        return "\tobscure *= " + parseMapWXYZ(settings.ambient_occlusion) + ";\n";
     else
         return "";
 }
@@ -822,7 +847,8 @@ std::string createAmbientLight(const FactorySettings& settings)
         if (obscure_contrib || ambient_contrib)
             contrib = "(" + contrib + ")";
 
-        text += std::format("\tdiffuseColor.rgb {0}= {1};\n", opstr, contrib);
+        //text += std::format("\tdiffuseColor.rgb {0}= {1};\n", opstr, contrib);
+        text += "\tdiffuseColor.rgb " + opstr + "= " + contrib + ";\n";
     }
     else
     {
@@ -858,7 +884,8 @@ std::string applyFog(const FactorySettings& settings)
         if (settings.use_normals)
             text += "\tfloat ff = vNormal.w;\n";
         else if (settings.texlayer_1.colorsampler.enabled)
-            text += std::format("\tfloat ff = vTexcoord{0}.z;\n", settings.texlayer_1.colorsampler.uv_slot);
+            //text += std::format("\tfloat ff = vTexcoord{0}.z;\n", settings.texlayer_1.colorsampler.uv_slot);
+            text += "\tfloat ff = vTexcoord" + std::to_string(settings.texlayer_1.colorsampler.uv_slot) + ".z;\n";
         else
             text += "\tfloat ff = vFogFactor;\n";
 
