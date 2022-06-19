@@ -113,7 +113,9 @@ void DSCSModelDataEditorWindow::openLoadModelDialog()
     {
         QString name_file = dialog.selectedFiles().first();
         // Remove file extension
-        auto model = this->loadModel(name_file.chopped(name_file.mid(name_file.lastIndexOf(".")).size()));
+        QString file_root = name_file;
+        file_root.truncate(file_root.lastIndexOf("."));
+        auto model = this->loadModel(file_root);
         dialog.close();
 
         QFileDialog dialog_anim(this);
