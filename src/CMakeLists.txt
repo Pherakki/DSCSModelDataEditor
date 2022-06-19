@@ -117,6 +117,10 @@ target_link_libraries(${PROJECT_NAME}
   Qt5::Widgets
 )
 
+# Required for GLAD on Ubuntu
+find_package(OpenGL REQUIRED)
+target_link_libraries(${PROJECT_NAME} "${CMAKE_DL_LIBS}")
+
 add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
     COMMAND ${CMAKE_COMMAND} -E make_directory $<TARGET_FILE_DIR:${PROJECT_NAME}>/Qt5/
     COMMAND ${CMAKE_COMMAND} -E make_directory $<TARGET_FILE_DIR:${PROJECT_NAME}>/Qt5/platforms/
