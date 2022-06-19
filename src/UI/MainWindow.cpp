@@ -16,7 +16,7 @@
 
 typedef std::shared_ptr<Rendering::DSCS::DataObjects::OpenGLDSCSMaterial> MaterialPtr;
 
-DSCSModelDataEditorWindow::DSCSModelDataEditorWindow(QWidget* parent = Q_NULLPTR)
+DSCSModelDataEditorWindow::DSCSModelDataEditorWindow(QWidget* parent)
     : QMainWindow(parent)
     , render_widget{ new CustomWidgets::RenderWidget(this) }
     , selected_objects{SelectedObjectReferences(this->render_widget->animation_buffer, this->render_widget->texture_library)}
