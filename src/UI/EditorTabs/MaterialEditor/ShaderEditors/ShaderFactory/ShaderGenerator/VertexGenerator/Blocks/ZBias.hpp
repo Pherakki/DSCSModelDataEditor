@@ -1,5 +1,3 @@
-#include <format>
-
 #include "../../CodeGenerator.hpp"
 
 
@@ -27,11 +25,7 @@ public:
 			// Inputs: vHPosition, ZBias
 			// Outputs: vHPosition
 			// Flags: zbias
-			text += std::format(
-				"\t{0}.z = {1}.z + {2}*0.3;\n", 
-				this->outputPosition.variable->name, 
-				this->inputPosition.variable->name,
-				this->inputZBias.variable->name);
+			text += "\t" + this->outputPosition.variable->name + ".z = " + this->inputPosition.variable->name + ".z + " + this->inputZBias.variable->name + "*0.3;\n";
 		return text;
 	}
 };
