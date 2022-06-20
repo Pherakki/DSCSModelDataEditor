@@ -11,6 +11,7 @@ project ("DSCSModelEditorCMake")
 
 # Include sub-projects
 add_subdirectory ("src")
+add_subdirectory ("src/Renderer")
 
 # Done
 
