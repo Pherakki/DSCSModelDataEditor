@@ -1,17 +1,16 @@
 #pragma once
 #include <string>
-#include <QOpenGLFunctions>
 
 namespace Rendering::DataObjects
 {
-	class OpenGLDSCSTexture : public QOpenGLFunctions
+	class OpenGLDSCSTexture
 	{
 	public:
-		OpenGLDSCSTexture(GLuint buffer_id, std::string img_name);
+		OpenGLDSCSTexture(unsigned int buffer_id, std::string img_name);
 
 		std::string img_name;
 
-		GLuint getBufferID();
+		unsigned int getBufferID();
 		void bind();
 		void unbind();
 	private:

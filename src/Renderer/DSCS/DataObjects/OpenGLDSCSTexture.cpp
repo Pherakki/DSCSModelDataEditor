@@ -1,11 +1,11 @@
 #include "OpenGLDSCSTexture.hpp"
 
+#include <glad/include/glad/glad.h>
 
 namespace Rendering::DataObjects
 {
-	OpenGLDSCSTexture::OpenGLDSCSTexture(GLuint buffer_id, std::string img_name)
+	OpenGLDSCSTexture::OpenGLDSCSTexture(unsigned int buffer_id, std::string img_name)
 	{
-		initializeOpenGLFunctions();
 		this->buffer_id = buffer_id;
 		this->img_name = img_name;
 	}
