@@ -99,6 +99,7 @@ add_executable (${PROJECT_NAME}
                 "Renderer/DSCS/ShaderSystem/cgGL/Utils.cpp" 
                 "Renderer/DSCS/ShaderSystem/cgGL/Utils.hpp" 
                 "Renderer/DSCS/ShaderSystem/cgGL/OpenGLSettings/OpenGLSettings.hpp" 
+                "Renderer/DSCS/ShaderSystem/cgGL/OpenGLSettings/OpenGLSettings.cpp" 
                 "Renderer/DSCS/ShaderSystem/cgGL/ShaderUniforms/BaseTexture.hpp" 
                 "Renderer/DSCS/ShaderSystem/cgGL/ShaderUniforms/ShaderUniforms.hpp"
                 "Renderer/DSCS/ShaderSystem/cgGL/ShaderUniforms/Tex2D.hpp"
