@@ -15,7 +15,7 @@ namespace Rendering::DSCS
 	{
 		typedef std::shared_ptr<DataObjects::OpenGLDSCSModel> ModelPtr;
 	public:
-		float aspect_ratio;
+		float aspect_ratio = 4.f/3;
 		Camera camera;
 		ModelList_t models;
 		AnimationBuffer animation_buffer;
