@@ -21,35 +21,10 @@ namespace CustomWidgets
 		this->setFocusPolicy(Qt::StrongFocus);
 	}
 
-	void RenderWidget::refreshRenderSettings()
-	{
-		// Default settings
-		glDisable(GL_ALPHA_TEST);
-		glAlphaFunc(GL_ALWAYS, 0);
-
-		glDisable(GL_BLEND);
-		glBlendFunc(GL_ONE, GL_ZERO);
-		glBlendEquationSeparate(GL_FUNC_ADD, GL_FUNC_ADD);
-
-		glEnable(GL_CULL_FACE);
-		glCullFace(GL_BACK);
-
-		glEnable(GL_DEPTH_TEST);
-		glDepthFunc(GL_LESS);
-		glDepthMask(GL_TRUE);
-
-		glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE);
-
-		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-	}
-
 	void RenderWidget::initializeGL()
 	{
-		initGLAD();
+		this->renderer.initRenderer();
 		initializeOpenGLFunctions();
-		glClearColor(0.4f, 0.4f, 0.4f, 1.0f);
-		this->refreshRenderSettings();
 
 		std::cout << "Render Widget Init" << std::endl;
 		emit this->glInitialised();

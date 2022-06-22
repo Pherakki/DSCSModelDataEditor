@@ -1,5 +1,7 @@
 #pragma once
 
+#include "../Renderer/DSCS/Renderer.hpp"
+
 #include <QObject>
 #include <QTimer>
 #include <QOpenGLWidget>
@@ -11,7 +13,6 @@
 #include "Types.hpp"
 #include "TextureLibrary.hpp"
 #include "../Renderer/DSCS/AnimationBuffer.hpp"
-#include "../Renderer/DSCS/Renderer.hpp"
 #include "../Renderer/FileFormats/DSCS/DSCStoOpenGL.hpp"
 #include "../Renderer/DSCS/DataObjects/OpenGLDSCSModel.hpp"
 #include "../Renderer/DSCS/ShaderSystem/cgGL/cgGLShaderBackend.hpp"
@@ -138,10 +139,7 @@ namespace CustomWidgets
 		Camera& camera;
 		float targetFrameUpdateTime = 1000 / 30;
 		float increment_test = 0.f;
-		float aspect_ratio;
 		Input::InputHandler input_handler;
-
-		void refreshRenderSettings();
 
 		
 	protected slots:
@@ -150,7 +148,7 @@ namespace CustomWidgets
 	protected:
 		Rendering::DSCS::Renderer renderer;
 		void initializeGL();
-		void resizeGL(int width, int height) { this->aspect_ratio = (float)width / float(height); };
+		void resizeGL(int width, int height) { this->renderer.aspect_ratio = (float)width / float(height); };
 		void paintGL();
 		void keyPressEvent    (QKeyEvent* event)   override { event->isAutoRepeat() ? event->ignore() : this->input_handler.registerKey(event->key()); };
 		void keyReleaseEvent  (QKeyEvent* event)   override { event->isAutoRepeat() ? event->ignore() : this->input_handler.unregisterKey(event->key());};

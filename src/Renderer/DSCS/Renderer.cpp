@@ -1,4 +1,8 @@
+
+#include <glad/include/glad/glad.h>
 #include "Renderer.hpp"
+
+#include "Utils/OpenGL.hpp"
 
 namespace Rendering::DSCS
 {
@@ -19,4 +23,13 @@ namespace Rendering::DSCS
 		// Set up camera
 		this->camera.setPosition({ 0.0f, 0.0f, 3.f });
 	}
+
+	// Call after creating an OpenGL context!
+	void Renderer::initRenderer()
+	{
+		initGLAD();
+		glClearColor(0.4f, 0.4f, 0.4f, 1.0f);
+		this->refreshRenderSettings();
+	}
+
 }

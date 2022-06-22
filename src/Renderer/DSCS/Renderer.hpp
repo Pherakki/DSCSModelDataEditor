@@ -15,6 +15,7 @@ namespace Rendering::DSCS
 	{
 		typedef std::shared_ptr<DataObjects::OpenGLDSCSModel> ModelPtr;
 	public:
+		float aspect_ratio;
 		Camera camera;
 		ModelList_t models;
 		AnimationBuffer animation_buffer;
@@ -22,5 +23,6 @@ namespace Rendering::DSCS
 		std::unordered_map<std::string, std::shared_ptr<ShaderObjects::cgGLShaderObject>> shader_library;
 
 		Renderer();
+		void initRenderer(); // Call after creating an OpenGL context!
 	};
 }
