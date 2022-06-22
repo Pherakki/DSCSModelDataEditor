@@ -39,7 +39,6 @@ private:
 	std::array<float, 3> pos_to_target{ 0.f, 0.f, 0.f };
 	std::array<float, 3> up{ 0.f, 1.f, 0.f };
 
-
 	void calcPosToTarget();
 	void calcRadius();
 	void calcPolarPosition();
