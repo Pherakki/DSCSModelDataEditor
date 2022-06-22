@@ -93,7 +93,7 @@ add_executable (${PROJECT_NAME}
                 "Renderer/DSCS/DataObjects/OpenGLDSCSTexture.hpp"
                 "Renderer/DSCS/DataObjects/SkeletonDataBlocks.cpp"
                 "Renderer/DSCS/DataObjects/SkeletonDataBlocks.hpp"
-                "Renderer/DSCS/RenderObjects/Camera.hpp"
+                "Renderer/DSCS/RenderObjects/Camera.cpp"
                 "Renderer/DSCS/ShaderSystem/cgGL/cgGLShaderBackend.cpp"
                 "Renderer/DSCS/ShaderSystem/cgGL/cgGLShaderBackend.hpp"
                 "Renderer/DSCS/ShaderSystem/cgGL/cgGLShaderObject.cpp"
