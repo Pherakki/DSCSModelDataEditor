@@ -1,5 +1,6 @@
-#include "OpenGLDSCSMaterial.hpp"
+#include <stdexcept>
 
+#include "OpenGLDSCSMaterial.hpp"
 #include "../../../Utils/OpenGL.hpp"
 
 namespace Rendering::DSCS::DataObjects
