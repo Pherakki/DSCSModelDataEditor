@@ -70,6 +70,7 @@ namespace Rendering::DSCS::DataObjects
 	void OpenGLDSCSMaterial::setParamHandler(uint8_t id, const CGparameter& param, T& holder, const std::array<float*, 0xA0>& uniform_dispatch_buffer)
 	{
 		CGtype param_type = cgGetParameterType(param);
+
 		switch (param_type)
 		{
 		case CG_HALF:

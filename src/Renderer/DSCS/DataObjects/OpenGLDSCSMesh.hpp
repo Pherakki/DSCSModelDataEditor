@@ -1,6 +1,5 @@
 #pragma once
 #include <array>
-#include <QOpenGLFunctions>
 #include "../../../Renderer/FileFormats/DSCS/GeomFile/MeshReadWrite.hpp"
 #include "OpenGLDSCSMaterial.hpp"
 
@@ -57,7 +56,7 @@ namespace Rendering::DSCS::DataObjects
 		std::array<float, 4> indices{};
 	};
 	
-	class OpenGLDSCSMesh : protected QOpenGLFunctions
+	class OpenGLDSCSMesh
 	{
 	public:
 		OpenGLDSCSMesh(const FileFormats::DSCS::GeomFile::MeshReadWrite& mesh);
@@ -83,11 +82,11 @@ namespace Rendering::DSCS::DataObjects
 		VertexInfo editable_vertex_info;
 		std::vector<EditableVertex> editable_vertices;
 
-		std::map<uint8_t, GLenum> dtype_map_DSCS_to_GL
+		std::map<uint8_t, unsigned int> dtype_map_DSCS_to_GL
 		{
-			{1, GL_UNSIGNED_BYTE},
-			{6, GL_FLOAT},
-			{11, GL_HALF_FLOAT}
+			{1, 0x1401},// GL_UNSIGNED_BYTE },
+			{6, 0x1406},//GL_FLOAT},
+			{11, 0x140B}//{11, GL_HALF_FLOAT}
 		};
 		std::map<VA_t, cgVertexAttribute> va_map_DSCS_to_GL
 		{

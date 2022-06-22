@@ -1,3 +1,5 @@
+#include "glad/include/glad/glad.h"
+
 #include "OpenGLDSCSMesh.hpp"
 #include "Utils/Float16.hpp"
 
@@ -6,8 +8,6 @@ namespace Rendering::DSCS::DataObjects
 
 	OpenGLDSCSMesh::OpenGLDSCSMesh(const FileFormats::DSCS::GeomFile::MeshReadWrite& mesh)
 	{
-		initializeOpenGLFunctions();
-
 		this->mesh = mesh;
 
 		glGenBuffers(1, &this->vertex_buffer_id);
@@ -86,7 +86,7 @@ namespace Rendering::DSCS::DataObjects
 						var[i] = static_cast<float>(elem);
 					}
 					break;
-				case GL_HALF_FLOAT:
+				case 0x140B://GL_HALF_FLOAT:
 					for (size_t i = 0; i < va.num_elements; ++i)
 					{
 						uint16_t elem;

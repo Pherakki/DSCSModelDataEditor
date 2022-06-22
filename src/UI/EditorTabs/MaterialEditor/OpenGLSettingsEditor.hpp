@@ -4,6 +4,7 @@
 #include <QLineEdit>
 #include <QValidator>
 #include <QWidget>
+#include <QOpenGLFunctions>
 
 #include "../../../Renderer/DSCS/DataObjects/OpenGLDSCSMaterial.hpp"
 #include "UI/SelectedObjectReferences.hpp"
