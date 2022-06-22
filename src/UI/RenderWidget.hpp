@@ -7,7 +7,6 @@
 #include <QKeyEvent>
 #include <QCursor>
 
-#include "Camera.hpp"
 #include "InputHandler.hpp"
 #include "Types.hpp"
 #include "TextureLibrary.hpp"
@@ -136,12 +135,11 @@ namespace CustomWidgets
 		void glInitialised();
 	private:
 		QTimer clock;
-		Camera camera;
+		Camera& camera;
 		float targetFrameUpdateTime = 1000 / 30;
 		float increment_test = 0.f;
 		float aspect_ratio;
 		Input::InputHandler input_handler;
-
 
 		void refreshRenderSettings();
 

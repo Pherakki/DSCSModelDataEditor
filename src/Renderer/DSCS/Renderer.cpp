@@ -15,5 +15,8 @@ namespace Rendering::DSCS
 		this->animation_buffer.SkyDir->set({ 0.0f, 1.0f, 0.0f });
 		// BackBufferSampler
 		// ShadowSampler
+
+		// Set up camera
+		this->camera.setPosition({ 0.0f, 0.0f, 3.f });
 	}
 }

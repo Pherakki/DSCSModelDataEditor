@@ -12,16 +12,13 @@ namespace CustomWidgets
 		, shader_backend{ renderer.shader_backend }
 		, shader_library{ renderer.shader_library }
 		, models{ renderer.models }
+		, camera{ renderer.camera }
 	{
 		// Set up the render loop
 		connect(&this->clock, &QTimer::timeout, this, &RenderWidget::update);
 		connect(&this->clock, &QTimer::timeout, this, [this](){	this->increment_test += 0.001 * targetFrameUpdateTime; /*convert to seconds*/ });
 		this->clock.start(this->targetFrameUpdateTime);
 		this->setFocusPolicy(Qt::StrongFocus);
-
-		// Set up camera
-		this->camera.setPosition({ 0.0f, 0.0f, 3.f });
-
 	}
 
 	void RenderWidget::refreshRenderSettings()
