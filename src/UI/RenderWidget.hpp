@@ -12,6 +12,7 @@
 #include "Types.hpp"
 #include "TextureLibrary.hpp"
 #include "../Renderer/DSCS/AnimationBuffer.hpp"
+#include "../Renderer/DSCS/Renderer.hpp"
 #include "../Renderer/FileFormats/DSCS/DSCStoOpenGL.hpp"
 #include "../Renderer/DSCS/DataObjects/OpenGLDSCSModel.hpp"
 #include "../Renderer/DSCS/ShaderSystem/cgGL/cgGLShaderBackend.hpp"
@@ -149,6 +150,7 @@ namespace CustomWidgets
 		void update();
 
 	protected:
+		Renderer renderer;
 		void initializeGL();
 		void resizeGL(int width, int height) { this->aspect_ratio = (float)width / float(height); };
 		void paintGL();
