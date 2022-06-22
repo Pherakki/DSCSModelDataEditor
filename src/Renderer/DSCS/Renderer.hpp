@@ -24,5 +24,7 @@ namespace Rendering::DSCS
 
 		Renderer();
 		void initRenderer(); // Call after creating an OpenGL context!
+		void refreshRenderSettings();
+		void recalculateGlobalUniforms();
 	};
 }
