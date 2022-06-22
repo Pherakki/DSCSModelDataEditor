@@ -127,11 +127,11 @@ namespace CustomWidgets
 		~RenderWidget();
 		ModelPtr loadModel(const std::string& path);
 		void loadAnim(const ModelPtr& model, const std::string& anim_path);
-		ModelList_t models;
+		ModelList_t& models;
 		TextureLibrary texture_library;
-		Rendering::DSCS::AnimationBuffer animation_buffer;
-		std::unique_ptr<Rendering::ShaderBackends::cgGLShaderBackend> shader_backend;
-		std::unordered_map<std::string, std::shared_ptr<Rendering::ShaderObjects::cgGLShaderObject>> shader_library;
+		Rendering::DSCS::AnimationBuffer& animation_buffer;
+		std::unique_ptr<Rendering::ShaderBackends::cgGLShaderBackend>& shader_backend;
+		std::unordered_map<std::string, std::shared_ptr<Rendering::ShaderObjects::cgGLShaderObject>>& shader_library;
 	signals:
 		void glInitialised();
 	private:
@@ -150,7 +150,7 @@ namespace CustomWidgets
 		void update();
 
 	protected:
-		Renderer renderer;
+		Rendering::DSCS::Renderer renderer;
 		void initializeGL();
 		void resizeGL(int width, int height) { this->aspect_ratio = (float)width / float(height); };
 		void paintGL();
