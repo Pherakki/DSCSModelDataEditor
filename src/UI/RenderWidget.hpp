@@ -11,7 +11,7 @@
 #include "InputHandler.hpp"
 #include "Types.hpp"
 #include "TextureLibrary.hpp"
-#include "../Renderer/DSCS/Renderer.hpp"
+#include "../Renderer/DSCS/AnimationBuffer.hpp"
 #include "../Renderer/FileFormats/DSCS/DSCStoOpenGL.hpp"
 #include "../Renderer/DSCS/DataObjects/OpenGLDSCSModel.hpp"
 #include "../Renderer/DSCS/ShaderSystem/cgGL/cgGLShaderBackend.hpp"

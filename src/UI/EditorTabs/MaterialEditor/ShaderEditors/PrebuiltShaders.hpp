@@ -10,7 +10,7 @@
 #include <QtWidgets/QLineEdit>
 
 #include "Renderer/DSCS/DataObjects/OpenGLDSCSMaterial.hpp"
-#include "Renderer/DSCS/Renderer.hpp"
+#include "Renderer/DSCS/AnimationBuffer.hpp"
 #include "TabMaterials.hpp"
 #include "UI/SelectedObjectReferences.hpp"
 

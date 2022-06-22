@@ -3,7 +3,7 @@
 #include <iostream> // Remove after debugging
 #include <QObject>
 
-#include "Renderer/DSCS/Renderer.hpp"
+#include "Renderer/DSCS/AnimationBuffer.hpp"
 #include "Renderer/DSCS/DataObjects/OpenGLDSCSModel.hpp"
 #include "UI/EditorTabs/MaterialEditor//ShaderEditors/TabMaterials.hpp"
 #include "UI/TextureLibrary.hpp"

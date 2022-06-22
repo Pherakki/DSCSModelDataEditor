@@ -7,7 +7,7 @@
 #include "AnimFile/AnimReadWrite.hpp"
 #include "../Textures/DDS.hpp"
 #include "../../../UI/TextureLibrary.hpp"
-#include "../../../Renderer/DSCS/Renderer.hpp"
+#include "../../../Renderer/DSCS/AnimationBuffer.hpp"
 #include "../../../Renderer/DSCS/DataObjects/OpenGLDSCSModel.hpp"
 #include "../../../Renderer/DSCS/ShaderSystem/cgGL/cgGLShaderBackend.hpp"
 #include "../../../Renderer/DSCS/ShaderSystem/cgGL/cgGLShaderObject.hpp"

@@ -78,7 +78,7 @@ add_executable (${PROJECT_NAME}
                 "Utils/OpenGL.cpp"
                 "Utils/BitManip.hpp" 
                 "Utils/BitManip.cpp" 
-                "Renderer/DSCS/Renderer.hpp" 
+                "Renderer/DSCS/AnimationBuffer.hpp" 
                 "Renderer/DSCS/DataObjects/AnimationDataBlocks.hpp"
                 "Renderer/DSCS/DataObjects/AnimationSampler.cpp" 
                 "Renderer/DSCS/DataObjects/AnimationSampler.hpp"

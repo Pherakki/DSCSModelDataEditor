@@ -8,7 +8,7 @@
 #include "../../../../Cg/cg.h"
 
 #include "OpenGLDSCSTexture.hpp"
-#include "../Renderer.hpp"
+#include "../AnimationBuffer.hpp"
 #include "../ShaderSystem/cgGL/cgGLShaderObject.hpp"
 #include "../ShaderSystem/cgGL/ShaderVariables.hpp"
 #include "../ShaderSystem/cgGL/OpenGLSettings/OpenGLSettings.hpp"
