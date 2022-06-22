@@ -136,7 +136,6 @@ namespace CustomWidgets
 		void glInitialised();
 	private:
 		QTimer clock;
-		Camera& camera;
 		float targetFrameUpdateTime = 1000 / 30;
 		float increment_test = 0.f;
 		Input::InputHandler input_handler;
@@ -155,7 +154,7 @@ namespace CustomWidgets
 		void mousePressEvent  (QMouseEvent* event) override { this->input_handler.registerKey(event->button()); };
 		void mouseReleaseEvent(QMouseEvent* event) override { this->input_handler.unregisterKey(event->button()); };
 		void registerMousePosition() { this->input_handler.updateMousePosition(QCursor::pos()); }
-		void wheelEvent(QWheelEvent* event) override { if (event->delta()) this->camera.mulRadius(-event->delta()); };
+		void wheelEvent(QWheelEvent* event) override { if (event->delta()) this->renderer.camera.mulRadius(-event->delta()); };
 	};
 }
 

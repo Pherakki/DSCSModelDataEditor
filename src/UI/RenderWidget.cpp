@@ -12,7 +12,6 @@ namespace CustomWidgets
 		, shader_backend{ renderer.shader_backend }
 		, shader_library{ renderer.shader_library }
 		, models{ renderer.models }
-		, camera{ renderer.camera }
 	{
 		// Set up the render loop
 		connect(&this->clock, &QTimer::timeout, this, &RenderWidget::update);
@@ -78,12 +77,12 @@ namespace CustomWidgets
 		else */if (this->input_handler.shouldTranslateCamera())
 		{
 			auto& mdelta = this->input_handler.getMouseDelta();
-			this->camera.translate(mdelta.x(), mdelta.y());
+			this->renderer.camera.translate(mdelta.x(), mdelta.y());
 		}
 		else if (this->input_handler.shouldRotateCamera())
 		{
 			auto& mdelta = this->input_handler.getMouseDelta();
-			this->camera.incAltAzi(mdelta.x(), mdelta.y());
+			this->renderer.camera.incAltAzi(mdelta.x(), mdelta.y());
 		}
 
 		if (this->input_handler.toggleAnimation())
