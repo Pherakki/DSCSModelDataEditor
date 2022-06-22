@@ -11,9 +11,7 @@
 
 #include "InputHandler.hpp"
 #include "Types.hpp"
-#include "TextureLibrary.hpp"
 #include "../Renderer/DSCS/AnimationBuffer.hpp"
-#include "../Renderer/FileFormats/DSCS/DSCStoOpenGL.hpp"
 #include "../Renderer/DSCS/DataObjects/OpenGLDSCSModel.hpp"
 #include "../Renderer/DSCS/ShaderSystem/cgGL/cgGLShaderBackend.hpp"
 #include "../Renderer/DSCS/ShaderSystem/cgGL/cgGLShaderObject.hpp"
@@ -128,10 +126,10 @@ namespace CustomWidgets
 		ModelPtr loadModel(const std::string& path);
 		void loadAnim(const ModelPtr& model, const std::string& anim_path);
 		ModelList_t& models;
-		TextureLibrary texture_library;
 		Rendering::DSCS::AnimationBuffer& animation_buffer;
 		std::unique_ptr<Rendering::ShaderBackends::cgGLShaderBackend>& shader_backend;
 		std::unordered_map<std::string, std::shared_ptr<Rendering::ShaderObjects::cgGLShaderObject>>& shader_library;
+		Rendering::DSCS::Renderer renderer;
 	signals:
 		void glInitialised();
 	private:
@@ -145,7 +143,6 @@ namespace CustomWidgets
 		void update();
 
 	protected:
-		Rendering::DSCS::Renderer renderer;
 		void initializeGL();
 		void resizeGL(int width, int height) { this->renderer.aspect_ratio = (float)width / float(height); };
 		void paintGL();

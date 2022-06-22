@@ -1,3 +1,5 @@
+#include <filesystem>
+
 #include <QtCore/QCryptographicHash>
 #include <QtCore/QDirIterator>
 #include <QtWidgets/QFileDialog>
@@ -19,7 +21,7 @@ typedef std::shared_ptr<Rendering::DSCS::DataObjects::OpenGLDSCSMaterial> Materi
 DSCSModelDataEditorWindow::DSCSModelDataEditorWindow(QWidget* parent)
     : QMainWindow(parent)
     , render_widget{ new CustomWidgets::RenderWidget(this) }
-    , selected_objects{SelectedObjectReferences(this->render_widget->animation_buffer, this->render_widget->texture_library)}
+    , selected_objects{SelectedObjectReferences(this->render_widget->animation_buffer, this->render_widget->renderer.texture_library)}
 {
     // Qt5 takes ownership of raw pointers and handles destruction properly, 
     // so no memory leaks here even though it looks like it

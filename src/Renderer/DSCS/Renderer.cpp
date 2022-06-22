@@ -3,6 +3,7 @@
 #include "Renderer.hpp"
 
 #include "Utils/OpenGL.hpp"
+#include "../FileFormats/DSCS/DSCStoOpenGL.hpp"
 
 namespace Rendering::DSCS
 {
@@ -73,4 +74,24 @@ namespace Rendering::DSCS
 		this->animation_buffer.ViewInverse->set(invertViewMatrix(view_matrix, this->camera.getPosition()));
 	}
 
+	Renderer::ModelPtr Renderer::loadModel(const std::string& path)
+	{
+		//this->models.clear();
+		auto id = models.size();
+		models.emplace(id, std::make_shared<Model>(FileFormats::DSCS::DSCStoOpenGL(path, this->shader_backend, this->animation_buffer.uniform_dispatch_buffer, this->texture_library, this->shader_library)));
+		auto& model = models.at(id);
+		model->base_anim_sampler.setAnim(model->base_animation);
+		model->base_anim_sampler.setSkel(model->skeleton);
+
+		return model;
+	}
+
+
+	void Renderer::loadAnim(const ModelPtr& model, const std::string& anim_path)
+	{
+		//auto& model = this->models.at(0);
+		FileFormats::DSCS::loadAnimation<false>(*model, model->skeleton.getShaderChannelDataBlocks().size(), anim_path);
+		model->anim_sampler_a.setAnim(model->animations[0]);
+		model->anim_sampler_a.setSkel(model->skeleton);
+	}
 }
