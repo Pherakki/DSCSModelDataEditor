@@ -94,4 +94,59 @@ namespace Rendering::DSCS
 		model->anim_sampler_a.setAnim(model->animations[0]);
 		model->anim_sampler_a.setSkel(model->skeleton);
 	}
+
+	void Renderer::render()
+	{
+		for (auto& kv : this->models)
+		{
+			auto& model = kv.second;
+			auto& skeleton = model->skeleton;
+			// Calculate the model's skeleton position for this frame
+			//auto frame = model->base_anim_sampler.getFrame();
+			//model->setSamplersFrame(35);
+			model->sampleSkeletalAnimation();
+			auto& bones = model->skeleton.getBoneDataBlocks();
+			//model->setSamplersFrame(frame);
+			// Now render each mesh
+			for (int j = 0; j < model->meshes.size(); j++)
+			{
+				auto& mesh = model->meshes[j];
+				mesh->checkGLError();
+
+				// Load up the matrix palette with skeletal bone matrices
+				for (uint16_t idx = 0; idx < mesh->used_bones.size(); ++idx)
+				{
+					for (uint8_t k = 0; k < 12; ++k)
+					{
+						this->animation_buffer.matrix_palette_buffer[12 * idx + k] = model->skeleton.transform_buffer[mesh->used_bones[idx]][k];
+					}
+				}
+
+				// upload default shader uniform values to the animation buffer
+				mesh->material->syncAnimationBuffer();
+				// calculate shader uniform animations
+				model->sampleShaderUniformAnimation(mesh->material, this->animation_buffer);
+				// upload shader uniform animation values
+				mesh->material->bind();
+				mesh->checkGLError();
+
+				this->shader_backend->checkBackendForCgError("Setting MVP...");
+				mesh->bind();
+				mesh->checkGLError();
+				mesh->draw();
+				mesh->checkGLError();
+				mesh->unbind();
+				mesh->checkGLError();
+				mesh->material->unbind();
+
+				mesh->checkGLError();
+				this->shader_backend->checkBackendForCgError("Finishing unbind...");
+			}
+
+			// Advance animation time
+			model->tickSamplers();
+		}
+
+		(*this->animation_buffer.Time)[0] = this->clock_time;
+	}
 }

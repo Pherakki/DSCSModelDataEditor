@@ -135,7 +135,6 @@ namespace CustomWidgets
 	private:
 		QTimer clock;
 		float targetFrameUpdateTime = 1000 / 30;
-		float increment_test = 0.f;
 		Input::InputHandler input_handler;
 
 		

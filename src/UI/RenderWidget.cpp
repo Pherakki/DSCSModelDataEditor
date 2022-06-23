@@ -15,7 +15,7 @@ namespace CustomWidgets
 	{
 		// Set up the render loop
 		connect(&this->clock, &QTimer::timeout, this, &RenderWidget::update);
-		connect(&this->clock, &QTimer::timeout, this, [this](){	this->increment_test += 0.001 * targetFrameUpdateTime; /*convert to seconds*/ });
+		connect(&this->clock, &QTimer::timeout, this, [this](){	this->renderer.clock_time += 0.001 * targetFrameUpdateTime; /*convert to seconds*/ });
 		this->clock.start(this->targetFrameUpdateTime);
 		this->setFocusPolicy(Qt::StrongFocus);
 	}
@@ -89,61 +89,7 @@ namespace CustomWidgets
 	void RenderWidget::paintGL()
 	{
 		this->renderer.refreshRenderSettings();
-		for (auto& kv: this->models)
-		{
-			auto& model = kv.second;
-			auto& skeleton = model->skeleton;
-			// Calculate the model's skeleton position for this frame
-			model->sampleSkeletalAnimation();
-			auto& bones = model->skeleton.getBoneDataBlocks();
-			// Now render each mesh
-			for (int j = 0; j < model->meshes.size(); j++)
-			{
-				auto& mesh = model->meshes[j];
-				mesh->checkGLError();
-
-				// Load up the matrix palette with skeletal bone matrices
-				for (uint16_t idx = 0; idx < mesh->used_bones.size(); ++idx)
-				{
-					for (uint8_t k = 0; k < 12; ++k)
-					{
-						this->animation_buffer.matrix_palette_buffer[12 * idx + k] = model->skeleton.transform_buffer[mesh->used_bones[idx]][k];
-					}
-				}
-
-				// upload default shader uniform values to the animation buffer
-				mesh->material->syncAnimationBuffer();
-				// calculate shader uniform animations
-				model->sampleShaderUniformAnimation(mesh->material, this->animation_buffer);
-				// upload shader uniform animation values
-				mesh->material->bind();
-				mesh->checkGLError();
-
-				this->shader_backend->checkBackendForCgError("Setting MVP...");
-				mesh->bind();
-				mesh->checkGLError();
-				mesh->draw();
-				mesh->checkGLError();
-				mesh->unbind();
-				mesh->checkGLError();
-				mesh->material->unbind();
-
-				mesh->checkGLError();
-				this->shader_backend->checkBackendForCgError("Finishing unbind...");
-			}
-
-			// Advance animation time
-			model->tickSamplers();
-		}
-
-		// Rotate the light in a circle, just to test the illumination render
-		float whole_part;
-		//auto angle = 2*3.14*std::modf(this->increment_test/2, &whole_part);
-		//this->animation_buffer.DirLamp01Dir->set({ 2.f * std::sinf(angle), 0.5f, 2.f * std::cosf(angle)});
-
-		//this->increment_test = std::modf(this->increment_test, &whole_part);
-		(*this->animation_buffer.Time)[0] = this->increment_test;
-
+		this->renderer.render();
 	}
 }
 
