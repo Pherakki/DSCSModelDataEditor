@@ -11,7 +11,7 @@ project ("DSCSModelEditorCMake")
 
 # Include sub-projects
 add_subdirectory ("src")
-add_subdirectory ("src/Renderer")
+add_subdirectory ("src/pyRenderer")
 
 # Done
 
