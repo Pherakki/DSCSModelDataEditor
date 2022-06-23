@@ -8,10 +8,6 @@ namespace CustomWidgets
 	// Constructor
 	RenderWidget::RenderWidget(QWidget* parent) 
 		: QOpenGLWidget(parent)
-		, animation_buffer{renderer.animation_buffer}
-		, shader_backend{ renderer.shader_backend }
-		, shader_library{ renderer.shader_library }
-		, models{ renderer.models }
 	{
 		// Set up the render loop
 		connect(&this->clock, &QTimer::timeout, this, &RenderWidget::update);

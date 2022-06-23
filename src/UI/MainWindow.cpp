@@ -21,7 +21,7 @@ typedef std::shared_ptr<Rendering::DSCS::DataObjects::OpenGLDSCSMaterial> Materi
 DSCSModelDataEditorWindow::DSCSModelDataEditorWindow(QWidget* parent)
     : QMainWindow(parent)
     , render_widget{ new CustomWidgets::RenderWidget(this) }
-    , selected_objects{SelectedObjectReferences(this->render_widget->animation_buffer, this->render_widget->renderer.texture_library)}
+    , selected_objects{SelectedObjectReferences(this->render_widget->renderer.animation_buffer, this->render_widget->renderer.texture_library)}
 {
     // Qt5 takes ownership of raw pointers and handles destruction properly, 
     // so no memory leaks here even though it looks like it
@@ -60,8 +60,8 @@ DSCSModelDataEditorWindow::DSCSModelDataEditorWindow(QWidget* parent)
     auto info_editor = new QTabWidget();
     auto mesh_info_tab = new MeshEditorTab(this->selected_objects, this);
     auto skeleton_info_tab = new QWidget(this);
-    auto material_info_tab = new MaterialEditorTab(this->selected_objects, this->render_widget->shader_backend, this->render_widget->animation_buffer, this);
-    auto animation_info_tab = new AnimationEditorTab(render_widget->models);
+    auto material_info_tab = new MaterialEditorTab(this->selected_objects, this->render_widget->renderer.shader_backend, this->render_widget->renderer.animation_buffer, this);
+    auto animation_info_tab = new AnimationEditorTab(render_widget->renderer.models);
 
     info_editor->addTab(animation_info_tab, "Animation");
     info_editor->addTab(mesh_info_tab, "Mesh");

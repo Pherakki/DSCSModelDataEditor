@@ -125,10 +125,6 @@ namespace CustomWidgets
 		~RenderWidget();
 		ModelPtr loadModel(const std::string& path);
 		void loadAnim(const ModelPtr& model, const std::string& anim_path);
-		ModelList_t& models;
-		Rendering::DSCS::AnimationBuffer& animation_buffer;
-		std::unique_ptr<Rendering::ShaderBackends::cgGLShaderBackend>& shader_backend;
-		std::unordered_map<std::string, std::shared_ptr<Rendering::ShaderObjects::cgGLShaderObject>>& shader_library;
 		Rendering::DSCS::Renderer renderer;
 	signals:
 		void glInitialised();
