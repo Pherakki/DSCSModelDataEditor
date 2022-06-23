@@ -4,3 +4,8 @@
 
 using namespace boost::python;
 using namespace Rendering::DSCS;
+
+BOOST_PYTHON_MODULE(pyDSCSRenderer)
+{
+
+}
