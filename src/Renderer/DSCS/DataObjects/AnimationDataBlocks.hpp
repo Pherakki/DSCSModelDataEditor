@@ -6,7 +6,7 @@
 #include <unordered_map>
 #include <vector>
 
-#include "Utils/Vector.hpp"
+#include "../../../Utils/Vector.hpp"
 
 namespace DataBlocks::Animation
 {

@@ -1,7 +1,7 @@
 #pragma once
 
 #include "GeomForwardDeclarations.hpp"
-#include "Renderer/serialisation/ReadWriter.hpp"
+#include "../../../serialisation/ReadWriter.hpp"
 
 namespace FileFormats::DSCS::GeomFile
 {
