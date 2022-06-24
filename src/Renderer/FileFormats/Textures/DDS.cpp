@@ -1,5 +1,6 @@
 #include <fstream>
 
+#include "../../../glad/include/glad/glad.h"
 #include "DDS.hpp"
 #include "../../serialisation/ReadWriter.hpp"
 #include "../../../Cg/cg.h"
@@ -9,7 +10,6 @@
 
 DDSLoader::DDSLoader()
 {
-    initializeOpenGLFunctions();
 }
 
 GLuint DDSLoader::texture_loadDDS(const char* path, TextureType tex_type)
