@@ -7,13 +7,13 @@
 #include "AnimFile/AnimReadWrite.hpp"
 #include "../Textures/DDS.hpp"
 #include "../../../UI/TextureLibrary.hpp"
-#include "../../../Renderer/DSCS/AnimationBuffer.hpp"
-#include "../../../Renderer/DSCS/DataObjects/OpenGLDSCSModel.hpp"
-#include "../../../Renderer/DSCS/ShaderSystem/cgGL/cgGLShaderBackend.hpp"
-#include "../../../Renderer/DSCS/ShaderSystem/cgGL/cgGLShaderObject.hpp"
-#include "../../../Utils/BitManip.hpp"
-#include "../../../Utils/OpenGL.hpp"
-#include "../../../Utils/Matrix.hpp"
+#include "../../DSCS/AnimationBuffer.hpp"
+#include "../../DSCS/DataObjects/OpenGLDSCSModel.hpp"
+#include "../../DSCS/ShaderSystem/cgGL/cgGLShaderBackend.hpp"
+#include "../../DSCS/ShaderSystem/cgGL/cgGLShaderObject.hpp"
+#include "../../Utils/BitManip.hpp"
+#include "../../Utils/OpenGL.hpp"
+#include "../../Utils/Matrix.hpp"
 
 #include <filesystem>
 #include <iomanip>

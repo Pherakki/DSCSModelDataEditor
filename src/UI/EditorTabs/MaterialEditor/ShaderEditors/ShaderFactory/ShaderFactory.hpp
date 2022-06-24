@@ -22,7 +22,7 @@
 #include "../../../../../Renderer/DSCS/DataObjects/OpenGLDSCSMesh.hpp"
 #include "../../../../../Renderer/DSCS/DataObjects/OpenGLDSCSMaterial.hpp"
 #include "../../../../../Renderer/DSCS/ShaderSystem/cgGL/cgGLShaderBackend.hpp"
-#include "../../../../../Utils/Hashing.hpp"
+#include "../../../../../Renderer/Utils/Hashing.hpp"
 #include "UI/SelectedObjectReferences.hpp"
 
 #include "Widgets/BumpmapBox.hpp"

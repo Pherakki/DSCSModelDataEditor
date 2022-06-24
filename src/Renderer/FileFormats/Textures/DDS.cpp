@@ -5,7 +5,7 @@
 #include "../../serialisation/ReadWriter.hpp"
 #include "../../../../Cg/cg.h"
 #include "../../../../Cg/cgGL.h"
-#include "../../../../src/Utils/OpenGL.hpp"
+#include "../../Utils/OpenGL.hpp"
 
 
 DDSLoader::DDSLoader()

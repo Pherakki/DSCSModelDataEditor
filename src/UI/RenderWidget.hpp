@@ -15,7 +15,6 @@
 #include "../Renderer/DSCS/DataObjects/OpenGLDSCSModel.hpp"
 #include "../Renderer/DSCS/ShaderSystem/cgGL/cgGLShaderBackend.hpp"
 #include "../Renderer/DSCS/ShaderSystem/cgGL/cgGLShaderObject.hpp"
-#include "../Utils/Matrix.hpp"
 
 namespace CustomWidgets
 {

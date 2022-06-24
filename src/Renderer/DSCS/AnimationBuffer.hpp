@@ -3,7 +3,7 @@
 #include <array>
 #include <memory>
 
-#include "../../Utils/SubarrayView.hpp"
+#include "../Utils/SubarrayView.hpp"
 
 namespace Rendering::DSCS
 {

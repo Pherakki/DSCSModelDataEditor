@@ -2,7 +2,7 @@
 #include "../../glad/include/glad/glad.h"
 #include "Renderer.hpp"
 
-#include "../../Utils/OpenGL.hpp"
+#include "../Utils/OpenGL.hpp"
 #include "../FileFormats/DSCS/DSCStoOpenGL.hpp"
 
 namespace Rendering::DSCS

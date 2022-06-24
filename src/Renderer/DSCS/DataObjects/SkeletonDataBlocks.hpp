@@ -8,8 +8,8 @@
 #include <unordered_map>
 
 #include "../../../Renderer/FileFormats/DSCS/SkelFile/SkelReadWrite.hpp"
-#include "../../../Utils/Hashing.hpp"
-#include "../../../Utils/Matrix.hpp"
+#include "../../Utils/Hashing.hpp"
+#include "../../Utils/Matrix.hpp"
 
 namespace DataBlocks::Skeleton
 {

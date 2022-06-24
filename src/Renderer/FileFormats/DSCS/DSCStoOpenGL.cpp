@@ -1,5 +1,5 @@
 #include "DSCStoOpenGL.hpp"
-#include "../../../Utils/Hashing.hpp"
+#include "../../Utils/Hashing.hpp"
 
 // Init used textures
 uint16_t initTexture(uint16_t uniform_id,const std::filesystem::path& img_path, const std::string& tex_name, TextureLibrary& texture_library)

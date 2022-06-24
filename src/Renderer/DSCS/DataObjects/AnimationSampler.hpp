@@ -4,7 +4,7 @@
 #include <algorithm>
 #include "AnimationDataBlocks.hpp"
 #include "SkeletonDataBlocks.hpp"
-#include "../../../Utils/Vector.hpp"
+#include "../../Utils/Vector.hpp"
 
 namespace DataBlocks::Animation
 {
