@@ -8,11 +8,7 @@
 #include "../../Utils/OpenGL.hpp"
 
 
-DDSLoader::DDSLoader()
-{
-}
-
-GLuint DDSLoader::texture_loadDDS(const char* path, TextureType tex_type)
+GLuint loadDDS(const char* path, TextureType tex_type)
 {
     FILE* f;
     f = fopen(path, "rb");

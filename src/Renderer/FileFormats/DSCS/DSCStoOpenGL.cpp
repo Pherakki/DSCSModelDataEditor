@@ -46,8 +46,7 @@ uint16_t initTexture(uint16_t uniform_id,const std::filesystem::path& img_path, 
 		{
 			auto full_img_path = img_path;
 			full_img_path /= (tex_name + ".img");
-			DDSLoader dds_loader;
-			GLuint tex_id = dds_loader.texture_loadDDS(full_img_path.string().c_str(), tex_type);
+			GLuint tex_id = loadDDS(full_img_path.string().c_str(), tex_type);
 			(*sublib)[tex_name] = tex_id;
 			return tex_id;
 		}
