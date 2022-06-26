@@ -10,9 +10,9 @@
 #include <QCursor>
 
 #include "InputHandler.hpp"
-#include "Types.hpp"
 #include "../Renderer/DSCS/AnimationBuffer.hpp"
 #include "../Renderer/DSCS/DataObjects/OpenGLDSCSModel.hpp"
+#include "../Renderer/DSCS/RenderObjects/Types.hpp"
 #include "../Renderer/DSCS/ShaderSystem/cgGL/cgGLShaderBackend.hpp"
 #include "../Renderer/DSCS/ShaderSystem/cgGL/cgGLShaderObject.hpp"
 

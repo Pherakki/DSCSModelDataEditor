@@ -8,7 +8,7 @@
 #include "ShaderSystem/cgGL/cgGLShaderBackend.hpp"
 #include "ShaderSystem/cgGL/cgGLShaderObject.hpp"
 #include "RenderObjects/TextureLibrary.hpp"
-#include "../../UI/Types.hpp"
+#include "RenderObjects/Types.hpp"
 
 namespace Rendering::DSCS
 {

@@ -11,9 +11,9 @@
 #include <QtWidgets/QWidget>
 
 #include "../../SelectedObjectReferences.hpp"
-#include "../../Types.hpp"
 #include "../../Spoiler/Spoiler.hpp"
 #include "../../../Renderer/DSCS/DataObjects/OpenGLDSCSMaterial.hpp"
+#include "../../../Renderer/DSCS/RenderObjects/Types.hpp"
 #include "ShaderEditors/ShaderEditorTabs.hpp"
 #include "OpenGLSettingsEditor.hpp"
 

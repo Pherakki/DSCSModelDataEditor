@@ -3,7 +3,7 @@
 #include <QtWidgets/QWidget>
 #include <QtWidgets/QLineEdit>
 
-#include "../Types.hpp"
+#include "../../Renderer/DSCS/RenderObjects/Types.hpp"
 #include "../../Renderer/DSCS/DataObjects/SkeletonDataBlocks.hpp"
 
 class AnimationEditorTab : public QWidget
