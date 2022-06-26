@@ -100,6 +100,9 @@ target_link_libraries(${PROJECT_NAME}
 	${PYTHON_LIBRARIES}
 )
 
+message(Incl: ${Python_INCLUDE_DIRS})
+message(Libs: ${PYTHON_LIBRARIES})
+
 # Set up Cg
 # Static
 if (WIN32)
