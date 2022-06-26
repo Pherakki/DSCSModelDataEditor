@@ -19,6 +19,7 @@ namespace Rendering::DSCS
 	public:
 		float aspect_ratio = 4.f/3;
 		float clock_time = 0;
+		float delta_time = 0;
 		Camera camera;
 		ModelList_t models;
 		TextureLibrary texture_library;
@@ -33,5 +34,6 @@ namespace Rendering::DSCS
 		ModelPtr loadModel(const std::string& path);
 		void loadAnim(const ModelPtr& model, const std::string& anim_path);
 		void render();
+		void advTime(float adv);
 	};
 }

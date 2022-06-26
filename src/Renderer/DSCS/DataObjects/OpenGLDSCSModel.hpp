@@ -43,9 +43,9 @@ namespace Rendering::DSCS::DataObjects
 			callOnSamplers(setFrame, frame);
 		}
 
-		void tickSamplers()
+		void tickSamplers(float time)
 		{
-			callOnSamplers(tick,)
+			callOnSamplers(tick, time)
 		}
 
 		void sampleSkeletalAnimation()

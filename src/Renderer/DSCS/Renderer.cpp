@@ -142,11 +142,17 @@ namespace Rendering::DSCS
 				mesh->checkGLError();
 				this->shader_backend->checkBackendForCgError("Finishing unbind...");
 			}
-
-			// Advance animation time
-			model->tickSamplers();
 		}
 
 		(*this->animation_buffer.Time)[0] = this->clock_time;
+	}
+
+	void Renderer::advTime(float adv)
+	{
+		this->delta_time = adv;
+		this->clock_time += adv;
+		for (auto& [id, model] : models)
+			// Advance animation time
+			model->tickSamplers(this->delta_time);
 	}
 }
