@@ -12,7 +12,7 @@ namespace CustomWidgets
 		// Set up the render loop
 		connect(&this->clock, &QTimer::timeout, this, &RenderWidget::update);
 		connect(&this->clock, &QTimer::timeout, this, [this](){	this->renderer.advTime(targetFrameUpdateTime); /*convert to seconds*/ });
-		this->clock.start(1000 * this->targetFrameUpdateTime);
+		this->clock.start((int)(1000 * this->targetFrameUpdateTime));
 		this->setFocusPolicy(Qt::StrongFocus);
 	}
 
