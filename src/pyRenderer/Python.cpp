@@ -11,40 +11,14 @@ class pyRenderer
 private:
 	Renderer renderer;
 public:
-	void initRenderer()
-	{
-		renderer.initRenderer();
-	}
+	void initRenderer             () { renderer.initRenderer(); }
+	void recalculateGlobalUniforms() { renderer.recalculateGlobalUniforms(); }
+	void refreshRenderSettings    () { renderer.refreshRenderSettings(); }
+	void render                   () { renderer.render(); }
 
-	void loadModel(std::string filepath)
-	{
-		renderer.loadModel(filepath);
-	}
-
-	void loadAnim(int model_id, std::string filepath)
-	{
-		renderer.loadAnim(renderer.models[model_id], filepath);
-	}
-
-	void recalculateGlobalUniforms()
-	{
-		renderer.recalculateGlobalUniforms();
-	}
-
-	void refreshRenderSettings()
-	{
-		renderer.refreshRenderSettings();
-	}
-
-	void render()
-	{
-		renderer.render();
-	}
-
-	void advanceClock(float increment)
-	{
-		renderer.advTime(increment);
-	}
+	void advanceClock(float increment)                    { renderer.advTime(increment); }
+	void loadModel   (std::string filepath)               { renderer.loadModel(filepath); }
+	void loadAnim    (int model_id, std::string filepath) { renderer.loadAnim(renderer.models[model_id], filepath); }
 
 	void setCameraPosition(list pos)
 	{
