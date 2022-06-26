@@ -13,9 +13,6 @@ add_executable (${PROJECT_NAME}
                 "glad/include/glad/glad.h"
                 "glad/include/KHR/khrplatform.h"
                 "glad/src/glad.c"
-                "Renderer/Utils/Hashing.cpp" 
-                "Renderer/Utils/Matrix.cpp" 
-                "Renderer/Utils/Vector.cpp" 
                 "UI/MainWindow.cpp"
                 "UI/MainWindow.hpp"
                 "UI/RenderWidget.cpp"
@@ -25,8 +22,6 @@ add_executable (${PROJECT_NAME}
                 "UI/EditorTabs/MeshEditor.hpp" 
                 "UI/Spoiler/Spoiler.hpp" 
                 "UI/Spoiler/Spoiler.cpp"  
-                "Renderer/Utils/Float16.hpp"  
-                "Renderer/Utils/Float16.cpp"
                 "UI/EditorTabs/MaterialEditor/MaterialEditor.hpp" 
                 "UI/EditorTabs/MaterialEditor/OpenGLSettingsEditor.hpp"
                 "UI/EditorTabs/MaterialEditor/ShaderEditors/CodeEditor.hpp"
@@ -74,9 +69,6 @@ add_executable (${PROJECT_NAME}
                 "UI/SelectedObjectReferences.hpp" 
                 "UI/EditorTabs/MaterialEditor/ShaderEditors/ShaderFactory/ShaderGenerator/CodeGenerator/VertexShader/VertexShader.hpp"
                 "UI/EditorTabs/MaterialEditor/ShaderEditors/ShaderFactory/ShaderGenerator/CodeGenerator/VertexShader/VertexShader.cpp"
-                "Renderer/Utils/OpenGL.cpp"
-                "Renderer/Utils/BitManip.hpp" 
-                "Renderer/Utils/BitManip.cpp" 
                 "Renderer/DSCS/AnimationBuffer.hpp"
                 "Renderer/DSCS/Renderer.hpp" 
                 "Renderer/DSCS/Renderer.cpp"
@@ -132,7 +124,15 @@ add_executable (${PROJECT_NAME}
                 "Renderer/serialisation/Macros.hpp"
                 "Renderer/serialisation/ReadWriter.cpp" 
                 "Renderer/serialisation/ReadWriter.hpp"
-                "Renderer/serialisation/serialisation.hpp" )
+                "Renderer/serialisation/serialisation.hpp"
+                "Renderer/Utils/BitManip.hpp" 
+                "Renderer/Utils/BitManip.cpp" 
+                "Renderer/Utils/Float16.hpp"  
+                "Renderer/Utils/Float16.cpp"
+                "Renderer/Utils/Hashing.cpp" 
+                "Renderer/Utils/Matrix.cpp" 
+                "Renderer/Utils/OpenGL.cpp"
+                "Renderer/Utils/Vector.cpp"  )
 
 # Allow CMake to build libraries
 cmake_policy(SET CMP0079 NEW)
