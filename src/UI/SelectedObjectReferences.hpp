@@ -6,7 +6,7 @@
 #include "Renderer/DSCS/AnimationBuffer.hpp"
 #include "Renderer/DSCS/DataObjects/OpenGLDSCSModel.hpp"
 #include "UI/EditorTabs/MaterialEditor//ShaderEditors/TabMaterials.hpp"
-#include "UI/TextureLibrary.hpp"
+#include "Renderer/DSCS/RenderObjects/TextureLibrary.hpp"
 
 class MaterialResource
 {

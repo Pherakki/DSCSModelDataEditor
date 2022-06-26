@@ -7,7 +7,7 @@
 #include "RenderObjects/Camera.hpp"
 #include "ShaderSystem/cgGL/cgGLShaderBackend.hpp"
 #include "ShaderSystem/cgGL/cgGLShaderObject.hpp"
-#include "../../UI/TextureLibrary.hpp"
+#include "RenderObjects/TextureLibrary.hpp"
 #include "../../UI/Types.hpp"
 
 namespace Rendering::DSCS
