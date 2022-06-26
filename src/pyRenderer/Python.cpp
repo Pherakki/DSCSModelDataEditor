@@ -16,10 +16,10 @@ public:
 	void refreshRenderSettings    () { renderer.refreshRenderSettings(); }
 	void render                   () { renderer.render(); }
 
-	void advanceClock(float increment)                    { renderer.advTime(increment); }
-	void loadModel   (std::string filepath)               { renderer.loadModel(filepath); }
-	void loadAnim    (int model_id, std::string filepath) { renderer.loadAnim(renderer.models[model_id], filepath); }
-
+	void advanceClock(float increment)                { renderer.advTime(increment); }
+	int  loadModel(std::string filepath)              { renderer.loadModel(filepath); return renderer.models.size() - 1; }
+	void loadAnim(int model_id, std::string filepath) { renderer.loadAnim(renderer.models[model_id], filepath); }
+	void setAspectRatio(int width, int height)        { renderer.aspect_ratio = (float)width / (float)height; }
 	void setCameraPosition(list pos)
 	{
 		auto x = extract<float>(pos[0]);
@@ -36,7 +36,10 @@ BOOST_PYTHON_MODULE(pyDSCSRenderer)
 		.def("refreshRenderSettings"    , &pyRenderer::refreshRenderSettings)
 		.def("recalculateGlobalUniforms", &pyRenderer::recalculateGlobalUniforms)
 		.def("render",                    &pyRenderer::render)
+		.def("advanceClock",              &pyRenderer::advanceClock, arg("increment"))
 		.def("loadModel",                 &pyRenderer::loadModel, arg("filepath"))
-		.def("setCameraPosition",         &pyRenderer::setCameraPosition, arg("pos"));
+		.def("setCameraPosition",         &pyRenderer::setCameraPosition, arg("pos"))
+		.def("loadAnim",                  &pyRenderer::loadAnim,  arg("model_id"), arg("filepath"))
+		.def("setAspectRatio",            &pyRenderer::setAspectRatio, arg("width"), arg("height"));
 }
 
