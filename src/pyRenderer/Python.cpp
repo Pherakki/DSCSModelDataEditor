@@ -21,6 +21,11 @@ public:
 		renderer.loadModel(filepath);
 	}
 
+	void loadAnim(int model_id, std::string filepath)
+	{
+		renderer.loadAnim(renderer.models[model_id], filepath);
+	}
+
 	void recalculateGlobalUniforms()
 	{
 		renderer.recalculateGlobalUniforms();
@@ -34,6 +39,11 @@ public:
 	void render()
 	{
 		renderer.render();
+	}
+
+	void advanceClock(float increment)
+	{
+		renderer.advTime(increment);
 	}
 
 	void setCameraPosition(list pos)
@@ -55,3 +65,4 @@ BOOST_PYTHON_MODULE(pyDSCSRenderer)
 		.def("loadModel",                 &pyRenderer::loadModel, arg("filepath"))
 		.def("setCameraPosition",         &pyRenderer::setCameraPosition, arg("pos"));
 }
+
