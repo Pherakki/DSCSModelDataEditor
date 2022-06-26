@@ -129,7 +129,7 @@ namespace CustomWidgets
 		void glInitialised();
 	private:
 		QTimer clock;
-		float targetFrameUpdateTime = 1000 / 30;
+		float targetFrameUpdateTime = 1.0 / 30;
 		Input::InputHandler input_handler;
 
 		
