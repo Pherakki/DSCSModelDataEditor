@@ -82,9 +82,10 @@ namespace DataBlocks::Animation
 		// Let's say that we want to sample 30 frames every second
 		// We increment the current frame by 1/30 to to know where we should sample in the animation
 		// But, the animation frames are stored as integers, not as times. So we multiply through by the animation's conversion factor
+		// Frames start from 0 so check against (count - 1)
 		this->current_frame += time * anim->getFPS();
-		if (this->current_frame > this->anim->getFrameCount())
-			this->current_frame -= this->anim->getFrameCount();
+		if (this->current_frame > (this->anim->getFrameCount() - 1))
+			this->current_frame -= (this->anim->getFrameCount() - 1);
 	}
 
 	void BaseAnimationSampler::setFrame(float frame)
@@ -155,9 +156,10 @@ namespace DataBlocks::Animation
 		// Let's say that we want to sample 30 frames every second
 		// We increment the current frame by 1/30 to to know where we should sample in the animation
 		// But, the animation frames are stored as integers, not as times. So we multiply through by the animation's conversion factor
+		// Frames start from 0 so check against (count - 1)
 		this->current_frame += time * anim->getFPS();
-		if (this->current_frame > this->anim->getFrameCount())
-			this->current_frame -= this->anim->getFrameCount();
+		if (this->current_frame > (this->anim->getFrameCount() - 1))
+			this->current_frame -= (this->anim->getFrameCount() - 1);
 	}
 
 }
