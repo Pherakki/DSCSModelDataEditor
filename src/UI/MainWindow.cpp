@@ -98,6 +98,7 @@ void DSCSModelDataEditorWindow::testInit()
     std::string test_path = "data/chr065";
     std::string anim_path = test_path;
     anim_path += "_bn01.anim";
+    {
 
         if (std::filesystem::exists(test_path + ".name"))
         {
