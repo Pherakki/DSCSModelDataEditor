@@ -8,7 +8,6 @@
 #include <QtWidgets/QMainWindow>
 #include <QtWidgets/QMenu>
 #include <QtWidgets/QMenuBar>
-#include <QtWidgets/QPlainTextEdit>
 
 
 #include "RenderWidget.hpp"
@@ -35,8 +34,6 @@ private:
 
     CustomWidgets::RenderWidget* render_widget;
     SelectedObjectReferences selected_objects; // Selected Objects depends on data from render widget, so initialise it after!!
-    QPlainTextEdit* vertex_shader_textedit;
-    QPlainTextEdit* fragment_shader_textedit;
 
     void initToolbar();
     DSCSModelDataEditorWindow::ModelPtr loadModel(const QString& fileName);
