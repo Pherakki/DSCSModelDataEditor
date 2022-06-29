@@ -2,15 +2,19 @@
 
 #include <QtCore/QCryptographicHash>
 #include <QtCore/QDirIterator>
-#include <QtWidgets/QFileDialog>
+#include <QtWidgets/QApplication>
 #include <QtWidgets/QBoxLayout>
+#include <QtWidgets/QDesktopWidget>
+#include <QtWidgets/QFileDialog>
 #include <QtWidgets/QLabel>
-#include <QtWidgets/QPushButton>
-#include <QtWidgets/QSplitter>
+#include <QtWidgets/QMenu>
+#include <QtWidgets/QMenuBar>
 #include <QtWidgets/QPlainTextEdit>
-#include <QtWidgets/QTextEdit>
+#include <QtWidgets/QPushButton>
+#include <QtWidgets/QScrollArea>
+#include <QtWidgets/QSplitter>
 #include <QtWidgets/QTabWidget>
-#include <QScrollArea>
+#include <QtWidgets/QTextEdit>
 
 #include "MainWindow.hpp"
 #include "CgSyntaxHighlighter.hpp"

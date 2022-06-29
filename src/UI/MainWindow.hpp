@@ -2,13 +2,7 @@
 
 # include<memory>
 
-#include <QApplication>
-#include <QDesktopWidget>
-#include <QtWidgets/QGridLayout>
 #include <QtWidgets/QMainWindow>
-#include <QtWidgets/QMenu>
-#include <QtWidgets/QMenuBar>
-
 
 #include "RenderWidget.hpp"
 #include "EditorTabs/AnimationEditor.hpp"
