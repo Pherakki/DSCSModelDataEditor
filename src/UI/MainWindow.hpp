@@ -4,14 +4,14 @@
 
 #include <QtWidgets/QMainWindow>
 
-#include "RenderWidget.hpp"
-#include "EditorTabs/AnimationEditor.hpp"
-#include "EditorTabs/MeshEditor.hpp"
 #include "../Commands/CommandManager.hpp"
 #include "../Commands/ICommand.hpp"
-#include "EditorTabs/MaterialEditor/ShaderEditors/ShaderFactory/ShaderFactory.hpp"
-#include "EditorTabs/MaterialEditor/MaterialEditor.hpp"
+#include "RenderWidget.hpp"
 #include "SelectedObjectReferences.hpp"
+#include "EditorTabs/AnimationEditor.hpp"
+#include "EditorTabs/MeshEditor.hpp"
+#include "EditorTabs/MaterialEditor/MaterialEditor.hpp"
+#include "EditorTabs/MaterialEditor/ShaderEditors/ShaderFactory/ShaderFactory.hpp"
 
 
 class DSCSModelDataEditorWindow : public QMainWindow
@@ -19,8 +19,7 @@ class DSCSModelDataEditorWindow : public QMainWindow
     Q_OBJECT
 
 public:
-    DSCSModelDataEditorWindow() : DSCSModelDataEditorWindow(Q_NULLPTR) {};
-    DSCSModelDataEditorWindow(QWidget* parent);
+    DSCSModelDataEditorWindow(QWidget* parent=Q_NULLPTR);
     ~DSCSModelDataEditorWindow() { };
 private:
     typedef std::shared_ptr<Rendering::DSCS::DataObjects::OpenGLDSCSModel> ModelPtr;
