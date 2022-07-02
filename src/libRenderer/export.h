@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../Renderer/DSCS/Renderer.hpp"
+#include "../Renderer/src/DSCS/Renderer.hpp"
 
 using namespace Rendering::DSCS;
 

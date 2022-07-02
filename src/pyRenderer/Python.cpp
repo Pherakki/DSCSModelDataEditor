@@ -1,7 +1,7 @@
 #define BOOST_PYTHON_STATIC_LIB
 #include <boost/python.hpp>
 
-#include "../Renderer/DSCS/Renderer.hpp"
+#include "../Renderer/src/DSCS/Renderer.hpp"
 
 using namespace boost::python;
 using namespace Rendering::DSCS;

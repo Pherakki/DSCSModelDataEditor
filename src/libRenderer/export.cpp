@@ -1,4 +1,4 @@
-#include "../Renderer/glad/include/glad/glad.h"
+#include "../Renderer/libs/glad/include/glad/glad.h"
 #include "export.h"
 #include <iostream>
 
