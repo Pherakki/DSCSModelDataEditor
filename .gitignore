@@ -29,7 +29,7 @@
 # DME Stuff
 .vs/*
 data/*
-lib/Qt5/*
+libs/Qt5/*
 out/*
 shaders/*
 CMakeSettings.json

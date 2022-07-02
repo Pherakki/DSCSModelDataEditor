@@ -6,7 +6,7 @@
 #include <QWidget>
 #include <QOpenGLFunctions>
 
-#include "../../../Renderer/src/DSCS/DataObjects/OpenGLDSCSMaterial.hpp"
+#include "DSCSRenderer/src/DSCS/DataObjects/OpenGLDSCSMaterial.hpp"
 #include "UI/SelectedObjectReferences.hpp"
 
 struct identity

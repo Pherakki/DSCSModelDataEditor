@@ -74,7 +74,7 @@ cmake_policy(SET CMP0079 NEW)
 # Set up Qt5
 message(PROJECT_SOURCE_DIR="${Qt5_DIR}")
 # The Qt5_DIR needs to be set to Qt5/lib/cmake/Qt5 of your Qt5 install
-set(Qt5_DIR "../lib/Qt5/lib/cmake/Qt5") # Need to get rid of this eventually?
+set(Qt5_DIR "../libs/Qt5/lib/cmake/Qt5") # Need to get rid of this eventually?
 set(Qt5_PLUGINS_DIR ${Qt5_DIR}/../../../plugins)
 
 set_target_properties(${PROJECT_NAME} PROPERTIES AUTOMOC TRUE)
@@ -98,7 +98,7 @@ find_package(OpenGL REQUIRED)
 target_link_libraries(${PROJECT_NAME} "${CMAKE_DL_LIBS}")
 
 # Link the Renderer
-add_subdirectory("Renderer")
+add_subdirectory("DSCSRenderer")
 target_link_libraries(${PROJECT_NAME} DSCSRenderer)
 
 

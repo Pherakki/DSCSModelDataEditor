@@ -2,7 +2,7 @@
 
 #include <unordered_map>
 
-#include "../../../../Renderer/src/DSCS/DataObjects/OpenGLDSCSModel.hpp"
+#include "DSCSRenderer/src/DSCS/DataObjects/OpenGLDSCSModel.hpp"
 #include "UI/EditorTabs/MaterialEditor/ShaderEditors/ShaderFactory/ShaderGenerator/Utils.hpp"
 
 struct TabMaterials

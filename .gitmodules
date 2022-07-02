@@ -1,0 +1,3 @@
+[submodule "src/DSCSRenderer"]
+	path = src/DSCSRenderer
+	url = https://github.com/Pherakki/DSCSRenderer.git

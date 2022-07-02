@@ -2,8 +2,8 @@
 
 #include <QtWidgets/QWidget>
 
-#include "../../Renderer/src/DSCS/DataObjects/SkeletonDataBlocks.hpp"
-#include "../../Renderer/src/DSCS/RenderObjects/Types.hpp"
+#include "DSCSRenderer/src/DSCS/DataObjects/SkeletonDataBlocks.hpp"
+#include "DSCSRenderer/src/DSCS/RenderObjects/Types.hpp"
 
 class SkeletonEditorTab : QWidget
 {
