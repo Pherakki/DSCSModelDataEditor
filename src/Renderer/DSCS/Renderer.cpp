@@ -1,5 +1,5 @@
 
-#include "../../glad/include/glad/glad.h"
+#include "../glad/include/glad/glad.h"
 #include "Renderer.hpp"
 
 #include "../Utils/OpenGL.hpp"

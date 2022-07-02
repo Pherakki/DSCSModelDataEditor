@@ -1,6 +1,6 @@
 #include "OpenGLDSCSTexture.hpp"
 
-#include "../../../glad/include/glad/glad.h"
+#include "../../glad/include/glad/glad.h"
 
 namespace Rendering::DataObjects
 {

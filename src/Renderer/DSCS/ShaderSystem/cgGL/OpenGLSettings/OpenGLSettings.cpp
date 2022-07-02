@@ -1,6 +1,6 @@
 #include "OpenGLSettings.hpp"
 
-#include "../../../../../glad/include/glad/glad.h"
+#include "../../../../glad/include/glad/glad.h"
 
 namespace Rendering::DSCS::DataObjects::OpenGLSettings
 {

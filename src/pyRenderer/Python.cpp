@@ -17,16 +17,14 @@ public:
 	void render                   () { renderer.render(); }
 
 	void advanceClock(float increment)                { renderer.advTime(increment); }
-	int  loadModel(std::string filepath)              { renderer.loadModel(filepath); return renderer.models.size() - 1; }
-	void loadAnim(int model_id, std::string filepath) { renderer.loadAnim(renderer.models[model_id], filepath); }
+	int  loadModel(std::string filepath)              { return renderer.loadModel(filepath); }
+	void loadAnim(int model_id, std::string filepath) { renderer.loadAnim(model_id, filepath); }
 	void setAspectRatio(int width, int height)        { renderer.aspect_ratio = (float)width / (float)height; }
-	void setCameraPosition(list pos)
-	{
-		auto x = extract<float>(pos[0]);
-		auto y = extract<float>(pos[1]);
-		auto z = extract<float>(pos[2]);
-		renderer.camera.setPosition({x,y,z});
-	}
+	void setCameraPosition(float x, float y, float z) { renderer.camera.setPosition({x,y,z}); }
+	void setCameraTarget(float x, float y, float z)   { renderer.camera.setTarget({ x,y,z }); }
+	void translateCamera(float x, float y)            { this->renderer.camera.translate(x, y); }
+	void rotateOrbitCamera(float alt, float azi)      { this->renderer.camera.incAltAzi(alt, azi); }
+	void zoomCamera(float distance)                   { this->renderer.camera.mulRadius(distance); }
 };
 
 BOOST_PYTHON_MODULE(pyDSCSRenderer)
@@ -38,8 +36,12 @@ BOOST_PYTHON_MODULE(pyDSCSRenderer)
 		.def("render",                    &pyRenderer::render)
 		.def("advanceClock",              &pyRenderer::advanceClock, arg("increment"))
 		.def("loadModel",                 &pyRenderer::loadModel, arg("filepath"))
-		.def("setCameraPosition",         &pyRenderer::setCameraPosition, arg("pos"))
-		.def("loadAnim",                  &pyRenderer::loadAnim,  arg("model_id"), arg("filepath"))
-		.def("setAspectRatio",            &pyRenderer::setAspectRatio, arg("width"), arg("height"));
+		.def("loadAnim",                  &pyRenderer::loadAnim, arg("model_id"), arg("filepath"))
+		.def("setAspectRatio",            &pyRenderer::setAspectRatio, arg("width"), arg("height"))
+		.def("setCameraPosition",         &pyRenderer::setCameraPosition, arg("x"), arg("y"), arg("z"))
+		.def("setCameraTarget",           &pyRenderer::setCameraTarget,   arg("x"), arg("y"), arg("z"))
+		.def("translateCamera",           &pyRenderer::translateCamera,   arg("x"), arg("y"))
+		.def("rotateOrbitCamera",         &pyRenderer::rotateOrbitCamera, arg("alt"), arg("azi"))
+		.def("zoomCamera",                &pyRenderer::zoomCamera,        arg("distance"));
 }
 

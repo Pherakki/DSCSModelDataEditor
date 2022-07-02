@@ -6,8 +6,8 @@
 #include <sstream>
 #include <unordered_map>
 
-#include "../../../../../Cg/cg.h"
-#include "../../../../../Cg/cgGL.h"
+#include "../../../Cg/cg.h"
+#include "../../../Cg/cgGL.h"
 
 #include "cgGLShaderObject.hpp"
 //#include "Rendering/DSCS/ShaderSystem/cgGL/Utils.hpp"
