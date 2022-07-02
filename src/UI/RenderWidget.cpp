@@ -19,6 +19,8 @@ namespace CustomWidgets
 	void RenderWidget::initializeGL()
 	{
 		this->renderer.initRenderer();
+		this->renderer.camera.setPosition({ 0.f, 1.f, 3.f });
+		this->renderer.camera.setTarget({ 0.f, 1.f, 0.f });
 		initializeOpenGLFunctions();
 
 		std::cout << "Render Widget Init" << std::endl;
