@@ -31,8 +31,8 @@ namespace Rendering::DSCS
 		void initRenderer(); // Call after creating an OpenGL context!
 		void refreshRenderSettings();
 		void recalculateGlobalUniforms();
-		ModelPtr loadModel(const std::string& path);
-		void loadAnim(const ModelPtr& model, const std::string& anim_path);
+		ModelID_t loadModel(const std::string& path);
+		void loadAnim(ModelID_t model_id, const std::string& anim_path);
 		void render();
 		void advTime(float adv);
 	};

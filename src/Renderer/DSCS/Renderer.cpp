@@ -74,7 +74,7 @@ namespace Rendering::DSCS
 		this->animation_buffer.ViewInverse->set(invertViewMatrix(view_matrix, this->camera.getPosition()));
 	}
 
-	Renderer::ModelPtr Renderer::loadModel(const std::string& path)
+	ModelID_t Renderer::loadModel(const std::string& path)
 	{
 		//this->models.clear();
 		auto id = models.size();
@@ -83,13 +83,13 @@ namespace Rendering::DSCS
 		model->base_anim_sampler.setAnim(model->base_animation);
 		model->base_anim_sampler.setSkel(model->skeleton);
 
-		return model;
+		return id;
 	}
 
 
-	void Renderer::loadAnim(const ModelPtr& model, const std::string& anim_path)
+	void Renderer::loadAnim(ModelID_t model_id, const std::string& anim_path)
 	{
-		//auto& model = this->models.at(0);
+		auto& model = this->models[model_id];
 		FileFormats::DSCS::loadAnimation<false>(*model, model->skeleton.getShaderChannelDataBlocks().size(), anim_path);
 		model->anim_sampler_a.setAnim(model->animations[0]);
 		model->anim_sampler_a.setSkel(model->skeleton);

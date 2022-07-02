@@ -29,8 +29,8 @@ private:
     SelectedObjectReferences selected_objects; // Selected Objects depends on data from render widget, so initialise it after!!
 
     void initToolbar();
-    DSCSModelDataEditorWindow::ModelPtr loadModel(const QString& fileName);
-    void loadAnim(const ModelPtr& model, const QString& fileName);
+    ModelID_t loadModel(const QString& fileName);
+    void loadAnim(ModelID_t model_id, const QString& fileName);
     void loadShaderHashes(const QString& directory);
 private slots:
     void testInit();

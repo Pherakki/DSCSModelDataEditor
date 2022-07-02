@@ -122,8 +122,8 @@ namespace CustomWidgets
 	public:
 		RenderWidget(QWidget* parent);
 		~RenderWidget();
-		ModelPtr loadModel(const std::string& path);
-		void loadAnim(const ModelPtr& model, const std::string& anim_path);
+		ModelID_t loadModel(const std::string& path);
+		void loadAnim(ModelID_t model_id, const std::string& anim_path);
 		Rendering::DSCS::Renderer renderer;
 	signals:
 		void glInitialised();

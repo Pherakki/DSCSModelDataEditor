@@ -25,15 +25,15 @@ namespace CustomWidgets
 		emit this->glInitialised();
 	}
 
-	ModelPtr RenderWidget::loadModel(const std::string& path)
+	ModelID_t RenderWidget::loadModel(const std::string& path)
 	{
 		return this->renderer.loadModel(path);
 	}
 
 
-	void RenderWidget::loadAnim(const ModelPtr& model, const std::string& anim_path)
+	void RenderWidget::loadAnim(ModelID_t model_id, const std::string& anim_path)
 	{
-		this->renderer.loadAnim(model, anim_path);
+		this->renderer.loadAnim(model_id, anim_path);
 	}
 
 	RenderWidget::~RenderWidget()
