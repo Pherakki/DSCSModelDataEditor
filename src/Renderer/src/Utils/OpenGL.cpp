@@ -1,4 +1,4 @@
-#include "../glad/include/glad/glad.h"
+#include "../../libs/glad/include/glad/glad.h"
 
 #include "OpenGL.hpp"
 

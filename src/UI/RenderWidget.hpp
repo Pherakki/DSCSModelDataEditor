@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../Renderer/DSCS/Renderer.hpp"
+#include "../Renderer/src/DSCS/Renderer.hpp"
 
 #include <QObject>
 #include <QTimer>
@@ -10,11 +10,11 @@
 #include <QCursor>
 
 #include "InputHandler.hpp"
-#include "../Renderer/DSCS/AnimationBuffer.hpp"
-#include "../Renderer/DSCS/DataObjects/OpenGLDSCSModel.hpp"
-#include "../Renderer/DSCS/RenderObjects/Types.hpp"
-#include "../Renderer/DSCS/ShaderSystem/cgGL/cgGLShaderBackend.hpp"
-#include "../Renderer/DSCS/ShaderSystem/cgGL/cgGLShaderObject.hpp"
+#include "../Renderer/src/DSCS/AnimationBuffer.hpp"
+#include "../Renderer/src/DSCS/DataObjects/OpenGLDSCSModel.hpp"
+#include "../Renderer/src/DSCS/RenderObjects/Types.hpp"
+#include "../Renderer/src/DSCS/ShaderSystem/cgGL/cgGLShaderBackend.hpp"
+#include "../Renderer/src/DSCS/ShaderSystem/cgGL/cgGLShaderObject.hpp"
 
 namespace CustomWidgets
 {

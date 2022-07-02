@@ -12,8 +12,8 @@
 
 #include "../../SelectedObjectReferences.hpp"
 #include "../../Spoiler/Spoiler.hpp"
-#include "../../../Renderer/DSCS/DataObjects/OpenGLDSCSMaterial.hpp"
-#include "../../../Renderer/DSCS/RenderObjects/Types.hpp"
+#include "../../../Renderer/src/DSCS/DataObjects/OpenGLDSCSMaterial.hpp"
+#include "../../../Renderer/src/DSCS/RenderObjects/Types.hpp"
 #include "ShaderEditors/ShaderEditorTabs.hpp"
 #include "OpenGLSettingsEditor.hpp"
 

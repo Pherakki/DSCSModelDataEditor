@@ -9,8 +9,8 @@
 #include <QtWidgets/QPushButton>
 #include <QtWidgets/QLineEdit>
 
-#include "Renderer/DSCS/DataObjects/OpenGLDSCSMaterial.hpp"
-#include "Renderer/DSCS/AnimationBuffer.hpp"
+#include "Renderer/src/DSCS/DataObjects/OpenGLDSCSMaterial.hpp"
+#include "Renderer/src/DSCS/AnimationBuffer.hpp"
 #include "TabMaterials.hpp"
 #include "UI/SelectedObjectReferences.hpp"
 

@@ -7,7 +7,7 @@
 #include <vector>
 #include <unordered_map>
 
-#include "../../../Renderer/FileFormats/DSCS/SkelFile/SkelReadWrite.hpp"
+#include "../../FileFormats/DSCS/SkelFile/SkelReadWrite.hpp"
 #include "../../Utils/Hashing.hpp"
 #include "../../Utils/Matrix.hpp"
 

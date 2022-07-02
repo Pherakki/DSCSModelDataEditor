@@ -5,7 +5,7 @@
 #include <memory>
 #include <vector>
 
-#include "../../Cg/cg.h"
+#include "../../../libs/Cg/cg.h"
 
 #include "OpenGLDSCSTexture.hpp"
 #include "../AnimationBuffer.hpp"

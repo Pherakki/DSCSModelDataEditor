@@ -1,10 +1,8 @@
 #include <fstream>
 
-#include "../../glad/include/glad/glad.h"
+#include "../../../libs/glad/include/glad/glad.h"
 #include "DDS.hpp"
 #include "../../serialisation/ReadWriter.hpp"
-#include "../../Cg/cg.h"
-#include "../../Cg/cgGL.h"
 #include "../../Utils/OpenGL.hpp"
 
 

@@ -3,10 +3,10 @@
 #include <iostream> // Remove after debugging
 #include <QObject>
 
-#include "Renderer/DSCS/AnimationBuffer.hpp"
-#include "Renderer/DSCS/DataObjects/OpenGLDSCSModel.hpp"
+#include "Renderer/src/DSCS/AnimationBuffer.hpp"
+#include "Renderer/src/DSCS/DataObjects/OpenGLDSCSModel.hpp"
 #include "UI/EditorTabs/MaterialEditor//ShaderEditors/TabMaterials.hpp"
-#include "Renderer/DSCS/RenderObjects/TextureLibrary.hpp"
+#include "Renderer/src/DSCS/RenderObjects/TextureLibrary.hpp"
 
 class MaterialResource
 {

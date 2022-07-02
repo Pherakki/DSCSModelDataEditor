@@ -7,8 +7,8 @@
 #include <QtWidgets/QWidget>
 
 #include "../SelectedObjectReferences.hpp"
-#include "../../Renderer/DSCS/DataObjects/OpenGLDSCSMesh.hpp"
-#include "../../Renderer/DSCS/RenderObjects/Types.hpp"
+#include "../../Renderer/src/DSCS/DataObjects/OpenGLDSCSMesh.hpp"
+#include "../../Renderer/src/DSCS/RenderObjects/Types.hpp"
 
 class MeshEditorTab : public QWidget
 {

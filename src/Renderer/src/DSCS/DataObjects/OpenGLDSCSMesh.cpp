@@ -1,4 +1,4 @@
-#include "../../glad/include/glad/glad.h"
+#include "../../../libs/glad/include/glad/glad.h"
 
 #include "OpenGLDSCSMesh.hpp"
 #include "../../Utils/Float16.hpp"

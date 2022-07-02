@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../../../../Cg/cgGL.h"
+#include "../../../../../libs/Cg/cgGL.h"
 
 namespace Rendering::DSCS::DataObjects::ShaderUniforms
 {

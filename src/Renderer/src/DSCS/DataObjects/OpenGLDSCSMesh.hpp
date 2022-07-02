@@ -1,6 +1,6 @@
 #pragma once
 #include <array>
-#include "../../../Renderer/FileFormats/DSCS/GeomFile/MeshReadWrite.hpp"
+#include "../../FileFormats/DSCS/GeomFile/MeshReadWrite.hpp"
 #include "OpenGLDSCSMaterial.hpp"
 
 

@@ -4,108 +4,108 @@ project("DSCSRenderer")
 set(CMAKE_SHARED_LIBRARY_PREFIX="")
 
 add_library(${PROJECT_NAME} STATIC
-			"DSCS/AnimationBuffer.hpp"
-            "DSCS/Renderer.hpp" 
-            "DSCS/Renderer.cpp"
-            "DSCS/DataObjects/AnimationDataBlocks.hpp"
-            "DSCS/DataObjects/AnimationSampler.cpp" 
-            "DSCS/DataObjects/AnimationSampler.hpp"
-            "DSCS/DataObjects/OpenGLDSCSMaterial.cpp"
-            "DSCS/DataObjects/OpenGLDSCSMaterial.hpp"
-            "DSCS/DataObjects/OpenGLDSCSMesh.cpp"
-            "DSCS/DataObjects/OpenGLDSCSMesh.hpp"
-            "DSCS/DataObjects/OpenGLDSCSModel.hpp" 
-            "DSCS/DataObjects/OpenGLDSCSTexture.cpp" 
-            "DSCS/DataObjects/OpenGLDSCSTexture.hpp"
-            "DSCS/DataObjects/SkeletonDataBlocks.cpp"
-            "DSCS/DataObjects/SkeletonDataBlocks.hpp"
-            "DSCS/RenderObjects/Camera.cpp"
-            "DSCS/ShaderSystem/cgGL/cgGLShaderBackend.cpp"
-            "DSCS/ShaderSystem/cgGL/cgGLShaderBackend.hpp"
-            "DSCS/ShaderSystem/cgGL/cgGLShaderObject.cpp"
-            "DSCS/ShaderSystem/cgGL/cgGLShaderObject.hpp"
-            "DSCS/ShaderSystem/cgGL/ShaderVariables.hpp"
-            "DSCS/ShaderSystem/cgGL/Utils.cpp" 
-            "DSCS/ShaderSystem/cgGL/Utils.hpp" 
-            "DSCS/ShaderSystem/cgGL/OpenGLSettings/OpenGLSettings.hpp" 
-            "DSCS/ShaderSystem/cgGL/OpenGLSettings/OpenGLSettings.cpp" 
-            "DSCS/ShaderSystem/cgGL/ShaderUniforms/BaseTexture.hpp" 
-            "DSCS/ShaderSystem/cgGL/ShaderUniforms/ShaderUniforms.hpp"
-            "DSCS/ShaderSystem/cgGL/ShaderUniforms/Tex2D.hpp"
-            "DSCS/ShaderSystem/cgGL/ShaderUniforms/TexCube.hpp"
-            "FileFormats/DSCS/DSCSModelForwardDeclaration.hpp" 
-            "FileFormats/DSCS/DSCStoOpenGL.cpp" 
-            "FileFormats/DSCS/DSCStoOpenGL.hpp" 
-            "FileFormats/DSCS/AnimFile/AnimReadWrite.cpp" 
-            "FileFormats/DSCS/AnimFile/AnimReadWrite.hpp" 
-            "FileFormats/DSCS/GeomFile/CamDataStruct.hpp"
-            "FileFormats/DSCS/GeomFile/GeomForwardDeclarations.hpp"
-            "FileFormats/DSCS/GeomFile/GeomReadWrite.cpp"
-            "FileFormats/DSCS/GeomFile/GeomReadWrite.hpp"
-            "FileFormats/DSCS/GeomFile/LightSourceDataStruct.hpp"
-            "FileFormats/DSCS/GeomFile/MaterialReadWrite.cpp"
-            "FileFormats/DSCS/GeomFile/MaterialReadWrite.hpp"
-            "FileFormats/DSCS/GeomFile/MeshReadWrite.cpp" 
-            "FileFormats/DSCS/GeomFile/MeshReadWrite.hpp" 
-            "FileFormats/DSCS/NameFile/NameReadWrite.cpp"
-            "FileFormats/DSCS/NameFile/NameReadWrite.hpp" 
-            "FileFormats/DSCS/SkelFile/SkelReadWrite.cpp" 
-            "FileFormats/DSCS/SkelFile/SkelReadWrite.hpp" 
-            "FileFormats/Textures/DDS.cpp" 
-            "FileFormats/Textures/DDS.hpp" 
-            "glad/include/glad/glad.h"
-            "glad/include/KHR/khrplatform.h"
-            "glad/src/glad.c"
-            "serialisation/Exceptions.cpp"
-            "serialisation/Exceptions.hpp" 
-            "serialisation/Macros.hpp"
-            "serialisation/ReadWriter.cpp" 
-            "serialisation/ReadWriter.hpp"
-            "serialisation/serialisation.hpp"
-            "Utils/BitManip.hpp"
-            "Utils/BitManip.cpp"
-            "Utils/Float16.hpp"
-            "Utils/Float16.cpp"
-            "Utils/Hashing.hpp"
-            "Utils/Hashing.cpp"
-            "Utils/Matrix.hpp"
-            "Utils/Matrix.cpp"
-            "Utils/OpenGL.hpp"
-            "Utils/OpenGL.cpp"
-            "Utils/SubarrayView.hpp"
-            "Utils/Vector.hpp"
-            "Utils/Vector.cpp"
+            "libs/glad/include/glad/glad.h"
+            "libs/glad/include/KHR/khrplatform.h"
+            "libs/glad/src/glad.c"
+			"src/DSCS/AnimationBuffer.hpp"
+            "src/DSCS/Renderer.hpp" 
+            "src/DSCS/Renderer.cpp"
+            "src/DSCS/DataObjects/AnimationDataBlocks.hpp"
+            "src/DSCS/DataObjects/AnimationSampler.cpp" 
+            "src/DSCS/DataObjects/AnimationSampler.hpp"
+            "src/DSCS/DataObjects/OpenGLDSCSMaterial.cpp"
+            "src/DSCS/DataObjects/OpenGLDSCSMaterial.hpp"
+            "src/DSCS/DataObjects/OpenGLDSCSMesh.cpp"
+            "src/DSCS/DataObjects/OpenGLDSCSMesh.hpp"
+            "src/DSCS/DataObjects/OpenGLDSCSModel.hpp" 
+            "src/DSCS/DataObjects/OpenGLDSCSTexture.cpp" 
+            "src/DSCS/DataObjects/OpenGLDSCSTexture.hpp"
+            "src/DSCS/DataObjects/SkeletonDataBlocks.cpp"
+            "src/DSCS/DataObjects/SkeletonDataBlocks.hpp"
+            "src/DSCS/RenderObjects/Camera.cpp"
+            "src/DSCS/ShaderSystem/cgGL/cgGLShaderBackend.cpp"
+            "src/DSCS/ShaderSystem/cgGL/cgGLShaderBackend.hpp"
+            "src/DSCS/ShaderSystem/cgGL/cgGLShaderObject.cpp"
+            "src/DSCS/ShaderSystem/cgGL/cgGLShaderObject.hpp"
+            "src/DSCS/ShaderSystem/cgGL/ShaderVariables.hpp"
+            "src/DSCS/ShaderSystem/cgGL/Utils.cpp" 
+            "src/DSCS/ShaderSystem/cgGL/Utils.hpp" 
+            "src/DSCS/ShaderSystem/cgGL/OpenGLSettings/OpenGLSettings.hpp" 
+            "src/DSCS/ShaderSystem/cgGL/OpenGLSettings/OpenGLSettings.cpp" 
+            "src/DSCS/ShaderSystem/cgGL/ShaderUniforms/BaseTexture.hpp" 
+            "src/DSCS/ShaderSystem/cgGL/ShaderUniforms/ShaderUniforms.hpp"
+            "src/DSCS/ShaderSystem/cgGL/ShaderUniforms/Tex2D.hpp"
+            "src/DSCS/ShaderSystem/cgGL/ShaderUniforms/TexCube.hpp"
+            "src/FileFormats/DSCS/DSCSModelForwardDeclaration.hpp" 
+            "src/FileFormats/DSCS/DSCStoOpenGL.cpp" 
+            "src/FileFormats/DSCS/DSCStoOpenGL.hpp" 
+            "src/FileFormats/DSCS/AnimFile/AnimReadWrite.cpp" 
+            "src/FileFormats/DSCS/AnimFile/AnimReadWrite.hpp" 
+            "src/FileFormats/DSCS/GeomFile/CamDataStruct.hpp"
+            "src/FileFormats/DSCS/GeomFile/GeomForwardDeclarations.hpp"
+            "src/FileFormats/DSCS/GeomFile/GeomReadWrite.cpp"
+            "src/FileFormats/DSCS/GeomFile/GeomReadWrite.hpp"
+            "src/FileFormats/DSCS/GeomFile/LightSourceDataStruct.hpp"
+            "src/FileFormats/DSCS/GeomFile/MaterialReadWrite.cpp"
+            "src/FileFormats/DSCS/GeomFile/MaterialReadWrite.hpp"
+            "src/FileFormats/DSCS/GeomFile/MeshReadWrite.cpp" 
+            "src/FileFormats/DSCS/GeomFile/MeshReadWrite.hpp" 
+            "src/FileFormats/DSCS/NameFile/NameReadWrite.cpp"
+            "src/FileFormats/DSCS/NameFile/NameReadWrite.hpp" 
+            "src/FileFormats/DSCS/SkelFile/SkelReadWrite.cpp" 
+            "src/FileFormats/DSCS/SkelFile/SkelReadWrite.hpp" 
+            "src/FileFormats/Textures/DDS.cpp" 
+            "src/FileFormats/Textures/DDS.hpp" 
+            "src/serialisation/Exceptions.cpp"
+            "src/serialisation/Exceptions.hpp" 
+            "src/serialisation/Macros.hpp"
+            "src/serialisation/ReadWriter.cpp" 
+            "src/serialisation/ReadWriter.hpp"
+            "src/serialisation/serialisation.hpp"
+            "src/Utils/BitManip.hpp"
+            "src/Utils/BitManip.cpp"
+            "src/Utils/Float16.hpp"
+            "src/Utils/Float16.cpp"
+            "src/Utils/Hashing.hpp"
+            "src/Utils/Hashing.cpp"
+            "src/Utils/Matrix.hpp"
+            "src/Utils/Matrix.cpp"
+            "src/Utils/OpenGL.hpp"
+            "src/Utils/OpenGL.cpp"
+            "src/Utils/SubarrayView.hpp"
+            "src/Utils/Vector.hpp"
+            "src/Utils/Vector.cpp"
  )
  
 # Set up Cg
 # Static
 if (WIN32)
     target_link_libraries(${PROJECT_NAME} 
-        "${CMAKE_SOURCE_DIR}/src/Renderer/Cg/windows/cg.lib"
-        "${CMAKE_SOURCE_DIR}/src/Renderer/Cg/windows/cgGL.lib"
-        "${CMAKE_SOURCE_DIR}/src/Renderer/Cg/windows/glut32.lib")
+        "${CMAKE_SOURCE_DIR}/src/Renderer/libs/Cg/windows/cg.lib"
+        "${CMAKE_SOURCE_DIR}/src/Renderer/libs/Cg/windows/cgGL.lib"
+        "${CMAKE_SOURCE_DIR}/src/Renderer/libs/Cg/windows/glut32.lib")
 
     add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
-        COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_SOURCE_DIR}/src/Renderer/Cg/windows/cg.dll"  $<TARGET_FILE_DIR:${PROJECT_NAME}>
-        COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_SOURCE_DIR}/src/Renderer/Cg/windows/cgGL.dll" $<TARGET_FILE_DIR:${PROJECT_NAME}>
-        COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_SOURCE_DIR}/src/Renderer/Cg/windows/glut32.dll" $<TARGET_FILE_DIR:${PROJECT_NAME}>
+        COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_SOURCE_DIR}/src/Renderer/libs/Cg/windows/cg.dll"  $<TARGET_FILE_DIR:${PROJECT_NAME}>
+        COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_SOURCE_DIR}/src/Renderer/libs/Cg/windows/cgGL.dll" $<TARGET_FILE_DIR:${PROJECT_NAME}>
+        COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_SOURCE_DIR}/src/Renderer/libs/Cg/windows/glut32.dll" $<TARGET_FILE_DIR:${PROJECT_NAME}>
     )
 endif (WIN32)
 if (APPLE)
     target_link_libraries(${PROJECT_NAME} 
-        "${CMAKE_SOURCE_DIR}/src/Renderer/Cg/mac/libCg.dylib")
+        "${CMAKE_SOURCE_DIR}/src/Renderer/libs/Cg/mac/libCg.dylib")
 
     add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
-        COMMAND ${CMAKE_COMMAND} -E copy_if_different "${CMAKE_SOURCE_DIR}/src/Renderer/Cg/mac/libCg.dylib"
+        COMMAND ${CMAKE_COMMAND} -E copy_if_different "${CMAKE_SOURCE_DIR}/src/Renderer/libs/Cg/mac/libCg.dylib"
     )
 endif(APPLE)
 if (UNIX AND NOT APPLE)
     target_link_libraries(${PROJECT_NAME} 
-        "${CMAKE_SOURCE_DIR}/src/Renderer/Cg/linux64/libCg.so"
-        "${CMAKE_SOURCE_DIR}/src/Renderer/Cg/linux64/libCgGL.so")
+        "${CMAKE_SOURCE_DIR}/src/Renderer/libs/Cg/linux64/libCg.so"
+        "${CMAKE_SOURCE_DIR}/src/Renderer/libs/Cg/linux64/libCgGL.so")
 
     add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
-        COMMAND ${CMAKE_COMMAND} -E copy_if_different "${CMAKE_SOURCE_DIR}/src/Renderer/Cg/linux64/libCg.so"
-        COMMAND ${CMAKE_COMMAND} -E copy_if_different "${CMAKE_SOURCE_DIR}/src/Renderer/Cg/linux64/libCgGL.so"
+        COMMAND ${CMAKE_COMMAND} -E copy_if_different "${CMAKE_SOURCE_DIR}/src/Renderer/libs/Cg/linux64/libCg.so"
+        COMMAND ${CMAKE_COMMAND} -E copy_if_different "${CMAKE_SOURCE_DIR}/src/Renderer/libs/Cg/linux64/libCgGL.so"
     )
 endif(UNIX AND NOT APPLE)
