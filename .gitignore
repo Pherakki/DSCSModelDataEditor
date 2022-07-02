@@ -32,3 +32,4 @@ data/*
 lib/Qt5/*
 out/*
 shaders/*
+CMakeSettings.json
