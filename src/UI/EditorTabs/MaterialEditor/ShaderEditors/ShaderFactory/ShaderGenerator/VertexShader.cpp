@@ -87,7 +87,7 @@ public:
 			{
 				text += delim;
 				//text += std::format("uniform float2 OffsetSet{0}", i + 1);
-				text += "uniform float OffsetSet" + std::to_string(i + 1);
+				text += "uniform float2 OffsetSet" + std::to_string(i + 1);
 			}
 		}
 		for (size_t i = 0; i < settings.uv_slots.size(); ++i)
@@ -757,7 +757,7 @@ public:
 				//std::string offset_variable = std::format("OffsetSet{0}", slot + 1);
 				//text += std::format("\t{0}.xy = {0}.xy + {1};\n", out_tex_coord, offset_variable);
 				std::string scale_variable = "OffsetSet" + std::to_string(slot + 1);
-				ss << "\t" << out_tex_coord << ".xy = " << out_tex_coord << ".xy * " << scale_variable << ";\n";
+				ss << "\t" << out_tex_coord << ".xy = " << out_tex_coord << ".xy + " << scale_variable << ";\n";
 			}
 
 			// Scale
